@@ -6,8 +6,7 @@ export const Container = styled.div`
     display: flex;
     flex-direction: column;
     border-radius: 10px;
-    margin: 20px;
-    
+    margin-top: 40px;
 `
 export const ContainerTitle = styled.div`
 padding: 0 10px;

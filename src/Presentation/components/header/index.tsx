@@ -40,7 +40,10 @@ function Header({ handleToggleMenu }: HeaderProps) {
   };
 
   return (
-    <AppBar position="static" style={{ borderBottom: "1px solid #222b45" }}>
+    <AppBar
+      position="static"
+      style={{ borderBottom: "1px solid #222b45", position: "fixed" }}
+    >
       <Container maxWidth={false} style={{ backgroundColor: "#242334" }}>
         <Toolbar disableGutters>
           <ListItemIcon>
