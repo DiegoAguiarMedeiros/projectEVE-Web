@@ -14,9 +14,11 @@ export const SubTitle = styled.h2<{
 `;
 export const Text = styled.p<{
   color: string,
+  center?: boolean,
 }>`
   color:${(props: { color: string; }) => props.color};
   font-size: 14px;
   padding: 0;
   margin: 0;
+  text-align: ${(props) => (props.center ? "center" : "left")}; 
 `;

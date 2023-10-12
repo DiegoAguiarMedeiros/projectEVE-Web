@@ -3,6 +3,7 @@ import * as Styled from "./styles";
 interface TextProps {
   children: React.ReactNode;
   color: string;
+  center?: boolean;
 }
 
 const Title: React.FC<TextProps> = ({ children, color }) => {
@@ -11,8 +12,12 @@ const Title: React.FC<TextProps> = ({ children, color }) => {
 const SubTitle: React.FC<TextProps> = ({ children, color }) => {
   return <Styled.SubTitle color={color}>{children}</Styled.SubTitle>;
 };
-const Text: React.FC<TextProps> = ({ children, color }) => {
-  return <Styled.Text color={color}>{children}</Styled.Text>;
+const Text: React.FC<TextProps> = ({ children, color, center }) => {
+  return (
+    <Styled.Text color={color} center={center}>
+      {children}
+    </Styled.Text>
+  );
 };
 
 export { Title, SubTitle, Text };

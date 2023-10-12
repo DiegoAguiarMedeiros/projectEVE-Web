@@ -16,5 +16,5 @@ export const ContainerGraph = styled.div`
 
 `
 export const ContainerEnvelopList = styled.div`
-padding: 0 10px;
+padding: 0 30px;
 `
