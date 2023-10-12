@@ -1,0 +1,20 @@
+import styled from "styled-components";
+
+export const Container = styled.div`
+    width: 400px;
+    background: linear-gradient(to bottom, #192038, #1e1e20);
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    margin: 20px;
+    
+`
+export const ContainerTitle = styled.div`
+padding: 0 10px;
+`
+export const ContainerGraph = styled.div`
+
+`
+export const ContainerEnvelopList = styled.div`
+padding: 0 10px;
+`
