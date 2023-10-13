@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-    width: 400px;
     background: linear-gradient(to bottom, #192038, #1e1e20);
     display: flex;
     flex-direction: column;

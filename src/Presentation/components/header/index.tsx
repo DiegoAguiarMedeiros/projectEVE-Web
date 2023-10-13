@@ -10,13 +10,21 @@ import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import AdbIcon from "@mui/icons-material/Adb";
-import { ListItemIcon } from "@mui/material";
+import { ListItemIcon, useTheme } from "@mui/material";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
 
 type HeaderProps = {
   handleToggleMenu: () => void;
+  colorModeContext: React.Context<{
+    toggleColorMode: () => void;
+  }>;
 };
 
-function Header({ handleToggleMenu }: HeaderProps) {
+function Header({ handleToggleMenu, colorModeContext }: HeaderProps) {
+  const theme = useTheme();
+  const colorMode = React.useContext(colorModeContext);
+
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -120,7 +128,33 @@ function Header({ handleToggleMenu }: HeaderProps) {
           >
             LOGO
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+            <Box
+              sx={{
+                display: "flex",
+                width: "100%",
+                alignItems: "center",
+                justifyContent: "center",
+                bgcolor: "background.default",
+                color: "text.primary",
+                borderRadius: 1,
+                p: 3,
+              }}
+            >
+              {theme.palette.mode} mode
+              <IconButton
+                sx={{ ml: 1 }}
+                onClick={colorMode.toggleColorMode}
+                color="inherit"
+              >
+                {theme.palette.mode === "dark" ? (
+                  <Brightness7Icon />
+                ) : (
+                  <Brightness4Icon />
+                )}
+              </IconButton>
+            </Box>
+          </Box>
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">

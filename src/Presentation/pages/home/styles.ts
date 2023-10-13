@@ -16,10 +16,20 @@ export const Container = styled.div`
   }
 `
 export const LeftContainer = styled.div`
-`
+  width: 75%;
+  @media (min-width: 1200px) {
+    /* Adjust styles for extra large devices */
+    width: 65%;
+  }
+`;
+
 export const RightContainer = styled.div`
-`
+  width: 200px;
+  max-width: 400px;
+  min-width: 400px;
+  `;
 export const CardsContainer = styled.div`
+  flex: 1;
 `
 export const BannerContainer = styled.div`
 `

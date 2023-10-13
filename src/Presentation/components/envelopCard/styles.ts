@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-    width: 250px;
+    width: 33%;
+    flex: 1;
     height: 150px;
     background: linear-gradient(to bottom, #192038, #1e1e20);
     border-radius: 10px;

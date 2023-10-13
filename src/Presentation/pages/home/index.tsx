@@ -2,7 +2,13 @@ import Cards from "./Cards";
 import PieChartBanner from "./PieChartBanner";
 import TableLastTransactions from "./TableLastTransactions";
 import * as Styled from "./styles";
-const Home = () => {
+
+type HomeProps = {
+  menuOpen: boolean;
+};
+
+const Home = ({ menuOpen }: HomeProps) => {
+  console.log("menuOpen", menuOpen);
   return (
     <Styled.Container>
       <Styled.LeftContainer>

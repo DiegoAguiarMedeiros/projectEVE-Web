@@ -19,7 +19,7 @@ export const ContainerHeader = styled.div`
     display: flex;
 `
 export const ContainerHeaderTitle = styled.div`
-    flex: 5;
+    flex: 4;
     `
 export const ContainerHeaderButton = styled.div`
     flex: 1;
