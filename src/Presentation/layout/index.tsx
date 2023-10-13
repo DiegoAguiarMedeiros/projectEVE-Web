@@ -10,7 +10,7 @@ const Layout = ({ children }: LayoutProps) => {
   const [menuOpen, setMenuOpen] = useState(true);
 
   const handleToggleMenu = () => {
-    setMenuOpen(!menuOpen);
+    setMenuOpen((current) => !current);
   };
 
   return (

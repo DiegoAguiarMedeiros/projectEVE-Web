@@ -2,15 +2,10 @@ import styled from "styled-components";
 
 export const Container = styled.div`
     overflow-y: scroll;
-    position: fixed;
     width: 100%;
-    margin-top: 65px;
-    margin-left: 200px;
-    max-width: calc(100% - 200px);
-    height: calc(100% - 65px);
+    height: 100%;
     display:flex;
     flex-wrap: wrap;
-  
   /* Webkit-specific styles for Chrome and Safari */
   &::-webkit-scrollbar {
     width: 5px; /* Width of the scrollbar track */

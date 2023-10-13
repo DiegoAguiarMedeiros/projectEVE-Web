@@ -9,9 +9,6 @@ export const SideMenuContainer = styled.nav<{
   color: white;
   display: flex;
   flex-direction: column;
-  margin-top: 65px;
-  height: calc(100% - 64px);
-  position: fixed;
   `;
 
 export const SideMenuInner = styled.ul`
