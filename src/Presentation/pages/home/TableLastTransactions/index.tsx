@@ -1,8 +1,8 @@
 import { Button } from "@mui/material";
 import { Title } from "../../../components/Text";
 import * as Styled from "./styles";
-import Row, { RowProps } from "./Row";
-import TableHeader from "./TableHeader";
+import Table, { TableProps } from "../../../components/Table";
+import { RowProps } from "../../../components/Table/Row";
 
 const headerData = ["Envelope", "Data", "Transação", "Status"];
 
@@ -63,6 +63,11 @@ const transactionExamples: RowProps[] = [
   },
 ];
 
+const tableData: TableProps = {
+  header: headerData,
+  body: transactionExamples,
+};
+
 const TableLastTransactions = () => {
   return (
     <Styled.Container>
@@ -75,10 +80,7 @@ const TableLastTransactions = () => {
         </Styled.ContainerHeaderButton>
       </Styled.ContainerHeader>
       <Styled.ContainerInner>
-        <TableHeader items={headerData} />
-        {transactionExamples.map((t) => (
-          <Row {...t} />
-        ))}
+        <Table {...tableData} />
       </Styled.ContainerInner>
     </Styled.Container>
   );

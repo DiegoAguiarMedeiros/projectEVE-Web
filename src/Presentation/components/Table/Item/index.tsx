@@ -1,4 +1,4 @@
-import { Text } from "../../../../components/Text";
+import { Text } from "../../Text";
 import * as Styled from "./styles";
 
 type ItemProps = {
