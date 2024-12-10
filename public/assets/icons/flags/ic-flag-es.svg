@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="200" viewBox="0 0 280 200">
+  <!-- Faixa vermelha superior -->
+  <rect width="280" height="50" fill="#aa151b"/>
+  <!-- Faixa amarela do meio -->
+  <rect y="50" width="280" height="100" fill="#f1bf00"/>
+  <!-- Faixa vermelha inferior -->
+  <rect y="150" width="280" height="50" fill="#aa151b"/>
+</svg>
