@@ -15,6 +15,8 @@ import { varAlpha } from 'src/theme/styles';
 
 import { Logo } from 'src/components/logo';
 import { Scrollbar } from 'src/components/scrollbar';
+import { Iconify } from 'src/components/iconify';
+import { AccountPopoverMenu } from '../components/account-popover-menu';
 
 // ----------------------------------------------------------------------
 
@@ -116,7 +118,11 @@ export function NavContent({ data, slots, sx }: NavContentProps) {
       {slots?.topArea}
 
       <Scrollbar fillContent>
-        <Box component="nav" display="flex" flex="1 1 auto" flexDirection="column" sx={sx}>
+        <Box component="nav" display="flex" flex="1 1 auto" flexDirection="column"
+          sx={{
+            ...sx,
+            padding: '20px 0',
+          }}>
           <Box component="ul" gap={0.5} display="flex" flexDirection="column">
             {data.map((item) => {
               const isActived = item.path === pathname;
@@ -165,6 +171,24 @@ export function NavContent({ data, slots, sx }: NavContentProps) {
       </Scrollbar>
 
       {slots?.bottomArea}
+
+      <AccountPopoverMenu data={[
+        {
+          label: 'Home',
+          href: '/',
+          icon: <Iconify width={22} icon="solar:home-angle-bold-duotone" />,
+        },
+        {
+          label: 'Profile',
+          href: '#',
+          icon: <Iconify width={22} icon="solar:shield-keyhole-bold-duotone" />,
+        },
+        {
+          label: 'Settings',
+          href: '#',
+          icon: <Iconify width={22} icon="solar:settings-bold-duotone" />,
+        },
+      ]} />
 
     </>
   );

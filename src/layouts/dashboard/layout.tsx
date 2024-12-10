@@ -41,9 +41,6 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
 
   return (
     <LayoutSection
-      /** **************************************
-       * Header
-       *************************************** */
       headerSection={
         <HeaderSection
           layoutQuery={layoutQuery}
@@ -78,7 +75,6 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
             ),
             rightArea: (
               <Box gap={1} display="flex" alignItems="center">
-                <Searchbar />
                 <LanguagePopover data={_langs} />
                 <NotificationsPopover data={_notifications} />
                 <AccountPopover
@@ -109,7 +105,9 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
        * Sidebar
        *************************************** */
       sidebarSection={
-        <NavDesktop data={navData} layoutQuery={layoutQuery} />
+        <NavDesktop data={navData} layoutQuery={layoutQuery} sx={{
+          boxShadow: theme.customShadows.z8,
+        }} />
       }
       /** **************************************
        * Footer
@@ -134,6 +132,6 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
       }}
     >
       <Main>{children}</Main>
-    </LayoutSection>
+    </LayoutSection >
   );
 }
