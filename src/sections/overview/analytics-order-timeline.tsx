@@ -40,7 +40,7 @@ export function AnalyticsOrderTimeline({ title, subheader, list, ...other }: Pro
       <CardHeader title={title} subheader={subheader} />
       <Box sx={{ padding: 5 }}>
         {list.map((item, index) => (
-          <Box sx={{ margin: 2 }}>
+          <Box sx={{ margin: 2 }} key={`AnalyticsOrderTimeline${index}`}>
             <Typography id="input-slider" gutterBottom>
               {item.title}
             </Typography>
