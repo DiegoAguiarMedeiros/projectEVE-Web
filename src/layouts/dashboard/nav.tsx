@@ -1,16 +1,20 @@
 import type { Theme, SxProps, Breakpoint } from '@mui/material/styles';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import Box from '@mui/material/Box';
 import ListItem from '@mui/material/ListItem';
 import { useTheme } from '@mui/material/styles';
 import ListItemButton from '@mui/material/ListItemButton';
 import Drawer, { drawerClasses } from '@mui/material/Drawer';
+import { Paper, MenuList, MenuItem, ListItemIcon, ListItemText, Typography, Divider } from '@mui/material';
+import ContentCut from '@mui/icons-material/ContentCut';
+import ContentCopy from '@mui/icons-material/ContentCopy';
+import ContentPaste from '@mui/icons-material/ContentPaste';
+import Cloud from '@mui/icons-material/Cloud';
 
 import { usePathname } from 'src/routes/hooks';
 import { RouterLink } from 'src/routes/components';
-
 import { varAlpha } from 'src/theme/styles';
 
 import { Logo } from 'src/components/logo';
@@ -26,6 +30,7 @@ export type NavContentProps = {
     title: string;
     icon: React.ReactNode;
     info?: React.ReactNode;
+    subItems?: { title: string, path: string }[],
   }[];
   slots?: {
     topArea?: React.ReactNode;
@@ -110,6 +115,7 @@ export function NavMobile({
 
 export function NavContent({ data, slots, sx }: NavContentProps) {
   const pathname = usePathname();
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
   return (
     <>
@@ -118,21 +124,19 @@ export function NavContent({ data, slots, sx }: NavContentProps) {
       {slots?.topArea}
 
       <Scrollbar fillContent>
-        <Box component="nav" display="flex" flex="1 1 auto" flexDirection="column"
-          sx={{
-            ...sx,
-            padding: '20px 0',
-          }}>
-          <Box component="ul" gap={0.5} display="flex" flexDirection="column">
+        <Paper sx={{ width: 320, maxWidth: '100%' }}>
+          <MenuList>
             {data.map((item) => {
               const isActived = item.path === pathname;
+              const isHovered = hoveredItem === item.path;
 
               return (
-                <ListItem disableGutters disablePadding key={item.title}>
+                <>
                   <ListItemButton
                     disableGutters
                     component={RouterLink}
                     href={item.path}
+                    onMouseEnter={() => setHoveredItem(item.path)}
                     sx={{
                       pl: 2,
                       py: 1,
@@ -160,29 +164,48 @@ export function NavContent({ data, slots, sx }: NavContentProps) {
                       {item.title}
                     </Box>
 
+
                     {item.info && item.info}
                   </ListItemButton>
-                </ListItem>
-              );
-            })}
-          </Box>
-        </Box>
+
+                  <>
+                    {isHovered && item.subItems && (
+                      <Box sx={{ pl: 4, display: 'flex', flexDirection: 'column' }} onMouseLeave={() => setHoveredItem(null)}>
+                        {item.subItems.map((subItem) => (
+                          <ListItemButton
+                            key={subItem.path}
+                            disableGutters
+                            component={RouterLink}
+                            href={subItem.path}
+                            sx={{
+                              pl: 2,
+                              py: 1,
+                              typography: 'body2',
+                              fontWeight: 'fontWeightRegular',
+                              color: 'var(--layout-nav-item-color)',
+                              minHeight: 'var(--layout-nav-item-height)',
+                              '&:hover': {
+                                bgcolor: 'var(--layout-nav-item-hover-bg)',
+                              },
+                            }}
+                          >
+                            {subItem.title}
+                          </ListItemButton>
+                        ))}
+                      </Box>
+                    )}
+                  </>
+                </>
+              )
+            }
+            )}
+          </MenuList>
+        </Paper>
       </Scrollbar>
 
       {slots?.bottomArea}
 
-      <AccountPopoverMenu data={[
-        {
-          label: 'Profile',
-          href: '#',
-          icon: <Iconify width={22} icon="solar:shield-keyhole-bold-duotone" />,
-        },
-        {
-          label: 'Settings',
-          href: '#',
-          icon: <Iconify width={22} icon="solar:settings-bold-duotone" />,
-        },
-      ]} />
+      <AccountPopoverMenu data={[]} />
 
     </>
   );

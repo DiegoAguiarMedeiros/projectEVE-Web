@@ -20,13 +20,7 @@ export function OverviewAnalyticsView() {
   return (
     <DashboardContent maxWidth="xl">
       <Grid2 container spacing={3}>
-        <Grid2 sx={{
-          gridColumn: {
-            xs: 'span 12',
-            sm: 'span 6',
-            md: 'span 3',
-          },
-        }}>
+        <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
           <AnalyticsWidgetSummary
             title="Weekly sales"
             percent={2.6}
@@ -39,13 +33,7 @@ export function OverviewAnalyticsView() {
           />
         </Grid2>
 
-        <Grid2 sx={{
-          gridColumn: {
-            xs: 'span 12',
-            sm: 'span 6',
-            md: 'span 3',
-          },
-        }}>
+        <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
           <AnalyticsWidgetSummary
             title="New users"
             percent={-0.1}
@@ -59,13 +47,7 @@ export function OverviewAnalyticsView() {
           />
         </Grid2>
 
-        <Grid2 sx={{
-          gridColumn: {
-            xs: 'span 12',
-            sm: 'span 6',
-            md: 'span 3',
-          },
-        }}>
+        <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
           <AnalyticsWidgetSummary
             title="Purchase orders"
             percent={2.8}
@@ -79,13 +61,7 @@ export function OverviewAnalyticsView() {
           />
         </Grid2>
 
-        <Grid2 sx={{
-          gridColumn: {
-            xs: 'span 12',
-            sm: 'span 6',
-            md: 'span 3',
-          },
-        }}>
+        <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
           <AnalyticsWidgetSummary
             title="Messages"
             percent={3.6}
@@ -98,13 +74,7 @@ export function OverviewAnalyticsView() {
             }}
           />
         </Grid2>
-        <Grid2 sx={{
-          gridColumn: {
-            xs: 'span 12',
-            sm: 'span 6',
-            lg: 'span 4',
-          },
-        }}>
+        <Grid2 size={{ xs: 12, sm: 6, md: 4 }}>
           <AnalyticsWebsiteVisits
             title="Website visits"
             subheader="(+43%) than last year"
@@ -117,13 +87,7 @@ export function OverviewAnalyticsView() {
             }}
           />
         </Grid2>
-        <Grid2 sx={{
-          gridColumn: {
-            xs: 'span 12',
-            sm: 'span 6',
-            lg: 'span 4',
-          },
-        }}>
+        <Grid2 size={{ xs: 12, sm: 6, md: 4 }}>
           <AnalyticsCurrentVisits
             title="Gastos"
             chart={{
@@ -138,13 +102,7 @@ export function OverviewAnalyticsView() {
             }}
           />
         </Grid2>
-        <Grid2 sx={{
-          gridColumn: {
-            xs: 'span 12',
-            sm: 'span 6',
-            lg: 'span 4',
-          },
-        }}>
+        <Grid2 size={{ xs: 12, sm: 6, md: 4 }}>
           <AnalyticsOrderTimeline title="Envelopes" list={_timeline} />
         </Grid2>
 

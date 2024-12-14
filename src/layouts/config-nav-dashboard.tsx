@@ -1,6 +1,10 @@
 import { Label } from 'src/components/label';
 import { SvgColor } from 'src/components/svg-color';
-
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import EmailIcon from '@mui/icons-material/Email';
+import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { info } from 'console';
 // ----------------------------------------------------------------------
 
 const icon = (name: string) => (
@@ -9,33 +13,23 @@ const icon = (name: string) => (
 
 export const navData = [
   {
-    title: 'Dashboard',
+    title: 'Painel',
     path: '/',
-    icon: icon('ic-analytics'),
+    icon: <DashboardIcon />,
   },
   {
-    title: 'User',
+    title: 'Envelope',
     path: '/user',
-    icon: icon('ic-user'),
+    icon: <EmailIcon />,
+    info: <KeyboardArrowDownIcon />,
+    subItems: [
+      { title: 'Subopção 1', path: '/user/subopcao1' },
+      { title: 'Subopção 2', path: '/user/subopcao2' },
+    ],
   },
   {
-    title: 'Product',
+    title: 'Configurações',
     path: '/products',
-    icon: icon('ic-cart'),
-  },
-  {
-    title: 'Blog',
-    path: '/blog',
-    icon: icon('ic-blog'),
-  },
-  {
-    title: 'Sign in',
-    path: '/sign-in',
-    icon: icon('ic-lock'),
-  },
-  {
-    title: 'Not found',
-    path: '/404',
-    icon: icon('ic-disabled'),
-  },
+    icon: <SettingsApplicationsIcon />,
+  }
 ];
