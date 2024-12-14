@@ -1,17 +1,12 @@
 import type { CardProps } from '@mui/material/Card';
-import type { TimelineItemProps } from '@mui/lab/TimelineItem';
 
 import Card from '@mui/material/Card';
 import Timeline from '@mui/lab/Timeline';
-import TimelineDot from '@mui/lab/TimelineDot';
-import Typography from '@mui/material/Typography';
 import CardHeader from '@mui/material/CardHeader';
-import TimelineContent from '@mui/lab/TimelineContent';
-import TimelineSeparator from '@mui/lab/TimelineSeparator';
-import TimelineConnector from '@mui/lab/TimelineConnector';
-import TimelineItem, { timelineItemClasses } from '@mui/lab/TimelineItem';
+import { timelineItemClasses } from '@mui/lab/TimelineItem';
 
-import { fDateTime } from 'src/utils/format-time';
+import { Box, Slider, Typography } from '@mui/material';
+import { useState } from 'react';
 
 // ----------------------------------------------------------------------
 
@@ -19,66 +14,66 @@ type Props = CardProps & {
   title?: string;
   subheader?: string;
   list: {
-    id: string;
-    type: string;
     title: string;
-    time: string | number | null;
+    value: number;
+    valueMax: number;
+    color: "primary" | "secondary" | "error" | "info" | "success" | "warning";
   }[];
 };
 
 export function AnalyticsOrderTimeline({ title, subheader, list, ...other }: Props) {
+  const marks = [
+    {
+      value: 0,
+      label: '0%',
+    },
+    {
+      value: 500,
+      label: '100%'
+    },
+  ];
+
+  const valuetext = (value: number) => `${value}%`;
+
   return (
     <Card {...other}>
       <CardHeader title={title} subheader={subheader} />
-
-      <Timeline
-        sx={{
-          m: 0,
-          p: 3,
-          [`& .${timelineItemClasses.root}:before`]: {
-            flex: 0,
-            padding: 0,
-          },
-        }}
-      >
+      <Box sx={{ padding: 5 }}>
         {list.map((item, index) => (
-          <Item key={item.id} item={item} lastItem={index === list.length - 1} />
+          <Box sx={{ margin: 2 }}>
+            <Typography id="input-slider" gutterBottom>
+              {item.title}
+            </Typography>
+            <Slider
+              key={`SliderItem${index}`}
+              aria-label="Gastos"
+              value={item.value}
+              getAriaValueText={valuetext}
+              step={10}
+              min={0}
+              max={item.valueMax}
+              valueLabelDisplay="auto"
+              marks={marks}
+              color={item.color}
+              sx={{
+                '& .MuiSlider-thumb': {
+                  // Mantenha a cor do thumb (ponto de controle)
+                  backgroundColor: `${item.color}.main`,
+                },
+                '& .MuiSlider-rail': {
+                  // Mantenha a cor do rail (trilho)
+                  backgroundColor: 'gray',
+                },
+                '& .MuiSlider-track': {
+                  // Mantenha a cor do track (faixa)
+                  backgroundColor: `${item.color}.main`,
+                }
+              }}
+            />
+          </Box>
         ))}
-      </Timeline>
+      </Box>
     </Card>
   );
 }
 
-// ----------------------------------------------------------------------
-
-type ItemProps = TimelineItemProps & {
-  lastItem: boolean;
-  item: Props['list'][number];
-};
-
-function Item({ item, lastItem, ...other }: ItemProps) {
-  return (
-    <TimelineItem {...other}>
-      <TimelineSeparator>
-        <TimelineDot
-          color={
-            (item.type === 'order1' && 'primary') ||
-            (item.type === 'order2' && 'success') ||
-            (item.type === 'order3' && 'info') ||
-            (item.type === 'order4' && 'warning') ||
-            'error'
-          }
-        />
-        {lastItem ? null : <TimelineConnector />}
-      </TimelineSeparator>
-
-      <TimelineContent>
-        <Typography variant="subtitle2">{item.title}</Typography>
-
-        <Typography variant="caption" sx={{ color: 'text.disabled' }}>
-          {fDateTime(item.time)}
-        </Typography>
-      </TimelineContent>
-    </TimelineItem>
-  );
-}

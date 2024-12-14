@@ -32,8 +32,10 @@ export function AnalyticsCurrentVisits({ title, subheader, chart, ...other }: Pr
 
   const chartColors = chart.colors ?? [
     theme.palette.primary.main,
+    theme.palette.secondary.main,
+    theme.palette.info.main,
     theme.palette.warning.main,
-    theme.palette.secondary.dark,
+    theme.palette.success.main,
     theme.palette.error.main,
   ];
 

@@ -118,18 +118,49 @@ export const _langs = [
 
 // ----------------------------------------------------------------------
 
-export const _timeline = [...Array(5)].map((_, index) => ({
-  id: _id(index),
-  title: [
-    '1983, orders, $4220',
-    '12 Invoices have been paid',
-    'Order #37745 from September',
-    'New order placed #XF-2356',
-    'New order placed #XF-2346',
-  ][index],
-  type: `order${index + 1}`,
-  time: _times(index),
-}));
+export const _timeline: {
+  title: string;
+  value: number;
+  valueMax: number;
+  color: "primary" | "secondary" | "error" | "info" | "success" | "warning";
+}[] = [
+    {
+      title: 'Contas Fixas',
+      value: 250,
+      valueMax: 500,
+      color: "primary",
+    },
+    {
+      title: 'Alimentação',
+      value: 350,
+      valueMax: 500,
+      color: "secondary",
+    },
+    {
+      title: 'Lazer',
+      value: 450,
+      valueMax: 500,
+      color: "info",
+    },
+    {
+      title: 'Transporte',
+      value: 50,
+      valueMax: 500,
+      color: "warning",
+    },
+    {
+      title: 'Saúde',
+      value: 100,
+      valueMax: 500,
+      color: "success",
+    },
+    {
+      title: 'Bem Estar',
+      value: 300,
+      valueMax: 500,
+      color: "error",
+    }
+  ];
 
 // ----------------------------------------------------------------------
 

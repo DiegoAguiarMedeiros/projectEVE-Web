@@ -19,10 +19,6 @@ import { AnalyticsConversionRates } from '../analytics-conversion-rates';
 export function OverviewAnalyticsView() {
   return (
     <DashboardContent maxWidth="xl">
-      <Typography variant="h4" sx={{ mb: { xs: 3, md: 5 } }}>
-        Hi, Welcome back 👋
-      </Typography>
-
       <Grid container spacing={3}>
         <Grid xs={12} sm={6} md={3}>
           <AnalyticsWidgetSummary
@@ -78,22 +74,7 @@ export function OverviewAnalyticsView() {
             }}
           />
         </Grid>
-
         <Grid xs={12} md={6} lg={4}>
-          <AnalyticsCurrentVisits
-            title="Current visits"
-            chart={{
-              series: [
-                { label: 'America', value: 3500 },
-                { label: 'Asia', value: 2500 },
-                { label: 'Europe', value: 1500 },
-                { label: 'Africa', value: 500 },
-              ],
-            }}
-          />
-        </Grid>
-
-        <Grid xs={12} md={6} lg={8}>
           <AnalyticsWebsiteVisits
             title="Website visits"
             subheader="(+43%) than last year"
@@ -106,6 +87,25 @@ export function OverviewAnalyticsView() {
             }}
           />
         </Grid>
+        <Grid xs={12} md={6} lg={4}>
+          <AnalyticsCurrentVisits
+            title="Gastos"
+            chart={{
+              series: [
+                { label: 'Contas Fixas', value: 3500 },
+                { label: 'Alimentação', value: 2500 },
+                { label: 'Lazer', value: 1500 },
+                { label: 'Transporte', value: 500 },
+                { label: 'Saúde', value: 600 },
+                { label: 'Bem Estar', value: 700 },
+              ],
+            }}
+          />
+        </Grid>
+        <Grid xs={12} md={6} lg={4}>
+          <AnalyticsOrderTimeline title="Envelopes" list={_timeline} />
+        </Grid>
+
 
         <Grid xs={12} md={6} lg={8}>
           <AnalyticsConversionRates
@@ -139,9 +139,7 @@ export function OverviewAnalyticsView() {
           <AnalyticsNews title="News" list={_posts.slice(0, 5)} />
         </Grid>
 
-        <Grid xs={12} md={6} lg={4}>
-          <AnalyticsOrderTimeline title="Order timeline" list={_timeline} />
-        </Grid>
+
 
         <Grid xs={12} md={6} lg={4}>
           <AnalyticsTrafficBySite
