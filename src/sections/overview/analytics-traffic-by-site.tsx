@@ -35,7 +35,7 @@ export function AnalyticsTrafficBySite({ title, subheader, list, sx, ...other }:
               textAlign: 'center',
               alignItems: 'center',
               flexDirection: 'column',
-              border: `solid 1px ${varAlpha(theme.vars.palette.grey['500Channel'], 0.12)}`,
+              border: `solid 1px ${varAlpha(theme.palette.grey['500Channel'], 0.12)}`,
             })}
           >
             {site.value === 'facebook' && (

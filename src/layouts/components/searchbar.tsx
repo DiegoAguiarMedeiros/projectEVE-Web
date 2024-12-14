@@ -43,7 +43,7 @@ export function Searchbar({ sx, ...other }: BoxProps) {
           <Box
             sx={{
               ...bgBlur({
-                color: theme.vars.palette.background.default,
+                color: theme.palette.background.default,
               }),
               top: 0,
               left: 0,

@@ -1,12 +1,12 @@
 import type { Theme } from '@mui/material/styles';
 
-import { experimental_extendTheme as extendTheme } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 
 import { shadows, typography, components, colorSchemes, customShadows } from './core';
 
 // ----------------------------------------------------------------------
 
-export function createTheme(): Theme {
+export function createCustomTheme(): Theme {
   const initialTheme = {
     colorSchemes,
     shadows: shadows(),
@@ -18,7 +18,7 @@ export function createTheme(): Theme {
     shouldSkipGeneratingVar,
   };
 
-  const theme = extendTheme(initialTheme);
+  const theme = createTheme(initialTheme);
 
   return theme;
 }

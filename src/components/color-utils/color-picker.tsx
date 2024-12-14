@@ -75,7 +75,7 @@ export const ColorPicker = forwardRef<HTMLDivElement, BoxProps & ColorPickerProp
                     height: 20,
                     bgcolor: color,
                     borderRadius: '50%',
-                    border: `solid 1px ${varAlpha(theme.vars.palette.grey['500Channel'], 0.16)}`,
+                    border: `solid 1px ${varAlpha(theme.palette.grey['500Channel'], 0.16)}`,
                     ...(hasSelected && {
                       transform: 'scale(1.3)',
                       boxShadow: `4px 4px 8px 0 ${hexAlpha(color, 0.48)}`,

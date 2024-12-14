@@ -12,14 +12,14 @@ export function useChart(options?: ChartOptions): ChartOptions {
   const LABEL_TOTAL = {
     show: true,
     label: 'Total',
-    color: theme.vars.palette.text.secondary,
+    color: theme.palette.text.secondary,
     fontSize: theme.typography.subtitle2.fontSize as string,
     fontWeight: theme.typography.subtitle2.fontWeight,
   };
 
   const LABEL_VALUE = {
     offsetY: 8,
-    color: theme.vars.palette.text.primary,
+    color: theme.palette.text.primary,
     fontSize: theme.typography.h4.fontSize as string,
     fontWeight: theme.typography.h4.fontWeight,
   };
@@ -64,7 +64,7 @@ export function useChart(options?: ChartOptions): ChartOptions {
       },
       parentHeightOffset: 0,
       fontFamily: theme.typography.fontFamily,
-      foreColor: theme.vars.palette.text.disabled,
+      foreColor: theme.palette.text.disabled,
       ...options?.chart,
       animations: {
         enabled: true,
@@ -146,7 +146,7 @@ export function useChart(options?: ChartOptions): ChartOptions {
      *************************************** */
     grid: {
       strokeDashArray: 3,
-      borderColor: theme.vars.palette.divider,
+      borderColor: theme.palette.divider,
       ...options?.grid,
       padding: {
         top: 0,
@@ -184,7 +184,7 @@ export function useChart(options?: ChartOptions): ChartOptions {
      *************************************** */
     markers: {
       size: 0,
-      strokeColors: theme.vars.palette.background.paper,
+      strokeColors: theme.palette.background.paper,
       ...options?.markers,
     },
 
@@ -215,7 +215,7 @@ export function useChart(options?: ChartOptions): ChartOptions {
         ...options?.legend?.markers,
       },
       labels: {
-        colors: theme.vars.palette.text.primary,
+        colors: theme.palette.text.primary,
         ...options?.legend?.labels,
       },
       itemMargin: {
@@ -269,7 +269,7 @@ export function useChart(options?: ChartOptions): ChartOptions {
         track: {
           margin: -8,
           strokeWidth: '50%',
-          background: varAlpha(theme.vars.palette.grey['500Channel'], 0.16),
+          background: varAlpha(theme.palette.grey['500Channel'], 0.16),
           ...options?.plotOptions?.radialBar?.track,
         },
         dataLabels: {
@@ -292,8 +292,8 @@ export function useChart(options?: ChartOptions): ChartOptions {
           fill: {
             colors: ['transparent'],
           },
-          strokeColors: theme.vars.palette.divider,
-          connectorColors: theme.vars.palette.divider,
+          strokeColors: theme.palette.divider,
+          connectorColors: theme.palette.divider,
           ...options?.plotOptions?.radar?.polygons,
         },
       },
@@ -301,10 +301,10 @@ export function useChart(options?: ChartOptions): ChartOptions {
       // plotOptions: polarArea
       polarArea: {
         rings: {
-          strokeColor: theme.vars.palette.divider,
+          strokeColor: theme.palette.divider,
         },
         spokes: {
-          connectorColors: theme.vars.palette.divider,
+          connectorColors: theme.palette.divider,
         },
         ...options?.plotOptions?.polarArea,
       },
