@@ -95,10 +95,16 @@ export function AnalyticsWidgetSummary({
       }}
       {...other}
     >
-      <Box sx={{ width: 48, height: 48, mb: 3 }}>{icon}</Box>
-
-      {renderTrending}
-
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'flex-start',
+          justifyContent: 'flex-start',
+        }}
+      >
+        <Box sx={{ width: 48, height: 48, mb: 3 }}>{icon} </Box>
+        <Box sx={{ mb: 1, typography: 'h5' }}>{title}</Box>
+      </Box>
       <Box
         sx={{
           display: 'flex',
@@ -108,17 +114,10 @@ export function AnalyticsWidgetSummary({
         }}
       >
         <Box sx={{ flexGrow: 1, minWidth: 112 }}>
-          <Box sx={{ mb: 1, typography: 'subtitle2' }}>{title}</Box>
-          <Box sx={{ typography: 'h4' }}>{fShortenNumber(total)}</Box>
+
+          <Box sx={{ typography: 'h5' }}>R$ {fShortenNumber(total)}</Box>
         </Box>
 
-        <Chart
-          type="line"
-          series={[{ data: chart.series }]}
-          options={chartOptions}
-          width={84}
-          height={56}
-        />
       </Box>
 
       <SvgColor
@@ -126,9 +125,9 @@ export function AnalyticsWidgetSummary({
         sx={{
           top: 0,
           left: -20,
-          width: 240,
+          width: 320,
           zIndex: -1,
-          height: 240,
+          height: 320,
           opacity: 0.24,
           position: 'absolute',
           color: `${color}.main`,

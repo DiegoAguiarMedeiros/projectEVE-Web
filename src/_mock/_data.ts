@@ -1,3 +1,7 @@
+import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
+import { OverridableComponent } from '@mui/material/OverridableComponent';
+import { SvgIconTypeMap } from '@mui/material';
+
 import {
   _id,
   _price,
@@ -216,5 +220,89 @@ export const _notifications = [
     type: 'order-shipped',
     postedAt: _times(5),
     isUnRead: false,
+  },
+];
+interface ChartData {
+  categories: string[];
+  series: number[];
+}
+
+interface MockDataItem {
+  title: string;
+  icon: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
+    muiName: string;
+  };
+  percent: number;
+  total: number;
+  chart: ChartData;
+  color: "primary" | "secondary" | "info" | "warning" | "success" | "error"
+}
+
+export const _envelopes: MockDataItem[] = [
+  {
+    title: 'Contas Fixas',
+    icon: ShoppingBagIcon,
+    color: "primary",
+    percent: 42.3,
+    total: 3200,
+    chart: {
+      categories: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'],
+      series: [0, 0, 0, 0, 0, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 0, 0, 0, 0],
+    },
+  },
+  {
+    title: 'Alimentação',
+    icon: ShoppingBagIcon,
+    color: "secondary",
+    percent: 69.5,
+    total: 5000,
+    chart: {
+      categories: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'],
+      series: [0, 0, 0, 0, 0, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 0, 0, 0, 0],
+    },
+  },
+  {
+    title: 'Lazer',
+    icon: ShoppingBagIcon,
+    color: "info",
+    percent: 90.0,
+    total: 4500,
+    chart: {
+      categories: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'],
+      series: [0, 0, 0, 0, 0, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 0, 0, 0, 2],
+    },
+  },
+  {
+    title: 'Transporte',
+    icon: ShoppingBagIcon,
+    color: "warning",
+    percent: 30.0,
+    total: 1500,
+    chart: {
+      categories: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'],
+      series: [0, 0, 0, 0, 0, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 0, 0, 0, 0],
+    },
+  },
+  {
+    title: 'Saúde',
+    icon: ShoppingBagIcon,
+    color: "success",
+    percent: 52.0,
+    total: 4000,
+    chart: {
+      categories: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'],
+      series: [0, 0, 0, 0, 0, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 0, 0, 0, 0],
+    },
+  },
+  {
+    title: 'Bem Estar',
+    icon: ShoppingBagIcon,
+    color: "error",
+    percent: 77.5,
+    total: 3500,
+    chart: {
+      categories: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'],
+      series: [0, 0, 0, 0, 0, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 0, 0, 0, 0],
+    },
   },
 ];

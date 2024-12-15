@@ -126,13 +126,14 @@ export function NavContent({ data, slots, sx }: NavContentProps) {
       <Scrollbar fillContent>
         <Paper sx={{ width: 320, maxWidth: '100%' }}>
           <MenuList>
-            {data.map((item) => {
+            {data.map((item, index) => {
               const isActived = item.path === pathname;
               const isHovered = hoveredItem === item.path;
 
               return (
                 <>
                   <ListItemButton
+                    key={`ListItemButton${index}`}
                     disableGutters
                     component={RouterLink}
                     href={item.path}
@@ -170,7 +171,8 @@ export function NavContent({ data, slots, sx }: NavContentProps) {
 
                   <>
                     {isHovered && item.subItems && (
-                      <Box sx={{ pl: 4, display: 'flex', flexDirection: 'column' }} onMouseLeave={() => setHoveredItem(null)}>
+                      <Box
+                        key={`Box${index}`} sx={{ pl: 4, display: 'flex', flexDirection: 'column' }} onMouseLeave={() => setHoveredItem(null)}>
                         {item.subItems.map((subItem) => (
                           <ListItemButton
                             key={subItem.path}

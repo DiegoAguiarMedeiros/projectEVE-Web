@@ -1,7 +1,16 @@
+import { useCallback, useRef } from 'react';
 import Grid2 from '@mui/material/Grid2';
-import Typography from '@mui/material/Typography';
+import { ChevronLeft, ChevronRight } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
 
-import { _tasks, _posts, _timeline } from 'src/_mock';
+
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Autoplay, EffectFade } from 'swiper/modules';
+
+import 'swiper/css'; // Importando o CSS padrão
+import 'swiper/css/navigation'; // Para navegação (se necessário)
+import 'swiper/css/pagination'; // Para paginação (se necessário)
+import { _tasks, _posts, _timeline, _envelopes } from 'src/_mock';
 import { DashboardContent } from 'src/layouts/dashboard';
 
 import { AnalyticsNews } from '../analytics-news';
@@ -17,10 +26,82 @@ import { AnalyticsConversionRates } from '../analytics-conversion-rates';
 // ----------------------------------------------------------------------
 
 export function OverviewAnalyticsView() {
+  const sliderRef = useRef(null);
+
+  const handlePrev = useCallback(() => {
+    if (!sliderRef.current) return;
+    // @ts-ignore
+    sliderRef.current.swiper.slidePrev();
+  }, []);
+
+  const handleNext = useCallback(() => {
+    if (!sliderRef.current) return;
+    // @ts-ignore
+    sliderRef.current.swiper.slideNext();
+  }, []);
   return (
     <DashboardContent maxWidth="xl">
       <Grid2 container spacing={3}>
-        <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
+        <Swiper
+          style={{ padding: '0 25px', margin: '0 -35px' }}
+          ref={sliderRef}
+          spaceBetween={10}  // Espaço entre os slides
+          slidesPerView={1}  // Quantos slides por vez
+          modules={[Autoplay, EffectFade]} // Incluindo o módulo Autoplay
+          loop // Habilitando o loop
+          breakpoints={{
+            600: { slidesPerView: 2 },  // Para telas pequenas
+            900: { slidesPerView: 3 },  // Para telas médias
+            1200: { slidesPerView: 5 }, // Para telas grandes
+          }}
+          autoplay={{
+            delay: 5000, // Tempo entre os slides no modo automático
+            disableOnInteraction: false,
+          }}
+          onAutoplayStart={(swiper) => {
+            swiper.params.speed = 2000; // Velocidade ao trocar no autoplay (2 segundos)
+          }}
+          onAutoplayStop={(swiper) => {
+            swiper.params.speed = 500; // Velocidade manual ao interagir (0.5 segundo)
+          }}
+        >
+          {_envelopes.map((envelope, index) => (
+            <SwiperSlide key={index}>
+              <Grid2 sx={{ padding: 2 }}>
+                <AnalyticsWidgetSummary
+                  title={envelope.title}
+                  percent={envelope.percent}
+                  total={envelope.total}
+                  icon={<envelope.icon />}
+                  chart={envelope.chart}
+                  color={envelope.color}
+                />
+              </Grid2>
+            </SwiperSlide>
+          ))}
+          <div className="prev-arrow"
+            onClick={handlePrev}
+            style={{
+              cursor: 'pointer',
+            }}
+          >
+            <IconButton sx={{ position: 'absolute', zIndex: 999, top: '50%', left: '0', transform: 'translateY(-50%)' }}>
+              <ChevronLeft />
+            </IconButton>
+          </div>
+          <div className="next-arrow"
+            onClick={handleNext}
+            style={{
+              cursor: 'pointer',
+            }}
+          >
+            <IconButton sx={{ position: 'absolute', zIndex: 999, top: '50%', right: '0', transform: 'translateY(-50%)' }}>
+              <ChevronRight />
+            </IconButton>
+          </div>
+        </Swiper >
+
+        {/* <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
           <AnalyticsWidgetSummary
             title="Weekly sales"
             percent={2.6}
@@ -73,23 +154,24 @@ export function OverviewAnalyticsView() {
               series: [56, 30, 23, 54, 47, 40, 62, 73],
             }}
           />
-        </Grid2>
-        <Grid2 size={{ xs: 12, sm: 6, md: 4 }}>
+        </Grid2> */}
+        <Grid2 size={{ xs: 12, sm: 6, md: 8 }}>
           <AnalyticsWebsiteVisits
-            title="Website visits"
+            title="Minha Renda"
             subheader="(+43%) than last year"
             chart={{
               categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
               series: [
-                { name: 'Team A', data: [43, 33, 22, 37, 67, 68, 37, 24, 55] },
-                { name: 'Team B', data: [51, 70, 47, 67, 40, 37, 24, 70, 24] },
+                { name: 'Entrada', data: [43, 33, 22, 37, 67, 68, 37, 24, 55] },
+                { name: 'Saída', data: [51, 70, 47, 67, 40, 37, 24, 70, 24] },
+                { name: 'Saldo', data: [20, 10, 17, 27, 30, 7, 4, 17, 24] },
               ],
             }}
           />
         </Grid2>
         <Grid2 size={{ xs: 12, sm: 6, md: 4 }}>
           <AnalyticsCurrentVisits
-            title="Gastos"
+            title="Envelopes"
             chart={{
               series: [
                 { label: 'Contas Fixas', value: 3500 },
@@ -102,12 +184,12 @@ export function OverviewAnalyticsView() {
             }}
           />
         </Grid2>
-        <Grid2 size={{ xs: 12, sm: 6, md: 4 }}>
+        {/* <Grid2 size={{ xs: 12, sm: 6, md: 4 }}>
           <AnalyticsOrderTimeline title="Envelopes" list={_timeline} />
-        </Grid2>
+        </Grid2> */}
 
 
-        <Grid2 sx={{
+        {/* <Grid2 sx={{
           gridColumn: {
             xs: 'span 12',
             sm: 'span 6',
@@ -185,8 +267,8 @@ export function OverviewAnalyticsView() {
           },
         }}>
           <AnalyticsTasks title="Tasks" list={_tasks} />
-        </Grid2>
+        </Grid2> */}
       </Grid2>
-    </DashboardContent>
+    </DashboardContent >
   );
 }

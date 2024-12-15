@@ -19,7 +19,7 @@ export const navData = [
   },
   {
     title: 'Envelope',
-    path: '/user',
+    path: '/envelope',
     icon: <EmailIcon />,
     info: <KeyboardArrowDownIcon />,
     subItems: [
