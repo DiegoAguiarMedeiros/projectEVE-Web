@@ -21,15 +21,10 @@ export const navData = [
     title: 'Envelope',
     path: '/envelope',
     icon: <EmailIcon />,
-    info: <KeyboardArrowDownIcon />,
-    subItems: [
-      { title: 'Subopção 1', path: '/user/subopcao1' },
-      { title: 'Subopção 2', path: '/user/subopcao2' },
-    ],
   },
   {
     title: 'Configurações',
-    path: '/products',
+    path: '/settings',
     icon: <SettingsApplicationsIcon />,
   }
 ];
