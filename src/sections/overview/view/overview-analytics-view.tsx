@@ -67,7 +67,7 @@ export function OverviewAnalyticsView() {
         >
           {_envelopes.map((envelope, index) => (
             <SwiperSlide key={index}>
-              <Grid2 sx={{ padding: 2 }}>
+              <Grid2 sx={{ padding: 2, width: '100%' }}>
                 <AnalyticsWidgetSummary
                   title={envelope.title}
                   percent={envelope.percent}

@@ -39,18 +39,24 @@ export default function SwiperEnvelop() {
     return (
         <>
             <Swiper
-                // @ts-ignore
-                onProgress={setThumbsSwiper}
-                loop
-                spaceBetween={10}
-                slidesPerView={4}
-                freeMode
+                style={{ padding: '0 25px', margin: '0 -35px' }}
+                spaceBetween={10}  // Espaço entre os slides
+                slidesPerView={1}  // Quantos slides por vez
+                loop // Habilitando o loop
+                breakpoints={{
+                    600: { slidesPerView: 2 },  // Para telas pequenas
+                    900: { slidesPerView: 3 },  // Para telas médias
+                    1200: { slidesPerView: 5 }, // Para telas grandes
+                }}
                 watchSlidesProgress
                 modules={[FreeMode, Navigation, Thumbs]}
+                // @ts-ignore
+                onProgress={setThumbsSwiper}
+                className='mySwiper'
             >
                 {_envelopes.map((envelope, index) => (
                     <SwiperSlide key={index}>
-                        <Grid2 sx={{ padding: 2 }}>
+                        <Grid2 sx={{ padding: 2, width: '100%' }}>
                             <AnalyticsWidgetSummary
                                 title={envelope.title}
                                 percent={envelope.percent}
