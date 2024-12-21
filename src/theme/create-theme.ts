@@ -3,8 +3,6 @@ import type { Theme } from '@mui/material/styles';
 import { createTheme } from '@mui/material/styles';
 
 import { shadows, typography, components, colorSchemes, customShadows } from './core';
-import { useThemeContext } from 'src/context/ThemeContext';
-import { type } from 'os';
 
 
 // ----------------------------------------------------------------------

@@ -1,7 +1,7 @@
 import Grid2 from '@mui/material/Grid2';
-import { _envelopes } from 'src/_mock';
+
 import { DashboardContent } from 'src/layouts/dashboard';
-import { AnalyticsWidgetSummary } from 'src/sections/overview/analytics-widget-summary';
+
 import SwiperEnvelop from '../swiperEvelop';
 
 

@@ -1,27 +1,17 @@
-import { useCallback, useRef } from 'react';
-import Grid2 from '@mui/material/Grid2';
-import { ChevronLeft, ChevronRight } from '@mui/icons-material';
-import { Box, IconButton } from '@mui/material';
+import 'swiper/css';
+// Importando o CSS padrão
+import 'swiper/css/navigation';
+import { useRef, useCallback } from 'react';
 
-
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Autoplay, EffectFade } from 'swiper/modules';
-
-import 'swiper/css'; // Importando o CSS padrão
-import 'swiper/css/navigation'; // Para navegação (se necessário)
+import { Box } from '@mui/material';
+import Grid2 from '@mui/material/Grid2'; // Para navegação (se necessário)
 import 'swiper/css/pagination'; // Para paginação (se necessário)
-import { _tasks, _posts, _timeline, _envelopes, _inout } from 'src/_mock';
+import { _inout } from 'src/_mock';
 import { DashboardContent } from 'src/layouts/dashboard';
 
-import { AnalyticsNews } from '../analytics-news';
-import { AnalyticsTasks } from '../analytics-tasks';
 import { AnalyticsCurrentVisits } from '../analytics-current-visits';
-import { AnalyticsOrderTimeline } from '../analytics-order-timeline';
 import { AnalyticsWebsiteVisits } from '../analytics-website-visits';
 import { AnalyticsWidgetSummary } from '../analytics-widget-summary';
-import { AnalyticsTrafficBySite } from '../analytics-traffic-by-site';
-import { AnalyticsCurrentSubject } from '../analytics-current-subject';
-import { AnalyticsConversionRates } from '../analytics-conversion-rates';
 
 // ----------------------------------------------------------------------
 

@@ -1,4 +1,5 @@
-import { FormControlLabel, FormGroup, styled, Switch } from "@mui/material";
+import { styled, Switch, FormGroup, FormControlLabel } from "@mui/material";
+
 import { useThemeContext } from "src/context/ThemeContext";
 
 

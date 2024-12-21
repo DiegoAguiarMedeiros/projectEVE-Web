@@ -1,10 +1,9 @@
-import { Label } from 'src/components/label';
-import { SvgColor } from 'src/components/svg-color';
-import DashboardIcon from '@mui/icons-material/Dashboard';
+
 import EmailIcon from '@mui/icons-material/Email';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { info } from 'console';
+
+import { SvgColor } from 'src/components/svg-color';
 // ----------------------------------------------------------------------
 
 const icon = (name: string) => (

@@ -9,9 +9,10 @@ import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
-import { useRouter, usePathname } from 'src/routes/hooks';
+import { useRouter } from 'src/routes/hooks';
 
 import { _myAccount } from 'src/_mock';
+
 import { AccountPopoverMenu } from './account-popover-menu';
 
 // ----------------------------------------------------------------------

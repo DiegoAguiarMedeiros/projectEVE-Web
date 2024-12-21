@@ -1,12 +1,8 @@
 import type { CardProps } from '@mui/material/Card';
 
 import Card from '@mui/material/Card';
-import Timeline from '@mui/lab/Timeline';
 import CardHeader from '@mui/material/CardHeader';
-import { timelineItemClasses } from '@mui/lab/TimelineItem';
-
 import { Box, Slider, Typography } from '@mui/material';
-import { useState } from 'react';
 
 // ----------------------------------------------------------------------
 

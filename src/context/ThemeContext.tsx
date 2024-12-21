@@ -1,7 +1,10 @@
-import React, { createContext, useContext } from 'react';
+import React, { useContext, createContext } from 'react';
+
 import { CssBaseline, ThemeProvider } from '@mui/material';
-import useThemeMode from '../hooks/use-theme-mode';
+
 import { createCustomTheme } from 'src/theme/create-theme';
+
+import useThemeMode from '../hooks/use-theme-mode';
 
 type ThemeContextProps = {
     mode: 'light' | 'dark';

@@ -1,26 +1,29 @@
-import React, { useCallback, useRef, useState } from 'react';
-// Import Swiper React components
-import { Swiper, SwiperSlide } from 'swiper/react';
+import './style.css';
 
 // Import Swiper styles
 import 'swiper/css';
+import 'swiper/css/thumbs';
 import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
-import 'swiper/css/thumbs';
-
-import './style.css';
-
+// Import Swiper React components
+import { Swiper, SwiperSlide } from 'swiper/react';
+import React, { useState, useCallback } from 'react';
 // import required modules
-import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
-import { _envelopes, _users } from 'src/_mock';
-import { Card, Grid2, Table, TableBody, TableContainer, TablePagination, useTheme } from '@mui/material';
-import { AnalyticsWidgetSummary } from '../overview/analytics-widget-summary';
-import { applyFilter, emptyRows, getComparator } from './utils';
-import { UserProps, UserTableRow } from './user-table-row';
+import { Thumbs, FreeMode, Navigation } from 'swiper/modules';
+
+import { Card, Grid2, Table, useTheme, TableBody, TableContainer, TablePagination } from '@mui/material';
+
+import { _users, _envelopes } from 'src/_mock';
+
+import { TableNoData } from './table-no-data';
+import { UserTableRow } from './user-table-row';
 import { UserTableHead } from './user-table-head';
 import { TableEmptyRows } from './table-empty-rows';
-import { TableNoData } from './table-no-data';
 import { UserTableToolbar } from './user-table-toolbar';
+import { emptyRows, applyFilter, getComparator } from './utils';
+import { AnalyticsWidgetSummary } from '../overview/analytics-widget-summary';
+
+import type { UserProps} from './user-table-row';
 
 export default function SwiperEnvelop() {
     const theme = useTheme();

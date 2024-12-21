@@ -1,9 +1,10 @@
-import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
-import { OverridableComponent } from '@mui/material/OverridableComponent';
-import { SvgIconTypeMap } from '@mui/material';
+import type { SvgIconTypeMap } from '@mui/material';
+import type { OverridableComponent } from '@mui/material/OverridableComponent';
+
+import SavingsIcon from '@mui/icons-material/Savings';
 import CallMadeIcon from '@mui/icons-material/CallMade';
 import SouthEastIcon from '@mui/icons-material/SouthEast';
-import SavingsIcon from '@mui/icons-material/Savings';
+import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 
 import {

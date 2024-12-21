@@ -1,25 +1,21 @@
 import type { Theme, SxProps, Breakpoint } from '@mui/material/styles';
 
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import Box from '@mui/material/Box';
-import ListItem from '@mui/material/ListItem';
 import { useTheme } from '@mui/material/styles';
+import { Paper, MenuList } from '@mui/material';
 import ListItemButton from '@mui/material/ListItemButton';
 import Drawer, { drawerClasses } from '@mui/material/Drawer';
-import { Paper, MenuList, MenuItem, ListItemIcon, ListItemText, Typography, Divider } from '@mui/material';
-import ContentCut from '@mui/icons-material/ContentCut';
-import ContentCopy from '@mui/icons-material/ContentCopy';
-import ContentPaste from '@mui/icons-material/ContentPaste';
-import Cloud from '@mui/icons-material/Cloud';
 
 import { usePathname } from 'src/routes/hooks';
 import { RouterLink } from 'src/routes/components';
+
 import { varAlpha } from 'src/theme/styles';
 
 import { Logo } from 'src/components/logo';
 import { Scrollbar } from 'src/components/scrollbar';
-import { Iconify } from 'src/components/iconify';
+
 import { AccountPopoverMenu } from '../components/account-popover-menu';
 
 // ----------------------------------------------------------------------

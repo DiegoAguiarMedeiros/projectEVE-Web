@@ -4,10 +4,6 @@ import { Router } from 'src/routes/sections';
 
 import { useScrollToTop } from 'src/hooks/use-scroll-to-top';
 
-import { ThemeCustomProvider } from 'src/theme/theme-provider';
-
-import { Iconify } from 'src/components/iconify';
-import { useState } from 'react';
 import useThemeMode from './hooks/use-theme-mode';
 import { ThemeProviderWrapper } from './context/ThemeContext';
 
