@@ -11,7 +11,7 @@ import { SimpleLayout } from 'src/layouts/simple';
 
 export function NotFoundView() {
   return (
-    <SimpleLayout content={{ compact: true }}>
+    <SimpleLayout>
       <Container>
         <Typography variant="h3" sx={{ mb: 2 }}>
           Sorry, page not found!

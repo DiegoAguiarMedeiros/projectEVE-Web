@@ -9,7 +9,7 @@ import { useTheme } from '@mui/material/styles';
 import { _langs, _notifications } from 'src/_mock';
 
 import { Iconify } from 'src/components/iconify';
-import ThemeSwitch from 'src/components/themeSwitch/themeSwitch';
+import { ThemeSwitch } from 'src/components/themeSwitch/themeSwitch';
 
 import { Main } from './main';
 import { layoutClasses } from '../classes';

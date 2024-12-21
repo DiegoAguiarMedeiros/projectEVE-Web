@@ -1,4 +1,4 @@
-import React, { useContext, createContext } from 'react';
+import React, { useContext, createContext, useMemo } from 'react';
 
 import { CssBaseline, ThemeProvider } from '@mui/material';
 
@@ -19,8 +19,11 @@ export const ThemeProviderWrapper: React.FC<{ children: React.ReactNode }> = ({ 
   // Atualiza o tema dinamicamente
   const theme = createCustomTheme({ mode });
 
+  // Memoiza o valor do contexto
+  const contextValue = useMemo(() => ({ mode, toggleTheme }), [mode, toggleTheme]);
+
   return (
-    <ThemeContext.Provider value={{ mode, toggleTheme }}>
+    <ThemeContext.Provider value={contextValue}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         {children}

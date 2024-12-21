@@ -126,78 +126,43 @@ export function NavContent({ data, slots, sx }: NavContentProps) {
           <MenuList>
             {data.map((item, index) => {
               const isActived = item.path === pathname;
-              const isHovered = hoveredItem === item.path;
 
               return (
-                <>
-                  <ListItemButton
-                    key={`ListItemButton${index}`}
-                    disableGutters
-                    component={RouterLink}
-                    href={item.path}
-                    onMouseEnter={() => setHoveredItem(item.path)}
-                    sx={{
-                      pl: 2,
-                      py: 1,
-                      gap: 2,
-                      pr: 1.5,
-                      borderRadius: 0.75,
-                      typography: 'body2',
-                      fontWeight: 'fontWeightMedium',
-                      color: 'var(--layout-nav-item-color)',
-                      minHeight: 'var(--layout-nav-item-height)',
-                      ...(isActived && {
-                        fontWeight: 'fontWeightSemiBold',
-                        bgcolor: 'var(--layout-nav-item-active-bg)',
-                        color: 'var(--layout-nav-item-active-color)',
-                        '&:hover': {
-                          bgcolor: 'var(--layout-nav-item-hover-bg)',
-                        },
-                      }),
-                    }}
-                  >
-                    <Box component="span" sx={{ width: 24, height: 24 }}>
-                      {item.icon}
-                    </Box>
-                    <Box component="span" flexGrow={1}>
-                      {item.title}
-                    </Box>
+                <ListItemButton
+                  key={`ListItemButton${index}`}
+                  disableGutters
+                  component={RouterLink}
+                  href={item.path}
+                  onMouseEnter={() => setHoveredItem(item.path)}
+                  sx={{
+                    pl: 2,
+                    py: 1,
+                    gap: 2,
+                    pr: 1.5,
+                    borderRadius: 0.75,
+                    typography: 'body2',
+                    fontWeight: 'fontWeightMedium',
+                    color: 'var(--layout-nav-item-color)',
+                    minHeight: 'var(--layout-nav-item-height)',
+                    ...(isActived && {
+                      fontWeight: 'fontWeightSemiBold',
+                      bgcolor: 'var(--layout-nav-item-active-bg)',
+                      color: 'var(--layout-nav-item-active-color)',
+                      '&:hover': {
+                        bgcolor: 'var(--layout-nav-item-hover-bg)',
+                      },
+                    }),
+                  }}
+                >
+                  <Box component="span" sx={{ width: 24, height: 24 }}>
+                    {item.icon}
+                  </Box>
+                  <Box component="span" flexGrow={1}>
+                    {item.title}
+                  </Box>
 
-                    {item.info && item.info}
-                  </ListItemButton>
-
-                  <>
-                    {isHovered && item.subItems && (
-                      <Box
-                        key={`Box${index}`}
-                        sx={{ pl: 4, display: 'flex', flexDirection: 'column' }}
-                        onMouseLeave={() => setHoveredItem(null)}
-                      >
-                        {item.subItems.map((subItem) => (
-                          <ListItemButton
-                            key={subItem.path}
-                            disableGutters
-                            component={RouterLink}
-                            href={subItem.path}
-                            sx={{
-                              pl: 2,
-                              py: 1,
-                              typography: 'body2',
-                              fontWeight: 'fontWeightRegular',
-                              color: 'var(--layout-nav-item-color)',
-                              minHeight: 'var(--layout-nav-item-height)',
-                              '&:hover': {
-                                bgcolor: 'var(--layout-nav-item-hover-bg)',
-                              },
-                            }}
-                          >
-                            {subItem.title}
-                          </ListItemButton>
-                        ))}
-                      </Box>
-                    )}
-                  </>
-                </>
+                  {item.info && item.info}
+                </ListItemButton>
               );
             })}
           </MenuList>

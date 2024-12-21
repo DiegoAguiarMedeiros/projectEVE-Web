@@ -12,10 +12,12 @@ declare module '@mui/material/styles/createPalette' {
   }
   interface TypeText {
     disabledChannel: string;
+    primaryChannel: string;
   }
   interface TypeBackground {
     neutral: string;
     neutralChannel: string;
+    defaultChannel: string;
   }
   interface SimplePaletteColorOptions {
     lighter: string;
@@ -28,6 +30,8 @@ declare module '@mui/material/styles/createPalette' {
     darker: string;
     lighterChannel: string;
     darkerChannel: string;
+    main: string;
+    mainChannel: string;
   }
 }
 

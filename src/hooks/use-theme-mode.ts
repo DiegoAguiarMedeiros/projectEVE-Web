@@ -5,7 +5,6 @@ type ThemeMode = 'light' | 'dark';
 const useThemeMode = () => {
   // Estado inicial para o tema
   const [mode, setMode] = useState<ThemeMode>('light');
-  console.log('mode', mode);
   // Alternar entre os temas claro e escuro
   const toggleTheme = useCallback(() => {
     setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));

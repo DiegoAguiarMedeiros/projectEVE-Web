@@ -39,7 +39,7 @@ export function OverviewAnalyticsView() {
           sx={{ width: '100%' }}
         >
           {_inout.map((envelope, index) => (
-            <Grid2 sx={{ padding: 0, width: '22%', margin: 0 }}>
+            <Grid2 key={`_inout${index}`} sx={{ padding: 0, width: '22%', margin: 0 }}>
               <AnalyticsWidgetSummary
                 title={envelope.title}
                 percent={envelope.percent}
