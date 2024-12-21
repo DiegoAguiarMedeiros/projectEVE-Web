@@ -21,6 +21,7 @@ import { HeaderSection } from '../core/header-section';
 import { AccountPopover } from '../components/account-popover';
 import { LanguagePopover } from '../components/language-popover';
 import { NotificationsPopover } from '../components/notifications-popover';
+import ThemeSwitch from 'src/components/themeSwitch/themeSwitch';
 
 // ----------------------------------------------------------------------
 
@@ -75,6 +76,7 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
             ),
             rightArea: (
               <Box gap={1} display="flex" alignItems="center">
+                <ThemeSwitch />
                 <LanguagePopover data={_langs} />
                 <NotificationsPopover data={_notifications} />
                 <AccountPopover

@@ -62,7 +62,6 @@ export default function SwiperEnvelop() {
                                 percent={envelope.percent}
                                 total={envelope.total}
                                 icon={<envelope.icon />}
-                                chart={envelope.chart}
                                 color={envelope.color}
                             />
                         </Grid2>

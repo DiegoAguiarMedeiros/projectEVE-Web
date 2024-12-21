@@ -136,8 +136,48 @@ export const lightPalette = {
   action: action.light,
 };
 
-// ----------------------------------------------------------------------
-
-export const colorSchemes: Partial<Record<'light', ColorSystemOptions>> = {
-  light: { palette: lightPalette },
+// Text (Dark Theme)
+export const textDark = {
+  dark: createPaletteChannel({
+    primary: grey[200],
+    secondary: grey[400],
+    disabled: grey[600],
+  }),
 };
+
+// Background (Dark Theme)
+export const backgroundDark = {
+  dark: createPaletteChannel({
+    paper: grey[800],
+    default: grey[900],
+    neutral: grey[700],
+  }),
+};
+
+// Action (Dark Theme)
+export const actionDark = {
+  ...baseAction,
+  active: grey[300],
+  hover: varAlpha(grey['500Channel'], 0.08),
+  selected: varAlpha(grey['500Channel'], 0.16),
+  focus: varAlpha(grey['500Channel'], 0.24),
+  disabled: varAlpha(grey['500Channel'], 0.8),
+  disabledBackground: varAlpha(grey['500Channel'], 0.24),
+  hoverOpacity: 0.08,
+  disabledOpacity: 0.48,
+};
+
+// Dark Palette
+export const darkPalette = {
+  ...basePalette,
+  text: textDark.dark,
+  background: backgroundDark.dark,
+  action: actionDark,
+};
+
+// Add Dark Theme to Color Schemes
+export const colorSchemes: Partial<Record<'light' | 'dark', ColorSystemOptions>> = {
+  light: { palette: lightPalette },
+  dark: { palette: darkPalette },
+};
+

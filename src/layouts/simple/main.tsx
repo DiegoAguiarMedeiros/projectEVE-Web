@@ -4,11 +4,34 @@ import type { Breakpoint } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
 
-import { layoutClasses } from '../classes';
+import { layoutClasses } from 'src/layouts/classes';
 
 // ----------------------------------------------------------------------
 
-export function Main({ children, sx, ...other }: BoxProps) {
+type MainProps = BoxProps & {
+  layoutQuery: Breakpoint;
+};
+
+export function Main({ sx, children, layoutQuery, ...other }: MainProps) {
+  const theme = useTheme();
+
+  const renderContent = (
+    <Box
+      sx={{
+        py: 5,
+        px: 3,
+        width: 1,
+        borderRadius: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        bgcolor: 'background.default',
+        maxWidth: 'var(--layout-simple-content-width)',
+      }}
+    >
+      {children}
+    </Box>
+  );
+
   return (
     <Box
       component="main"
@@ -16,38 +39,9 @@ export function Main({ children, sx, ...other }: BoxProps) {
       sx={{
         display: 'flex',
         flex: '1 1 auto',
-        flexDirection: 'column',
-        ...sx,
-      }}
-      {...other}
-    >
-      {children}
-    </Box>
-  );
-}
-
-// ----------------------------------------------------------------------
-
-export function CompactContent({
-  sx,
-  layoutQuery,
-  children,
-  ...other
-}: BoxProps & { layoutQuery: Breakpoint }) {
-  const theme = useTheme();
-
-  return (
-    <Box
-      className={layoutClasses.content}
-      sx={{
-        width: 1,
-        mx: 'auto',
-        display: 'flex',
-        flex: '1 1 auto',
-        textAlign: 'center',
+        alignItems: 'center',
         flexDirection: 'column',
         p: theme.spacing(3, 2, 10, 2),
-        maxWidth: 'var(--layout-simple-content-compact-width)',
         [theme.breakpoints.up(layoutQuery)]: {
           justifyContent: 'center',
           p: theme.spacing(10, 0, 10, 0),
@@ -56,7 +50,7 @@ export function CompactContent({
       }}
       {...other}
     >
-      {children}
+      {renderContent}
     </Box>
   );
 }

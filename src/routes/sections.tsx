@@ -6,6 +6,7 @@ import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgr
 
 import { varAlpha } from 'src/theme/styles';
 import { AuthLayout } from 'src/layouts/auth';
+import { SimpleLayout } from 'src/layouts/simple';
 import { DashboardLayout } from 'src/layouts/dashboard';
 
 // ----------------------------------------------------------------------
@@ -16,6 +17,7 @@ export const EnvelopePage = lazy(() => import('src/pages/envelope'));
 export const SignInPage = lazy(() => import('src/pages/sign-in'));
 export const ProductsPage = lazy(() => import('src/pages/products'));
 export const SettingsPage = lazy(() => import('src/pages/settings'));
+export const CompleteRegistration = lazy(() => import('src/pages/completeRegistration'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 
 // ----------------------------------------------------------------------
@@ -58,6 +60,15 @@ export function Router() {
         </AuthLayout>
       ),
     },
+    {
+      path: 'complete-registration',
+      element: (
+        <SimpleLayout>
+          <CompleteRegistration />
+        </SimpleLayout>
+      ),
+    },
+
     {
       path: '404',
       element: <Page404 />,

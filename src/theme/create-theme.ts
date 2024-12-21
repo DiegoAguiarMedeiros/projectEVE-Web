@@ -3,12 +3,21 @@ import type { Theme } from '@mui/material/styles';
 import { createTheme } from '@mui/material/styles';
 
 import { shadows, typography, components, colorSchemes, customShadows } from './core';
+import { useThemeContext } from 'src/context/ThemeContext';
+import { type } from 'os';
+
 
 // ----------------------------------------------------------------------
+type CreateCustomThemeProps = {
+  mode: 'light' | 'dark';
+}
 
-export function createCustomTheme(): Theme {
+export function createCustomTheme({ mode }: CreateCustomThemeProps): Theme {
+
+  const palette = mode == 'light' ? colorSchemes.light?.palette : colorSchemes.dark?.palette;
+
   const initialTheme = {
-    colorSchemes,
+    palette,
     shadows: shadows(),
     customShadows: customShadows(),
     shape: { borderRadius: 8 },
@@ -18,6 +27,7 @@ export function createCustomTheme(): Theme {
     shouldSkipGeneratingVar,
   };
 
+  console.log("initialTheme", initialTheme)
   const theme = createTheme(initialTheme);
 
   return theme;

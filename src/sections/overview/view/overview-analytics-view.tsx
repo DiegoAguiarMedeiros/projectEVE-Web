@@ -1,7 +1,7 @@
 import { useCallback, useRef } from 'react';
 import Grid2 from '@mui/material/Grid2';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
-import { IconButton } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 
 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -10,7 +10,7 @@ import { Navigation, Autoplay, EffectFade } from 'swiper/modules';
 import 'swiper/css'; // Importando o CSS padrão
 import 'swiper/css/navigation'; // Para navegação (se necessário)
 import 'swiper/css/pagination'; // Para paginação (se necessário)
-import { _tasks, _posts, _timeline, _envelopes } from 'src/_mock';
+import { _tasks, _posts, _timeline, _envelopes, _inout } from 'src/_mock';
 import { DashboardContent } from 'src/layouts/dashboard';
 
 import { AnalyticsNews } from '../analytics-news';
@@ -42,65 +42,19 @@ export function OverviewAnalyticsView() {
   return (
     <DashboardContent maxWidth="xl">
       <Grid2 container spacing={3}>
-        <Swiper
-          style={{ padding: '0 25px', margin: '0 -35px' }}
-          ref={sliderRef}
-          spaceBetween={10}  // Espaço entre os slides
-          slidesPerView={1}  // Quantos slides por vez
-          modules={[Autoplay, EffectFade]} // Incluindo o módulo Autoplay
-          loop // Habilitando o loop
-          breakpoints={{
-            600: { slidesPerView: 2 },  // Para telas pequenas
-            900: { slidesPerView: 3 },  // Para telas médias
-            1200: { slidesPerView: 5 }, // Para telas grandes
-          }}
-          autoplay={{
-            delay: 5000, // Tempo entre os slides no modo automático
-            disableOnInteraction: false,
-          }}
-          onAutoplayStart={(swiper) => {
-            swiper.params.speed = 2000; // Velocidade ao trocar no autoplay (2 segundos)
-          }}
-          onAutoplayStop={(swiper) => {
-            swiper.params.speed = 500; // Velocidade manual ao interagir (0.5 segundo)
-          }}
-        >
-          {_envelopes.map((envelope, index) => (
-            <SwiperSlide key={index}>
-              <Grid2 sx={{ padding: 2, width: '100%' }}>
-                <AnalyticsWidgetSummary
-                  title={envelope.title}
-                  percent={envelope.percent}
-                  total={envelope.total}
-                  icon={<envelope.icon />}
-                  chart={envelope.chart}
-                  color={envelope.color}
-                />
-              </Grid2>
-            </SwiperSlide>
+        <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ width: '100%' }}>
+          {_inout.map((envelope, index) => (
+            <Grid2 sx={{ padding: 0, width: '22%', margin: 0 }}>
+              <AnalyticsWidgetSummary
+                title={envelope.title}
+                percent={envelope.percent}
+                total={envelope.total}
+                icon={<envelope.icon />}
+                color={envelope.color}
+              />
+            </Grid2>
           ))}
-          <div className="prev-arrow"
-            onClick={handlePrev}
-            style={{
-              cursor: 'pointer',
-            }}
-          >
-            <IconButton sx={{ position: 'absolute', zIndex: 999, top: '50%', left: '0', transform: 'translateY(-50%)' }}>
-              <ChevronLeft />
-            </IconButton>
-          </div>
-          <div className="next-arrow"
-            onClick={handleNext}
-            style={{
-              cursor: 'pointer',
-            }}
-          >
-            <IconButton sx={{ position: 'absolute', zIndex: 999, top: '50%', right: '0', transform: 'translateY(-50%)' }}>
-              <ChevronRight />
-            </IconButton>
-          </div>
-        </Swiper >
-
+        </Box>
         {/* <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
           <AnalyticsWidgetSummary
             title="Weekly sales"
@@ -162,8 +116,9 @@ export function OverviewAnalyticsView() {
             chart={{
               categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
               series: [
-                { name: 'Entrada', data: [43, 33, 22, 37, 67, 68, 37, 24, 55] },
-                { name: 'Saída', data: [51, 70, 47, 67, 40, 37, 24, 70, 24] },
+                { name: 'Entradas', data: [43, 33, 22, 37, 67, 68, 37, 24, 55] },
+                { name: 'Metas', data: [20, 10, 17, 27, 30, 7, 4, 17, 24] },
+                { name: 'Saídas', data: [51, 70, 47, 67, 40, 37, 24, 70, 24] },
                 { name: 'Saldo', data: [20, 10, 17, 27, 30, 7, 4, 17, 24] },
               ],
             }}

@@ -5,11 +5,13 @@ import Alert from '@mui/material/Alert';
 
 import { RouterLink } from 'src/routes/components';
 
+import { stylesMode } from 'src/theme/styles';
+
 import { Logo } from 'src/components/logo';
 
-import { Main, CompactContent } from './main';
-import { LayoutSection } from '../core/layout-section';
+import { Main } from './main';
 import { HeaderSection } from '../core/header-section';
+import { LayoutSection } from '../core/layout-section';
 
 // ----------------------------------------------------------------------
 
@@ -19,12 +21,9 @@ export type SimpleLayoutProps = {
   header?: {
     sx?: SxProps<Theme>;
   };
-  content?: {
-    compact?: boolean;
-  };
 };
 
-export function SimpleLayout({ sx, children, header, content }: SimpleLayoutProps) {
+export function SimpleLayout({ sx, children, header }: SimpleLayoutProps) {
   const layoutQuery: Breakpoint = 'md';
 
   return (
@@ -35,8 +34,15 @@ export function SimpleLayout({ sx, children, header, content }: SimpleLayoutProp
       headerSection={
         <HeaderSection
           layoutQuery={layoutQuery}
-          slotProps={{ container: { maxWidth: false } }}
-          sx={header?.sx}
+          slotProps={{
+            container: { maxWidth: false },
+            toolbar: { sx: { bgcolor: 'transparent', backdropFilter: 'unset' } },
+          }}
+          sx={{
+            position: { [layoutQuery]: 'fixed' },
+
+            ...header?.sx,
+          }}
           slots={{
             topArea: (
               <Alert severity="info" sx={{ display: 'none', borderRadius: 0 }}>
@@ -46,8 +52,8 @@ export function SimpleLayout({ sx, children, header, content }: SimpleLayoutProp
             leftArea: <Logo />,
             rightArea: (
               <Link
-                href="#"
                 component={RouterLink}
+                href="#"
                 color="inherit"
                 sx={{ typography: 'subtitle2' }}
               >
@@ -64,18 +70,25 @@ export function SimpleLayout({ sx, children, header, content }: SimpleLayoutProp
       /** **************************************
        * Style
        *************************************** */
-      cssVars={{
-        '--layout-simple-content-compact-width': '448px',
+      cssVars={{ '--layout-simple-content-width': '820px' }}
+      sx={{
+        '&::before': {
+          width: 1,
+          height: 1,
+          zIndex: -1,
+          content: "''",
+          opacity: 0.24,
+          position: 'fixed',
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center center',
+          backgroundImage: `url(/assets/background/overlay.jpg)`,
+          [stylesMode.dark]: { opacity: 0.08 },
+        },
+        ...sx,
       }}
-      sx={sx}
     >
-      <Main>
-        {content?.compact ? (
-          <CompactContent layoutQuery={layoutQuery}>{children}</CompactContent>
-        ) : (
-          children
-        )}
-      </Main>
+      <Main layoutQuery={layoutQuery}>{children}</Main>
     </LayoutSection>
   );
 }

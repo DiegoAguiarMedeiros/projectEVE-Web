@@ -58,7 +58,7 @@ export function NavDesktop({
         display: 'none',
         position: 'fixed',
         flexDirection: 'column',
-        bgcolor: 'var(--layout-nav-bg)',
+        bgcolor: theme.palette.background.paper,
         zIndex: 'var(--layout-nav-zIndex)',
         width: 'var(--layout-nav-vertical-width)',
         borderRight: `1px solid var(--layout-nav-border-color, ${varAlpha(theme.palette.grey['500Channel'], 0.12)})`,
@@ -83,7 +83,7 @@ export function NavMobile({
   onClose,
 }: NavContentProps & { open: boolean; onClose: () => void }) {
   const pathname = usePathname();
-
+  const theme = useTheme();
   useEffect(() => {
     if (open) {
       onClose();
@@ -100,7 +100,7 @@ export function NavMobile({
           pt: 2.5,
           px: 2.5,
           overflow: 'unset',
-          bgcolor: 'var(--layout-nav-bg)',
+          bgcolor: theme.palette.background.paper,
           width: 'var(--layout-nav-mobile-width)',
           ...sx,
         },
@@ -115,8 +115,8 @@ export function NavMobile({
 
 export function NavContent({ data, slots, sx }: NavContentProps) {
   const pathname = usePathname();
+  const theme = useTheme();
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
-
   return (
     <>
       <Logo />
@@ -124,7 +124,7 @@ export function NavContent({ data, slots, sx }: NavContentProps) {
       {slots?.topArea}
 
       <Scrollbar fillContent>
-        <Paper sx={{ width: 320, maxWidth: '100%' }}>
+        <Paper sx={{ width: 320, maxWidth: '100%', backgroundColor: theme.palette.background.paper, }}>
           <MenuList>
             {data.map((item, index) => {
               const isActived = item.path === pathname;

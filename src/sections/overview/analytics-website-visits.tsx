@@ -28,6 +28,7 @@ export function AnalyticsWebsiteVisits({ title, subheader, chart, ...other }: Pr
 
   const chartColors = chart.colors ?? [
     theme.palette.primary.main,
+    theme.palette.info.main,
     theme.palette.error.main,
     theme.palette.success.main,
   ];

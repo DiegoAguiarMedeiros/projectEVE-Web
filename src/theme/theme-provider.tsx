@@ -5,6 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 import { createCustomTheme } from './create-theme';
 
+
 // ----------------------------------------------------------------------
 
 type Props = {
@@ -13,7 +14,6 @@ type Props = {
 
 export function ThemeCustomProvider({ children }: Props) {
   const theme = createCustomTheme();
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />

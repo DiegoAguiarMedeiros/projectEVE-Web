@@ -1,6 +1,10 @@
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 import { SvgIconTypeMap } from '@mui/material';
+import CallMadeIcon from '@mui/icons-material/CallMade';
+import SouthEastIcon from '@mui/icons-material/SouthEast';
+import SavingsIcon from '@mui/icons-material/Savings';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 
 import {
   _id,
@@ -222,11 +226,6 @@ export const _notifications = [
     isUnRead: false,
   },
 ];
-interface ChartData {
-  categories: string[];
-  series: number[];
-}
-
 interface MockDataItem {
   title: string;
   icon: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
@@ -234,10 +233,42 @@ interface MockDataItem {
   };
   percent: number;
   total: number;
-  chart: ChartData;
   color: "primary" | "secondary" | "info" | "warning" | "success" | "error"
 }
 
+
+export const _inout: MockDataItem[] = [
+
+  {
+    title: 'Entradas',
+    icon: CallMadeIcon,
+    color: "primary",
+    percent: 42.3,
+    total: 3200,
+  },
+  {
+    title: 'Metas',
+    icon: SavingsIcon,
+    color: "info",
+    percent: 90.0,
+    total: 4500,
+  },
+  {
+    title: 'Saídas',
+    icon: SouthEastIcon,
+    color: "error",
+    percent: 69.5,
+    total: 5000,
+  },
+  {
+    title: 'Saldo',
+    icon: AttachMoneyIcon,
+    color: "success",
+    percent: 69.5,
+    total: 5000,
+  },
+
+]
 export const _envelopes: MockDataItem[] = [
   {
     title: 'Contas Fixas',
@@ -245,10 +276,6 @@ export const _envelopes: MockDataItem[] = [
     color: "primary",
     percent: 42.3,
     total: 3200,
-    chart: {
-      categories: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'],
-      series: [0, 0, 0, 0, 0, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 0, 0, 0, 0],
-    },
   },
   {
     title: 'Alimentação',
@@ -256,10 +283,6 @@ export const _envelopes: MockDataItem[] = [
     color: "secondary",
     percent: 69.5,
     total: 5000,
-    chart: {
-      categories: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'],
-      series: [0, 0, 0, 0, 0, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 0, 0, 0, 0],
-    },
   },
   {
     title: 'Lazer',
@@ -267,10 +290,6 @@ export const _envelopes: MockDataItem[] = [
     color: "info",
     percent: 90.0,
     total: 4500,
-    chart: {
-      categories: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'],
-      series: [0, 0, 0, 0, 0, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 0, 0, 0, 2],
-    },
   },
   {
     title: 'Transporte',
@@ -278,10 +297,6 @@ export const _envelopes: MockDataItem[] = [
     color: "warning",
     percent: 30.0,
     total: 1500,
-    chart: {
-      categories: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'],
-      series: [0, 0, 0, 0, 0, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 0, 0, 0, 0],
-    },
   },
   {
     title: 'Saúde',
@@ -289,10 +304,6 @@ export const _envelopes: MockDataItem[] = [
     color: "success",
     percent: 52.0,
     total: 4000,
-    chart: {
-      categories: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'],
-      series: [0, 0, 0, 0, 0, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 0, 0, 0, 0],
-    },
   },
   {
     title: 'Bem Estar',
@@ -300,9 +311,5 @@ export const _envelopes: MockDataItem[] = [
     color: "error",
     percent: 77.5,
     total: 3500,
-    chart: {
-      categories: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'],
-      series: [0, 0, 0, 0, 0, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 0, 0, 0, 0],
-    },
   },
 ];
