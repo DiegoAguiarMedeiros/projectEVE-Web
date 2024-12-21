@@ -7,13 +7,13 @@ import { SettingsView } from 'src/sections/settings/view';
 // ----------------------------------------------------------------------
 
 export default function Page() {
-    return (
-        <>
-            <Helmet>
-                <title> {`Configurações - ${CONFIG.appName}`}</title>
-            </Helmet>
+  return (
+    <>
+      <Helmet>
+        <title> {`Configurações - ${CONFIG.appName}`}</title>
+      </Helmet>
 
-            <SettingsView />
-        </>
-    );
+      <SettingsView />
+    </>
+  );
 }

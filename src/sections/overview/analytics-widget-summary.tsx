@@ -65,10 +65,8 @@ export function AnalyticsWidgetSummary({
         }}
       >
         <Box sx={{ flexGrow: 1, minWidth: 112 }}>
-
           <Box sx={{ typography: 'h5', textAlign: 'left' }}>R$ {fShortenNumber(total)}</Box>
         </Box>
-
       </Box>
 
       <SvgColor

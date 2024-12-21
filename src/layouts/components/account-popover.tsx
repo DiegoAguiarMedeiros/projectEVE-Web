@@ -39,7 +39,6 @@ export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps)
     setOpenPopover(null);
   }, []);
 
-
   return (
     <>
       <IconButton

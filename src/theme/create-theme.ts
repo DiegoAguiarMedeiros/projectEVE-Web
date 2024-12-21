@@ -4,14 +4,12 @@ import { createTheme } from '@mui/material/styles';
 
 import { shadows, typography, components, colorSchemes, customShadows } from './core';
 
-
 // ----------------------------------------------------------------------
 type CreateCustomThemeProps = {
   mode: 'light' | 'dark';
-}
+};
 
 export function createCustomTheme({ mode }: CreateCustomThemeProps): Theme {
-
   const palette = mode == 'light' ? colorSchemes.light?.palette : colorSchemes.dark?.palette;
 
   const initialTheme = {
@@ -25,7 +23,7 @@ export function createCustomTheme({ mode }: CreateCustomThemeProps): Theme {
     shouldSkipGeneratingVar,
   };
 
-  console.log("initialTheme", initialTheme)
+  console.log('initialTheme', initialTheme);
   const theme = createTheme(initialTheme);
 
   return theme;

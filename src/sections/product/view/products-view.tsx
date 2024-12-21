@@ -132,13 +132,16 @@ export function ProductsView() {
 
       <Grid2 container spacing={3}>
         {_products.map((product) => (
-          <Grid2 key={product.id} sx={{
-            gridColumn: {
-              xs: 'span 12',
-              sm: 'span 6',
-              md: 'span 3',
-            },
-          }}>
+          <Grid2
+            key={product.id}
+            sx={{
+              gridColumn: {
+                xs: 'span 12',
+                sm: 'span 6',
+                md: 'span 3',
+              },
+            }}
+          >
             <ProductItem product={product} />
           </Grid2>
         ))}

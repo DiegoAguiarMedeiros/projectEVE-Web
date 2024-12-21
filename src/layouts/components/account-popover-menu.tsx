@@ -10,7 +10,6 @@ import MenuItem, { menuItemClasses } from '@mui/material/MenuItem';
 
 import { useRouter, usePathname } from 'src/routes/hooks';
 
-
 // ----------------------------------------------------------------------
 
 export type AccountPopoverMenuProps = IconButtonProps & {
@@ -23,7 +22,6 @@ export type AccountPopoverMenuProps = IconButtonProps & {
 };
 
 export function AccountPopoverMenu({ data = [], sx, ...other }: AccountPopoverMenuProps) {
-
   const router = useRouter();
   const pathname = usePathname();
   const handleClosePopover = useCallback(() => {

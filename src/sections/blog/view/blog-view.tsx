@@ -58,14 +58,16 @@ export function BlogView() {
           const latestPost = index === 1 || index === 2;
 
           return (
-            <Grid2 key={post.id}
+            <Grid2
+              key={post.id}
               sx={{
                 gridColumn: {
                   xs: 'span 12', // Sempre ocupa 12 colunas para xs
                   sm: latestPostLarge ? 'span 12' : 'span 6', // Condicional para sm
                   md: latestPostLarge ? 'span 6' : 'span 3', // Condicional para md
                 },
-              }}>
+              }}
+            >
               <PostItem post={post} latestPost={latestPost} latestPostLarge={latestPostLarge} />
             </Grid2>
           );

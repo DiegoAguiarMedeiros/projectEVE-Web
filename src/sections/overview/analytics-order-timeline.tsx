@@ -13,7 +13,7 @@ type Props = CardProps & {
     title: string;
     value: number;
     valueMax: number;
-    color: "primary" | "secondary" | "error" | "info" | "success" | "warning";
+    color: 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning';
   }[];
 };
 
@@ -25,7 +25,7 @@ export function AnalyticsOrderTimeline({ title, subheader, list, ...other }: Pro
     },
     {
       value: 500,
-      label: '100%'
+      label: '100%',
     },
   ];
 
@@ -63,7 +63,7 @@ export function AnalyticsOrderTimeline({ title, subheader, list, ...other }: Pro
                 '& .MuiSlider-track': {
                   // Mantenha a cor do track (faixa)
                   backgroundColor: `${item.color}.main`,
-                }
+                },
               }}
             />
           </Box>
@@ -72,4 +72,3 @@ export function AnalyticsOrderTimeline({ title, subheader, list, ...other }: Pro
     </Card>
   );
 }
-

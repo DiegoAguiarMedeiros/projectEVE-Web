@@ -4,14 +4,12 @@ import { DashboardContent } from 'src/layouts/dashboard';
 
 import SwiperEnvelop from '../swiperEvelop';
 
-
 // ----------------------------------------------------------------------
 
 export function EnvelopeView() {
   return (
     <DashboardContent>
       <Grid2 container spacing={3}>
-
         {/* {_envelopes.map(envelope => (
           <Grid2 size={{ xs: 12, sm: 6, md: 2 }}>
             <AnalyticsWidgetSummary
@@ -25,7 +23,6 @@ export function EnvelopeView() {
           </Grid2>
         ))} */}
 
-
         <SwiperEnvelop />
       </Grid2>
     </DashboardContent>
@@ -33,4 +30,3 @@ export function EnvelopeView() {
 }
 
 // ----------------------------------------------------------------------
-

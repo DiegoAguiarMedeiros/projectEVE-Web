@@ -1,4 +1,3 @@
-
 import EmailIcon from '@mui/icons-material/Email';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
@@ -25,5 +24,5 @@ export const navData = [
     title: 'Configurações',
     path: '/settings',
     icon: <SettingsApplicationsIcon />,
-  }
+  },
 ];

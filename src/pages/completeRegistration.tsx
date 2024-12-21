@@ -7,13 +7,13 @@ import { CompleteRegistrationView } from 'src/sections/completeRegistration';
 // ----------------------------------------------------------------------
 
 export default function Page() {
-    return (
-        <>
-            <Helmet>
-                <title> {`Completar cadastro - ${CONFIG.appName}`}</title>
-            </Helmet>
+  return (
+    <>
+      <Helmet>
+        <title> {`Completar cadastro - ${CONFIG.appName}`}</title>
+      </Helmet>
 
-            <CompleteRegistrationView />
-        </>
-    );
+      <CompleteRegistrationView />
+    </>
+  );
 }

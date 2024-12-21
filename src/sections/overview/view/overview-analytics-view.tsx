@@ -32,7 +32,12 @@ export function OverviewAnalyticsView() {
   return (
     <DashboardContent maxWidth="xl">
       <Grid2 container spacing={3}>
-        <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ width: '100%' }}>
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          sx={{ width: '100%' }}
+        >
           {_inout.map((envelope, index) => (
             <Grid2 sx={{ padding: 0, width: '22%', margin: 0 }}>
               <AnalyticsWidgetSummary
@@ -133,7 +138,6 @@ export function OverviewAnalyticsView() {
           <AnalyticsOrderTimeline title="Envelopes" list={_timeline} />
         </Grid2> */}
 
-
         {/* <Grid2 sx={{
           gridColumn: {
             xs: 'span 12',
@@ -214,6 +218,6 @@ export function OverviewAnalyticsView() {
           <AnalyticsTasks title="Tasks" list={_tasks} />
         </Grid2> */}
       </Grid2>
-    </DashboardContent >
+    </DashboardContent>
   );
 }

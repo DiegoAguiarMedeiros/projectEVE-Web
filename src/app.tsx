@@ -11,7 +11,7 @@ import { ThemeProviderWrapper } from './context/ThemeContext';
 
 export default function App() {
   const { mode } = useThemeMode();
-  console.log("mode", mode)
+  console.log('mode', mode);
   useScrollToTop();
   return (
     <ThemeProviderWrapper>

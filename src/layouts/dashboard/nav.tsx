@@ -26,7 +26,7 @@ export type NavContentProps = {
     title: string;
     icon: React.ReactNode;
     info?: React.ReactNode;
-    subItems?: { title: string, path: string }[],
+    subItems?: { title: string; path: string }[];
   }[];
   slots?: {
     topArea?: React.ReactNode;
@@ -120,7 +120,9 @@ export function NavContent({ data, slots, sx }: NavContentProps) {
       {slots?.topArea}
 
       <Scrollbar fillContent>
-        <Paper sx={{ width: 320, maxWidth: '100%', backgroundColor: theme.palette.background.paper, }}>
+        <Paper
+          sx={{ width: 320, maxWidth: '100%', backgroundColor: theme.palette.background.paper }}
+        >
           <MenuList>
             {data.map((item, index) => {
               const isActived = item.path === pathname;
@@ -161,14 +163,16 @@ export function NavContent({ data, slots, sx }: NavContentProps) {
                       {item.title}
                     </Box>
 
-
                     {item.info && item.info}
                   </ListItemButton>
 
                   <>
                     {isHovered && item.subItems && (
                       <Box
-                        key={`Box${index}`} sx={{ pl: 4, display: 'flex', flexDirection: 'column' }} onMouseLeave={() => setHoveredItem(null)}>
+                        key={`Box${index}`}
+                        sx={{ pl: 4, display: 'flex', flexDirection: 'column' }}
+                        onMouseLeave={() => setHoveredItem(null)}
+                      >
                         {item.subItems.map((subItem) => (
                           <ListItemButton
                             key={subItem.path}
@@ -194,9 +198,8 @@ export function NavContent({ data, slots, sx }: NavContentProps) {
                     )}
                   </>
                 </>
-              )
-            }
-            )}
+              );
+            })}
           </MenuList>
         </Paper>
       </Scrollbar>
@@ -204,7 +207,6 @@ export function NavContent({ data, slots, sx }: NavContentProps) {
       {slots?.bottomArea}
 
       <AccountPopoverMenu data={[]} />
-
     </>
   );
 }

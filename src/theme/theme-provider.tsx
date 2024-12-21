@@ -1,11 +1,10 @@
-import type { } from '@mui/lab/themeAugmentation';
-import type { } from '@mui/material/themeCssVarsAugmentation';
+import type {} from '@mui/lab/themeAugmentation';
+import type {} from '@mui/material/themeCssVarsAugmentation';
 
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 
 import { createCustomTheme } from './create-theme';
-
 
 // ----------------------------------------------------------------------
 
