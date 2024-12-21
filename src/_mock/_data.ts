@@ -239,7 +239,7 @@ interface MockDataItem {
 
 export const _inout: MockDataItem[] = [
   {
-    title: 'Entradas',
+    title: 'Receitas',
     icon: CallMadeIcon,
     color: 'primary',
     percent: 42.3,
@@ -253,7 +253,7 @@ export const _inout: MockDataItem[] = [
     total: 4500,
   },
   {
-    title: 'Saídas',
+    title: 'Despesas',
     icon: SouthEastIcon,
     color: 'error',
     percent: 69.5,
