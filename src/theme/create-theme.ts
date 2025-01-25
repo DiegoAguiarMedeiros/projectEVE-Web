@@ -24,8 +24,6 @@ export function createCustomTheme({ mode }: CreateCustomThemeProps): Theme {
   };
 
   const theme = createTheme(initialTheme);
-  console.log('theme', theme);
-
   return theme;
 }
 

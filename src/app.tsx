@@ -2,17 +2,16 @@ import 'src/global.css';
 
 import { Router } from 'src/routes/sections';
 
-import { useScrollToTop } from 'src/hooks/use-scroll-to-top';
+import { useScrollTop } from 'src/hooks/useScrollTop';
 
-import useThemeMode from './hooks/use-theme-mode';
+import useTheme from './hooks/useTheme';
 import { ThemeProviderWrapper } from './context/ThemeContext';
 
 // ----------------------------------------------------------------------
 
 export default function App() {
-  const { mode } = useThemeMode();
-  console.log('mode', mode);
-  useScrollToTop();
+  const { mode } = useTheme();
+  useScrollTop();
   return (
     <ThemeProviderWrapper>
       <Router />

@@ -12,7 +12,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { useRouter } from 'src/routes/hooks';
 
 import { Iconify } from 'src/components/iconify';
-
+import AuthService from '../../services/authService';
 // ----------------------------------------------------------------------
 
 export function SignInView() {
@@ -20,9 +20,31 @@ export function SignInView() {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSignIn = useCallback(() => {
-    router.push('/');
-  }, [router]);
+  const [email, setEmail] = useState('hello@gmail.com');
+  const [password, setPassword] = useState('@demo1234');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSignIn = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Chame o serviço de login com as credenciais do usuário
+      await AuthService.login(email, password);
+      const isAuthenticated = await AuthService.checkAuth();
+      if (isAuthenticated) {
+        // Redireciona para a página inicial após o login bem-sucedido
+        router.push('/');
+      } else {
+        setError('Credenciais inválidas');
+      }
+    } catch (err) {
+      setError(err?.response?.data?.message);
+    } finally {
+      setLoading(false);
+    }
+  }, [email, password, router]);
 
   const renderForm = (
     <Box display="flex" flexDirection="column" alignItems="flex-end">
@@ -30,9 +52,12 @@ export function SignInView() {
         fullWidth
         name="email"
         label="Email address"
-        defaultValue="hello@gmail.com"
-        InputLabelProps={{ shrink: true }}
+        defaultValue={email}
+        onChange={(e) => setEmail(e.target.value)}
         sx={{ mb: 3 }}
+        error={!!error} // Adiciona borda vermelha se houver erro
+        helperText={error ?? ''} // Exibe mensagem de erro específica
+     
       />
 
       <Link variant="body2" color="inherit" sx={{ mb: 1.5 }}>
@@ -43,17 +68,19 @@ export function SignInView() {
         fullWidth
         name="password"
         label="Password"
-        defaultValue="@demo1234"
-        InputLabelProps={{ shrink: true }}
+        defaultValue={password}
+        onChange={(e) => setPassword(e.target.value)}
         type={showPassword ? 'text' : 'password'}
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                <Iconify icon={showPassword ? 'solar:eye-bold' : 'solar:eye-closed-bold'} />
-              </IconButton>
-            </InputAdornment>
-          ),
+        slotProps={{
+          input: {
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                  <Iconify icon={showPassword ? 'solar:eye-bold' : 'solar:eye-closed-bold'} />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }
         }}
         sx={{ mb: 3 }}
       />
@@ -85,26 +112,6 @@ export function SignInView() {
 
       {renderForm}
 
-      <Divider sx={{ my: 3, '&::before, &::after': { borderTopStyle: 'dashed' } }}>
-        <Typography
-          variant="overline"
-          sx={{ color: 'text.secondary', fontWeight: 'fontWeightMedium' }}
-        >
-          OR
-        </Typography>
-      </Divider>
-
-      <Box gap={1} display="flex" justifyContent="center">
-        <IconButton color="inherit">
-          <Iconify icon="logos:google-icon" />
-        </IconButton>
-        <IconButton color="inherit">
-          <Iconify icon="eva:github-fill" />
-        </IconButton>
-        <IconButton color="inherit">
-          <Iconify icon="ri:twitter-x-fill" />
-        </IconButton>
-      </Box>
     </>
   );
 }

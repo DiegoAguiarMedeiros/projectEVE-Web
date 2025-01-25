@@ -1,8 +1,9 @@
+
 import { useState, useCallback } from 'react';
 
 type ThemeMode = 'light' | 'dark';
 
-const useThemeMode = () => {
+const useTheme = () => {
   // Estado inicial para o tema
   const [mode, setMode] = useState<ThemeMode>('light');
   // Alternar entre os temas claro e escuro
@@ -22,4 +23,4 @@ const useThemeMode = () => {
   };
 };
 
-export default useThemeMode;
+export default useTheme;

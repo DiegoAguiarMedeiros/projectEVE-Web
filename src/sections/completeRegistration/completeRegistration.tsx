@@ -8,13 +8,12 @@ import Stepper from '@mui/material/Stepper';
 import StepLabel from '@mui/material/StepLabel';
 import Typography from '@mui/material/Typography';
 import StepContent from '@mui/material/StepContent';
+import { IncomeTable } from './incomeTable';
 
 const steps = [
   {
     label: 'Sua Renda',
-    description: `For each ad campaign that you create, you can control how much
-              you're willing to spend on clicks and conversions, which networks
-              and geographical locations you want your ads to show on, and more.`,
+    description: <IncomeTable/>,
   },
   {
     label: 'Seus Investimentos',

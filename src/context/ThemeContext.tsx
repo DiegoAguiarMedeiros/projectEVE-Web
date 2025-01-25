@@ -4,7 +4,7 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 
 import { createCustomTheme } from 'src/theme/create-theme';
 
-import useThemeMode from '../hooks/use-theme-mode';
+import useTheme from '../hooks/useTheme';
 
 type ThemeContextProps = {
   mode: 'light' | 'dark';
@@ -14,7 +14,7 @@ type ThemeContextProps = {
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 
 export const ThemeProviderWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { mode, toggleTheme } = useThemeMode();
+  const { mode, toggleTheme } = useTheme();
 
   // Atualiza o tema dinamicamente
   const theme = createCustomTheme({ mode });

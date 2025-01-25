@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 
 import App from './app';
+import { AuthProvider } from './context/AuthProvider';
 
 // ----------------------------------------------------------------------
 
@@ -14,7 +15,9 @@ root.render(
     <HelmetProvider>
       <BrowserRouter>
         <Suspense>
-          <App />
+          <AuthProvider>
+            <App />
+          </AuthProvider>
         </Suspense>
       </BrowserRouter>
     </HelmetProvider>

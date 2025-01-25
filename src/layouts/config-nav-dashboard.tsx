@@ -16,13 +16,13 @@ export const navData = [
     icon: <DashboardIcon />,
   },
   {
-    title: 'Envelope',
-    path: '/envelope',
+    title: 'Envelopes',
+    path: '/envelopes',
     icon: <EmailIcon />,
   },
   {
     title: 'Configurações',
-    path: '/settings',
+    path: '/configuracoes',
     icon: <SettingsApplicationsIcon />,
   },
 ];
