@@ -90,6 +90,12 @@ export const _company = (index: number) =>
     'Mitchell, Volkman and Prosacco',
     'Streich Group',
   ][index];
+export const _amount = (index: number) =>
+  [
+    2500,
+    3000,
+    6000
+  ][index];
 
 export const _boolean = (index: number) =>
   [

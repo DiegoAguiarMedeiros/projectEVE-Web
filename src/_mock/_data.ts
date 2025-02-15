@@ -18,6 +18,7 @@ import {
   _postTitles,
   _description,
   _productNames,
+  _amount,
 } from './_mock';
 
 // ----------------------------------------------------------------------
@@ -50,6 +51,17 @@ export const _users = [...Array(24)].map((_, index) => ({
       'Front End Developer',
       'Full Stack Developer',
     ][index] || 'UI Designer',
+}));
+export const _incomes = [...Array(25)].map((_, index) => ({
+  id: _id(index),
+  description: _fullName(index),
+  amount: [
+    2500,
+    3000,
+    6000
+  ][index] || 6000,
+  payDay: 5,
+  
 }));
 
 // ----------------------------------------------------------------------

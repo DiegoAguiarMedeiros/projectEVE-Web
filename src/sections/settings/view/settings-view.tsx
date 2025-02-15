@@ -1,16 +1,21 @@
 import * as React from 'react';
-
+import {  useState } from 'react';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
+import { useQuery } from '@tanstack/react-query';
 
 import { DashboardContent } from 'src/layouts/dashboard';
+import { _incomes } from 'src/_mock';
+import IncomeService, { Incomes } from 'src/services/incomeService';
+import { IncomesTable } from '../incomes';
 
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
 }
+
 
 function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -34,8 +39,17 @@ function a11yProps(index: number) {
     'aria-controls': `simple-tabpanel-${index}`,
   };
 }
+
+
 export function SettingsView() {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
+
+  const { data: incomes } = useQuery({
+    queryKey: ['incomes'],
+    queryFn: () => IncomeService.getAllIncomes().then(r => r)
+  })
+
+
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -54,7 +68,7 @@ export function SettingsView() {
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
-          Configuração do salário
+            <IncomesTable incomes={incomes} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
           Configuração dos cartões
@@ -72,3 +86,5 @@ export function SettingsView() {
     </DashboardContent>
   );
 }
+
+

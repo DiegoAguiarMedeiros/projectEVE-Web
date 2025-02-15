@@ -1,20 +1,26 @@
-import React, { PropsWithChildren } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
-import AuthService from '../services/authService'; // Importa o AuthService para validar o usuário
-
-interface PrivateRouteProps {
-  redirectTo?: string;
-}
+import { useEffect, useState } from 'react';
+import { Navigate } from 'react-router-dom';
+import AuthService from '../services/authService'; // Importe o AuthService corretamente
 
 export const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
-  console.log('PrivateRoute Renderizado');
-  const isAuthenticated = AuthService.checkAuthSync();
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
-  if (!isAuthenticated) {
-    console.log('Usuário não autenticado, redirecionando...');
-    return <Navigate to="/login" replace />;
+  useEffect(() => {
+    const checkAuthentication = async () => {
+      const authStatus = await AuthService.checkAuth();
+      setIsAuthenticated(authStatus);
+    };
+    checkAuthentication();
+  }, []);
+
+  if (isAuthenticated === null) {
+    // Exibe um carregando ou placeholder enquanto verifica a autenticação
+    return <div>Carregando...</div>;
   }
 
-  console.log('Usuário autenticado, renderizando filhos...');
+  if (!isAuthenticated) {
+    return <Navigate to='/entrar' replace />;
+  }
+
   return <>{children}</>;
 };

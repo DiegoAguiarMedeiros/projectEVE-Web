@@ -6,18 +6,15 @@ interface User {
 }
 
 class AuthService {
-    private baseURL = 'http://192.168.70.6:3000/api';
+    private baseURL = 'http://localhost:3000/api';
 
     // Faz login e salva estado localmente
     async login(email: string, password: string): Promise<void> {
-        console.log("login")
         const response = await axios.post(
             `${this.baseURL}/auth/login`,
             { email, password },
-            { withCredentials: true }
+            { withCredentials: true}
         );
-        console.log("login response",response)
-        // Salva informações do usuário localmente
         localStorage.setItem('user', JSON.stringify(response.data));
     }
     
@@ -27,7 +24,7 @@ class AuthService {
             { name, email, password },
             { withCredentials: true }
         );
-        console.log("registration response",response)
+
         if (response.data === 'OK') {
             this.login(email, password)
             return true;

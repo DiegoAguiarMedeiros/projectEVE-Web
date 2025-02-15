@@ -31,7 +31,6 @@ export const Label = forwardRef<HTMLSpanElement, LabelProps>(
         ref={ref}
         component="span"
         className={labelClasses.root.concat(className ? ` ${className}` : '')}
-        ownerState={{ color, variant }}
         sx={{ ...(startIcon && { pl: 0.75 }), ...(endIcon && { pr: 0.75 }), ...sx }}
         {...other}
       >

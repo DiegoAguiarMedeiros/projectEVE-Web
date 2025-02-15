@@ -38,7 +38,7 @@ const renderFallback = (
 );
 
 export function Router() {
-  console.log("Router")
+
   return useRoutes([
     {
       element: (

@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom/client';
 import { Suspense, StrictMode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { HelmetProvider } from 'react-helmet-async';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import App from './app';
 import { AuthProvider } from './context/AuthProvider';
@@ -9,17 +9,19 @@ import { AuthProvider } from './context/AuthProvider';
 // ----------------------------------------------------------------------
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+const queryClient = new QueryClient();
+
 
 root.render(
   <StrictMode>
-    <HelmetProvider>
-      <BrowserRouter>
-        <Suspense>
-          <AuthProvider>
+    <BrowserRouter>
+      <Suspense>
+        <AuthProvider>
+          <QueryClientProvider client={queryClient}>
             <App />
-          </AuthProvider>
-        </Suspense>
-      </BrowserRouter>
-    </HelmetProvider>
+          </QueryClientProvider>
+        </AuthProvider>
+      </Suspense>
+    </BrowserRouter>
   </StrictMode>
 );

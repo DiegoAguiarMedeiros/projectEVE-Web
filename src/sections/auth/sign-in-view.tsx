@@ -20,8 +20,8 @@ export function SignInView() {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const [email, setEmail] = useState('hello@gmail.com');
-  const [password, setPassword] = useState('@demo1234');
+  const [email, setEmail] = useState('teste@teste.com');
+  const [password, setPassword] = useState('r1234567');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
