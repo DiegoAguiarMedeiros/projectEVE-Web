@@ -12,7 +12,10 @@ import MenuItem, { menuItemClasses } from '@mui/material/MenuItem';
 
 import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+
+import IncomeService from 'src/services/incomeService';
 // ----------------------------------------------------------------------
 
 export type IncomeProps = {
@@ -38,6 +41,20 @@ export function IncomesTableRow({ row, selected, onSelectRow }: IncomesTableRowP
   const handleClosePopover = useCallback(() => {
     setOpenPopover(null);
   }, []);
+
+  const deleteIncomeMutation = useMutation({
+    mutationFn: (id:string) => IncomeService.delete(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["incomes"] }); // Atualiza a lista após deletar
+    },
+  });
+  const handleDeleteIncome = useCallback(() => {
+    deleteIncomeMutation.mutate(row.id)
+    handleClosePopover()
+  }, [deleteIncomeMutation,handleClosePopover,row]);
+  
+  const queryClient = useQueryClient();
+
 
   return (
     <>
@@ -91,7 +108,7 @@ export function IncomesTableRow({ row, selected, onSelectRow }: IncomesTableRowP
             Edit
           </MenuItem>
 
-          <MenuItem onClick={handleClosePopover} sx={{ color: 'error.main' }}>
+          <MenuItem onClick={handleDeleteIncome} sx={{ color: 'error.main' }}>
             <Iconify icon="solar:trash-bin-trash-bold" />
             Delete
           </MenuItem>

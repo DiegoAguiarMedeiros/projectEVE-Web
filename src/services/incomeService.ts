@@ -35,6 +35,16 @@ class IncomeService {
         }
         return false;
     }
+    async delete(id:string): Promise<boolean> {
+        const response = await axios.delete(
+            `${this.baseURL}/${id}`,
+            { withCredentials: true }
+        );
+        if (response.data === 'OK') {
+            return true;
+        }
+        return false;
+    }
 
     // // Faz logout e limpa estado local
     // async logout(): Promise<void> {
