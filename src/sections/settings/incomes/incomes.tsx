@@ -64,7 +64,7 @@ export function IncomesTable({ incomes }: IncomesTableProps) {
             {incomes && incomes.length > 0 ? <TablePagination
                 component="div"
                 page={table.page}
-                count={[].length}
+                count={incomes.length}
                 rowsPerPage={table.rowsPerPage}
                 onPageChange={table.onChangePage}
                 rowsPerPageOptions={[5, 10, 25]}

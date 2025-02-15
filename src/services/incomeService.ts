@@ -35,6 +35,7 @@ class IncomeService {
         }
         return false;
     }
+    
     async delete(id:string): Promise<boolean> {
         const response = await axios.delete(
             `${this.baseURL}/${id}`,
