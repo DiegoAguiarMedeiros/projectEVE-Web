@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { Pagination } from 'src/types/Pagination';
 
 export interface Incomes {
-    id:string
+    id: string
     description: string;
     amount: string;
     paymentDay: string;
@@ -15,19 +16,25 @@ export interface IncomesPost {
 class IncomeService {
     private baseURL = 'http://localhost:3000/api/incomes';
 
-    async getAllIncomes(): Promise<Incomes[]> {
-        console.log("getAllIncomes")
+    async getAllIncomes({
+        page = 1,
+        pageSize = 10,
+    }: { page?: number; pageSize?: number }): Promise<Pagination<Incomes>> {
+        console.log("getAllIncomes", page, pageSize)
         const response = await axios.get(
             `${this.baseURL}/`,
-            { withCredentials: true }
+            {
+                params: { page: page + 1, pageSize },
+                withCredentials: true
+            }
         );
-        return response.data as Incomes[];
+        return response.data as Pagination<Incomes>;
     }
-    
-    async postIncomes(income:IncomesPost): Promise<boolean> {
+
+    async postIncomes(income: IncomesPost): Promise<boolean> {
         const response = await axios.post(
             `${this.baseURL}/`,
-            { description:income.description, amount:income.amount, paymentDay:income.paymentDay },
+            { description: income.description, amount: income.amount, paymentDay: income.paymentDay },
             { withCredentials: true }
         );
         if (response.data === 'OK') {
@@ -35,8 +42,20 @@ class IncomeService {
         }
         return false;
     }
-    
-    async delete(id:string): Promise<boolean> {
+
+    async patchIncomes(income: Incomes): Promise<boolean> {
+        const response = await axios.patch(
+            `${this.baseURL}/${income.id}`,
+            { description: income.description, amount: income.amount, paymentDay: income.paymentDay },
+            { withCredentials: true }
+        );
+        if (response.data === 'OK') {
+            return true;
+        }
+        return false;
+    }
+
+    async delete(id: string): Promise<boolean> {
         const response = await axios.delete(
             `${this.baseURL}/${id}`,
             { withCredentials: true }

@@ -7,7 +7,6 @@ import { useQuery } from '@tanstack/react-query';
 
 import { DashboardContent } from 'src/layouts/dashboard';
 import { _incomes } from 'src/_mock';
-import IncomeService, { Incomes } from 'src/services/incomeService';
 import { IncomesTable } from '../incomes';
 
 interface TabPanelProps {
@@ -44,10 +43,6 @@ function a11yProps(index: number) {
 export function SettingsView() {
   const [value, setValue] = useState(0);
 
-  const { data: incomes } = useQuery({
-    queryKey: ['incomes'],
-    queryFn: () => IncomeService.getAllIncomes().then(r => r)
-  })
 
 
 
@@ -68,7 +63,7 @@ export function SettingsView() {
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
-            <IncomesTable incomes={incomes} />
+            <IncomesTable />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
           Configuração dos cartões

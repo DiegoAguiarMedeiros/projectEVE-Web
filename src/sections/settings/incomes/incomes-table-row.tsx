@@ -9,13 +9,13 @@ import MenuList from '@mui/material/MenuList';
 import TableCell from '@mui/material/TableCell';
 import IconButton from '@mui/material/IconButton';
 import MenuItem, { menuItemClasses } from '@mui/material/MenuItem';
-
-import { Label } from 'src/components/label';
+import { useSnackbar } from 'notistack';
 import { Iconify } from 'src/components/iconify';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 
 import IncomeService from 'src/services/incomeService';
+import { FormIncome } from './form';
 // ----------------------------------------------------------------------
 
 export type IncomeProps = {
@@ -32,6 +32,7 @@ type IncomesTableRowProps = {
 };
 
 export function IncomesTableRow({ row, selected, onSelectRow }: IncomesTableRowProps) {
+  const { enqueueSnackbar } = useSnackbar();
   const [openPopover, setOpenPopover] = useState<HTMLButtonElement | null>(null);
 
   const handleOpenPopover = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
@@ -43,16 +44,17 @@ export function IncomesTableRow({ row, selected, onSelectRow }: IncomesTableRowP
   }, []);
 
   const deleteIncomeMutation = useMutation({
-    mutationFn: (id:string) => IncomeService.delete(id),
+    mutationFn: (id: string) => IncomeService.delete(id),
     onSuccess: () => {
+      enqueueSnackbar('Salário deletado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
       queryClient.invalidateQueries({ queryKey: ["incomes"] }); // Atualiza a lista após deletar
     },
   });
   const handleDeleteIncome = useCallback(() => {
     deleteIncomeMutation.mutate(row.id)
     handleClosePopover()
-  }, [deleteIncomeMutation,handleClosePopover,row]);
-  
+  }, [deleteIncomeMutation, handleClosePopover, row]);
+
   const queryClient = useQueryClient();
 
 
@@ -103,9 +105,11 @@ export function IncomesTableRow({ row, selected, onSelectRow }: IncomesTableRowP
             },
           }}
         >
-          <MenuItem onClick={handleClosePopover}>
-            <Iconify icon="solar:pen-bold" />
-            Edit
+          <MenuItem >
+            <FormIncome
+              incomeData={row}
+              buttonIcon={<Iconify icon="solar:pen-bold" />}
+              buttonLabel='Editar' />
           </MenuItem>
 
           <MenuItem onClick={handleDeleteIncome} sx={{ color: 'error.main' }}>

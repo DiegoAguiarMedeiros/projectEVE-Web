@@ -1,18 +1,26 @@
-import { Box, Button, TextField, Typography } from '@mui/material';
+import { Box, Button, IconButton, TextField, Typography } from '@mui/material';
 import { startTransition, useActionState, useCallback, useEffect, useImperativeHandle, useRef, useState, useTransition } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import TransitionsModal from 'src/sections/shared/transitionsModal';
-import IncomeService, { IncomesPost } from '../../../services/incomeService'
+import IncomeService, { Incomes, IncomesPost } from 'src/services/incomeService'
+import { useSnackbar, VariantType } from 'notistack';
 
-export function FormIncome() {
+type FormIncomeProps = {
+    buttonIcon?: React.ReactNode;
+    buttonLabel: string;
+    incomeData?: Incomes
+}
+
+export function FormIncome({ buttonLabel, buttonIcon, incomeData }: FormIncomeProps) {
+    const { enqueueSnackbar } = useSnackbar();
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const [description, setDescription] = useState('');
-    const [amount, setAmount] = useState('');
-    const [paymentDay, setpaymentDay] = useState('');
+    const [description, setDescription] = useState(incomeData ? incomeData.description : '');
+    const [amount, setAmount] = useState(incomeData ? incomeData.amount : '');
+    const [paymentDay, setpaymentDay] = useState(incomeData ? incomeData.paymentDay : '');
     const [errorDescription, setErrorDescription] = useState<string | null>(null);
     const [errorAmount, setErrorAmount] = useState<string | null>(null);
     const [errorpaymentDay, setErrorpaymentDay] = useState<string | null>(null);
@@ -34,15 +42,36 @@ export function FormIncome() {
     const [error, submitAction, isPending] = useActionState(
         async (previousState: any, incomes: IncomesPost) => {
             console.log("submitAction")
-            const errorPostIncomes = await IncomeService.postIncomes({
-                description: incomes.description,
-                amount: incomes.amount,
-                paymentDay: incomes.paymentDay,
-            });
-            console.log("errorPostIncomes", errorPostIncomes)
-            if (!errorPostIncomes) {
-                return errorPostIncomes;
+            if (incomeData) {
+
+                const errorPostIncomes = await IncomeService.patchIncomes({
+                    id: incomeData.id,
+                    description: incomes.description,
+                    amount: incomes.amount,
+                    paymentDay: incomes.paymentDay,
+                });
+                console.log("errorPostIncomes", errorPostIncomes)
+                if (!errorPostIncomes) {
+                    return errorPostIncomes;
+                }
+                enqueueSnackbar('Salário editado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
+
+            } else {
+
+                const errorPostIncomes = await IncomeService.postIncomes({
+                    description: incomes.description,
+                    amount: incomes.amount,
+                    paymentDay: incomes.paymentDay,
+                });
+                console.log("errorPostIncomes", errorPostIncomes)
+                if (!errorPostIncomes) {
+                    return errorPostIncomes;
+                }
+                enqueueSnackbar('Salário cadastrado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
+
+
             }
+
             clearForm();
             refreshIncomes();
             handleClose();
@@ -52,12 +81,12 @@ export function FormIncome() {
     );
 
     const handleSubmit = async () => {
-        if(validateDescription() && validateAmount() && validatepaymentDay()){
+        if (validateDescription() && validateAmount() && validatepaymentDay()) {
             startTransition(async () => {
                 await submitAction({ description, amount, paymentDay });
             });
         }
-      };
+    };
 
     const validateDescription = useCallback(() => {
         if (!description.trim()) {
@@ -103,7 +132,18 @@ export function FormIncome() {
             open={open}
             handleClose={handleClose}
             handleOpen={handleOpen}
-            buttonLabel='Adicionar'
+            openButton={!buttonIcon
+                ?
+                <Button variant='contained' color='primary' onClick={handleOpen}  >{buttonLabel}</Button>
+                :
+                <Button
+                    style={{ display: 'flex', gap: '16px', background: 'none', border: 'none', cursor: 'pointer', margin: 0, padding: 0 }}
+                    onClick={handleOpen}
+                >
+                    {buttonIcon}{buttonLabel}
+                </Button>
+            }
+
             okButton={<Button type='submit' variant='outlined' color='primary' onClick={handleSubmit} disabled={isPending} >Adicionar</Button>
             }>
             <Box

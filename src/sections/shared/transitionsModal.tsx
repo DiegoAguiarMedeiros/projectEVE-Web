@@ -18,20 +18,21 @@ const style = {
   p: 4,
 };
 
+
 type TransitionsModalProps = {
-  buttonLabel: string
-  okButton: React.ReactNode
-  open:boolean
-  handleOpen: VoidFunction
-  handleClose: VoidFunction
+  openButton: React.ReactNode;
+  okButton: React.ReactNode;
+  open: boolean;
+  handleOpen: VoidFunction;
+  handleClose: VoidFunction;
 }
 
-export default function TransitionsModal({ buttonLabel, okButton, children,open,handleOpen,handleClose }: React.PropsWithChildren<TransitionsModalProps>) {
-
+export default function TransitionsModal({ openButton, okButton, children, open, handleOpen, handleClose }: React.PropsWithChildren<TransitionsModalProps>) {
 
   return (
     <>
-      <Button variant="contained" onClick={handleOpen}>{buttonLabel}</Button>
+      {openButton}
+
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

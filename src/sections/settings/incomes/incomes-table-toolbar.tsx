@@ -45,7 +45,7 @@ export function IncomesTableToolbar({ numSelected }: IncomesTableToolbarProps) {
           </IconButton>
         </Tooltip>
       ) : (
-        <FormIncome />
+        <FormIncome buttonLabel='Adicionar' />
       )}
     </Toolbar>
   );

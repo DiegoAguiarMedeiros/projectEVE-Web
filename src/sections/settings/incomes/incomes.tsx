@@ -1,22 +1,39 @@
+import { useEffect, useState } from "react";
 import { Card, TableContainer, Table, TableBody, TablePagination } from "@mui/material";
-import { Suspense, useState, use } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useTable } from "src/sections/shared/useTable";
+import IncomeService, { Incomes } from 'src/services/incomeService';
 import { IncomesTableHead } from "./incomes-table-head";
 import { IncomesTableToolbar } from "./incomes-table-toolbar";
-import { Incomes } from '../../../services/incomeService';
 import { IncomesTableRow } from "./incomes-table-row";
 import { TableNoData } from "./table-no-data";
 
-type IncomesTableProps = {
-    incomes: Incomes[] | undefined
-}
 
-export function IncomesTable({ incomes }: IncomesTableProps) {
+export function IncomesTable() {
     const table = useTable();
-    console.log("IncomesTable")
+
+    const { data: incomes, isLoading, isError } = useQuery({
+        queryKey: ['incomes', table.page, table.rowsPerPage], 
+        queryFn: () => IncomeService.getAllIncomes({ 
+            page: table.page, 
+            pageSize: table.rowsPerPage 
+        }),
+        staleTime: 5000, // Mantém os dados frescos por 5 segundos
+        gcTime: 60000,   // Mantém os dados na cache por 1 minuto
+        placeholderData: (previousData) => previousData, // Mantém os dados da página anterior
+    });
+    
+    
+    useEffect(()=>{
+        console.log("table.page",table.page)
+        console.log("table.rowsPerPage",table.rowsPerPage)
+    },[table.page, table.rowsPerPage])
+
+
+    console.log("IncomesTable", incomes)
 
     const IncomesRow = (data: Incomes) => {
-        const {id} = data;
+        const { id } = data;
         return (<IncomesTableRow
             key={id}
             row={data}
@@ -31,16 +48,16 @@ export function IncomesTable({ incomes }: IncomesTableProps) {
             />
             <TableContainer sx={{ overflow: 'unset' }}>
                 <Table sx={{ minWidth: 800 }}>
-                    {incomes && incomes.length > 0 ? <IncomesTableHead
+                    {incomes && incomes.data.length > 0 ? <IncomesTableHead
                         order={table.order}
                         orderBy={table.orderBy}
-                        rowCount={incomes.length}
+                        rowCount={incomes.data.length}
                         numSelected={table.selected.length}
                         onSort={table.onSort}
                         onSelectAllRows={(checked) =>
                             table.onSelectAllRows(
                                 checked,
-                                incomes.map((income) => income.id!)
+                                incomes.data.map((income) => income.id!)
                             )
                         }
                         headLabel={[
@@ -52,19 +69,19 @@ export function IncomesTable({ incomes }: IncomesTableProps) {
                     /> : <></>}
 
                     <TableBody>
-                        {incomes && incomes.length < 1
+                        {incomes && incomes.data.length < 1
                             ?
                             <TableNoData />
                             :
-                            incomes && incomes.map(income => (IncomesRow(income)))
+                            incomes && incomes.data.map(income => (IncomesRow(income)))
                         }
                     </TableBody>
                 </Table>
             </TableContainer>
-            {incomes && incomes.length > 0 ? <TablePagination
+            {incomes && incomes.data.length > 0 ? <TablePagination
                 component="div"
                 page={table.page}
-                count={incomes.length}
+                count={incomes.totalItems}
                 rowsPerPage={table.rowsPerPage}
                 onPageChange={table.onChangePage}
                 rowsPerPageOptions={[5, 10, 25]}
