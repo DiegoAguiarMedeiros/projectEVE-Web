@@ -9,6 +9,7 @@ import { DashboardContent } from 'src/layouts/dashboard';
 import { _incomes } from 'src/_mock';
 import { IncomesTable } from '../incomes';
 import { CreditCardsTable } from '../creditCards';
+import { InvestmentsTable } from '../investments';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -60,7 +61,6 @@ export function SettingsView() {
             <Tab label="Cartões" {...a11yProps(1)} />
             <Tab label="Investimento" {...a11yProps(2)} />
             <Tab label="Dívidas" {...a11yProps(3)} />
-            <Tab label="Tema" {...a11yProps(4)} />
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
@@ -70,13 +70,10 @@ export function SettingsView() {
           <CreditCardsTable />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={2}>
-          Configuração dos investimentos
+          <InvestmentsTable/>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={3}>
           Configuração do dívidas
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={4}>
-          Configuração do tema
         </CustomTabPanel>
       </Box>
     </DashboardContent>

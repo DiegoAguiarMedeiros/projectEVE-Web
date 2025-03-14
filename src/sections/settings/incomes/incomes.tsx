@@ -63,10 +63,10 @@ export function IncomesTable() {
             onSelectRow={() => table.onSelectRow(id)}
             rowKeys={[description,`R$ ${amount}`,paymentDay]}
             form={<FormIncome
-                incomeData={row}
+                data={row}
                 buttonIcon={<Iconify icon="solar:pen-bold" />}
                 buttonLabel='Editar' />}
-            handleDeleteCreditCards={handleDeleteIncome} />)
+            handleDelete={handleDeleteIncome} />)
 
     }
 

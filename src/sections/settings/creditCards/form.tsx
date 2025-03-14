@@ -51,7 +51,7 @@ export function CreditCardForm({ buttonLabel, buttonIcon, data }: CreditCardForm
                 if (!errorPostIncomes) {
                     return errorPostIncomes;
                 }
-                enqueueSnackbar('Salário editado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
+                enqueueSnackbar('Cartão de crédito editado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
 
             } else {
 
@@ -65,7 +65,7 @@ export function CreditCardForm({ buttonLabel, buttonIcon, data }: CreditCardForm
                 if (!errorPostIncomes) {
                     return errorPostIncomes;
                 }
-                enqueueSnackbar('Salário cadastrado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
+                enqueueSnackbar('Cartão de crédito cadastrado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
 
 
             }
@@ -88,7 +88,7 @@ export function CreditCardForm({ buttonLabel, buttonIcon, data }: CreditCardForm
 
     const validateName = useCallback(() => {
         if (!name.trim()) {
-            setErrorName('Nome é obrigatória.');
+            setErrorName('Nome é obrigatório.');
             return false;
         }
         setErrorName(null);

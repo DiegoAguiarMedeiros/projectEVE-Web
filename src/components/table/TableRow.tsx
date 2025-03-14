@@ -16,11 +16,11 @@ type IncomesTableRowProps = {
   selected: boolean;
   onSelectRow: () => void;
   form: React.ReactElement;
-  handleDeleteCreditCards: VoidFunction;
+  handleDelete: VoidFunction;
   rowKeys: string[]
 };
 
-export function CustomTableRow({ selected, onSelectRow, form, handleDeleteCreditCards, rowKeys }: IncomesTableRowProps) {
+export function CustomTableRow({ selected, onSelectRow, form, handleDelete, rowKeys }: IncomesTableRowProps) {
 
   const [openPopover, setOpenPopover] = useState<HTMLButtonElement | null>(null);
 
@@ -77,7 +77,7 @@ export function CustomTableRow({ selected, onSelectRow, form, handleDeleteCredit
             {form}
           </MenuItem>
 
-          <MenuItem onClick={handleDeleteCreditCards} sx={{ color: 'error.main' }}>
+          <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>
             <Iconify icon="solar:trash-bin-trash-bold" />
             Deletar
           </MenuItem>

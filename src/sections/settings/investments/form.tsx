@@ -2,16 +2,16 @@ import { Box, Button, IconButton, TextField, Typography } from '@mui/material';
 import { startTransition, useActionState, useCallback, useEffect, useImperativeHandle, useRef, useState, useTransition } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import TransitionsModal from 'src/sections/shared/transitionsModal';
-import IncomeService, { Incomes, IncomesPost } from 'src/services/implementation/incomeService'
 import { useSnackbar, VariantType } from 'notistack';
+import InvestmentsService,{ Investments, InvestmentsPost, InvestmentsType } from 'src/services/implementation/InvestmentsService';
 
-type FormIncomeProps = {
+type InvestmentsFormProps = {
     buttonIcon?: React.ReactNode;
     buttonLabel: string;
-    data?: Incomes
+    data?: Investments
 }
 
-export function FormIncome({ buttonLabel, buttonIcon, data }: FormIncomeProps) {
+export function InvestmentsForm({ buttonLabel, buttonIcon, data }: InvestmentsFormProps) {
     const { enqueueSnackbar } = useSnackbar();
 
     const [open, setOpen] = useState(false);
@@ -20,60 +20,77 @@ export function FormIncome({ buttonLabel, buttonIcon, data }: FormIncomeProps) {
 
     const [description, setDescription] = useState(data ? data.description : '');
     const [amount, setAmount] = useState(data ? data.amount : '');
-    const [paymentDay, setpaymentDay] = useState(data ? data.paymentDay : '');
+    const [profitability, setProfitability] = useState(data ? data.profitability : '');
+    const [applicationDate, setApplicationDate] = useState(data ? data.applicationDate : '');
+    const [maturityDate, setMaturityDate] = useState(data ? data.maturityDate : '');
+    const [type, setType] = useState<InvestmentsType | null>(data ? data.type : null);
+
     const [errorDescription, setErrorDescription] = useState<string | null>(null);
     const [errorAmount, setErrorAmount] = useState<string | null>(null);
-    const [errorpaymentDay, setErrorpaymentDay] = useState<string | null>(null);
+    const [errorProfitability, setErrorProfitability] = useState<string | null>(null);
+    const [errorApplicationDate, setErrorApplicationDate] = useState<string | null>(null);
+    const [errorMaturityDate, setErrorMaturityDate] = useState<string | null>(null);
+    const [errorType, setErrorType] = useState<string | null>(null);
 
     const queryClient = useQueryClient();
 
-    const refreshIncomes = () => {
-        queryClient.invalidateQueries({ queryKey: ['incomes'] });
+    const refresh = () => {
+        queryClient.invalidateQueries({ queryKey: ['investments'] });
     };
     const clearForm = () => {
         setDescription('')
         setAmount('')
-        setpaymentDay('')
+        setProfitability('')
+        setApplicationDate('')
+        setMaturityDate('')
+        setType(null)
     };
 
 
 
 
     const [error, submitAction, isPending] = useActionState(
-        async (previousState: any, incomes: IncomesPost) => {
-
+        async (previousState: any, investments: InvestmentsPost) => {
             if (data) {
 
-                const errorPostIncomes = await IncomeService.update({
+                const errorPostIncomes = await InvestmentsService.update({
                     id: data.id,
-                    description: incomes.description,
-                    amount: incomes.amount,
-                    paymentDay: incomes.paymentDay,
+                    description: investments.description,
+                    amount: investments.amount,
+                    profitability: investments.profitability,
+                    type: investments.type,
+                    applicationDate: investments.applicationDate,
+                    maturityDate: investments.maturityDate,
+                    status: 'active'
                 });
 
                 if (!errorPostIncomes) {
                     return errorPostIncomes;
                 }
-                enqueueSnackbar('Salário editado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
+                enqueueSnackbar('Investimento editado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
 
             } else {
 
-                const errorPostIncomes = await IncomeService.create({
-                    description: incomes.description,
-                    amount: incomes.amount,
-                    paymentDay: incomes.paymentDay,
+                const errorPostIncomes = await InvestmentsService.create({
+                    description: investments.description,
+                    amount: investments.amount,
+                    type: investments.type,
+                    profitability: investments.profitability,
+                    applicationDate: investments.applicationDate,
+                    maturityDate: investments.maturityDate,
+                    status: 'active'
                 });
 
                 if (!errorPostIncomes) {
                     return errorPostIncomes;
                 }
-                enqueueSnackbar('Salário cadastrado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
+                enqueueSnackbar('Investimento cadastrado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
 
 
             }
 
             clearForm();
-            refreshIncomes();
+            refresh();
             handleClose();
             return null;
         },
@@ -81,9 +98,16 @@ export function FormIncome({ buttonLabel, buttonIcon, data }: FormIncomeProps) {
     );
 
     const handleSubmit = async () => {
-        if (validateDescription() && validateAmount() && validatepaymentDay()) {
+        if (validateDescription() && validateAmount()) {
             startTransition(async () => {
-                await submitAction({ description, amount, paymentDay });
+                await submitAction({
+                    description, amount,
+                    type: type,
+                    profitability: profitability,
+                    applicationDate: applicationDate,
+                    maturityDate: maturityDate,
+                    status: 'active'
+                });
             });
         }
     };
@@ -110,20 +134,6 @@ export function FormIncome({ buttonLabel, buttonIcon, data }: FormIncomeProps) {
         setErrorAmount(null);
         return true;
     }, [amount]);
-
-    const validatepaymentDay = useCallback(() => {
-        const day = Number(paymentDay);
-        if (!paymentDay.trim()) {
-            setErrorpaymentDay('Dia do pagamento é obrigatório.');
-            return false;
-        }
-        if (Number.isNaN(day) || day < 1 || day > 31) {
-            setErrorpaymentDay('O dia do pagamento deve estar entre 1 e 31.');
-            return false;
-        }
-        setErrorpaymentDay(null);
-        return true;
-    }, [paymentDay]);
 
 
     return (
@@ -155,7 +165,7 @@ export function FormIncome({ buttonLabel, buttonIcon, data }: FormIncomeProps) {
                 sx={{ width: '100%' }}
             >
                 <Typography variant="h3" noWrap>
-                    Salário
+                    Cartão de Crédito
                 </Typography>
                 {error && <p>{error}</p>}
                 <TextField
@@ -183,25 +193,6 @@ export function FormIncome({ buttonLabel, buttonIcon, data }: FormIncomeProps) {
                     slotProps={{
                         input: {
                             inputMode: 'numeric',
-                        }
-                    }}
-                />
-                <TextField
-                    fullWidth
-                    type="number"
-                    name="paymentDay"
-                    label="Dia do pagamento"
-                    value={paymentDay}
-                    onChange={(e) => setpaymentDay(e.target.value)}
-                    onBlur={validatepaymentDay}
-                    sx={{ mb: 3 }}
-                    error={!!errorpaymentDay}
-                    helperText={errorpaymentDay ?? ''}
-                    slotProps={{
-                        input: {
-                            inputMode: 'numeric',
-                            "aria-valuemin": 1,
-                            "aria-valuemax": 31,
                         }
                     }}
                 />

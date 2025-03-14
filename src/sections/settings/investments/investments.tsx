@@ -3,21 +3,21 @@ import { Card, TableContainer, Table, TableBody, TablePagination } from "@mui/ma
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "notistack";
 import { useTable } from "src/sections/shared/useTable";
-import CreditCardService, { CreditCard } from 'src/services/implementation/creditCardService';
+import Investmentservice, { Investments } from 'src/services/implementation/InvestmentsService';
 import { TableNoData } from "src/components/table/TableNoData";
 import { CustomTableRow } from "src/components/table/TableRow";
 import { Iconify } from "src/components/iconify";
 import { CustomTableHead } from "src/components/table/TableHead";
 import { TableToolbar } from "src/components/table/TableToolbar";
-import { CreditCardForm } from "./form";
+import { InvestmentsForm } from "./form";
 
 
-export function CreditCardsTable() {
+export function InvestmentsTable() {
     const table = useTable();
 
-    const { data: creditCards } = useQuery({
-        queryKey: ['creditCards', table.page, table.rowsPerPage,table.orderBy,table.order],
-        queryFn: () => CreditCardService.list({
+    const { data: investments } = useQuery({
+        queryKey: ['investments', table.page, table.rowsPerPage,table.orderBy,table.order],
+        queryFn: () => Investmentservice.list({
             page: table.page,
             pageSize: table.rowsPerPage,
             orderBy:table.orderBy,
@@ -37,35 +37,35 @@ export function CreditCardsTable() {
     const queryClient = useQueryClient();
     const { enqueueSnackbar } = useSnackbar();
 
-    const deleteCreditCardsMutation = useMutation({
-        mutationFn: (id: string) => CreditCardService.delete(id),
+    const deleteInvestmentsMutation = useMutation({
+        mutationFn: (id: string) => Investmentservice.delete(id),
         onSuccess: () => {
             enqueueSnackbar('Cartão de crédito deletado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
-            queryClient.invalidateQueries({ queryKey: ["creditCards"] });
+            queryClient.invalidateQueries({ queryKey: ["Investments"] });
         },
     });
-    const DeleteCreditCards = useCallback((id: string) => {
-        deleteCreditCardsMutation.mutate(id)
-    }, [deleteCreditCardsMutation]);
+    const DeleteInvestments = useCallback((id: string) => {
+        deleteInvestmentsMutation.mutate(id)
+    }, [deleteInvestmentsMutation]);
 
-    const CreditCardsRow = (row: CreditCard, deleteCreditCards: (id: string) => void) => {
+    const InvestmentsRow = (row: Investments, deleteInvestments: (id: string) => void) => {
         const { id } = row;
 
 
-        const handleDeleteCreditCards = () => {
-            deleteCreditCards(id)
+        const handleDeleteInvestments = () => {
+            deleteInvestments(id)
         }
-        const {name,flag} = row;
+        const {description,applicationDate,maturityDate,profitability,amount,status,type} = row;
         return (<CustomTableRow
             key={id}
             selected={table.selected.includes(id)}
             onSelectRow={() => table.onSelectRow(id)}
-            rowKeys={[name, flag]}
-            form={<CreditCardForm
+            rowKeys={[description,applicationDate,maturityDate,profitability,amount,status,type!]}
+            form={<InvestmentsForm
                 data={row}
                 buttonIcon={<Iconify icon="solar:pen-bold" />}
                 buttonLabel='Editar' />}
-            handleDelete={handleDeleteCreditCards} />)
+            handleDelete={handleDeleteInvestments} />)
 
     }
 
@@ -73,21 +73,21 @@ export function CreditCardsTable() {
         <Card sx={{ width: '100%' }}>
             <TableToolbar
                 numSelected={table.selected.length}
-                form={<CreditCardForm buttonLabel='Adicionar' />}
+                form={<InvestmentsForm buttonLabel='Adicionar' />}
             />
 
             <TableContainer sx={{ overflow: 'unset' }}>
                 <Table sx={{ minWidth: 800 }}>
-                    {creditCards && creditCards.data.length > 0 ? <CustomTableHead
+                    {investments && investments.data.length > 0 ? <CustomTableHead
                         order={table.order}
                         orderBy={table.orderBy}
-                        rowCount={creditCards.data.length}
+                        rowCount={investments.data.length}
                         numSelected={table.selected.length}
                         onSort={table.onSort}
                         onSelectAllRows={(checked) =>
                             table.onSelectAllRows(
                                 checked,
-                                creditCards.data.map((creditCard) => creditCard.id!)
+                                investments.data.map((investment) => investment.id!)
                             )
                         }
                         headLabel={[
@@ -98,19 +98,19 @@ export function CreditCardsTable() {
                     /> : <></>}
 
                     <TableBody>
-                        {creditCards && creditCards.data.length < 1
+                        {investments && investments.data.length < 1
                             ?
                             <TableNoData message="Nenhum Cartão de crétido cadastrado!" />
                             :
-                            creditCards && creditCards.data.map(creditCard => (CreditCardsRow(creditCard, DeleteCreditCards)))
+                            investments && investments.data.map(investment => (InvestmentsRow(investment, DeleteInvestments)))
                         }
                     </TableBody>
                 </Table>
             </TableContainer>
-            {creditCards && creditCards.data.length > 0 ? <TablePagination
+            {investments && investments.data.length > 0 ? <TablePagination
                 component="div"
                 page={table.page}
-                count={creditCards.totalItems}
+                count={investments.totalItems}
                 rowsPerPage={table.rowsPerPage}
                 onPageChange={table.onChangePage}
                 rowsPerPageOptions={[5, 10, 25]}
