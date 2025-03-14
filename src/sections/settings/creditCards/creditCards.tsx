@@ -16,10 +16,12 @@ export function CreditCardsTable() {
     const table = useTable();
 
     const { data: creditCards } = useQuery({
-        queryKey: ['creditCards', table.page, table.rowsPerPage],
+        queryKey: ['creditCards', table.page, table.rowsPerPage,table.orderBy,table.order],
         queryFn: () => CreditCardService.list({
             page: table.page,
-            pageSize: table.rowsPerPage
+            pageSize: table.rowsPerPage,
+            orderBy:table.orderBy,
+            order:table.order,
         }),
         staleTime: 5000,
         gcTime: 60000,
@@ -53,12 +55,12 @@ export function CreditCardsTable() {
         const handleDeleteCreditCards = () => {
             deleteCreditCards(id)
         }
-        const {name,flag,active} = row;
+        const {name,flag} = row;
         return (<CustomTableRow
             key={id}
             selected={table.selected.includes(id)}
             onSelectRow={() => table.onSelectRow(id)}
-            rowKeys={[name, flag, active ? 'ativo' : 'inativo']}
+            rowKeys={[name, flag]}
             form={<CreditCardForm
                 data={row}
                 buttonIcon={<Iconify icon="solar:pen-bold" />}
@@ -91,7 +93,6 @@ export function CreditCardsTable() {
                         headLabel={[
                             { id: 'name', label: 'Nome' },
                             { id: 'flag', label: 'Bandeira' },
-                            { id: 'active', label: 'Status' },
                             { id: '' },
                         ]}
                     /> : <></>}

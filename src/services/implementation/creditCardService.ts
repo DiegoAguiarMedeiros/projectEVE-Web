@@ -26,12 +26,14 @@ class CreditCardService implements ICRUD<CreditCardPost,CreditCard> {
     async list({
         page = 1,
         pageSize = 10,
-    }: { page?: number; pageSize?: number }): Promise<Pagination<CreditCard>> {
+        orderBy = 'createdAt',
+        order = 'desc'
+    }: { page?: number; pageSize?: number, orderBy?: string, order?: string }): Promise<Pagination<CreditCard>> {
 
         const response = await axios.get(
             `${this.baseURL}/`,
             {
-                params: { page: page + 1, pageSize },
+                params: { page: page + 1, pageSize, orderBy, order },
                 withCredentials: true
             }
         );
