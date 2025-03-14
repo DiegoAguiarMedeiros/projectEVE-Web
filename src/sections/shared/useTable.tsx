@@ -2,10 +2,10 @@ import { useState, useCallback } from "react";
 
 export function useTable() {
   const [page, setPage] = useState(0);
-  const [orderBy, setOrderBy] = useState('name');
+  const [orderBy, setOrderBy] = useState('createdAt');
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [selected, setSelected] = useState<string[]>([]);
-  const [order, setOrder] = useState<'asc' | 'desc'>('asc');
+  const [order, setOrder] = useState<'asc' | 'desc'>('desc');
 
   const onSort = useCallback(
     (id: string) => {

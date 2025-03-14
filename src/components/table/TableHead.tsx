@@ -4,12 +4,12 @@ import Checkbox from '@mui/material/Checkbox';
 import TableHead from '@mui/material/TableHead';
 import TableCell from '@mui/material/TableCell';
 import TableSortLabel from '@mui/material/TableSortLabel';
-import { visuallyHidden } from '../../shared/utils';
+import { visuallyHidden } from 'src/sections/envelope/utils';
 
 
 // ----------------------------------------------------------------------
 
-type IncomesTableHeadProps = {
+type CustomTableHeadProps = {
   orderBy: string;
   rowCount: number;
   numSelected: number;
@@ -19,7 +19,7 @@ type IncomesTableHeadProps = {
   onSelectAllRows: (checked: boolean) => void;
 };
 
-export function IncomesTableHead({
+export function CustomTableHead({
   order,
   onSort,
   orderBy,
@@ -27,7 +27,7 @@ export function IncomesTableHead({
   headLabel,
   numSelected,
   onSelectAllRows,
-}: IncomesTableHeadProps) {
+}: CustomTableHeadProps) {
   return (
     <TableHead>
       <TableRow>

@@ -3,25 +3,23 @@ import { Card, TableContainer, Table, TableBody, TablePagination } from "@mui/ma
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "notistack";
 import { useTable } from "src/sections/shared/useTable";
-import IncomeService, { Incomes } from 'src/services/implementation/incomeService';
+import CreditCardService, { CreditCard } from 'src/services/implementation/creditCardService';
 import { TableNoData } from "src/components/table/TableNoData";
 import { CustomTableRow } from "src/components/table/TableRow";
 import { Iconify } from "src/components/iconify";
 import { CustomTableHead } from "src/components/table/TableHead";
 import { TableToolbar } from "src/components/table/TableToolbar";
-import { FormIncome } from "./form";
+import { CreditCardForm } from "./form";
 
 
-export function IncomesTable() {
+export function CreditCardsTable() {
     const table = useTable();
 
-    const { data: incomes } = useQuery({
-        queryKey: ['incomes', table.page, table.rowsPerPage,table.orderBy,table.order],
-        queryFn: () => IncomeService.list({
+    const { data: creditCards } = useQuery({
+        queryKey: ['creditCards', table.page, table.rowsPerPage],
+        queryFn: () => CreditCardService.list({
             page: table.page,
-            pageSize: table.rowsPerPage,
-            orderBy:table.orderBy,
-            order:table.order,
+            pageSize: table.rowsPerPage
         }),
         staleTime: 5000,
         gcTime: 60000,
@@ -34,39 +32,38 @@ export function IncomesTable() {
         console.log("table.rowsPerPage", table.rowsPerPage)
     }, [table.page, table.rowsPerPage])
 
-
     const queryClient = useQueryClient();
     const { enqueueSnackbar } = useSnackbar();
 
-    const deleteIncomeMutation = useMutation({
-        mutationFn: (id: string) => IncomeService.delete(id),
+    const deleteCreditCardsMutation = useMutation({
+        mutationFn: (id: string) => CreditCardService.delete(id),
         onSuccess: () => {
-            enqueueSnackbar('Salário deletado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
-            queryClient.invalidateQueries({ queryKey: ["incomes"] });
+            enqueueSnackbar('Cartão de crédito deletado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
+            queryClient.invalidateQueries({ queryKey: ["creditCards"] });
         },
     });
-    const DeleteIncome = useCallback((id: string) => {
-        deleteIncomeMutation.mutate(id)
-    }, [deleteIncomeMutation]);
+    const DeleteCreditCards = useCallback((id: string) => {
+        deleteCreditCardsMutation.mutate(id)
+    }, [deleteCreditCardsMutation]);
 
-    const IncomesRow = (row: Incomes, deleteIncome: (id: string) => void) => {
+    const CreditCardsRow = (row: CreditCard, deleteCreditCards: (id: string) => void) => {
         const { id } = row;
 
 
-        const handleDeleteIncome = () => {
-            deleteIncome(id)
+        const handleDeleteCreditCards = () => {
+            deleteCreditCards(id)
         }
-        const {description,amount,paymentDay} = row;
+        const {name,flag,active} = row;
         return (<CustomTableRow
             key={id}
             selected={table.selected.includes(id)}
             onSelectRow={() => table.onSelectRow(id)}
-            rowKeys={[description,`R$ ${amount}`,paymentDay]}
-            form={<FormIncome
-                incomeData={row}
+            rowKeys={[name, flag, active ? 'ativo' : 'inativo']}
+            form={<CreditCardForm
+                data={row}
                 buttonIcon={<Iconify icon="solar:pen-bold" />}
                 buttonLabel='Editar' />}
-            handleDeleteCreditCards={handleDeleteIncome} />)
+            handleDeleteCreditCards={handleDeleteCreditCards} />)
 
     }
 
@@ -74,48 +71,48 @@ export function IncomesTable() {
         <Card sx={{ width: '100%' }}>
             <TableToolbar
                 numSelected={table.selected.length}
-                form={<FormIncome buttonLabel='Adicionar' />}
+                form={<CreditCardForm buttonLabel='Adicionar' />}
             />
 
             <TableContainer sx={{ overflow: 'unset' }}>
                 <Table sx={{ minWidth: 800 }}>
-                    {incomes && incomes.data.length > 0 ? <CustomTableHead
+                    {creditCards && creditCards.data.length > 0 ? <CustomTableHead
                         order={table.order}
                         orderBy={table.orderBy}
-                        rowCount={incomes.data.length}
+                        rowCount={creditCards.data.length}
                         numSelected={table.selected.length}
                         onSort={table.onSort}
                         onSelectAllRows={(checked) =>
                             table.onSelectAllRows(
                                 checked,
-                                incomes.data.map((income) => income.id!)
+                                creditCards.data.map((creditCard) => creditCard.id!)
                             )
                         }
                         headLabel={[
-                            { id: 'description', label: 'Descrição' },
-                            { id: 'amount', label: 'Salário' },
-                            { id: 'payment_day', label: 'Dia de pagamento' },
+                            { id: 'name', label: 'Nome' },
+                            { id: 'flag', label: 'Bandeira' },
+                            { id: 'active', label: 'Status' },
                             { id: '' },
                         ]}
                     /> : <></>}
 
                     <TableBody>
-                        {incomes && incomes.data.length < 1
+                        {creditCards && creditCards.data.length < 1
                             ?
-                            <TableNoData message="Nenhum salário cadastrado!" />
+                            <TableNoData message="Nenhum Cartão de crétido cadastrado!" />
                             :
-                            incomes && incomes.data.map(income => (IncomesRow(income, DeleteIncome)))
+                            creditCards && creditCards.data.map(creditCard => (CreditCardsRow(creditCard, DeleteCreditCards)))
                         }
                     </TableBody>
                 </Table>
             </TableContainer>
-            {incomes && incomes.data.length > 0 ? <TablePagination
+            {creditCards && creditCards.data.length > 0 ? <TablePagination
                 component="div"
                 page={table.page}
-                count={incomes.totalItems}
+                count={creditCards.totalItems}
                 rowsPerPage={table.rowsPerPage}
                 onPageChange={table.onChangePage}
-                rowsPerPageOptions={[5, 10, 25,1000]}
+                rowsPerPageOptions={[5, 10, 25]}
                 onRowsPerPageChange={table.onChangeRowsPerPage}
             /> : <></>}
         </Card>

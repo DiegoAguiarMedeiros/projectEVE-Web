@@ -2,7 +2,7 @@ import { Box, Button, IconButton, TextField, Typography } from '@mui/material';
 import { startTransition, useActionState, useCallback, useEffect, useImperativeHandle, useRef, useState, useTransition } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import TransitionsModal from 'src/sections/shared/transitionsModal';
-import IncomeService, { Incomes, IncomesPost } from 'src/services/incomeService'
+import IncomeService, { Incomes, IncomesPost } from 'src/services/implementation/incomeService'
 import { useSnackbar, VariantType } from 'notistack';
 
 type FormIncomeProps = {
@@ -41,16 +41,16 @@ export function FormIncome({ buttonLabel, buttonIcon, incomeData }: FormIncomePr
 
     const [error, submitAction, isPending] = useActionState(
         async (previousState: any, incomes: IncomesPost) => {
-            console.log("submitAction")
+
             if (incomeData) {
 
-                const errorPostIncomes = await IncomeService.patchIncomes({
+                const errorPostIncomes = await IncomeService.update({
                     id: incomeData.id,
                     description: incomes.description,
                     amount: incomes.amount,
                     paymentDay: incomes.paymentDay,
                 });
-                console.log("errorPostIncomes", errorPostIncomes)
+
                 if (!errorPostIncomes) {
                     return errorPostIncomes;
                 }
@@ -58,12 +58,12 @@ export function FormIncome({ buttonLabel, buttonIcon, incomeData }: FormIncomePr
 
             } else {
 
-                const errorPostIncomes = await IncomeService.postIncomes({
+                const errorPostIncomes = await IncomeService.create({
                     description: incomes.description,
                     amount: incomes.amount,
                     paymentDay: incomes.paymentDay,
                 });
-                console.log("errorPostIncomes", errorPostIncomes)
+
                 if (!errorPostIncomes) {
                     return errorPostIncomes;
                 }

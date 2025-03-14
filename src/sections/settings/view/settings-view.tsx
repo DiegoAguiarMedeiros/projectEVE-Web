@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {  useState } from 'react';
+import { useState } from 'react';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
@@ -8,6 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import { DashboardContent } from 'src/layouts/dashboard';
 import { _incomes } from 'src/_mock';
 import { IncomesTable } from '../incomes';
+import { CreditCardsTable } from '../creditCards';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -63,10 +64,10 @@ export function SettingsView() {
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
-            <IncomesTable />
+          <IncomesTable />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
-          Configuração dos cartões
+          <CreditCardsTable />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={2}>
           Configuração dos investimentos

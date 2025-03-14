@@ -4,17 +4,17 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
 import { Iconify } from 'src/components/iconify';
-import { FormIncome } from './form';
 
 // ----------------------------------------------------------------------
 
-type IncomesTableToolbarProps = {
+type TableToolbarProps = {
   numSelected: number;
+  form: React.ReactElement;
 };
 
 
 
-export function IncomesTableToolbar({ numSelected }: IncomesTableToolbarProps) {
+export function TableToolbar({ numSelected,form }: TableToolbarProps) {
 
 
   return (
@@ -32,21 +32,21 @@ export function IncomesTableToolbar({ numSelected }: IncomesTableToolbarProps) {
     >
       {numSelected > 0 ? (
         <Typography component="div" variant="subtitle1">
-          {numSelected} selected
+          {numSelected} Selecionados
         </Typography>
       ) : (
         <></>
       )}
 
       {numSelected > 0 ? (
-        <Tooltip title="Delete">
+        <Tooltip title="Deletar">
           <IconButton>
             <Iconify icon="solar:trash-bin-trash-bold" />
           </IconButton>
         </Tooltip>
       ) : (
-        <FormIncome buttonLabel='Adicionar' />
-      )}
+        form
+        )}
     </Toolbar>
   );
 }

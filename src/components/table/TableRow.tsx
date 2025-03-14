@@ -9,30 +9,19 @@ import MenuList from '@mui/material/MenuList';
 import TableCell from '@mui/material/TableCell';
 import IconButton from '@mui/material/IconButton';
 import MenuItem, { menuItemClasses } from '@mui/material/MenuItem';
-import { useSnackbar } from 'notistack';
 import { Iconify } from 'src/components/iconify';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-
-
-import IncomeService from 'src/services/incomeService';
-import { FormIncome } from './form';
 // ----------------------------------------------------------------------
 
-export type IncomeProps = {
-  id: string;
-  description: string;
-  amount: string;
-  paymentDay: string;
-};
-
 type IncomesTableRowProps = {
-  row: IncomeProps;
   selected: boolean;
   onSelectRow: () => void;
+  form: React.ReactElement;
+  handleDeleteCreditCards: VoidFunction;
+  rowKeys: string[]
 };
 
-export function IncomesTableRow({ row, selected, onSelectRow }: IncomesTableRowProps) {
-  const { enqueueSnackbar } = useSnackbar();
+export function CustomTableRow({ selected, onSelectRow, form, handleDeleteCreditCards, rowKeys }: IncomesTableRowProps) {
+
   const [openPopover, setOpenPopover] = useState<HTMLButtonElement | null>(null);
 
   const handleOpenPopover = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
@@ -43,21 +32,6 @@ export function IncomesTableRow({ row, selected, onSelectRow }: IncomesTableRowP
     setOpenPopover(null);
   }, []);
 
-  const deleteIncomeMutation = useMutation({
-    mutationFn: (id: string) => IncomeService.delete(id),
-    onSuccess: () => {
-      enqueueSnackbar('Salário deletado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
-      queryClient.invalidateQueries({ queryKey: ["incomes"] }); // Atualiza a lista após deletar
-    },
-  });
-  const handleDeleteIncome = useCallback(() => {
-    deleteIncomeMutation.mutate(row.id)
-    handleClosePopover()
-  }, [deleteIncomeMutation, handleClosePopover, row]);
-
-  const queryClient = useQueryClient();
-
-
   return (
     <>
       <TableRow hover tabIndex={-1} role="checkbox" selected={selected}>
@@ -65,15 +39,9 @@ export function IncomesTableRow({ row, selected, onSelectRow }: IncomesTableRowP
           <Checkbox disableRipple checked={selected} onChange={onSelectRow} />
         </TableCell>
 
-        <TableCell component="th" scope="row">
-          <Box gap={2} display="flex" alignItems="center">
-            {row.description}
-          </Box>
-        </TableCell>
+        {rowKeys.map(key => (<TableCell key={key}>{key}</TableCell>))}
 
-        <TableCell>R$ {row.amount}</TableCell>
-
-        <TableCell>{row.paymentDay}</TableCell>
+        <TableCell/>
 
         <TableCell align="right">
           <IconButton onClick={handleOpenPopover}>
@@ -106,15 +74,12 @@ export function IncomesTableRow({ row, selected, onSelectRow }: IncomesTableRowP
           }}
         >
           <MenuItem >
-            <FormIncome
-              incomeData={row}
-              buttonIcon={<Iconify icon="solar:pen-bold" />}
-              buttonLabel='Editar' />
+            {form}
           </MenuItem>
 
-          <MenuItem onClick={handleDeleteIncome} sx={{ color: 'error.main' }}>
+          <MenuItem onClick={handleDeleteCreditCards} sx={{ color: 'error.main' }}>
             <Iconify icon="solar:trash-bin-trash-bold" />
-            Delete
+            Deletar
           </MenuItem>
         </MenuList>
       </Popover>
