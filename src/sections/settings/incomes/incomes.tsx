@@ -115,7 +115,7 @@ export function IncomesTable() {
                 count={incomes.totalItems}
                 rowsPerPage={table.rowsPerPage}
                 onPageChange={table.onChangePage}
-                rowsPerPageOptions={[5, 10, 25,1000]}
+                rowsPerPageOptions={[5, 10, 25]}
                 onRowsPerPageChange={table.onChangeRowsPerPage}
             /> : <></>}
         </Card>

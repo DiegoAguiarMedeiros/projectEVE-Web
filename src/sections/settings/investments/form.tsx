@@ -1,9 +1,13 @@
-import { Box, Button, IconButton, TextField, Typography } from '@mui/material';
+import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from '@mui/material';
 import { startTransition, useActionState, useCallback, useEffect, useImperativeHandle, useRef, useState, useTransition } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import TransitionsModal from 'src/sections/shared/transitionsModal';
 import { useSnackbar, VariantType } from 'notistack';
-import InvestmentsService,{ Investments, InvestmentsPost, InvestmentsType } from 'src/services/implementation/InvestmentsService';
+import InvestmentsService, { allInvestmentsName, allInvestmentsType, Investments, InvestmentsPost, InvestmentsType } from 'src/services/implementation/InvestmentsService';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs, { Dayjs } from 'dayjs';
 
 type InvestmentsFormProps = {
     buttonIcon?: React.ReactNode;
@@ -21,9 +25,9 @@ export function InvestmentsForm({ buttonLabel, buttonIcon, data }: InvestmentsFo
     const [description, setDescription] = useState(data ? data.description : '');
     const [amount, setAmount] = useState(data ? data.amount : '');
     const [profitability, setProfitability] = useState(data ? data.profitability : '');
-    const [applicationDate, setApplicationDate] = useState(data ? data.applicationDate : '');
-    const [maturityDate, setMaturityDate] = useState(data ? data.maturityDate : '');
-    const [type, setType] = useState<InvestmentsType | null>(data ? data.type : null);
+    const [applicationDate, setApplicationDate] = useState<Dayjs | null>(data ? dayjs(data.applicationDate) : null);
+    const [maturityDate, setMaturityDate] = useState<Dayjs | null>(data ? dayjs(data.maturityDate) : null);
+    const [type, setType] = useState<InvestmentsType | undefined>(data ? data.type : undefined);
 
     const [errorDescription, setErrorDescription] = useState<string | null>(null);
     const [errorAmount, setErrorAmount] = useState<string | null>(null);
@@ -41,9 +45,9 @@ export function InvestmentsForm({ buttonLabel, buttonIcon, data }: InvestmentsFo
         setDescription('')
         setAmount('')
         setProfitability('')
-        setApplicationDate('')
-        setMaturityDate('')
-        setType(null)
+        setApplicationDate(null)
+        setMaturityDate(null)
+        setType(undefined)
     };
 
 
@@ -102,10 +106,10 @@ export function InvestmentsForm({ buttonLabel, buttonIcon, data }: InvestmentsFo
             startTransition(async () => {
                 await submitAction({
                     description, amount,
-                    type: type,
-                    profitability: profitability,
-                    applicationDate: applicationDate,
-                    maturityDate: maturityDate,
+                    type,
+                    profitability,
+                    applicationDate,
+                    maturityDate,
                     status: 'active'
                 });
             });
@@ -134,6 +138,25 @@ export function InvestmentsForm({ buttonLabel, buttonIcon, data }: InvestmentsFo
         setErrorAmount(null);
         return true;
     }, [amount]);
+
+    const validateProfitability = useCallback(() => {
+        if (!profitability.trim()) {
+            setErrorProfitability('Rentabilidade é obrigatório.');
+            return false;
+        }
+
+        if (Number.isNaN(Number(profitability))) {
+            setErrorProfitability('Rentabilidade deve ser numérico.');
+            return false;
+        }
+        setErrorProfitability(null);
+        return true;
+    }, [profitability]);
+
+
+    const handleSelectChange = (event: SelectChangeEvent<InvestmentsType>) => {
+        setType(event.target.value as InvestmentsType);
+    };
 
 
     return (
@@ -164,8 +187,10 @@ export function InvestmentsForm({ buttonLabel, buttonIcon, data }: InvestmentsFo
                 justifySelf="center"
                 sx={{ width: '100%' }}
             >
+
+
                 <Typography variant="h3" noWrap>
-                    Cartão de Crédito
+                    Investimentos
                 </Typography>
                 {error && <p>{error}</p>}
                 <TextField
@@ -196,6 +221,57 @@ export function InvestmentsForm({ buttonLabel, buttonIcon, data }: InvestmentsFo
                         }
                     }}
                 />
+                <TextField
+                    fullWidth
+                    type="number"
+                    name="profitability"
+                    label="Rentabilidade"
+                    value={profitability}
+                    onChange={(e) => setProfitability(e.target.value)}
+                    onBlur={validateProfitability}
+                    sx={{ mb: 3 }}
+                    error={!!errorProfitability}
+                    helperText={errorProfitability ?? ''}
+                    slotProps={{
+                        input: {
+                            inputMode: 'numeric',
+                        }
+                    }}
+                />
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                        sx={{ width: '100%', mb: 3 }}
+                        name="applicationDate"
+                        label="Data da aplicação"
+                        value={applicationDate}
+                        onChange={(newValue) => setApplicationDate(newValue)}
+                        format="DD/MM/YYYY"
+                    />
+                    <DatePicker
+                        sx={{ width: '100%', mb: 3 }}
+                        name="maturityDate"
+                        label="Data de resgate"
+                        value={maturityDate}
+                        onChange={(newValue) => setMaturityDate(newValue)}
+                        format="DD/MM/YYYY"
+                    />
+                </LocalizationProvider>
+                <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Tipo</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        label="Tipo"
+                        sx={{ width: '100%', mb: 3 }}
+                        name="type"
+                        value={type}
+                        onChange={handleSelectChange}
+                    >
+                        {allInvestmentsType.map((t) => (
+                            <MenuItem value={t}>{allInvestmentsName[t]}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
             </Box >
         </TransitionsModal>
     );

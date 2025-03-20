@@ -1,28 +1,38 @@
 import axios from 'axios';
 import { Pagination } from 'src/types/Pagination';
+import { Dayjs } from 'dayjs';
 import { ICRUD } from '../ICRUD';
 
 export type InvestmentsType = 'fixed_income' | 'variable_income' | 'real_estate' | 'crypto' | 'other';
+
+export const allInvestmentsType: InvestmentsType[] = ['fixed_income', 'variable_income', 'real_estate', 'crypto', 'other']
+export const allInvestmentsName = {
+    'fixed_income': 'Renda Fixa',
+    'variable_income': 'Renda Variável',
+    'real_estate': 'Imóveis',
+    'crypto': 'Criptomoedas',
+    'other': 'Outros'
+};
 
 export type InvestmentsStatus = 'active' | 'closed' | 'redeemed';
 
 export interface Investments {
     id: string;
     description: string;
-    type: InvestmentsType | null;
+    type: InvestmentsType | undefined;
     amount: string;
     profitability: string;
-    applicationDate: string;
-    maturityDate: string;
+    applicationDate: Dayjs | null;
+    maturityDate: Dayjs | null;
     status: InvestmentsStatus;
 }
 export interface InvestmentsPost {
     description: string;
-    type: InvestmentsType | null;
+    type: InvestmentsType | undefined;
     amount: string;
     profitability: string;
-    applicationDate: string;
-    maturityDate: string;
+    applicationDate: Dayjs | null;
+    maturityDate: Dayjs | null;
     status: InvestmentsStatus;
 }
 

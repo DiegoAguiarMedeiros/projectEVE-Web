@@ -1,8 +1,8 @@
-import { Box, Button, IconButton, TextField, Typography } from '@mui/material';
+import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from '@mui/material';
 import { startTransition, useActionState, useCallback, useEffect, useImperativeHandle, useRef, useState, useTransition } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import TransitionsModal from 'src/sections/shared/transitionsModal';
-import CreditCardService, { CreditCard, CreditCardPost } from 'src/services/implementation/creditCardService';
+import CreditCardService, { allFlags, CreditCard, CreditCardPost, Flags } from 'src/services/implementation/creditCardService';
 import { useSnackbar, VariantType } from 'notistack';
 
 type CreditCardFormProps = {
@@ -19,7 +19,7 @@ export function CreditCardForm({ buttonLabel, buttonIcon, data }: CreditCardForm
     const handleClose = () => setOpen(false);
 
     const [name, setName] = useState(data ? data.name : '');
-    const [flag, setFlag] = useState(data ? data.flag : '');
+    const [flag, setFlag] = useState<Flags>(data ? data.flag : 'Visa');
     const [errorName, setErrorName] = useState<string | null>(null);
     const [erroFlag, setErroFlag] = useState<string | null>(null);
 
@@ -30,7 +30,7 @@ export function CreditCardForm({ buttonLabel, buttonIcon, data }: CreditCardForm
     };
     const clearForm = () => {
         setName('')
-        setFlag('')
+        setFlag('Visa')
     };
 
 
@@ -80,8 +80,8 @@ export function CreditCardForm({ buttonLabel, buttonIcon, data }: CreditCardForm
 
     const handleSubmit = async () => {
         if (validateName() && validateFlag()) {
-            startTransition(async () => {
-                await submitAction({ name, flag });
+            startTransition(() => {
+                submitAction({ name, flag });
             });
         }
     };
@@ -96,7 +96,7 @@ export function CreditCardForm({ buttonLabel, buttonIcon, data }: CreditCardForm
     }, [name]);
 
     const validateFlag = useCallback(() => {
-        if (!flag.trim()) {
+        if (!flag) {
             setErrorName('Bandeira é obrigatória.');
             return false;
         }
@@ -104,6 +104,10 @@ export function CreditCardForm({ buttonLabel, buttonIcon, data }: CreditCardForm
         return true;
     }, [flag]);
 
+
+        const handleSelectChange = (event: SelectChangeEvent<Flags>) => {
+            setFlag(event.target.value as Flags);
+        };
 
     return (
 
@@ -148,17 +152,22 @@ export function CreditCardForm({ buttonLabel, buttonIcon, data }: CreditCardForm
                     error={!!errorName}
                     helperText={errorName ?? ''}
                 />
-                <TextField
-                    fullWidth
-                    name="flag"
-                    label="Bandeira"
-                    value={flag}
-                    onChange={(e) => setFlag(e.target.value)}
-                    onBlur={validateFlag}
-                    sx={{ mb: 3 }}
-                    error={!!erroFlag}
-                    helperText={erroFlag ?? ''}
-                />
+                <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Tipo</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        label="Bandeira"
+                        sx={{ width: '100%', mb: 3 }}
+                        name="flag"
+                        value={flag}
+                        onChange={handleSelectChange}
+                    >
+                        {allFlags.map((f) => (
+                            <MenuItem value={f}>{f}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
             </Box >
         </TransitionsModal>
     );

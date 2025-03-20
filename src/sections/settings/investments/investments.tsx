@@ -2,8 +2,9 @@ import { useCallback, useEffect, useState } from "react";
 import { Card, TableContainer, Table, TableBody, TablePagination } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "notistack";
+import dayjs from "dayjs";
 import { useTable } from "src/sections/shared/useTable";
-import Investmentservice, { Investments } from 'src/services/implementation/InvestmentsService';
+import Investmentservice, { allInvestmentsName, Investments } from 'src/services/implementation/InvestmentsService';
 import { TableNoData } from "src/components/table/TableNoData";
 import { CustomTableRow } from "src/components/table/TableRow";
 import { Iconify } from "src/components/iconify";
@@ -40,8 +41,8 @@ export function InvestmentsTable() {
     const deleteInvestmentsMutation = useMutation({
         mutationFn: (id: string) => Investmentservice.delete(id),
         onSuccess: () => {
-            enqueueSnackbar('Cartão de crédito deletado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
-            queryClient.invalidateQueries({ queryKey: ["Investments"] });
+            enqueueSnackbar('Investimento deletado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
+            queryClient.invalidateQueries({ queryKey: ["investments"] });
         },
     });
     const DeleteInvestments = useCallback((id: string) => {
@@ -56,11 +57,12 @@ export function InvestmentsTable() {
             deleteInvestments(id)
         }
         const {description,applicationDate,maturityDate,profitability,amount,status,type} = row;
+
         return (<CustomTableRow
             key={id}
             selected={table.selected.includes(id)}
             onSelectRow={() => table.onSelectRow(id)}
-            rowKeys={[description,applicationDate,maturityDate,profitability,amount,status,type!]}
+            rowKeys={[description,`R$ ${amount}`,`${profitability} %`,dayjs(applicationDate).format("DD/MM/YYYY"),dayjs(maturityDate).format("DD/MM/YYYY"),allInvestmentsName[type!],status]}
             form={<InvestmentsForm
                 data={row}
                 buttonIcon={<Iconify icon="solar:pen-bold" />}
@@ -91,8 +93,13 @@ export function InvestmentsTable() {
                             )
                         }
                         headLabel={[
-                            { id: 'name', label: 'Nome' },
-                            { id: 'flag', label: 'Bandeira' },
+                            { id: 'description', label: 'Descrição' },
+                            { id: 'amount', label: 'Valor' },
+                            { id: 'profitability', label: 'Rentabilidade' },
+                            { id: 'applicationDate', label: 'Data da aplicação' },
+                            { id: 'maturityDate', label: 'Data de resgate' },
+                            { id: 'type', label: 'Tipo' },
+                            { id: 'status', label: 'Status' },
                             { id: '' },
                         ]}
                     /> : <></>}
@@ -100,7 +107,7 @@ export function InvestmentsTable() {
                     <TableBody>
                         {investments && investments.data.length < 1
                             ?
-                            <TableNoData message="Nenhum Cartão de crétido cadastrado!" />
+                            <TableNoData message="Nenhum investimento cadastrado!" />
                             :
                             investments && investments.data.map(investment => (InvestmentsRow(investment, DeleteInvestments)))
                         }

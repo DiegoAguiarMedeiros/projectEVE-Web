@@ -5,18 +5,36 @@ import { ICRUD } from '../ICRUD';
 export interface CreditCard {
     id: string;
     name: string;
-    flag: string;
+    flag: Flags;
     active: boolean;
     userId: string;
-  }
+}
 export interface CreditCardPost {
     name: string;
-    flag: string;
+    flag: Flags;
     active?: boolean;
     userId?: string;
-  }
+}
 
-class CreditCardService implements ICRUD<CreditCardPost,CreditCard> {
+export type Flags = 'Visa' |
+    'Mastercard' |
+    'American Express' |
+    'Discover' |
+    'Diners Club' |
+    'JCB' |
+    'Elo' |
+    'Hipercard';
+
+export const allFlags: Flags[] = ['Visa',
+    'Mastercard',
+    'American Express',
+    'Discover',
+    'Diners Club',
+    'JCB',
+    'Elo',
+    'Hipercard']
+
+class CreditCardService implements ICRUD<CreditCardPost, CreditCard> {
     private baseURL = 'http://localhost:3000/api/credit-cards';
 
     read(id: string): Promise<CreditCard | null> {
