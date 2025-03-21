@@ -10,6 +10,7 @@ import { _incomes } from 'src/_mock';
 import { IncomesTable } from '../incomes';
 import { CreditCardsTable } from '../creditCards';
 import { InvestmentsTable } from '../investments';
+import { DebtsTable } from '../debts';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -73,7 +74,7 @@ export function SettingsView() {
           <InvestmentsTable/>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={3}>
-          Configuração do dívidas
+          <DebtsTable/>
         </CustomTabPanel>
       </Box>
     </DashboardContent>
