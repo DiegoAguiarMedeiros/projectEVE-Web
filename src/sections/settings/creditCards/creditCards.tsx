@@ -16,7 +16,7 @@ export function CreditCardsTable() {
     const table = useTable();
 
     const { data: creditCards } = useQuery({
-        queryKey: ['creditCards', table.page, table.rowsPerPage,table.orderBy,table.order],
+        queryKey: ['credit-card', table.page, table.rowsPerPage,table.orderBy,table.order],
         queryFn: () => CreditCardService.list({
             page: table.page,
             pageSize: table.rowsPerPage,
@@ -41,7 +41,7 @@ export function CreditCardsTable() {
         mutationFn: (id: string) => CreditCardService.delete(id),
         onSuccess: () => {
             enqueueSnackbar('Cartão de crédito deletado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
-            queryClient.invalidateQueries({ queryKey: ["creditCards"] });
+            queryClient.invalidateQueries({ queryKey: ["credit-card"] });
         },
     });
     const DeleteCreditCards = useCallback((id: string) => {

@@ -1,17 +1,24 @@
-import { Box, Button, IconButton, TextField, Typography } from '@mui/material';
+import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from '@mui/material';
 import { startTransition, useActionState, useCallback, useEffect, useImperativeHandle, useRef, useState, useTransition } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import TransitionsModal from 'src/sections/shared/transitionsModal';
-import IncomeService, { Incomes, IncomesPost } from 'src/services/implementation/incomeService'
 import { useSnackbar, VariantType } from 'notistack';
+import FixedExpenseService, { FixedExpense, FixedExpensePost } from 'src/services/implementation/FixedExpenseService';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs, { Dayjs } from 'dayjs';
+import { type } from 'os';
+import { Envelope } from 'src/services/implementation/EnvelopeService';
 
-type FormIncomeProps = {
+type FixedExpenseFormProps = {
     buttonIcon?: React.ReactNode;
     buttonLabel: string;
-    data?: Incomes
+    data?: FixedExpense
+    evenlopes: Envelope[]
 }
 
-export function FormIncome({ buttonLabel, buttonIcon, data }: FormIncomeProps) {
+export function FixedExpenseForm({ buttonLabel, buttonIcon, data ,evenlopes}: FixedExpenseFormProps) {
     const { enqueueSnackbar } = useSnackbar();
 
     const [open, setOpen] = useState(false);
@@ -21,59 +28,63 @@ export function FormIncome({ buttonLabel, buttonIcon, data }: FormIncomeProps) {
     const [description, setDescription] = useState(data ? data.description : '');
     const [amount, setAmount] = useState(data ? data.amount : '');
     const [paymentDay, setPaymentDay] = useState(data ? data.paymentDay : '');
+    const [envelopeId, setEnvelopeId] = useState(data ? data.envelopeId : '');
+
     const [errorDescription, setErrorDescription] = useState<string | null>(null);
     const [errorAmount, setErrorAmount] = useState<string | null>(null);
     const [errorPaymentDay, setErrorPaymentDay] = useState<string | null>(null);
 
     const queryClient = useQueryClient();
 
-    const refreshIncomes = () => {
-        queryClient.invalidateQueries({ queryKey: ['incomes'] });
+    const refresh = () => {
+        queryClient.invalidateQueries({ queryKey: ['fixed-expense'] });
     };
     const clearForm = () => {
         setDescription('')
         setAmount('')
         setPaymentDay('')
+        setEnvelopeId('')
     };
 
 
 
 
     const [error, submitAction, isPending] = useActionState(
-        async (previousState: any, incomes: IncomesPost) => {
-
+        async (previousState: any, investments: FixedExpensePost) => {
             if (data) {
 
-                const errorPostIncomes = await IncomeService.update({
+                const errorPostIncomes = await FixedExpenseService.update({
                     id: data.id,
-                    description: incomes.description,
-                    amount: incomes.amount,
-                    paymentDay: incomes.paymentDay,
+                    envelopeId: investments.envelopeId,
+                    description: investments.description,
+                    amount: investments.amount,
+                    paymentDay: investments.paymentDay,
                 });
 
                 if (!errorPostIncomes) {
                     return errorPostIncomes;
                 }
-                enqueueSnackbar('Salário editado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
+                enqueueSnackbar('Gasto fixo editado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
 
             } else {
 
-                const errorPostIncomes = await IncomeService.create({
-                    description: incomes.description,
-                    amount: incomes.amount,
-                    paymentDay: incomes.paymentDay,
+                const errorPostIncomes = await FixedExpenseService.create({
+                    description: investments.description,
+                    amount: investments.amount,
+                    paymentDay: investments.paymentDay,
+                    envelopeId: investments.envelopeId,
                 });
 
                 if (!errorPostIncomes) {
                     return errorPostIncomes;
                 }
-                enqueueSnackbar('Salário cadastrado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
+                enqueueSnackbar('Gasto fixo cadastrado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
 
 
             }
 
             clearForm();
-            refreshIncomes();
+            refresh();
             handleClose();
             return null;
         },
@@ -81,9 +92,13 @@ export function FormIncome({ buttonLabel, buttonIcon, data }: FormIncomeProps) {
     );
 
     const handleSubmit = async () => {
-        if (validateDescription() && validateAmount() && validatePaymentDay()) {
+        if (validateDescription() && validateAmount()) {
             startTransition(async () => {
-                await submitAction({ description, amount, paymentDay });
+                await submitAction({
+                    description, amount,
+                    paymentDay,
+                    envelopeId,
+                });
             });
         }
     };
@@ -126,6 +141,11 @@ export function FormIncome({ buttonLabel, buttonIcon, data }: FormIncomeProps) {
     }, [paymentDay]);
 
 
+    const handleSelectChange = (event: SelectChangeEvent<string>) => {
+        setEnvelopeId(event.target.value as string);
+    };
+
+
     return (
 
         <TransitionsModal
@@ -154,10 +174,31 @@ export function FormIncome({ buttonLabel, buttonIcon, data }: FormIncomeProps) {
                 justifySelf="center"
                 sx={{ width: '100%' }}
             >
+
+
                 <Typography variant="h3" noWrap>
-                    Salário
+                    Gasto fixos
                 </Typography>
                 {error && <p>{error}</p>}
+
+                <FormControl fullWidth>
+                    <InputLabel id="evenlope-id-select-label">Envelope</InputLabel>
+                    <Select
+                        labelId="evenlope-id-select-label"
+                        id="evenlope-id-select"
+                        label="Envelope"
+                        sx={{ width: '100%', mb: 3 }}
+                        name="envelopeId"
+                        value={envelopeId}
+                        onChange={handleSelectChange}
+                    >
+                        {evenlopes.map((t) => (
+                            <MenuItem value={t.id}>{t.name}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+
+
                 <TextField
                     fullWidth
                     name="description"
@@ -186,6 +227,7 @@ export function FormIncome({ buttonLabel, buttonIcon, data }: FormIncomeProps) {
                         }
                     }}
                 />
+
                 <TextField
                     fullWidth
                     type="number"
@@ -205,6 +247,7 @@ export function FormIncome({ buttonLabel, buttonIcon, data }: FormIncomeProps) {
                         }
                     }}
                 />
+
             </Box >
         </TransitionsModal>
     );

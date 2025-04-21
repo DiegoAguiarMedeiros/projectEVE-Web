@@ -1,5 +1,6 @@
 import './style.css';
 
+import { useQuery } from '@tanstack/react-query';
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/thumbs';
@@ -21,8 +22,10 @@ import {
   TablePagination,
 } from '@mui/material';
 
-import { _users, _envelopes } from 'src/_mock';
+import { _users } from 'src/_mock';
 
+import EnvelopeService from 'src/services/implementation/EnvelopeService';
+import DeleteIcon from "@mui/icons-material/Delete";
 import { TableNoData } from './table-no-data';
 import { UserTableRow } from './user-table-row';
 import { UserTableHead } from './user-table-head';
@@ -30,7 +33,6 @@ import { TableEmptyRows } from './table-empty-rows';
 import { UserTableToolbar } from './user-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from './utils';
 import { AnalyticsWidgetSummary } from '../overview/analytics-widget-summary';
-
 import type { UserProps } from './user-table-row';
 import { useTable } from '../shared/useTable';
 
@@ -47,6 +49,14 @@ export default function SwiperEnvelop() {
     filterName,
   });
   const notFound = !dataFiltered.length && !!filterName;
+
+  const { data: envelopes } = useQuery({
+    queryKey: ['envelope'],
+    queryFn: () => EnvelopeService.list(),
+    staleTime: 5000,
+    gcTime: 60000,
+    placeholderData: (previousData) => previousData,
+  });
 
   return (
     <>
@@ -66,14 +76,14 @@ export default function SwiperEnvelop() {
         onProgress={setThumbsSwiper}
         className="mySwiper"
       >
-        {_envelopes.map((envelope, index) => (
+        {envelopes && envelopes.map((envelope, index) => (
           <SwiperSlide key={index}>
             <Grid2 sx={{ padding: 2, width: '100%' }}>
               <AnalyticsWidgetSummary
-                title={envelope.title}
-                percent={envelope.percent}
-                total={envelope.total}
-                icon={<envelope.icon />}
+                title={envelope.name}
+                percent={envelope.percentage}
+                total={envelope.balance}
+                icon={<DeleteIcon />}
                 color={envelope.color}
               />
             </Grid2>
@@ -86,7 +96,7 @@ export default function SwiperEnvelop() {
         thumbs={{ swiper: thumbsSwiper }}
         modules={[FreeMode, Navigation, Thumbs]}
       >
-        {_envelopes.map((envelope, index) => (
+        {envelopes && envelopes.map((envelope, index) => (
           <SwiperSlide key={index}>
             <Card sx={{ width: '100%' }}>
               <UserTableToolbar

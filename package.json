@@ -35,6 +35,7 @@
     "@mui/material": "^6.4.2",
     "@mui/x-date-pickers": "^7.27.3",
     "@tanstack/react-query": "^5.66.0",
+    "@typescript-eslint/typescript-estree": "^8.30.1",
     "apexcharts": "^4.4.0",
     "axios": "^1.7.9",
     "dayjs": "^1.11.13",

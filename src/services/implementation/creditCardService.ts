@@ -35,7 +35,7 @@ export const allFlags: Flags[] = ['Visa',
     'Hipercard']
 
 class CreditCardService implements ICRUD<CreditCardPost, CreditCard> {
-    private baseURL = 'http://localhost:3000/api/credit-cards';
+    private baseURL = 'http://localhost:3000/api/credit-card';
 
     read(id: string): Promise<CreditCard | null> {
         throw new Error('Method not implemented.');

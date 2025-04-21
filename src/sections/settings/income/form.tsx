@@ -1,17 +1,17 @@
-import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from '@mui/material';
+import { Box, Button, IconButton, TextField, Typography } from '@mui/material';
 import { startTransition, useActionState, useCallback, useEffect, useImperativeHandle, useRef, useState, useTransition } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import TransitionsModal from 'src/sections/shared/transitionsModal';
+import IncomeService, { Income, IncomePost } from 'src/services/implementation/incomeService'
 import { useSnackbar, VariantType } from 'notistack';
-import DebtsService, { Debts, DebtsPost, DebtsStatus } from 'src/services/implementation/DebtsService';
 
-type DebtsFormProps = {
+type FormIncomeProps = {
     buttonIcon?: React.ReactNode;
     buttonLabel: string;
-    data?: Debts
+    data?: Income
 }
 
-export function DebtsForm({ buttonLabel, buttonIcon, data }: DebtsFormProps) {
+export function FormIncome({ buttonLabel, buttonIcon, data }: FormIncomeProps) {
     const { enqueueSnackbar } = useSnackbar();
 
     const [open, setOpen] = useState(false);
@@ -20,26 +20,19 @@ export function DebtsForm({ buttonLabel, buttonIcon, data }: DebtsFormProps) {
 
     const [description, setDescription] = useState(data ? data.description : '');
     const [amount, setAmount] = useState(data ? data.amount : '');
-    const [installmentsTotal, setInstallmentsTotal] = useState(data ? data.installmentsTotal : '');
-    const [installmentsPaid, setInstallmentsPaid] = useState(data ? data.installmentsPaid : '');
     const [paymentDay, setPaymentDay] = useState(data ? data.paymentDay : '');
-
     const [errorDescription, setErrorDescription] = useState<string | null>(null);
     const [errorAmount, setErrorAmount] = useState<string | null>(null);
-    const [errorInstallmentsTotal, setErrorInstallmentsTotal] = useState<string | null>(null);
-    const [errorInstallmentsPaid, setErrorInstallmentsPaid] = useState<string | null>(null);
     const [errorPaymentDay, setErrorPaymentDay] = useState<string | null>(null);
 
     const queryClient = useQueryClient();
 
-    const refresh = () => {
-        queryClient.invalidateQueries({ queryKey: ['debts'] });
+    const refreshIncome = () => {
+        queryClient.invalidateQueries({ queryKey: ['income'] });
     };
     const clearForm = () => {
         setDescription('')
         setAmount('')
-        setInstallmentsTotal('')
-        setInstallmentsPaid('')
         setPaymentDay('')
     };
 
@@ -47,45 +40,40 @@ export function DebtsForm({ buttonLabel, buttonIcon, data }: DebtsFormProps) {
 
 
     const [error, submitAction, isPending] = useActionState(
-        async (previousState: any, debts: DebtsPost) => {
+        async (previousState: any, incomes: IncomePost) => {
+
             if (data) {
 
-                const errorPostIncomes = await DebtsService.update({
+                const errorPostIncome = await IncomeService.update({
                     id: data.id,
-                    description: debts.description,
-                    amount: debts.amount,
-                    installmentsTotal: debts.installmentsTotal,
-                    installmentsPaid: debts.installmentsPaid,
-                    paymentDay: debts.paymentDay,
-                    status: debts.status,
+                    description: incomes.description,
+                    amount: incomes.amount,
+                    paymentDay: incomes.paymentDay,
                 });
 
-                if (!errorPostIncomes) {
-                    return errorPostIncomes;
+                if (!errorPostIncome) {
+                    return errorPostIncome;
                 }
-                enqueueSnackbar('Dívida editada com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
+                enqueueSnackbar('Salário editado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
 
             } else {
 
-                const errorPostIncomes = await DebtsService.create({
-                    description: debts.description,
-                    amount: debts.amount,
-                    installmentsTotal: debts.installmentsTotal,
-                    installmentsPaid: debts.installmentsPaid,
-                    paymentDay: debts.paymentDay,
-                    status: debts.status,
+                const errorPostIncome = await IncomeService.create({
+                    description: incomes.description,
+                    amount: incomes.amount,
+                    paymentDay: incomes.paymentDay,
                 });
 
-                if (!errorPostIncomes) {
-                    return errorPostIncomes;
+                if (!errorPostIncome) {
+                    return errorPostIncome;
                 }
-                enqueueSnackbar('Dívida cadastrada com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
+                enqueueSnackbar('Salário cadastrado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
 
 
             }
 
             clearForm();
-            refresh();
+            refreshIncome();
             handleClose();
             return null;
         },
@@ -93,16 +81,9 @@ export function DebtsForm({ buttonLabel, buttonIcon, data }: DebtsFormProps) {
     );
 
     const handleSubmit = async () => {
-        if (validateDescription() && validateAmount()) {
+        if (validateDescription() && validateAmount() && validatePaymentDay()) {
             startTransition(async () => {
-                submitAction({
-                    description,
-                    amount,
-                    installmentsTotal,
-                    installmentsPaid,
-                    paymentDay,
-                    status: 'Pending'
-                });
+                await submitAction({ description, amount, paymentDay });
             });
         }
     };
@@ -129,34 +110,6 @@ export function DebtsForm({ buttonLabel, buttonIcon, data }: DebtsFormProps) {
         setErrorAmount(null);
         return true;
     }, [amount]);
-
-    const validateInstallmentsTotal = useCallback(() => {
-        if (!installmentsTotal.trim()) {
-            setErrorInstallmentsTotal('Valor é obrigatório.');
-            return false;
-        }
-
-        if (Number.isNaN(Number(installmentsTotal))) {
-            setErrorInstallmentsTotal('Valor deve ser numérico.');
-            return false;
-        }
-        setErrorInstallmentsTotal(null);
-        return true;
-    }, [installmentsTotal]);
-
-    const validateInstallmentsPaid = useCallback(() => {
-        if (!installmentsPaid.trim()) {
-            setErrorInstallmentsPaid('Valor é obrigatório.');
-            return false;
-        }
-
-        if (Number.isNaN(Number(installmentsPaid))) {
-            setErrorInstallmentsPaid('Valor deve ser numérico.');
-            return false;
-        }
-        setErrorInstallmentsPaid(null);
-        return true;
-    }, [installmentsPaid]);
 
     const validatePaymentDay = useCallback(() => {
         const day = Number(paymentDay);
@@ -201,10 +154,8 @@ export function DebtsForm({ buttonLabel, buttonIcon, data }: DebtsFormProps) {
                 justifySelf="center"
                 sx={{ width: '100%' }}
             >
-
-
                 <Typography variant="h3" noWrap>
-                    Dívida
+                    Salário
                 </Typography>
                 {error && <p>{error}</p>}
                 <TextField
@@ -235,44 +186,6 @@ export function DebtsForm({ buttonLabel, buttonIcon, data }: DebtsFormProps) {
                         }
                     }}
                 />
-
-                <TextField
-                    fullWidth
-                    type="number"
-                    name="installmentsPaid"
-                    label="Total Pago"
-                    value={installmentsPaid}
-                    onChange={(e) => setInstallmentsPaid(e.target.value)}
-                    onBlur={validateInstallmentsPaid}
-                    sx={{ mb: 3 }}
-                    error={!!errorInstallmentsPaid}
-                    helperText={errorInstallmentsPaid ?? ''}
-                    slotProps={{
-                        input: {
-                            inputMode: 'numeric',
-                        }
-                    }}
-                />
-                <TextField
-                    fullWidth
-                    type="number"
-                    name="installmentsTotal"
-                    label="Total de parcelas"
-                    value={installmentsTotal}
-                    onChange={(e) => setInstallmentsTotal(e.target.value)}
-                    onBlur={validateInstallmentsTotal}
-                    sx={{ mb: 3 }}
-                    error={!!errorInstallmentsTotal}
-                    helperText={errorInstallmentsTotal ?? ''}
-                    slotProps={{
-                        input: {
-                            inputMode: 'numeric',
-                        }
-                    }}
-                />
-
-
-
                 <TextField
                     fullWidth
                     type="number"

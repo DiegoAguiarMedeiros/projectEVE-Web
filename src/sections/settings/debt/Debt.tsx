@@ -9,16 +9,16 @@ import { CustomTableRow } from "src/components/table/TableRow";
 import { Iconify } from "src/components/iconify";
 import { CustomTableHead } from "src/components/table/TableHead";
 import { TableToolbar } from "src/components/table/TableToolbar";
-import DebtsService, {  Debts } from "src/services/implementation/DebtsService";
-import { DebtsForm } from "./form";
+import DebtService, {  Debt } from "src/services/implementation/DebtService";
+import { DebtForm } from "./form";
 
 
-export function DebtsTable() {
+export function DebtTable() {
     const table = useTable();
 
     const { data: debts } = useQuery({
-        queryKey: ['debts', table.page, table.rowsPerPage,table.orderBy,table.order],
-        queryFn: () => DebtsService.list({
+        queryKey: ['debt', table.page, table.rowsPerPage,table.orderBy,table.order],
+        queryFn: () => DebtService.list({
             page: table.page,
             pageSize: table.rowsPerPage,
             orderBy:table.orderBy,
@@ -38,23 +38,23 @@ export function DebtsTable() {
     const queryClient = useQueryClient();
     const { enqueueSnackbar } = useSnackbar();
 
-    const deleteDebtsMutation = useMutation({
-        mutationFn: (id: string) => DebtsService.delete(id),
+    const deleteDebtMutation = useMutation({
+        mutationFn: (id: string) => DebtService.delete(id),
         onSuccess: () => {
             enqueueSnackbar('Dívida deletada com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
-            queryClient.invalidateQueries({ queryKey: ["debts"] });
+            queryClient.invalidateQueries({ queryKey: ["debt"] });
         },
     });
-    const DeleteDebts = useCallback((id: string) => {
-        deleteDebtsMutation.mutate(id)
-    }, [deleteDebtsMutation]);
+    const DeleteDebt = useCallback((id: string) => {
+        deleteDebtMutation.mutate(id)
+    }, [deleteDebtMutation]);
 
-    const DebtsRow = (row: Debts, deleteDebts: (id: string) => void) => {
+    const DebtRow = (row: Debt, deleteDebt: (id: string) => void) => {
         const { id } = row;
 
 
-        const handleDeleteDebts = () => {
-            deleteDebts(id)
+        const handleDeleteDebt = () => {
+            deleteDebt(id)
         }
         const {description,amount,paymentDay,installmentsPaid,installmentsTotal,} = row;
 
@@ -63,11 +63,11 @@ export function DebtsTable() {
             selected={table.selected.includes(id)}
             onSelectRow={() => table.onSelectRow(id)}
             rowKeys={[description,`R$ ${amount}`,installmentsPaid,installmentsTotal,paymentDay]}
-            form={<DebtsForm
+            form={<DebtForm
                 data={row}
                 buttonIcon={<Iconify icon="solar:pen-bold" />}
                 buttonLabel='Editar' />}
-            handleDelete={handleDeleteDebts} />)
+            handleDelete={handleDeleteDebt} />)
 
     }
 
@@ -75,7 +75,7 @@ export function DebtsTable() {
         <Card sx={{ width: '100%' }}>
             <TableToolbar
                 numSelected={table.selected.length}
-                form={<DebtsForm buttonLabel='Adicionar' />}
+                form={<DebtForm buttonLabel='Adicionar' />}
             />
 
             <TableContainer sx={{ overflow: 'unset' }}>
@@ -107,7 +107,7 @@ export function DebtsTable() {
                             ?
                             <TableNoData message="Nenhuma Dívida cadastrada!" />
                             :
-                            debts && debts.data.map(debt => (DebtsRow(debt, DeleteDebts)))
+                            debts && debts.data.map(debt => (DebtRow(debt, DeleteDebt)))
                         }
                     </TableBody>
                 </Table>

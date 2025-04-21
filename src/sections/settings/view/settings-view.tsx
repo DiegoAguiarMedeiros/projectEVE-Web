@@ -7,10 +7,11 @@ import { useQuery } from '@tanstack/react-query';
 
 import { DashboardContent } from 'src/layouts/dashboard';
 import { _incomes } from 'src/_mock';
-import { IncomesTable } from '../incomes';
+import { IncomeTable } from '../income';
 import { CreditCardsTable } from '../creditCards';
-import { InvestmentsTable } from '../investments';
-import { DebtsTable } from '../debts';
+import { FixedExpenseTable } from '../fixedExpense';
+import { DebtTable } from '../debt';
+import { Envelope } from '../envelope';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -23,15 +24,16 @@ function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
   return (
-    <div
+    <Box
+      maxWidth="xl"
       role="tabpanel"
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
-    </div>
+      {value === index && <Box sx={{ p: 1 }}>{children}</Box>}
+    </Box>
   );
 }
 
@@ -58,23 +60,27 @@ export function SettingsView() {
       <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-            <Tab label="Salário" {...a11yProps(0)} />
-            <Tab label="Cartões" {...a11yProps(1)} />
-            <Tab label="Investimento" {...a11yProps(2)} />
-            <Tab label="Dívidas" {...a11yProps(3)} />
+            <Tab label="Envelopes" {...a11yProps(0)} />
+            <Tab label="Salário" {...a11yProps(1)} />
+            <Tab label="Cartões" {...a11yProps(2)} />
+            <Tab label="Gastos Fixo" {...a11yProps(3)} />
+            <Tab label="Dívidas" {...a11yProps(4)} />
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
-          <IncomesTable />
+          <Envelope/>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
-          <CreditCardsTable />
+          <IncomeTable />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={2}>
-          <InvestmentsTable/>
+          <CreditCardsTable />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={3}>
-          <DebtsTable/>
+          <FixedExpenseTable/>
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={4}>
+          <DebtTable/>
         </CustomTabPanel>
       </Box>
     </DashboardContent>

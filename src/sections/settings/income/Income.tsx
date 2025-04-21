@@ -2,23 +2,22 @@ import { useCallback, useEffect, useState } from "react";
 import { Card, TableContainer, Table, TableBody, TablePagination } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "notistack";
-import dayjs from "dayjs";
 import { useTable } from "src/sections/shared/useTable";
-import Investmentservice, { allInvestmentsName, Investments } from 'src/services/implementation/InvestmentsService';
+import IncomeService, { Income } from 'src/services/implementation/incomeService';
 import { TableNoData } from "src/components/table/TableNoData";
 import { CustomTableRow } from "src/components/table/TableRow";
 import { Iconify } from "src/components/iconify";
 import { CustomTableHead } from "src/components/table/TableHead";
 import { TableToolbar } from "src/components/table/TableToolbar";
-import { InvestmentsForm } from "./form";
+import { FormIncome } from "./form";
 
 
-export function InvestmentsTable() {
+export function IncomeTable() {
     const table = useTable();
 
-    const { data: investments } = useQuery({
-        queryKey: ['investments', table.page, table.rowsPerPage,table.orderBy,table.order],
-        queryFn: () => Investmentservice.list({
+    const { data: income } = useQuery({
+        queryKey: ['income', table.page, table.rowsPerPage,table.orderBy,table.order],
+        queryFn: () => IncomeService.list({
             page: table.page,
             pageSize: table.rowsPerPage,
             orderBy:table.orderBy,
@@ -35,39 +34,39 @@ export function InvestmentsTable() {
         console.log("table.rowsPerPage", table.rowsPerPage)
     }, [table.page, table.rowsPerPage])
 
+
     const queryClient = useQueryClient();
     const { enqueueSnackbar } = useSnackbar();
 
-    const deleteInvestmentsMutation = useMutation({
-        mutationFn: (id: string) => Investmentservice.delete(id),
+    const deleteIncomeMutation = useMutation({
+        mutationFn: (id: string) => IncomeService.delete(id),
         onSuccess: () => {
-            enqueueSnackbar('Investimento deletado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
-            queryClient.invalidateQueries({ queryKey: ["investments"] });
+            enqueueSnackbar('Salário deletado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
+            queryClient.invalidateQueries({ queryKey: ["income"] });
         },
     });
-    const DeleteInvestments = useCallback((id: string) => {
-        deleteInvestmentsMutation.mutate(id)
-    }, [deleteInvestmentsMutation]);
+    const DeleteIncome = useCallback((id: string) => {
+        deleteIncomeMutation.mutate(id)
+    }, [deleteIncomeMutation]);
 
-    const InvestmentsRow = (row: Investments, deleteInvestments: (id: string) => void) => {
+    const IncomeRow = (row: Income, deleteIncome: (id: string) => void) => {
         const { id } = row;
 
 
-        const handleDeleteInvestments = () => {
-            deleteInvestments(id)
+        const handleDeleteIncome = () => {
+            deleteIncome(id)
         }
-        const {description,applicationDate,maturityDate,profitability,amount,status,type} = row;
-
+        const {description,amount,paymentDay} = row;
         return (<CustomTableRow
             key={id}
             selected={table.selected.includes(id)}
             onSelectRow={() => table.onSelectRow(id)}
-            rowKeys={[description,`R$ ${amount}`,`${profitability} %`,dayjs(applicationDate).format("DD/MM/YYYY"),dayjs(maturityDate).format("DD/MM/YYYY"),allInvestmentsName[type!],status]}
-            form={<InvestmentsForm
+            rowKeys={[description,`R$ ${amount}`,paymentDay]}
+            form={<FormIncome
                 data={row}
                 buttonIcon={<Iconify icon="solar:pen-bold" />}
                 buttonLabel='Editar' />}
-            handleDelete={handleDeleteInvestments} />)
+            handleDelete={handleDeleteIncome} />)
 
     }
 
@@ -75,49 +74,45 @@ export function InvestmentsTable() {
         <Card sx={{ width: '100%' }}>
             <TableToolbar
                 numSelected={table.selected.length}
-                form={<InvestmentsForm buttonLabel='Adicionar' />}
+                form={<FormIncome buttonLabel='Adicionar' />}
             />
 
             <TableContainer sx={{ overflow: 'unset' }}>
                 <Table sx={{ minWidth: 800 }}>
-                    {investments && investments.data.length > 0 ? <CustomTableHead
+                    {income && income.data.length > 0 ? <CustomTableHead
                         order={table.order}
                         orderBy={table.orderBy}
-                        rowCount={investments.data.length}
+                        rowCount={income.data.length}
                         numSelected={table.selected.length}
                         onSort={table.onSort}
                         onSelectAllRows={(checked) =>
                             table.onSelectAllRows(
                                 checked,
-                                investments.data.map((investment) => investment.id!)
+                                income.data.map((item) => item.id!)
                             )
                         }
                         headLabel={[
                             { id: 'description', label: 'Descrição' },
-                            { id: 'amount', label: 'Valor' },
-                            { id: 'profitability', label: 'Rentabilidade' },
-                            { id: 'applicationDate', label: 'Data da aplicação' },
-                            { id: 'maturityDate', label: 'Data de resgate' },
-                            { id: 'type', label: 'Tipo' },
-                            { id: 'status', label: 'Status' },
+                            { id: 'amount', label: 'Salário' },
+                            { id: 'payment_day', label: 'Dia de pagamento' },
                             { id: '' },
                         ]}
                     /> : <></>}
 
                     <TableBody>
-                        {investments && investments.data.length < 1
+                        {income && income.data.length < 1
                             ?
-                            <TableNoData message="Nenhum investimento cadastrado!" />
+                            <TableNoData message="Nenhum salário cadastrado!" />
                             :
-                            investments && investments.data.map(investment => (InvestmentsRow(investment, DeleteInvestments)))
+                            income && income.data.map(item => (IncomeRow(item, DeleteIncome)))
                         }
                     </TableBody>
                 </Table>
             </TableContainer>
-            {investments && investments.data.length > 0 ? <TablePagination
+            {income && income.data.length > 0 ? <TablePagination
                 component="div"
                 page={table.page}
-                count={investments.totalItems}
+                count={income.totalItems}
                 rowsPerPage={table.rowsPerPage}
                 onPageChange={table.onChangePage}
                 rowsPerPageOptions={[5, 10, 25]}

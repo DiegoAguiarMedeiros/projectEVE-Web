@@ -26,7 +26,7 @@ export function CreditCardForm({ buttonLabel, buttonIcon, data }: CreditCardForm
     const queryClient = useQueryClient();
 
     const refresh = () => {
-        queryClient.invalidateQueries({ queryKey: ['creditCards'] });
+        queryClient.invalidateQueries({ queryKey: ['credit-card'] });
     };
     const clearForm = () => {
         setName('')

@@ -17,7 +17,7 @@ type Props = CardProps & {
   title: string;
   total: number;
   percent: number;
-  color?: ColorType;
+  color?: string;
   icon: React.ReactNode;
 };
 
@@ -34,13 +34,9 @@ export function AnalyticsWidgetSummary({
   return (
     <Card
       sx={{
-        ...bgGradient({
-          color: `135deg, ${varAlpha(theme.palette[color].lighterChannel, 0.48)}, ${varAlpha(theme.palette[color].lighterChannel, 0.48)}`,
-        }),
         p: 3,
-        boxShadow: 'none',
         position: 'relative',
-        color: `${color}.darker`,
+        color: `${color}`,
         backgroundColor: 'common.white',
         ...sx,
       }}
@@ -79,7 +75,7 @@ export function AnalyticsWidgetSummary({
           height: 320,
           opacity: 0.24,
           position: 'absolute',
-          color: `${color}.main`,
+          color: `${color}`,
         }}
       />
     </Card>
