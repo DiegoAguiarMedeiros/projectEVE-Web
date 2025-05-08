@@ -84,7 +84,13 @@ export function TransactionTable({ envelopeId }: TransactionTableProps) {
             key={id}
             selected={table.selected.includes(id)}
             onSelectRow={() => table.onSelectRow(id)}
-            rowKeys={[description, `R$ ${amount}`, paymentMethod, dayjs(date).format("DD/MM/YYYY"), <Chips label={status} click={handleClick} />]}
+            rowKeys={[description, `R$ ${amount}`, paymentMethod, dayjs(date).format("DD/MM/YYYY"),
+            <Chips  
+            label={status} 
+            labels={['Pago','Pendente']} 
+            fieldName="Completed" 
+            click={handleClick} 
+            />]}
             form={<TransactionForm
                 data={row}
                 buttonIcon={<Iconify icon="solar:pen-bold" />}

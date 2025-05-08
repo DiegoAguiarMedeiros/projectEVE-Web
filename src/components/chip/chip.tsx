@@ -6,9 +6,11 @@ import { useTheme } from '@mui/material/styles';
 
 type ChipProps = {
     label: string;
+    labels: string[] ;
+    fieldName: string;
     click: VoidFunction;
 }
-export default function Chips({ label, click }: ChipProps) {
+export default function Chips({ label, labels, fieldName, click }: ChipProps) {
     const theme = useTheme();
     const handleClick = () => {
         click();
@@ -17,8 +19,8 @@ export default function Chips({ label, click }: ChipProps) {
     return (
         <Stack direction="row" spacing={1}>
             <Chip
-                sx={{ backgroundColor: label === 'Completed' ? theme.palette.success.main : theme.palette.warning.main, color: 'white' }}
-                label={label === 'Completed' ? 'Pago' : 'Pendente'}
+                sx={{ backgroundColor: label === fieldName ? theme.palette.success.main : theme.palette.warning.main, color: 'white' }}
+                label={label === fieldName ? labels[0] : labels[1]}
                 onClick={handleClick}
             />
         </Stack>

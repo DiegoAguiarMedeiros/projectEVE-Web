@@ -4,6 +4,7 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import { Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 import { DashboardContent } from 'src/layouts/dashboard';
 import { _incomes } from 'src/_mock';
@@ -22,7 +23,6 @@ interface TabPanelProps {
 
 function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
-
   return (
     <Box
       maxWidth="xl"
@@ -68,9 +68,6 @@ export function SettingsView() {
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
-          <Typography variant="caption" sx={{ m: 2, mb: 4 }}>
-            Assim?
-          </Typography>
           <Envelope />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>

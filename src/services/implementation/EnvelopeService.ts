@@ -9,12 +9,15 @@ export interface Envelope {
     active: boolean;
     is_editable: boolean;
     userId: string;
-  }
+}
 export interface EnvelopePost {
     name: string;
 }
+export interface EnvelopeUpdateFiledDTO extends Omit<
+    Envelope, 'balance' | 'is_editable' | 'userId'
+> { }
 
-class EnvelopeService  {
+class EnvelopeService {
     private baseURL = 'http://localhost:3000/api/envelope';
 
     read(id: string): Promise<Envelope | null> {
@@ -44,10 +47,15 @@ class EnvelopeService  {
         return false;
     }
 
-    async update(item: Envelope): Promise<boolean> {
+    async update(item: EnvelopeUpdateFiledDTO): Promise<boolean> {
         const response = await axios.patch(
             `${this.baseURL}/${item.id}`,
-            { name: item.name },
+            {
+                name: item.name,
+                color: item.color,
+                percentage: item.percentage,
+                active: item.active
+            },
             { withCredentials: true }
         );
         if (response.data === 'OK') {

@@ -39,7 +39,7 @@ export function CustomTableRow({ selected, onSelectRow, form, handleDelete, rowK
           <Checkbox disableRipple checked={selected} onChange={onSelectRow} />
         </TableCell>
 
-        {rowKeys.map(key => (<TableCell>{key}</TableCell>))}
+        {rowKeys.map((key,index) => (<TableCell key={index}>{key}</TableCell>))}
 
         <TableCell/>
 

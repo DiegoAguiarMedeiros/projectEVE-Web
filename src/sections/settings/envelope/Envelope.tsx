@@ -1,14 +1,18 @@
-import { Box, Button, Card, CardContent, CardHeader,  FormControl, FormLabel, IconButton, Slider, Stack, Switch, TextField, Typography } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { useEffect, useState } from "react";
+import { Box, Typography, useTheme } from "@mui/material";
 import { _timeline } from "src/_mock/_data";
 import EnvelopeService from "src/services/implementation/EnvelopeService";
 import { useQuery } from "@tanstack/react-query";
+import Badges from "src/components/badge/badge";
+import { EnvelopeCard } from "./EnvelopeCard";
 
 export function Envelope() {
 
 
+    const theme = useTheme();
+    const [envelopeAlocation, setEnvelopeAllocation] = useState(0);
     const { data: envelope } = useQuery({
-        queryKey: ['envelope' ],
+        queryKey: ['envelope'],
         queryFn: () => EnvelopeService.list(),
         staleTime: 5000,
         gcTime: 60000,
@@ -16,90 +20,35 @@ export function Envelope() {
     });
 
 
-    const updateAllocation = (id: string, newAllocation: number) => {
-
-    };
-
-    const toggleActive = (id: string) => {
-
-    };
-
-    const deleteEnvelope = (id: string) => {};
-
-
-
-    const updateColor = (id: string, newColor: string) => {};
-
+    useEffect(() => {
+        if (envelope) {
+            const totalAllocation = envelope.reduce((acc, item) => acc  + item.percentage, 0);
+            setEnvelopeAllocation(totalAllocation);
+        }
+    }, [envelope]);
     return (
-        <Box
-            sx={{
-                display: "flex",
-                flexWrap: "wrap",
-                justifyContent: "flex-start",
-                gap: 2,
-                mt: 2,
-            }}
-        >
-            {envelope && envelope.map((item) => (
-                <Card
-                    key={item.id}
-                    sx={{
-                        flex: "1 0 23%",
-                        minWidth: 200,
-                        boxSizing: "border-box",
-                        padding: 1,
-                    }}
-                >
-                    <CardHeader
-                        title={<Typography variant="h6">{item.name}</Typography>}
-                        subheader={
-                            <Typography variant="body2">
-                                Alocação: {item.percentage}%
-                            </Typography>
-                        }
-                    />
-                    <CardContent>
-                        <Stack spacing={2}>
-                            <FormControl fullWidth>
-                                <FormLabel>Alocação</FormLabel>
-                                <Slider
-                                    value={item.percentage}
-                                    onChange={(_, value) =>
-                                        updateAllocation(item.id, value as number)
-                                    }
-                                    max={100}
-                                    step={1}
-                                />
-                            </FormControl>
-                            <Stack direction="row" alignItems="center" spacing={2}>
-                                <TextField
-                                    type="color"
-                                    value={item.color}
-                                    onChange={(e) => updateColor(item.id, e.target.value)}
-                                    variant="outlined"
-                                    size="small"
-                                    sx={{ width: 50, minWidth: 50, padding: 0 }}
-                                />
+        <>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2 }}>
+                <Typography variant="caption" sx={{ m: 2 }}>
+                    Assim?
+                </Typography>
+                <Badges text={envelopeAlocation <= 100 ? `Faltam ${ 100 - envelopeAlocation }% para alocação` : `Passou ${ envelopeAlocation - 100 }% do máximo`} bgColor={envelopeAlocation <= 100 ? theme.palette.success.main : theme.palette.error.main} />
+            </Box>
+            <Box
+                sx={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    justifyContent: "flex-start",
+                    gap: 2,
+                    mt: 2,
+                }}
+            >
+                {envelope && envelope.map((item) => (
+                    <EnvelopeCard key={item.id} data={item} setEnvelopeAllocation={setEnvelopeAllocation} />
+                ))}
+            </Box>
 
-                                <FormLabel>Ativo</FormLabel>
-                                <Switch
-                                    checked={item.active}
-                                    onChange={() => toggleActive(item.id)}
-                                />
-
-                                <IconButton
-                                    onClick={() => deleteEnvelope(item.id)}
-                                    color="error"
-                                    size="small"
-                                >
-                                    <DeleteIcon />
-                                </IconButton>
-                            </Stack>
-                        </Stack>
-                    </CardContent>
-                </Card>
-            ))}
-        </Box>
+        </>
     );
 
 }
