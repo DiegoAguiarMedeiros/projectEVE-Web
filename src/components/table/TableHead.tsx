@@ -4,7 +4,7 @@ import Checkbox from '@mui/material/Checkbox';
 import TableHead from '@mui/material/TableHead';
 import TableCell from '@mui/material/TableCell';
 import TableSortLabel from '@mui/material/TableSortLabel';
-import { visuallyHidden } from 'src/sections/envelope/utils';
+import { visuallyHidden } from 'src/sections/shared/utils';
 
 
 // ----------------------------------------------------------------------

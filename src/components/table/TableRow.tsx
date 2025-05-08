@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
@@ -17,7 +17,7 @@ type IncomesTableRowProps = {
   onSelectRow: () => void;
   form: React.ReactElement;
   handleDelete: VoidFunction;
-  rowKeys: string[]
+  rowKeys: string[] | React.ReactNode[];
 };
 
 export function CustomTableRow({ selected, onSelectRow, form, handleDelete, rowKeys }: IncomesTableRowProps) {
@@ -39,7 +39,7 @@ export function CustomTableRow({ selected, onSelectRow, form, handleDelete, rowK
           <Checkbox disableRipple checked={selected} onChange={onSelectRow} />
         </TableCell>
 
-        {rowKeys.map(key => (<TableCell key={key}>{key}</TableCell>))}
+        {rowKeys.map(key => (<TableCell>{key}</TableCell>))}
 
         <TableCell/>
 

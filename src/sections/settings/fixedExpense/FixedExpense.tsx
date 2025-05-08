@@ -65,13 +65,13 @@ export function FixedExpenseTable() {
         const handleDeleteFixedExpense = () => {
             deleteFixedExpense(id)
         }
-        const { description, envelopeId, amount, paymentDay } = row;
+        const { description, envelope, amount, paymentDay } = row;
 
         return (<CustomTableRow
             key={id}
             selected={table.selected.includes(id)}
             onSelectRow={() => table.onSelectRow(id)}
-            rowKeys={[envelopeId,description, `R$ ${amount}`, paymentDay]}
+            rowKeys={[envelope.name,description, `R$ ${amount}`, paymentDay]}
             form={<FixedExpenseForm
                 evenlopes={envelopes ?? []}
                 data={row}

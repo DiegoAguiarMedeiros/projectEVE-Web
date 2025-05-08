@@ -2,18 +2,19 @@ import axios from 'axios';
 import { Pagination } from 'src/types/Pagination';
 import { Dayjs } from 'dayjs';
 import { ICRUD } from '../ICRUD';
+import { Envelope } from './EnvelopeService';
 
 
 
 export interface FixedExpense {
     id: string;
-    envelopeId: string;
+    envelope: Envelope;
     description: string;
     amount: string;
     paymentDay: string;
 }
 export interface FixedExpensePost {
-    envelopeId: string;
+    envelope: Envelope;
     description: string;
     amount: string;
     paymentDay: string;
@@ -52,7 +53,7 @@ class FixedExpenseService implements ICRUD<FixedExpensePost, FixedExpense> {
             {
                 description: FixedExpense.description,
                 amount: FixedExpense.amount,
-                envelopeId: FixedExpense.envelopeId,
+                envelope: FixedExpense.envelope,
                 paymentDay: FixedExpense.paymentDay,
             },
             { withCredentials: true }
@@ -69,7 +70,7 @@ class FixedExpenseService implements ICRUD<FixedExpensePost, FixedExpense> {
             {
                 description: FixedExpense.description,
                 amount: FixedExpense.amount,
-                envelopeId: FixedExpense.envelopeId,
+                envelope: FixedExpense.envelope,
                 paymentDay: FixedExpense.paymentDay,
             },
             { withCredentials: true }

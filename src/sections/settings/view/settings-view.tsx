@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
-import { useQuery } from '@tanstack/react-query';
+import { Typography } from '@mui/material';
 
 import { DashboardContent } from 'src/layouts/dashboard';
 import { _incomes } from 'src/_mock';
@@ -62,25 +62,40 @@ export function SettingsView() {
           <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
             <Tab label="Envelopes" {...a11yProps(0)} />
             <Tab label="Salário" {...a11yProps(1)} />
-            <Tab label="Cartões" {...a11yProps(2)} />
-            <Tab label="Gastos Fixo" {...a11yProps(3)} />
+            <Tab label="Gastos Fixo" {...a11yProps(2)} />
+            <Tab label="Cartões" {...a11yProps(3)} />
             <Tab label="Dívidas" {...a11yProps(4)} />
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
-          <Envelope/>
+          <Typography variant="caption" sx={{ m: 2, mb: 4 }}>
+            Assim?
+          </Typography>
+          <Envelope />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
+          <Typography variant="caption" sx={{ m: 2, mb: 4 }}>
+            instruções!
+          </Typography>
           <IncomeTable />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={2}>
-          <CreditCardsTable />
+          <Typography variant="caption" sx={{ m: 2, mb: 4 }}>
+            instruções!
+          </Typography>
+          <FixedExpenseTable />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={3}>
-          <FixedExpenseTable/>
+          <Typography variant="caption" sx={{ m: 2, mb: 4 }}>
+            instruções!
+          </Typography>
+          <CreditCardsTable />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={4}>
-          <DebtTable/>
+          <Typography variant="caption" sx={{ m: 2, mb: 4 }}>
+            instruções!
+          </Typography>
+          <DebtTable />
         </CustomTabPanel>
       </Box>
     </DashboardContent>

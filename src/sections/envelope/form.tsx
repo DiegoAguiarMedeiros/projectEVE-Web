@@ -3,22 +3,20 @@ import { startTransition, useActionState, useCallback, useEffect, useImperativeH
 import { useQueryClient } from '@tanstack/react-query';
 import TransitionsModal from 'src/sections/shared/transitionsModal';
 import { useSnackbar, VariantType } from 'notistack';
-import FixedExpenseService, { FixedExpense, FixedExpensePost } from 'src/services/implementation/FixedExpenseService';
+import TransactionService, { allPaymentMethod, PaymentMethod, Transaction, TransactionPost, TransactionStatus } from 'src/services/implementation/TransactionService';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs, { Dayjs } from 'dayjs';
-import { type } from 'os';
 import { Envelope } from 'src/services/implementation/EnvelopeService';
 
-type FixedExpenseFormProps = {
+type TransactionFormProps = {
     buttonIcon?: React.ReactNode;
     buttonLabel: string;
-    data?: FixedExpense
-    evenlopes: Envelope[]
+    data?: Transaction;
+    envelopeId: string;
 }
 
-export function FixedExpenseForm({ buttonLabel, buttonIcon, data ,evenlopes}: FixedExpenseFormProps) {
+export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId }: TransactionFormProps) {
     const { enqueueSnackbar } = useSnackbar();
 
     const [open, setOpen] = useState(false);
@@ -27,58 +25,64 @@ export function FixedExpenseForm({ buttonLabel, buttonIcon, data ,evenlopes}: Fi
 
     const [description, setDescription] = useState(data ? data.description : '');
     const [amount, setAmount] = useState(data ? data.amount : '');
-    const [paymentDay, setPaymentDay] = useState(data ? data.paymentDay : '');
-    const [envelope, setEnvelope] = useState(data ? data.envelope : {} as Envelope);
+    const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(data ? data.paymentMethod : 'DebitCard');
+    const [date, setDate] = useState<Dayjs | null>(data ? dayjs(data.date) : null);
 
     const [errorDescription, setErrorDescription] = useState<string | null>(null);
     const [errorAmount, setErrorAmount] = useState<string | null>(null);
+    const [errorInstallmentsTotal, setErrorInstallmentsTotal] = useState<string | null>(null);
+    const [errorInstallmentsPaid, setErrorInstallmentsPaid] = useState<string | null>(null);
     const [errorPaymentDay, setErrorPaymentDay] = useState<string | null>(null);
 
     const queryClient = useQueryClient();
 
     const refresh = () => {
-        queryClient.invalidateQueries({ queryKey: ['fixed-expense'] });
+        queryClient.invalidateQueries({ queryKey: ['transaction-by-envelope'] });
     };
     const clearForm = () => {
         setDescription('')
         setAmount('')
-        setPaymentDay('')
-        setEnvelope({} as Envelope)
     };
 
 
 
 
     const [error, submitAction, isPending] = useActionState(
-        async (previousState: any, fixedExpense: FixedExpensePost) => {
+        async (previousState: any, transaction: TransactionPost) => {
             if (data) {
 
-                const errorPostIncomes = await FixedExpenseService.update({
+                const errorPostIncomes = await TransactionService.update({
                     id: data.id,
-                    envelope: fixedExpense.envelope,
-                    description: fixedExpense.description,
-                    amount: fixedExpense.amount,
-                    paymentDay: fixedExpense.paymentDay,
+                    description: transaction.description,
+                    amount: transaction.amount,
+                    status: data.status,
+                    envelope: { id: envelopeId } as Envelope,
+                    paymentMethod: transaction.paymentMethod,
+                    date: transaction.date,
+                    type: 'Debit'
                 });
 
                 if (!errorPostIncomes) {
                     return errorPostIncomes;
                 }
-                enqueueSnackbar('Gasto fixo editado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
+                enqueueSnackbar('Transação editada com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
 
             } else {
 
-                const errorPostIncomes = await FixedExpenseService.create({
-                    description: fixedExpense.description,
-                    amount: fixedExpense.amount,
-                    paymentDay: fixedExpense.paymentDay,
-                    envelope: fixedExpense.envelope,
+                const errorPostIncomes = await TransactionService.create({
+                    description: transaction.description,
+                    amount: transaction.amount,
+                    status: transaction.status,
+                    envelope: { id: envelopeId } as Envelope,
+                    paymentMethod:transaction.paymentMethod,
+                    date: transaction.date,
+                    type: 'Debit'
                 });
 
                 if (!errorPostIncomes) {
                     return errorPostIncomes;
                 }
-                enqueueSnackbar('Gasto fixo cadastrado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
+                enqueueSnackbar('Transação cadastrada com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
 
 
             }
@@ -94,10 +98,14 @@ export function FixedExpenseForm({ buttonLabel, buttonIcon, data ,evenlopes}: Fi
     const handleSubmit = async () => {
         if (validateDescription() && validateAmount()) {
             startTransition(async () => {
-                await submitAction({
-                    description, amount,
-                    paymentDay,
-                    envelope,
+                submitAction({
+                    description,
+                    amount,
+                    paymentMethod,
+                    status: 'Pending',
+                    envelope: { id: envelopeId } as Envelope,
+                    date,
+                    type: 'Debit',
                 });
             });
         }
@@ -126,23 +134,8 @@ export function FixedExpenseForm({ buttonLabel, buttonIcon, data ,evenlopes}: Fi
         return true;
     }, [amount]);
 
-    const validatePaymentDay = useCallback(() => {
-        const day = Number(paymentDay);
-        if (!paymentDay.trim()) {
-            setErrorPaymentDay('Dia do pagamento é obrigatório.');
-            return false;
-        }
-        if (Number.isNaN(day) || day < 1 || day > 31) {
-            setErrorPaymentDay('O dia do pagamento deve estar entre 1 e 31.');
-            return false;
-        }
-        setErrorPaymentDay(null);
-        return true;
-    }, [paymentDay]);
-
-
-    const handleSelectChange = (event: SelectChangeEvent<string>) => {
-        setEnvelope({id:event.target.value} as Envelope);
+    const handleSelectChange = (event: SelectChangeEvent<PaymentMethod>) => {
+        setPaymentMethod(event.target.value as PaymentMethod);
     };
 
 
@@ -177,28 +170,9 @@ export function FixedExpenseForm({ buttonLabel, buttonIcon, data ,evenlopes}: Fi
 
 
                 <Typography variant="h3" noWrap>
-                    Gasto fixos
+                    Transação
                 </Typography>
                 {error && <p>{error}</p>}
-
-                <FormControl fullWidth>
-                    <InputLabel id="evenlope-id-select-label">Envelope</InputLabel>
-                    <Select
-                        labelId="evenlope-id-select-label"
-                        id="evenlope-id-select"
-                        label="Envelope"
-                        sx={{ width: '100%', mb: 3 }}
-                        name="envelope"
-                        value={envelope.id}
-                        onChange={handleSelectChange}
-                    >
-                        {evenlopes.map((t) => (
-                            <MenuItem value={t.id}>{t.name}</MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
-
-
                 <TextField
                     fullWidth
                     name="description"
@@ -227,27 +201,32 @@ export function FixedExpenseForm({ buttonLabel, buttonIcon, data ,evenlopes}: Fi
                         }
                     }}
                 />
-
-                <TextField
-                    fullWidth
-                    type="number"
-                    name="paymentDay"
-                    label="Dia do pagamento"
-                    value={paymentDay}
-                    onChange={(e) => setPaymentDay(e.target.value)}
-                    onBlur={validatePaymentDay}
-                    sx={{ mb: 3 }}
-                    error={!!errorPaymentDay}
-                    helperText={errorPaymentDay ?? ''}
-                    slotProps={{
-                        input: {
-                            inputMode: 'numeric',
-                            "aria-valuemin": 1,
-                            "aria-valuemax": 31,
-                        }
-                    }}
-                />
-
+                <FormControl fullWidth>
+                    <InputLabel id="payment-method-select-label">Método de Pagamento</InputLabel>
+                    <Select
+                        labelId="payment-method-select-label"
+                        id="payment-method-select"
+                        label="Método de Pagamento"
+                        sx={{ width: '100%', mb: 3 }}
+                        name="paymentMethod"
+                        value={paymentMethod}
+                        onChange={handleSelectChange}
+                    >
+                        {allPaymentMethod.map((f) => (
+                            <MenuItem value={f}>{f}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                        sx={{ width: '100%', mb: 3 }}
+                        name="date"
+                        label="Data do Pagamento"
+                        value={date}
+                        onChange={(newValue) => setDate(newValue)}
+                        format="DD/MM/YYYY"
+                    />
+                </LocalizationProvider>
             </Box >
         </TransitionsModal>
     );

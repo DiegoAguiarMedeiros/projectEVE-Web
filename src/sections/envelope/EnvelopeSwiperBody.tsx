@@ -7,8 +7,6 @@ import { useTheme } from '@mui/material/styles';
 
 import { fShortenNumber } from 'src/utils/format-number';
 
-import { varAlpha, bgGradient } from 'src/theme/styles';
-
 import { SvgColor } from 'src/components/svg-color';
 
 // ----------------------------------------------------------------------
@@ -21,7 +19,7 @@ type Props = CardProps & {
   icon: React.ReactNode;
 };
 
-export function AnalyticsWidgetSummary({
+export function EnvelopeSwiperBody({
   icon,
   title,
   total,
@@ -36,8 +34,9 @@ export function AnalyticsWidgetSummary({
       sx={{
         p: 3,
         position: 'relative',
-        color: `${color}`,
-        backgroundColor: '#000',
+        color: `${theme.palette.contrastThreshold}`,
+        backgroundColor: `#fff`,
+        border:`1px solid ${color}`,
         ...sx,
       }}
       {...other}
@@ -75,7 +74,7 @@ export function AnalyticsWidgetSummary({
           height: 320,
           opacity: 0.24,
           position: 'absolute',
-          color: `${color}`,
+          color: `#fff`,
         }}
       />
     </Card>

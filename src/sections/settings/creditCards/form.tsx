@@ -153,7 +153,7 @@ export function CreditCardForm({ buttonLabel, buttonIcon, data }: CreditCardForm
                     helperText={errorName ?? ''}
                 />
                 <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">Tipo</InputLabel>
+                    <InputLabel id="demo-simple-select-label">Bandeira</InputLabel>
                     <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"

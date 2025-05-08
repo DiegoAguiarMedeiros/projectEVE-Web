@@ -37,6 +37,7 @@ export function Envelope() {
                 flexWrap: "wrap",
                 justifyContent: "flex-start",
                 gap: 2,
+                mt: 2,
             }}
         >
             {envelope && envelope.map((item) => (
