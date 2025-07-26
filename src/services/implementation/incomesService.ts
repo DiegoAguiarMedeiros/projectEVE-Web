@@ -14,13 +14,13 @@ export interface IncomePost {
     paymentDay: string;
 }
 
-class IncomeService implements ICRUD<IncomePost, Income> {
+class IncomesService implements ICRUD<IncomePost, Income> {
 
     read(id: string): Promise<Income | null> {
         throw new Error('Method not implemented.');
     }
 
-    private baseURL = 'http://localhost:3000/api/income';
+    private baseURL = 'http://localhost:3000/api/incomes';
 
     async list({
         page = 1,
@@ -77,5 +77,5 @@ return false;
 
 }
 
-export default new IncomeService();
+export default new IncomesService();
 

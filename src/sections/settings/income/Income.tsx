@@ -3,7 +3,7 @@ import { Card, TableContainer, Table, TableBody, TablePagination } from "@mui/ma
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "notistack";
 import { useTable } from "src/sections/shared/useTable";
-import IncomeService, { Income } from 'src/services/implementation/incomeService';
+import IncomesService, { Income } from 'src/services/implementation/incomesService';
 import { TableNoData } from "src/components/table/TableNoData";
 import { CustomTableRow } from "src/components/table/TableRow";
 import { Iconify } from "src/components/iconify";
@@ -17,7 +17,7 @@ export function IncomeTable() {
 
     const { data: income } = useQuery({
         queryKey: ['income', table.page, table.rowsPerPage,table.orderBy,table.order],
-        queryFn: () => IncomeService.list({
+        queryFn: () => IncomesService.list({
             page: table.page,
             pageSize: table.rowsPerPage,
             orderBy:table.orderBy,
@@ -39,7 +39,7 @@ export function IncomeTable() {
     const { enqueueSnackbar } = useSnackbar();
 
     const deleteIncomeMutation = useMutation({
-        mutationFn: (id: string) => IncomeService.delete(id),
+        mutationFn: (id: string) => IncomesService.delete(id),
         onSuccess: () => {
             enqueueSnackbar('Salário deletado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
             queryClient.invalidateQueries({ queryKey: ["income"] });

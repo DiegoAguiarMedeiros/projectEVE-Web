@@ -9,7 +9,8 @@ import { CustomTableRow } from "src/components/table/TableRow";
 import { Iconify } from "src/components/iconify";
 import { CustomTableHead } from "src/components/table/TableHead";
 import { TableToolbar } from "src/components/table/TableToolbar";
-import DebtService, {  Debt } from "src/services/implementation/DebtService";
+import DebtsService, { Debts } from "src/services/implementation/DebtsService";
+import EnvelopesService from "src/services/implementation/EnvelopesService";
 import { DebtForm } from "./form";
 
 
@@ -17,13 +18,24 @@ export function DebtTable() {
     const table = useTable();
 
     const { data: debts } = useQuery({
-        queryKey: ['debt', table.page, table.rowsPerPage,table.orderBy,table.order],
-        queryFn: () => DebtService.list({
+        queryKey: ['debt', table.page, table.rowsPerPage, table.orderBy, table.order],
+        queryFn: () => DebtsService.list({
             page: table.page,
             pageSize: table.rowsPerPage,
-            orderBy:table.orderBy,
-            order:table.order,
+            orderBy: table.orderBy,
+            order: table.order,
         }),
+        staleTime: 5000,
+        gcTime: 60000,
+        placeholderData: (previousData) => previousData,
+    });
+
+
+
+
+    const { data: envelopes } = useQuery({
+        queryKey: ['envelope'],
+        queryFn: () => EnvelopesService.list(),
         staleTime: 5000,
         gcTime: 60000,
         placeholderData: (previousData) => previousData,
@@ -39,7 +51,7 @@ export function DebtTable() {
     const { enqueueSnackbar } = useSnackbar();
 
     const deleteDebtMutation = useMutation({
-        mutationFn: (id: string) => DebtService.delete(id),
+        mutationFn: (id: string) => DebtsService.delete(id),
         onSuccess: () => {
             enqueueSnackbar('Dívida deletada com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
             queryClient.invalidateQueries({ queryKey: ["debt"] });
@@ -49,22 +61,23 @@ export function DebtTable() {
         deleteDebtMutation.mutate(id)
     }, [deleteDebtMutation]);
 
-    const DebtRow = (row: Debt, deleteDebt: (id: string) => void) => {
+    const DebtRow = (row: Debts, deleteDebt: (id: string) => void) => {
         const { id } = row;
 
 
         const handleDeleteDebt = () => {
             deleteDebt(id)
         }
-        const {description,amount,paymentDay,installmentsPaid,installmentsTotal,} = row;
+        const { description, amount, paymentDay, installmentsPaid, installmentsTotal, } = row;
 
         return (<CustomTableRow
             key={id}
             selected={table.selected.includes(id)}
             onSelectRow={() => table.onSelectRow(id)}
-            rowKeys={[description,`R$ ${amount}`,installmentsPaid,installmentsTotal,paymentDay]}
+            rowKeys={[description, `R$ ${amount}`, installmentsPaid, installmentsTotal, paymentDay]}
             form={<DebtForm
                 data={row}
+                envelopes={envelopes ?? []}
                 buttonIcon={<Iconify icon="solar:pen-bold" />}
                 buttonLabel='Editar' />}
             handleDelete={handleDeleteDebt} />)
@@ -75,7 +88,7 @@ export function DebtTable() {
         <Card sx={{ width: '100%' }}>
             <TableToolbar
                 numSelected={table.selected.length}
-                form={<DebtForm buttonLabel='Adicionar' />}
+                form={<DebtForm envelopes={envelopes ?? []} buttonLabel='Adicionar' />}
             />
 
             <TableContainer sx={{ overflow: 'unset' }}>

@@ -1,24 +1,14 @@
-import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import AuthService from '../services/authService'; // Importe o AuthService corretamente
+import { useUser } from 'src/hooks/queries/useUser';
 
 export const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const { data: user, isLoading, error } = useUser();
 
-  useEffect(() => {
-    const checkAuthentication = async () => {
-      const authStatus = await AuthService.checkAuth();
-      setIsAuthenticated(authStatus);
-    };
-    checkAuthentication();
-  }, []);
-
-  if (isAuthenticated === null) {
-    // Exibe um carregando ou placeholder enquanto verifica a autenticação
+  if (isLoading === null) {
     return <div>Carregando...</div>;
   }
 
-  if (!isAuthenticated) {
+  if (error) {
     return <Navigate to='/entrar' replace />;
   }
 

@@ -4,13 +4,13 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "notistack";
 import dayjs from "dayjs";
 import { useTable } from "src/sections/shared/useTable";
-import FixedExpenseService, { FixedExpense } from 'src/services/implementation/FixedExpenseService';
+import FixedExpensesService, { FixedExpenses } from 'src/services/implementation/FixedExpensesService';
 import { TableNoData } from "src/components/table/TableNoData";
 import { CustomTableRow } from "src/components/table/TableRow";
 import { Iconify } from "src/components/iconify";
 import { CustomTableHead } from "src/components/table/TableHead";
 import { TableToolbar } from "src/components/table/TableToolbar";
-import EnvelopeService from "src/services/implementation/EnvelopeService";
+import EnvelopesService from "src/services/implementation/EnvelopesService";
 import { FixedExpenseForm } from "./form";
 
 
@@ -19,7 +19,7 @@ export function FixedExpenseTable() {
 
     const { data: fixedExpense } = useQuery({
         queryKey: ['fixed-expense', table.page, table.rowsPerPage, table.orderBy, table.order],
-        queryFn: () => FixedExpenseService.list({
+        queryFn: () => FixedExpensesService.list({
             page: table.page,
             pageSize: table.rowsPerPage,
             orderBy: table.orderBy,
@@ -32,7 +32,7 @@ export function FixedExpenseTable() {
     
     const { data: envelopes } = useQuery({
         queryKey: ['envelope'],
-        queryFn: () => EnvelopeService.list(),
+        queryFn: () => EnvelopesService.list(),
         staleTime: 5000,
         gcTime: 60000,
         placeholderData: (previousData) => previousData,
@@ -48,9 +48,9 @@ export function FixedExpenseTable() {
     const { enqueueSnackbar } = useSnackbar();
 
     const deleteFixedExpenseMutation = useMutation({
-        mutationFn: (id: string) => FixedExpenseService.delete(id),
+        mutationFn: (id: string) => FixedExpensesService.delete(id),
         onSuccess: () => {
-            enqueueSnackbar('Gasto Fixo deletado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
+            enqueueSnackbar('Contas Fixas deletada com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
             queryClient.invalidateQueries({ queryKey: ["fixed-expense"] });
         },
     });
@@ -58,22 +58,23 @@ export function FixedExpenseTable() {
         deleteFixedExpenseMutation.mutate(id)
     }, [deleteFixedExpenseMutation]);
 
-    const FixedExpenseRow = (row: FixedExpense, deleteFixedExpense: (id: string) => void) => {
+    const FixedExpenseRow = (row: FixedExpenses, deleteFixedExpense: (id: string) => void) => {
         const { id } = row;
 
 
         const handleDeleteFixedExpense = () => {
             deleteFixedExpense(id)
         }
-        const { description, envelope, amount, paymentDay } = row;
+        const { description, envelopeId, amount, paymentDay } = row;
 
         return (<CustomTableRow
             key={id}
             selected={table.selected.includes(id)}
             onSelectRow={() => table.onSelectRow(id)}
-            rowKeys={[envelope.name,description, `R$ ${amount}`, paymentDay]}
+            rowKeys={[envelopeId,description, `R$ ${amount}`, paymentDay]}
             form={<FixedExpenseForm
-                evenlopes={envelopes ?? []}
+                key={id}
+                envelopes={envelopes ?? []}
                 data={row}
                 buttonIcon={<Iconify icon="solar:pen-bold" />}
                 buttonLabel='Editar' />}
@@ -85,7 +86,7 @@ export function FixedExpenseTable() {
         <Card sx={{ width: '100%' }}>
             <TableToolbar
                 numSelected={table.selected.length}
-                form={<FixedExpenseForm  evenlopes={envelopes ?? []} buttonLabel='Adicionar' />}
+                form={<FixedExpenseForm  envelopes={envelopes ?? []} buttonLabel='Adicionar' />}
             />
 
             <TableContainer sx={{ overflow: 'unset' }}>
@@ -114,7 +115,7 @@ export function FixedExpenseTable() {
                     <TableBody>
                         {fixedExpense && fixedExpense.data.length < 1
                             ?
-                            <TableNoData message="Nenhum Gasto Fixo cadastrado!" />
+                            <TableNoData message="Nenhuma Contas Fixas cadastrado!" />
                             :
                             fixedExpense && fixedExpense.data.map(investment => (FixedExpenseRow(investment, DeleteFixedExpense)))
                         }

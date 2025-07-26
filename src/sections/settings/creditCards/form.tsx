@@ -2,13 +2,13 @@ import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select, Sel
 import { startTransition, useActionState, useCallback, useEffect, useImperativeHandle, useRef, useState, useTransition } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import TransitionsModal from 'src/sections/shared/transitionsModal';
-import CreditCardService, { allFlags, CreditCard, CreditCardPost, Flags } from 'src/services/implementation/creditCardService';
+import CreditCardsService, { allFlags, CreditCards, CreditCardsPost, Flags } from 'src/services/implementation/CreditCardsService';
 import { useSnackbar, VariantType } from 'notistack';
 
 type CreditCardFormProps = {
     buttonIcon?: React.ReactNode;
     buttonLabel: string;
-    data?: CreditCard
+    data?: CreditCards
 }
 
 export function CreditCardForm({ buttonLabel, buttonIcon, data }: CreditCardFormProps) {
@@ -37,10 +37,10 @@ export function CreditCardForm({ buttonLabel, buttonIcon, data }: CreditCardForm
 
 
     const [error, submitAction, isPending] = useActionState(
-        async (previousState: any, creditCard: CreditCardPost) => {
+        async (previousState: any, creditCard: CreditCardsPost) => {
             if (data) {
 
-                const errorPostIncomes = await CreditCardService.update({
+                const errorPostIncomes = await CreditCardsService.update({
                     id: data.id,
                     name: creditCard.name,
                     flag: creditCard.flag,
@@ -55,7 +55,7 @@ export function CreditCardForm({ buttonLabel, buttonIcon, data }: CreditCardForm
 
             } else {
 
-                const errorPostIncomes = await CreditCardService.create({
+                const errorPostIncomes = await CreditCardsService.create({
                     name: creditCard.name,
                     flag: creditCard.flag,
                     active: creditCard.active,

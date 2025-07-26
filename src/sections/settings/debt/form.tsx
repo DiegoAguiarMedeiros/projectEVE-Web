@@ -3,21 +3,24 @@ import { startTransition, useActionState, useCallback, useEffect, useImperativeH
 import { useQueryClient } from '@tanstack/react-query';
 import TransitionsModal from 'src/sections/shared/transitionsModal';
 import { useSnackbar, VariantType } from 'notistack';
-import DebtService, { Debt, DebtPost, DebtStatus } from 'src/services/implementation/DebtService';
+import DebtsService, { Debts, DebtsPost, DebtsStatus } from 'src/services/implementation/DebtsService';
+import { Envelope } from 'src/services/implementation/EnvelopesService';
 
 type DebtFormProps = {
     buttonIcon?: React.ReactNode;
     buttonLabel: string;
-    data?: Debt
+    data?: Debts;
+    envelopes: Envelope[];
 }
 
-export function DebtForm({ buttonLabel, buttonIcon, data }: DebtFormProps) {
+export function DebtForm({ buttonLabel, buttonIcon, data, envelopes }: DebtFormProps) {
     const { enqueueSnackbar } = useSnackbar();
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    const envelopeId = envelopes.filter(envelope => envelope.name === 'debts')[0]
     const [description, setDescription] = useState(data ? data.description : '');
     const [amount, setAmount] = useState(data ? data.amount : '');
     const [installmentsTotal, setInstallmentsTotal] = useState(data ? data.installmentsTotal : '');
@@ -47,10 +50,10 @@ export function DebtForm({ buttonLabel, buttonIcon, data }: DebtFormProps) {
 
 
     const [error, submitAction, isPending] = useActionState(
-        async (previousState: any, debts: DebtPost) => {
+        async (previousState: any, debts: DebtsPost) => {
             if (data) {
 
-                const errorPostIncomes = await DebtService.update({
+                const errorPostIncomes = await DebtsService.update({
                     id: data.id,
                     description: debts.description,
                     amount: debts.amount,
@@ -67,7 +70,8 @@ export function DebtForm({ buttonLabel, buttonIcon, data }: DebtFormProps) {
 
             } else {
 
-                const errorPostIncomes = await DebtService.create({
+                const errorPostIncomes = await DebtsService.create({
+                    envelopeId: debts.envelopeId,
                     description: debts.description,
                     amount: debts.amount,
                     installmentsTotal: debts.installmentsTotal,
@@ -96,6 +100,7 @@ export function DebtForm({ buttonLabel, buttonIcon, data }: DebtFormProps) {
         if (validateDescription() && validateAmount()) {
             startTransition(async () => {
                 submitAction({
+                    envelopeId: envelopeId.id,
                     description,
                     amount,
                     installmentsTotal,
@@ -222,7 +227,7 @@ export function DebtForm({ buttonLabel, buttonIcon, data }: DebtFormProps) {
                     fullWidth
                     type="number"
                     name="amount"
-                    label="Valor"
+                    label="Valor da parcela"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     onBlur={validateAmount}
@@ -240,7 +245,7 @@ export function DebtForm({ buttonLabel, buttonIcon, data }: DebtFormProps) {
                     fullWidth
                     type="number"
                     name="installmentsPaid"
-                    label="Total Pago"
+                    label="Parcelas pagas"
                     value={installmentsPaid}
                     onChange={(e) => setInstallmentsPaid(e.target.value)}
                     onBlur={validateInstallmentsPaid}

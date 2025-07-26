@@ -12,7 +12,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { useRouter } from 'src/routes/hooks';
 
 import { Iconify } from 'src/components/iconify';
-import AuthService from '../../services/authService';
+import { useLogin } from 'src/hooks/mutations/useLogin';
 // ----------------------------------------------------------------------
 
 export function SignInView() {
@@ -23,28 +23,36 @@ export function SignInView() {
   const [email, setEmail] = useState('teste@teste.com');
   const [password, setPassword] = useState('r1234567');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  const handleSignIn = useCallback(async () => {
-    try {
-      setLoading(true);
-      setError(null);
+  const { mutate: login, isPending, error } = useLogin(() => {
+    router.push('/');
+  });
 
-      // Chame o serviço de login com as credenciais do usuário
-      await AuthService.login(email, password);
-      const isAuthenticated = await AuthService.checkAuth();
-      if (isAuthenticated) {
-        // Redireciona para a página inicial após o login bem-sucedido
-        router.push('/');
-      } else {
-        setError('Credenciais inválidas');
-      }
-    } catch (err) {
-      setError(err?.response?.data?.message);
-    } finally {
-      setLoading(false);
-    }
-  }, [email, password, router]);
+  const handleSubmit = useCallback(() => {
+    login({
+      email,
+      password
+    });
+  }, [login, email, password]);
+
+  // const handleSignIn = useCallback(async () => {
+  //   try {
+  //     setLoading(true);
+  //     setError(null);
+
+  //     await AuthService.login(email, password);
+  //     const isAuthenticated = await AuthService.checkAuth();
+  //     if (isAuthenticated) {
+  //       router.push('/');
+  //     } else {
+  //       setError('Credenciais inválidas');
+  //     }
+  //   } catch (err) {
+  //     setError(err?.response?.data?.message);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }, [email, password, router]);
 
   const renderForm = (
     <Box display="flex" flexDirection="column" alignItems="flex-end">
@@ -56,8 +64,8 @@ export function SignInView() {
         onChange={(e) => setEmail(e.target.value)}
         sx={{ mb: 3 }}
         error={!!error} // Adiciona borda vermelha se houver erro
-        helperText={error ?? ''} // Exibe mensagem de erro específica
-     
+        helperText={error ? 'Login ou senha incorreto' : ''} // Exibe mensagem de erro específica
+
       />
 
       <Link variant="body2" color="inherit" sx={{ mb: 1.5 }}>
@@ -91,7 +99,7 @@ export function SignInView() {
         type="submit"
         color="inherit"
         variant="contained"
-        onClick={handleSignIn}
+        onClick={handleSubmit}
       >
         Sign in
       </LoadingButton>
@@ -104,7 +112,7 @@ export function SignInView() {
         <Typography variant="h5">Sign in</Typography>
         <Typography variant="body2" color="text.secondary">
           Don’t have an account?
-          <Link variant="subtitle2" sx={{ ml: 0.5 }}>
+          <Link variant="subtitle2" href='/cadastro' sx={{ ml: 0.5 }}>
             Get started
           </Link>
         </Typography>

@@ -24,7 +24,7 @@ import {
 
 import { _users } from 'src/_mock';
 
-import EnvelopeService from 'src/services/implementation/EnvelopeService';
+import EnvelopesService from 'src/services/implementation/EnvelopesService';
 import DeleteIcon from "@mui/icons-material/Delete";
 import { EnvelopeSwiperBody } from './EnvelopeSwiperBody';
 import { useTable } from '../shared/useTable';
@@ -39,7 +39,7 @@ export default function SwiperEnvelop() {
 
   const { data: envelopes } = useQuery({
     queryKey: ['envelope'],
-    queryFn: () => EnvelopeService.list(),
+    queryFn: () => EnvelopesService.list(),
     staleTime: 5000,
     gcTime: 60000,
     placeholderData: (previousData) => previousData,
@@ -80,7 +80,7 @@ export default function SwiperEnvelop() {
                 sx={active === envelope.id ? { backgroundColor: envelope.color, padding: 2, width: '100%', } : { padding: 2, width: '100%', }}
                 title={envelope.name}
                 percent={envelope.percentage}
-                total={envelope.balance}
+                total={0}
                 icon={<DeleteIcon />}
                 color={envelope.color}
               />

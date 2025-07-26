@@ -13,6 +13,7 @@ import { CreditCardsTable } from '../creditCards';
 import { FixedExpenseTable } from '../fixedExpense';
 import { DebtTable } from '../debt';
 import { Envelope } from '../envelope';
+import { GoalsTable } from '../goals';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -60,33 +61,32 @@ export function SettingsView() {
       <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-            <Tab label="Envelopes" {...a11yProps(0)} />
-            <Tab label="Salário" {...a11yProps(1)} />
-            <Tab label="Gastos Fixo" {...a11yProps(2)} />
-            <Tab label="Cartões" {...a11yProps(3)} />
-            <Tab label="Dívidas" {...a11yProps(4)} />
+            <Tab label="Minha Renda" {...a11yProps(0)} />
+            <Tab label="Meus Limites" {...a11yProps(1)} />
+            <Tab label="Minhas Metas" {...a11yProps(2)} />
+            <Tab label="Minhas Contas Fixas" {...a11yProps(3)} />
+            <Tab label="Minhas Dívidas" {...a11yProps(4)} />
+            <Tab label="Meus Cartões" {...a11yProps(5)} />
           </Tabs>
         </Box>
+
         <CustomTabPanel value={value} index={0}>
-          <Envelope />
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={1}>
           <Typography variant="caption" sx={{ m: 2, mb: 4 }}>
             instruções!
           </Typography>
           <IncomeTable />
         </CustomTabPanel>
+        <CustomTabPanel value={value} index={1}>
+          <Envelope />
+        </CustomTabPanel>
         <CustomTabPanel value={value} index={2}>
-          <Typography variant="caption" sx={{ m: 2, mb: 4 }}>
-            instruções!
-          </Typography>
-          <FixedExpenseTable />
+          <GoalsTable />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={3}>
           <Typography variant="caption" sx={{ m: 2, mb: 4 }}>
             instruções!
           </Typography>
-          <CreditCardsTable />
+          <FixedExpenseTable />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={4}>
           <Typography variant="caption" sx={{ m: 2, mb: 4 }}>
@@ -94,6 +94,13 @@ export function SettingsView() {
           </Typography>
           <DebtTable />
         </CustomTabPanel>
+        <CustomTabPanel value={value} index={5}>
+          <Typography variant="caption" sx={{ m: 2, mb: 4 }}>
+            instruções!
+          </Typography>
+          <CreditCardsTable />
+        </CustomTabPanel>
+
       </Box>
     </DashboardContent>
   );

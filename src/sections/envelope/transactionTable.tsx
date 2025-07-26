@@ -9,24 +9,53 @@ import { CustomTableRow } from "src/components/table/TableRow";
 import { Iconify } from "src/components/iconify";
 import { CustomTableHead } from "src/components/table/TableHead";
 import { TableToolbar } from "src/components/table/TableToolbar";
-import TransactionService, { Transaction, TransactionsStatus } from "src/services/implementation/TransactionService";
+import TransactionsService, { Transactions, TransactionsStatus } from "src/services/implementation/TransactionsService";
 import Chips from "src/components/chip/chip";
+import { useSelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 import { TransactionForm } from "./form";
 
 type TransactionTableProps = {
     envelopeId: string;
 }
 export function TransactionTable({ envelopeId }: TransactionTableProps) {
+
     const table = useTable();
+    const {
+        month,
+        year,
+    } = useSelectedMonthYearStore();
+
+    const queryClient = useQueryClient();
+    const onMonthYearChange = useCallback((): void => {
+        console.log("onMonthYearChange month", month)
+        console.log("onMonthYearChange year", year)
+        queryClient.invalidateQueries({
+            queryKey: ["transaction-by-envelope"],
+        });
+    }, [queryClient, month, year]);
+
+
+    useEffect(() => {
+
+        console.log("month", month)
+        console.log("year", year)
+        onMonthYearChange()
+    }, [onMonthYearChange, month, year])
+
+
+    console.log("TransactionTable month", month)
+    console.log("TransactionTable year", year)
 
     const { data: transaction } = useQuery({
-        queryKey: ['transaction-by-envelope', table.page, table.rowsPerPage, table.orderBy, table.order],
-        queryFn: () => TransactionService.listByEnvelope({
+        queryKey: ['transaction-by-envelope', year,month,table.page, table.rowsPerPage, table.orderBy, table.order],
+        queryFn: () => TransactionsService.listByEnvelope({
             page: table.page,
             pageSize: table.rowsPerPage,
             orderBy: table.orderBy,
             order: table.order,
-            envelope: envelopeId
+            envelope: envelopeId,
+            year,
+            month
         }),
         staleTime: 5000,
         gcTime: 60000,
@@ -39,18 +68,17 @@ export function TransactionTable({ envelopeId }: TransactionTableProps) {
         console.log("table.rowsPerPage", table.rowsPerPage)
     }, [table.page, table.rowsPerPage])
 
-    const queryClient = useQueryClient();
     const { enqueueSnackbar } = useSnackbar();
 
     const deleteTransactionMutation = useMutation({
-        mutationFn: (id: string) => TransactionService.delete(id),
+        mutationFn: (id: string) => TransactionsService.delete(id),
         onSuccess: () => {
             enqueueSnackbar('Transação deletada com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
             queryClient.invalidateQueries({ queryKey: ["transaction-by-envelope"] });
         },
     });
     const updateStatusTransactionMutation = useMutation({
-        mutationFn: ({ id, data }: { id: string; data: TransactionsStatus }) => TransactionService.updateStatus(id, data),
+        mutationFn: ({ id, data }: { id: string; data: TransactionsStatus }) => TransactionsService.updateStatus(id, data),
         onSuccess: () => {
             enqueueSnackbar('Transação Atualizada com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
             queryClient.invalidateQueries({ queryKey: ["transaction-by-envelope"] });
@@ -65,7 +93,7 @@ export function TransactionTable({ envelopeId }: TransactionTableProps) {
         updateStatusTransactionMutation.mutate({ id, data })
     }, [updateStatusTransactionMutation]);
 
-    const TransactionRow = (row: Transaction, deleteTransaction: (id: string) => void) => {
+    const TransactionRow = (row: Transactions, deleteTransaction: (id: string) => void) => {
         const { id } = row;
 
 
@@ -85,12 +113,12 @@ export function TransactionTable({ envelopeId }: TransactionTableProps) {
             selected={table.selected.includes(id)}
             onSelectRow={() => table.onSelectRow(id)}
             rowKeys={[description, `R$ ${amount}`, paymentMethod, dayjs(date).format("DD/MM/YYYY"),
-            <Chips  
-            label={status} 
-            labels={['Pago','Pendente']} 
-            fieldName="Completed" 
-            click={handleClick} 
-            />]}
+                <Chips
+                    label={status}
+                    labels={['Pago', 'Pendente']}
+                    fieldName="Completed"
+                    click={handleClick}
+                />]}
             form={<TransactionForm
                 data={row}
                 buttonIcon={<Iconify icon="solar:pen-bold" />}

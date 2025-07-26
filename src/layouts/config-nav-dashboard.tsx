@@ -1,6 +1,7 @@
 import EmailIcon from '@mui/icons-material/Email';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
+import SavingsIcon from '@mui/icons-material/Savings';
 
 import { SvgColor } from 'src/components/svg-color';
 // ----------------------------------------------------------------------
@@ -11,7 +12,7 @@ const icon = (name: string) => (
 
 export const navData = [
   {
-    title: 'Painel',
+    title: 'Orçamento',
     path: '/',
     icon: <DashboardIcon />,
   },

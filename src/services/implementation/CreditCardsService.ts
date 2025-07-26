@@ -2,14 +2,14 @@ import axios from 'axios';
 import { Pagination } from 'src/types/Pagination';
 import { ICRUD } from '../ICRUD';
 
-export interface CreditCard {
+export interface CreditCards {
     id: string;
     name: string;
     flag: Flags;
     active: boolean;
     userId: string;
 }
-export interface CreditCardPost {
+export interface CreditCardsPost {
     name: string;
     flag: Flags;
     active?: boolean;
@@ -34,10 +34,10 @@ export const allFlags: Flags[] = ['Visa',
     'Elo',
     'Hipercard']
 
-class CreditCardService implements ICRUD<CreditCardPost, CreditCard> {
-    private baseURL = 'http://localhost:3000/api/credit-card';
+class CreditCardsService implements ICRUD<CreditCardsPost, CreditCards> {
+    private baseURL = 'http://localhost:3000/api/credit-cards';
 
-    read(id: string): Promise<CreditCard | null> {
+    read(id: string): Promise<CreditCards | null> {
         throw new Error('Method not implemented.');
     }
 
@@ -46,7 +46,7 @@ class CreditCardService implements ICRUD<CreditCardPost, CreditCard> {
         pageSize = 10,
         orderBy = 'createdAt',
         order = 'desc'
-    }: { page?: number; pageSize?: number, orderBy?: string, order?: string }): Promise<Pagination<CreditCard>> {
+    }: { page?: number; pageSize?: number, orderBy?: string, order?: string }): Promise<Pagination<CreditCards>> {
 
         const response = await axios.get(
             `${this.baseURL}/`,
@@ -55,10 +55,10 @@ class CreditCardService implements ICRUD<CreditCardPost, CreditCard> {
                 withCredentials: true
             }
         );
-        return response.data as Pagination<CreditCard>;
+        return response.data as Pagination<CreditCards>;
     }
 
-    async create(item: CreditCardPost): Promise<boolean> {
+    async create(item: CreditCardsPost): Promise<boolean> {
         const response = await axios.post(
             `${this.baseURL}/`,
             { name: item.name, flag: item.flag },
@@ -70,7 +70,7 @@ class CreditCardService implements ICRUD<CreditCardPost, CreditCard> {
         return false;
     }
 
-    async update(item: CreditCard): Promise<boolean> {
+    async update(item: CreditCards): Promise<boolean> {
         const response = await axios.patch(
             `${this.baseURL}/${item.id}`,
             { name: item.name, flag: item.flag },
@@ -94,5 +94,5 @@ class CreditCardService implements ICRUD<CreditCardPost, CreditCard> {
     }
 }
 
-export default new CreditCardService();
+export default new CreditCardsService();
 

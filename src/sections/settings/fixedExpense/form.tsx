@@ -3,22 +3,22 @@ import { startTransition, useActionState, useCallback, useEffect, useImperativeH
 import { useQueryClient } from '@tanstack/react-query';
 import TransitionsModal from 'src/sections/shared/transitionsModal';
 import { useSnackbar, VariantType } from 'notistack';
-import FixedExpenseService, { FixedExpense, FixedExpensePost } from 'src/services/implementation/FixedExpenseService';
+import FixedExpensesService, { FixedExpenses, FixedExpensesPost } from 'src/services/implementation/FixedExpensesService';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs, { Dayjs } from 'dayjs';
 import { type } from 'os';
-import { Envelope } from 'src/services/implementation/EnvelopeService';
+import { Envelope } from 'src/services/implementation/EnvelopesService';
 
 type FixedExpenseFormProps = {
     buttonIcon?: React.ReactNode;
     buttonLabel: string;
-    data?: FixedExpense
-    evenlopes: Envelope[]
+    data?: FixedExpenses;
+    envelopes: Envelope[]
 }
 
-export function FixedExpenseForm({ buttonLabel, buttonIcon, data ,evenlopes}: FixedExpenseFormProps) {
+export function FixedExpenseForm({ buttonLabel, buttonIcon, data ,envelopes}: FixedExpenseFormProps) {
     const { enqueueSnackbar } = useSnackbar();
 
     const [open, setOpen] = useState(false);
@@ -28,7 +28,7 @@ export function FixedExpenseForm({ buttonLabel, buttonIcon, data ,evenlopes}: Fi
     const [description, setDescription] = useState(data ? data.description : '');
     const [amount, setAmount] = useState(data ? data.amount : '');
     const [paymentDay, setPaymentDay] = useState(data ? data.paymentDay : '');
-    const [envelope, setEnvelope] = useState(data ? data.envelope : {} as Envelope);
+    const [envelope, setEnvelope] = useState(data ? data.envelopeId : '');
 
     const [errorDescription, setErrorDescription] = useState<string | null>(null);
     const [errorAmount, setErrorAmount] = useState<string | null>(null);
@@ -43,19 +43,19 @@ export function FixedExpenseForm({ buttonLabel, buttonIcon, data ,evenlopes}: Fi
         setDescription('')
         setAmount('')
         setPaymentDay('')
-        setEnvelope({} as Envelope)
+        setEnvelope('')
     };
 
 
 
 
     const [error, submitAction, isPending] = useActionState(
-        async (previousState: any, fixedExpense: FixedExpensePost) => {
+        async (previousState: any, fixedExpense: FixedExpensesPost) => {
             if (data) {
 
-                const errorPostIncomes = await FixedExpenseService.update({
+                const errorPostIncomes = await FixedExpensesService.update({
                     id: data.id,
-                    envelope: fixedExpense.envelope,
+                    envelopeId: fixedExpense.envelopeId,
                     description: fixedExpense.description,
                     amount: fixedExpense.amount,
                     paymentDay: fixedExpense.paymentDay,
@@ -64,21 +64,21 @@ export function FixedExpenseForm({ buttonLabel, buttonIcon, data ,evenlopes}: Fi
                 if (!errorPostIncomes) {
                     return errorPostIncomes;
                 }
-                enqueueSnackbar('Gasto fixo editado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
+                enqueueSnackbar('Contas Fixas editada com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
 
             } else {
 
-                const errorPostIncomes = await FixedExpenseService.create({
+                const errorPostIncomes = await FixedExpensesService.create({
                     description: fixedExpense.description,
                     amount: fixedExpense.amount,
                     paymentDay: fixedExpense.paymentDay,
-                    envelope: fixedExpense.envelope,
+                    envelopeId: fixedExpense.envelopeId,
                 });
 
                 if (!errorPostIncomes) {
                     return errorPostIncomes;
                 }
-                enqueueSnackbar('Gasto fixo cadastrado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
+                enqueueSnackbar('Contas Fixas cadastrada com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
 
 
             }
@@ -97,7 +97,7 @@ export function FixedExpenseForm({ buttonLabel, buttonIcon, data ,evenlopes}: Fi
                 await submitAction({
                     description, amount,
                     paymentDay,
-                    envelope,
+                    envelopeId: envelope,
                 });
             });
         }
@@ -142,7 +142,7 @@ export function FixedExpenseForm({ buttonLabel, buttonIcon, data ,evenlopes}: Fi
 
 
     const handleSelectChange = (event: SelectChangeEvent<string>) => {
-        setEnvelope({id:event.target.value} as Envelope);
+        setEnvelope(event.target.value);
     };
 
 
@@ -177,7 +177,7 @@ export function FixedExpenseForm({ buttonLabel, buttonIcon, data ,evenlopes}: Fi
 
 
                 <Typography variant="h3" noWrap>
-                    Gasto fixos
+                    Contas Fixas
                 </Typography>
                 {error && <p>{error}</p>}
 
@@ -189,11 +189,11 @@ export function FixedExpenseForm({ buttonLabel, buttonIcon, data ,evenlopes}: Fi
                         label="Envelope"
                         sx={{ width: '100%', mb: 3 }}
                         name="envelope"
-                        value={envelope.id}
+                        value={envelope}
                         onChange={handleSelectChange}
                     >
-                        {evenlopes.map((t) => (
-                            <MenuItem value={t.id}>{t.name}</MenuItem>
+                        {envelopes.map((t,index) => (
+                            <MenuItem key={index} value={t.id}>{t.name}</MenuItem>
                         ))}
                     </Select>
                 </FormControl>

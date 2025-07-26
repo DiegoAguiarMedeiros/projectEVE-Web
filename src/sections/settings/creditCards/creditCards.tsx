@@ -3,7 +3,7 @@ import { Card, TableContainer, Table, TableBody, TablePagination } from "@mui/ma
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "notistack";
 import { useTable } from "src/sections/shared/useTable";
-import CreditCardService, { CreditCard } from 'src/services/implementation/creditCardService';
+import CreditCardsService, { CreditCards } from 'src/services/implementation/CreditCardsService';
 import { TableNoData } from "src/components/table/TableNoData";
 import { CustomTableRow } from "src/components/table/TableRow";
 import { Iconify } from "src/components/iconify";
@@ -17,7 +17,7 @@ export function CreditCardsTable() {
 
     const { data: creditCards } = useQuery({
         queryKey: ['credit-card', table.page, table.rowsPerPage,table.orderBy,table.order],
-        queryFn: () => CreditCardService.list({
+        queryFn: () => CreditCardsService.list({
             page: table.page,
             pageSize: table.rowsPerPage,
             orderBy:table.orderBy,
@@ -38,7 +38,7 @@ export function CreditCardsTable() {
     const { enqueueSnackbar } = useSnackbar();
 
     const deleteCreditCardsMutation = useMutation({
-        mutationFn: (id: string) => CreditCardService.delete(id),
+        mutationFn: (id: string) => CreditCardsService.delete(id),
         onSuccess: () => {
             enqueueSnackbar('Cartão de crédito deletado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
             queryClient.invalidateQueries({ queryKey: ["credit-card"] });
@@ -48,7 +48,7 @@ export function CreditCardsTable() {
         deleteCreditCardsMutation.mutate(id)
     }, [deleteCreditCardsMutation]);
 
-    const CreditCardsRow = (row: CreditCard, deleteCreditCards: (id: string) => void) => {
+    const CreditCardsRow = (row: CreditCards, deleteCreditCards: (id: string) => void) => {
         const { id } = row;
 
 

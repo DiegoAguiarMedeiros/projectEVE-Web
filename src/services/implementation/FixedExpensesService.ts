@@ -2,38 +2,38 @@ import axios from 'axios';
 import { Pagination } from 'src/types/Pagination';
 import { Dayjs } from 'dayjs';
 import { ICRUD } from '../ICRUD';
-import { Envelope } from './EnvelopeService';
+import { Envelope } from './EnvelopesService';
 
 
 
-export interface FixedExpense {
+export interface FixedExpenses {
     id: string;
-    envelope: Envelope;
+    envelopeId: string;
     description: string;
     amount: string;
     paymentDay: string;
 }
-export interface FixedExpensePost {
-    envelope: Envelope;
+export interface FixedExpensesPost {
+    envelopeId: string;
     description: string;
     amount: string;
     paymentDay: string;
 }
 
-class FixedExpenseService implements ICRUD<FixedExpensePost, FixedExpense> {
+class FixedExpensesService implements ICRUD<FixedExpensesPost, FixedExpenses> {
 
-    read(id: string): Promise<FixedExpense | null> {
+    read(id: string): Promise<FixedExpenses | null> {
         throw new Error('Method not implemented.');
     }
 
-    private baseURL = 'http://localhost:3000/api/fixed-expense';
+    private baseURL = 'http://localhost:3000/api/fixed-expenses';
 
     async list({
         page = 1,
         pageSize = 10,
         orderBy = 'createdAt',
         order = 'desc'
-    }): Promise<Pagination<FixedExpense>> {
+    }): Promise<Pagination<FixedExpenses>> {
 
         const response = await axios.get(
             `${this.baseURL}/`,
@@ -44,17 +44,17 @@ class FixedExpenseService implements ICRUD<FixedExpensePost, FixedExpense> {
                 withCredentials: true
             }
         );
-        return response.data as Pagination<FixedExpense>;
+        return response.data as Pagination<FixedExpenses>;
     }
 
-    async create(FixedExpense: FixedExpensePost): Promise<boolean> {
+    async create(FixedExpenses: FixedExpensesPost): Promise<boolean> {
         const response = await axios.post(
             `${this.baseURL}/`,
             {
-                description: FixedExpense.description,
-                amount: FixedExpense.amount,
-                envelope: FixedExpense.envelope,
-                paymentDay: FixedExpense.paymentDay,
+                description: FixedExpenses.description,
+                amount: FixedExpenses.amount,
+                envelopeId: FixedExpenses.envelopeId,
+                paymentDay: FixedExpenses.paymentDay,
             },
             { withCredentials: true }
         );
@@ -64,14 +64,14 @@ class FixedExpenseService implements ICRUD<FixedExpensePost, FixedExpense> {
         return false;
     }
 
-    async update(FixedExpense: FixedExpense): Promise<boolean> {
+    async update(FixedExpenses: FixedExpenses): Promise<boolean> {
         const response = await axios.patch(
-            `${this.baseURL}/${FixedExpense.id}`,
+            `${this.baseURL}/${FixedExpenses.id}`,
             {
-                description: FixedExpense.description,
-                amount: FixedExpense.amount,
-                envelope: FixedExpense.envelope,
-                paymentDay: FixedExpense.paymentDay,
+                description: FixedExpenses.description,
+                amount: FixedExpenses.amount,
+                envelopeId: FixedExpenses.envelopeId,
+                paymentDay: FixedExpenses.paymentDay,
             },
             { withCredentials: true }
         );
@@ -94,5 +94,5 @@ class FixedExpenseService implements ICRUD<FixedExpensePost, FixedExpense> {
 
 }
 
-export default new FixedExpenseService();
+export default new FixedExpensesService();
 

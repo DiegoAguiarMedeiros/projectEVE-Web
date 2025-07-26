@@ -3,16 +3,16 @@ import { startTransition, useActionState, useCallback, useEffect, useImperativeH
 import { useQueryClient } from '@tanstack/react-query';
 import TransitionsModal from 'src/sections/shared/transitionsModal';
 import { useSnackbar, VariantType } from 'notistack';
-import TransactionService, { allPaymentMethod, PaymentMethod, Transaction, TransactionPost, TransactionStatus } from 'src/services/implementation/TransactionService';
+import TransactionsService, { allPaymentMethod, PaymentMethod, Transactions, TransactionsPost, TransactionStatus } from 'src/services/implementation/TransactionsService';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
-import { Envelope } from 'src/services/implementation/EnvelopeService';
+import { Envelope } from 'src/services/implementation/EnvelopesService';
 
 type TransactionFormProps = {
     buttonIcon?: React.ReactNode;
     buttonLabel: string;
-    data?: Transaction;
+    data?: Transactions;
     envelopeId: string;
 }
 
@@ -48,10 +48,10 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId }: T
 
 
     const [error, submitAction, isPending] = useActionState(
-        async (previousState: any, transaction: TransactionPost) => {
+        async (previousState: any, transaction: TransactionsPost) => {
             if (data) {
 
-                const errorPostIncomes = await TransactionService.update({
+                const errorPostIncomes = await TransactionsService.update({
                     id: data.id,
                     description: transaction.description,
                     amount: transaction.amount,
@@ -69,7 +69,7 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId }: T
 
             } else {
 
-                const errorPostIncomes = await TransactionService.create({
+                const errorPostIncomes = await TransactionsService.create({
                     description: transaction.description,
                     amount: transaction.amount,
                     status: transaction.status,

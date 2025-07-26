@@ -7,10 +7,10 @@ import { LoadingButton } from '@mui/lab';
 import { Iconify } from 'src/components/iconify';
 import { useRouter } from 'src/routes/hooks';
 import { Logo } from 'src/components/logo';
-import AuthService from '../../services/authService';
+import { useRegister } from 'src/hooks/mutations/useRegister';
 
 export function RegistrationView() {
-  
+
   const router = useRouter();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -24,6 +24,20 @@ export function RegistrationView() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+
+
+  const { mutate: register, isPending, error } = useRegister(() => {
+    router.push('/entrar');
+  });
+
+  const handleSubmit = useCallback(() => {
+    register({
+      name,
+      email,
+      password
+    });
+  }, [register,name, email,password]);
+
 
   const validateName = useCallback(() => {
     if (!name.trim()) {
@@ -84,19 +98,13 @@ export function RegistrationView() {
     }
 
     try {
-      setLoading(true);
-
-      await AuthService.registration(name, email, password);
-      const isAuthenticated = await AuthService.checkAuth();
-      if (isAuthenticated) {
-        router.push('/completar-cadastro');
-      }
+      handleSubmit()
     } catch (err) {
       console.error(err);
     } finally {
       setLoading(false);
     }
-  }, [name, email, password, confirmPassword, validateName, validateEmail, validatePassword, validateConfirmPassword, router]);
+  }, [handleSubmit, password, confirmPassword, validateName, validateEmail, validatePassword, validateConfirmPassword]);
 
   return (
     <Box

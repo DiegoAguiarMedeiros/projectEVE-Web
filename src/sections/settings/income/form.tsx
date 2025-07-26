@@ -2,7 +2,7 @@ import { Box, Button, IconButton, TextField, Typography } from '@mui/material';
 import { startTransition, useActionState, useCallback, useEffect, useImperativeHandle, useRef, useState, useTransition } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import TransitionsModal from 'src/sections/shared/transitionsModal';
-import IncomeService, { Income, IncomePost } from 'src/services/implementation/incomeService'
+import IncomesService, { Income, IncomePost } from 'src/services/implementation/incomesService'
 import { useSnackbar, VariantType } from 'notistack';
 
 type FormIncomeProps = {
@@ -44,7 +44,7 @@ export function FormIncome({ buttonLabel, buttonIcon, data }: FormIncomeProps) {
 
             if (data) {
 
-                const errorPostIncome = await IncomeService.update({
+                const errorPostIncome = await IncomesService.update({
                     id: data.id,
                     description: incomes.description,
                     amount: incomes.amount,
@@ -58,7 +58,7 @@ export function FormIncome({ buttonLabel, buttonIcon, data }: FormIncomeProps) {
 
             } else {
 
-                const errorPostIncome = await IncomeService.create({
+                const errorPostIncome = await IncomesService.create({
                     description: incomes.description,
                     amount: incomes.amount,
                     paymentDay: incomes.paymentDay,
@@ -113,7 +113,7 @@ export function FormIncome({ buttonLabel, buttonIcon, data }: FormIncomeProps) {
 
     const validatePaymentDay = useCallback(() => {
         const day = Number(paymentDay);
-        if (!paymentDay.trim()) {
+        if (!day && !paymentDay.trim()) {
             setErrorPaymentDay('Dia do pagamento é obrigatório.');
             return false;
         }

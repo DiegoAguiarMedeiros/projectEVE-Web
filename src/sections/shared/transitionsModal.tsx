@@ -25,9 +25,10 @@ type TransitionsModalProps = {
   open: boolean;
   handleOpen: VoidFunction;
   handleClose: VoidFunction;
+  width?:number;
 }
 
-export default function TransitionsModal({ openButton, okButton, children, open, handleOpen, handleClose }: React.PropsWithChildren<TransitionsModalProps>) {
+export default function TransitionsModal({ openButton, okButton, children, open, handleOpen, handleClose,width }: React.PropsWithChildren<TransitionsModalProps>) {
 
   return (
     <>
@@ -46,8 +47,8 @@ export default function TransitionsModal({ openButton, okButton, children, open,
           },
         }}
       >
-        <Fade in={open}>
-          <Card sx={style}>
+        <Fade in={open} >
+          <Card sx={{ ...style, width: width !== undefined ? `${width}%` : `${style.width}px` }}>
             {children as React.ReactElement}
             <Box
               display="flex"

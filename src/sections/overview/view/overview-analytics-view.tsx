@@ -58,14 +58,14 @@ export function OverviewAnalyticsView() {
 
         <Grid2 size={{ xs: 12, sm: 6, md: 8 }}>
           <AnalyticsWebsiteVisits
-            title="Minha Renda"
+            title="Orçamento"
             subheader="(+43%) than last year"
             chart={{
               categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
               series: [
-                { name: 'Entradas', data: [43, 33, 22, 37, 67, 68, 37, 24, 55] },
+                { name: 'Minha Renda', data: [43, 33, 22, 37, 67, 68, 37, 24, 55] },
                 { name: 'Metas', data: [20, 10, 17, 27, 30, 7, 4, 17, 24] },
-                { name: 'Saídas', data: [51, 70, 47, 67, 40, 37, 24, 70, 24] },
+                { name: 'Gastos', data: [51, 70, 47, 67, 40, 37, 24, 70, 24] },
                 { name: 'Saldo', data: [20, 10, 17, 27, 30, 7, 4, 17, 24] },
               ],
             }}

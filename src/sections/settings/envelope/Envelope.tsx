@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Box, Typography, useTheme } from "@mui/material";
 import { _timeline } from "src/_mock/_data";
-import EnvelopeService from "src/services/implementation/EnvelopeService";
+import EnvelopesService from "src/services/implementation/EnvelopesService";
 import { useQuery } from "@tanstack/react-query";
 import Badges from "src/components/badge/badge";
 import { EnvelopeCard } from "./EnvelopeCard";
@@ -13,7 +13,7 @@ export function Envelope() {
     const [envelopeAlocation, setEnvelopeAllocation] = useState(0);
     const { data: envelope } = useQuery({
         queryKey: ['envelope'],
-        queryFn: () => EnvelopeService.list(),
+        queryFn: () => EnvelopesService.list(),
         staleTime: 5000,
         gcTime: 60000,
         placeholderData: (previousData) => previousData,

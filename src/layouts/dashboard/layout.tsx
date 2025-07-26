@@ -10,6 +10,8 @@ import { _langs, _notifications } from 'src/_mock';
 
 import { Iconify } from 'src/components/iconify';
 import { ThemeSwitch } from 'src/components/themeSwitch/themeSwitch';
+import { MonthYearPickerButton } from 'src/components/MonthYearPickerButton';
+import { useProcessedIncomesMonth } from 'src/hooks/queries/useProcessedIncomesMonth';
 
 import { Main } from './main';
 import { layoutClasses } from '../classes';
@@ -35,6 +37,12 @@ export type DashboardLayoutProps = {
 export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) {
   const theme = useTheme();
   const [navOpen, setNavOpen] = useState(false);
+  const { data, isLoading, error } = useProcessedIncomesMonth();
+
+  console.log("data",data)
+
+  if (isLoading) return <p>Carregando dados...</p>;
+  if (error || !data) return <p>Erro ao carregar os dados</p>;
 
   const layoutQuery: Breakpoint = 'lg';
 
@@ -46,15 +54,14 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
           slotProps={{
             container: {
               maxWidth: false,
-              sx: { px: { [layoutQuery]: 5 } },
+              sx: { px: { [layoutQuery]: 5 }, },
+
             },
           }}
           sx={header?.sx}
           slots={{
-            topArea: (
-              <Alert severity="info" sx={{ display: 'none', borderRadius: 0 }}>
-                This is an info Alert.
-              </Alert>
+            centerArea: (
+              <MonthYearPickerButton  data={data}/>
             ),
             leftArea: (
               <>
@@ -62,16 +69,15 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
                   onClick={() => setNavOpen(true)}
                   sx={{
                     ml: -1,
-                    [theme.breakpoints.up(layoutQuery)]: { display: 'none' },
+                    [theme.breakpoints.up(layoutQuery)]: { display: 'none' }
                   }}
                 />
                 <NavMobile data={navData} open={navOpen} onClose={() => setNavOpen(false)} />
               </>
             ),
             rightArea: (
-              <Box gap={1} display="flex" alignItems="center">
-                <ThemeSwitch />
-                <LanguagePopover data={_langs} />
+              <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+
                 <NotificationsPopover data={_notifications} />
                 <AccountPopover
                   data={[
@@ -79,6 +85,16 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
                       label: 'Home',
                       href: '/',
                       icon: <Iconify width={22} icon="solar:home-angle-bold-duotone" />,
+                    },
+                    {
+                      label: 'Tema',
+                      href: '#',
+                      icon: <ThemeSwitch />,
+                    },
+                    {
+                      label: 'Idioma',
+                      href: '#',
+                      icon: <LanguagePopover data={_langs} />,
                     },
                     {
                       label: 'Profile',

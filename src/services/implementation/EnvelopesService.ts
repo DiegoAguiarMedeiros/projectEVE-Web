@@ -3,11 +3,8 @@ import axios from 'axios';
 export interface Envelope {
     id: string;
     name: string;
-    balance: number;
     color: string;
     percentage: number;
-    active: boolean;
-    is_editable: boolean;
     userId: string;
 }
 export interface EnvelopePost {
@@ -17,8 +14,8 @@ export interface EnvelopeUpdateFiledDTO extends Omit<
     Envelope, 'balance' | 'is_editable' | 'userId'
 > { }
 
-class EnvelopeService {
-    private baseURL = 'http://localhost:3000/api/envelope';
+class EnvelopesService {
+    private baseURL = 'http://localhost:3000/api/envelopes';
 
     read(id: string): Promise<Envelope | null> {
         throw new Error('Method not implemented.');
@@ -54,7 +51,6 @@ class EnvelopeService {
                 name: item.name,
                 color: item.color,
                 percentage: item.percentage,
-                active: item.active
             },
             { withCredentials: true }
         );
@@ -76,5 +72,5 @@ class EnvelopeService {
     }
 }
 
-export default new EnvelopeService();
+export default new EnvelopesService();
 

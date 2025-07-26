@@ -3,9 +3,9 @@ import { Pagination } from 'src/types/Pagination';
 import { Dayjs } from 'dayjs';
 import { ICRUD } from '../ICRUD';
 
-export type DebtStatus = 'Pending' | 'Paid' ;
+export type DebtsStatus = 'Pending' | 'Paid' ;
 
-export interface Debt {
+export interface Debts {
     id: string;
     envelopeId?: string;
     description: string;
@@ -13,31 +13,32 @@ export interface Debt {
     installmentsTotal: string;
     installmentsPaid: string;
     paymentDay: string;
-    status: DebtStatus;
-  }
-export interface DebtPost {
+    status: DebtsStatus;
+}
+export interface DebtsPost {
     description: string;
+    envelopeId: string;
     amount: string;
     installmentsTotal: string;
     installmentsPaid: string;
     paymentDay: string;
-    status: DebtStatus;
+    status: DebtsStatus;
   }
 
-class DebtService implements ICRUD<DebtPost, Debt> {
+class DebtsService implements ICRUD<DebtsPost, Debts> {
 
-    read(id: string): Promise<Debt | null> {
+    read(id: string): Promise<Debts | null> {
         throw new Error('Method not implemented.');
     }
 
-    private baseURL = 'http://localhost:3000/api/debt';
+    private baseURL = 'http://localhost:3000/api/debts';
 
     async list({
         page = 1,
         pageSize = 10,
         orderBy = 'createdAt',
         order = 'desc'
-    }): Promise<Pagination<Debt>> {
+    }): Promise<Pagination<Debts>> {
 
         const response = await axios.get(
             `${this.baseURL}/`,
@@ -48,13 +49,14 @@ class DebtService implements ICRUD<DebtPost, Debt> {
                 withCredentials: true
             }
         );
-        return response.data as Pagination<Debt>;
+        return response.data as Pagination<Debts>;
     }
 
-    async create(debt: DebtPost): Promise<boolean> {
+    async create(debt: DebtsPost): Promise<boolean> {
         const response = await axios.post(
             `${this.baseURL}/`,
             {
+                envelopeId: debt.envelopeId,
                 description: debt.description,
                 amount: debt.amount,
                 installmentsTotal: debt.installmentsTotal,
@@ -70,7 +72,7 @@ class DebtService implements ICRUD<DebtPost, Debt> {
         return false;
     }
 
-    async update(debt: Debt): Promise<boolean> {
+    async update(debt: Debts): Promise<boolean> {
         const response = await axios.patch(
             `${this.baseURL}/${debt.id}`,
             {
@@ -102,5 +104,5 @@ class DebtService implements ICRUD<DebtPost, Debt> {
 
 }
 
-export default new DebtService();
+export default new DebtsService();
 

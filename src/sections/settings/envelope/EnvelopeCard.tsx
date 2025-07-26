@@ -1,6 +1,6 @@
 import { Card, CardHeader, Stack, Typography, IconButton, CardContent, FormControl, Slider, Box, FormLabel, Switch } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import EnvelopeService, { Envelope, EnvelopePost, EnvelopeUpdateFiledDTO } from "src/services/implementation/EnvelopeService";
+import EnvelopesService, { Envelope, EnvelopePost, EnvelopeUpdateFiledDTO } from "src/services/implementation/EnvelopesService";
 import { startTransition, useActionState, useState } from "react";
 import { useQueryClient } from '@tanstack/react-query';
 import { useSnackbar } from "notistack";
@@ -23,12 +23,11 @@ export function EnvelopeCard({ data, setEnvelopeAllocation }: EnvelopeProps) {
         async (previousState: any, envelope: EnvelopeUpdateFiledDTO) => {
             if (data) {
 
-                const errorEnvelopeUpdate = await EnvelopeService.update({
+                const errorEnvelopeUpdate = await EnvelopesService.update({
                     id: data.id,
                     name: envelope.name,
                     color: envelope.color,
                     percentage: envelope.percentage,
-                    active: envelope.active,
                 });
                 console.log('errorEnvelopeUpdate', errorEnvelopeUpdate);
                 if (!errorEnvelopeUpdate) {
@@ -55,7 +54,6 @@ export function EnvelopeCard({ data, setEnvelopeAllocation }: EnvelopeProps) {
                 name: envelopeData.name,
                 color: envelopeData.color,
                 percentage: envelopeData.percentage,
-                active: envelopeData.active
             })
         });
     }
@@ -68,17 +66,7 @@ export function EnvelopeCard({ data, setEnvelopeAllocation }: EnvelopeProps) {
         }));
     };
 
-    const toggleActive = () => {
-        setEnvelopeData((prev) => ({
-            ...prev,
-            active: !envelopeData.active,
-        }));
-        submitForm();
-    };
-
     const deleteEnvelope = (id: string) => { };
-
-
 
     const updateColor = (newColor: string) => {
         setEnvelopeData((prev) => ({
@@ -91,11 +79,11 @@ export function EnvelopeCard({ data, setEnvelopeAllocation }: EnvelopeProps) {
         <Card
             key={envelopeData.id}
             sx={{
-                flex: "1 0 23%",
+                flex: "1 0 25%",
                 minWidth: 200,
+                maxHeight:'144px',
                 boxSizing: "border-box",
                 padding: 1,
-                border: `1px solid ${envelopeData.color}`,
             }}
         >
             <CardHeader
@@ -120,7 +108,7 @@ export function EnvelopeCard({ data, setEnvelopeAllocation }: EnvelopeProps) {
                     <Slider
                         getAriaValueText={valueLabelFormat}
                         valueLabelFormat={valueLabelFormat}
-                        valueLabelDisplay="auto"
+                        valueLabelDisplay="on"
                         aria-label="pretto slider"
                         value={envelopeData.percentage}
                         onChange={(_, value) =>
@@ -131,7 +119,7 @@ export function EnvelopeCard({ data, setEnvelopeAllocation }: EnvelopeProps) {
                         step={1}
                     />
                 </FormControl>
-                <FormControl fullWidth sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', gap: 1 }}>
+                < FormControl fullWidth sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', gap: 1 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                         <Typography>Cor:</Typography>
                         <Box
@@ -160,11 +148,8 @@ export function EnvelopeCard({ data, setEnvelopeAllocation }: EnvelopeProps) {
                             />
                         </Box>
                     </Box>
-                    <Chips label={`${envelopeData.active}`} labels={['Ativo', 'Inativo']} fieldName='true' click={toggleActive} />
                 </FormControl>
             </CardContent>
-        </Card>
-
-
+        </Card >
     )
 }

@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SnackbarProvider } from 'notistack';
 
 import App from './app';
-import { AuthProvider } from './context/AuthProvider';
+// import { AuthProvider } from './context/AuthProvider';
 
 // ----------------------------------------------------------------------
 
@@ -17,13 +17,13 @@ root.render(
   <StrictMode>
     <BrowserRouter>
       <Suspense>
-        <AuthProvider>
+        {/* <AuthProvider> */}
         <SnackbarProvider>
           <QueryClientProvider client={queryClient}>
             <App />
           </QueryClientProvider>
         </SnackbarProvider>
-        </AuthProvider>
+        {/* </AuthProvider> */}
       </Suspense>
     </BrowserRouter>
   </StrictMode>

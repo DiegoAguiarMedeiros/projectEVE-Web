@@ -41,7 +41,6 @@ export function CustomTableRow({ selected, onSelectRow, form, handleDelete, rowK
 
         {rowKeys.map((key,index) => (<TableCell key={index}>{key}</TableCell>))}
 
-        <TableCell/>
 
         <TableCell align="right">
           <IconButton onClick={handleOpenPopover}>
