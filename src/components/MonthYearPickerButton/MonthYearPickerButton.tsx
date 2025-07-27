@@ -26,13 +26,18 @@ interface MonthYearPickerButtonProps {
     data: ProcessedIncomesMonthResponse;
 }
 export const MonthYearPickerButton: React.FC<MonthYearPickerButtonProps> = ({ data }) => {
-    
+
+    const years = Object.keys(data).map(Number).sort((a, b) => a - b);
+
+
     const { month, year, setMonth, setYear } = useSelectedMonthYearStore();
     const [selectedMonth, setSelectedMonth] = useState(month);
     const [selectedYear, setSelectedYear] = useState(year);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-    const years = Object.keys(data).map(Number).sort((a, b) => a - b);
+    if (years.length === 0) {
+        return (<Button variant="contained" color='primary' disabled>{month}/{year}</Button>)
+    }
 
     const minYear = years[0];
     const maxYear = years[years.length - 1];
@@ -42,7 +47,7 @@ export const MonthYearPickerButton: React.FC<MonthYearPickerButtonProps> = ({ da
 
     const getYearsAvailable = (): number[] => (Object.keys(data).map(Number))
 
-   
+
     const handleClose = () => setAnchorEl(null);
 
     const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
