@@ -51,7 +51,7 @@ class CreditCardsService implements ICRUD<CreditCardsPost, CreditCards> {
         const response = await axios.get(
             `${this.baseURL}/`,
             {
-                params: { page: page + 1, pageSize, orderBy, order },
+                params: { page, pageSize, orderBy, order },
                 withCredentials: true
             }
         );

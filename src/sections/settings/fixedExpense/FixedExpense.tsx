@@ -11,7 +11,7 @@ import { Iconify } from "src/components/iconify";
 import { CustomTableHead } from "src/components/table/TableHead";
 import { TableToolbar } from "src/components/table/TableToolbar";
 import EnvelopesService from "src/services/implementation/EnvelopesService";
-import { FixedExpenseForm } from "./form";
+import { FixedExpenseForm } from "src/sections/settings/fixedExpense/form";
 
 
 export function FixedExpenseTable() {

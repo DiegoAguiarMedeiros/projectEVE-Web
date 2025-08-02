@@ -11,7 +11,7 @@ import { Iconify } from "src/components/iconify";
 import { CustomTableHead } from "src/components/table/TableHead";
 import { TableToolbar } from "src/components/table/TableToolbar";
 import EnvelopesService from "src/services/implementation/EnvelopesService";
-import { GoalsForm } from "./form";
+import { GoalsForm } from "src/sections/settings/goals/form";
 
 
 export function GoalsTable() {
@@ -31,8 +31,8 @@ export function GoalsTable() {
     });
 
     useEffect(() => {
-        console.log("table.page", table.page)
-        console.log("table.rowsPerPage", table.rowsPerPage)
+        console.info("table.page", table.page)
+        console.info("table.rowsPerPage", table.rowsPerPage)
     }, [table.page, table.rowsPerPage])
 
     const queryClient = useQueryClient();

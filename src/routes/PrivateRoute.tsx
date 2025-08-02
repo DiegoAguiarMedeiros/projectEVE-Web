@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom';
-import { useUser } from 'src/hooks/queries/useUser';
+import { useUser } from 'src/hooks/queries/user/useUser';
 
 export const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
   const { data: user, isLoading, error } = useUser();

@@ -1,9 +1,11 @@
-import { Box, Button, IconButton, TextField, Typography } from '@mui/material';
-import { startTransition, useActionState, useCallback, useEffect, useImperativeHandle, useRef, useState, useTransition } from 'react';
+import { Box, Button, TextField, Typography } from '@mui/material';
+import { startTransition, useCallback, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import TransitionsModal from 'src/sections/shared/transitionsModal';
-import IncomesService, { Income, IncomePost } from 'src/services/implementation/incomesService'
 import { useSnackbar, VariantType } from 'notistack';
+import { useUpdateIncomes } from 'src/hooks/mutations/incomes/useUpdateIncome';
+import { useCreateIncomes } from 'src/hooks/mutations/incomes/useCreateIncomes';
+import { Income, IncomePost } from 'src/types/Incomes';
 
 type FormIncomeProps = {
     buttonIcon?: React.ReactNode;
@@ -39,46 +41,56 @@ export function FormIncome({ buttonLabel, buttonIcon, data }: FormIncomeProps) {
 
 
 
-    const [error, submitAction, isPending] = useActionState(
-        async (previousState: any, incomes: IncomePost) => {
+    const [isPending, setIsPending] = useState(false);
+    const [error, setError] = useState<Error | null>(null);
 
+    const createMutation = useCreateIncomes(() => {
+        enqueueSnackbar('Salário cadastrado com sucesso!', {
+            autoHideDuration: 3000,
+            variant: 'success',
+            anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
+        });
+        clearForm();
+        refreshIncome();
+        handleClose();
+    });
+
+    const updateMutation = useUpdateIncomes(() => {
+        enqueueSnackbar('Salário editado com sucesso!', {
+            autoHideDuration: 3000,
+            variant: 'success',
+            anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
+        });
+        clearForm();
+        refreshIncome();
+        handleClose();
+    });
+
+    const submitAction = async (incomes: IncomePost) => {
+        setIsPending(true);
+        setError(null);
+
+        try {
             if (data) {
-
-                const errorPostIncome = await IncomesService.update({
+                await updateMutation.mutateAsync({
                     id: data.id,
                     description: incomes.description,
                     amount: incomes.amount,
                     paymentDay: incomes.paymentDay,
                 });
-
-                if (!errorPostIncome) {
-                    return errorPostIncome;
-                }
-                enqueueSnackbar('Salário editado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
-
             } else {
-
-                const errorPostIncome = await IncomesService.create({
+                await createMutation.mutateAsync({
                     description: incomes.description,
                     amount: incomes.amount,
                     paymentDay: incomes.paymentDay,
                 });
-
-                if (!errorPostIncome) {
-                    return errorPostIncome;
-                }
-                enqueueSnackbar('Salário cadastrado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
-
-
             }
-
-            clearForm();
-            refreshIncome();
-            handleClose();
-            return null;
-        },
-        null,
-    );
+        } catch (err: any) {
+            setError(err);
+        } finally {
+            setIsPending(false);
+        }
+    };
 
     const handleSubmit = async () => {
         if (validateDescription() && validateAmount() && validatePaymentDay()) {
@@ -157,7 +169,7 @@ export function FormIncome({ buttonLabel, buttonIcon, data }: FormIncomeProps) {
                 <Typography variant="h3" noWrap>
                     Salário
                 </Typography>
-                {error && <p>{error}</p>}
+                {error && <p>{error.message}</p>}
                 <TextField
                     fullWidth
                     name="description"

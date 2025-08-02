@@ -9,7 +9,7 @@ import { CustomTableRow } from "src/components/table/TableRow";
 import { Iconify } from "src/components/iconify";
 import { CustomTableHead } from "src/components/table/TableHead";
 import { TableToolbar } from "src/components/table/TableToolbar";
-import { CreditCardForm } from "./form";
+import { CreditCardForm } from "src/sections/settings/creditCards/form";
 
 
 export function CreditCardsTable() {
@@ -30,8 +30,8 @@ export function CreditCardsTable() {
 
 
     useEffect(() => {
-        console.log("table.page", table.page)
-        console.log("table.rowsPerPage", table.rowsPerPage)
+        console.info("table.page", table.page)
+        console.info("table.rowsPerPage", table.rowsPerPage)
     }, [table.page, table.rowsPerPage])
 
     const queryClient = useQueryClient();

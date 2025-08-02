@@ -12,7 +12,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { useRouter } from 'src/routes/hooks';
 
 import { Iconify } from 'src/components/iconify';
-import { useLogin } from 'src/hooks/mutations/useLogin';
+import { useLogin } from 'src/hooks/mutations/auth/useLogin';
 // ----------------------------------------------------------------------
 
 export function SignInView() {

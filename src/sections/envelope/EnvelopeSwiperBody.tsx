@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import { useTheme } from '@mui/material/styles';
 
-import { fShortenNumber } from 'src/utils/format-number';
+import { fNumberToCurrency, fShortenNumber } from 'src/utils/format-number';
 
 import { SvgColor } from 'src/components/svg-color';
 
@@ -60,7 +60,7 @@ export function EnvelopeSwiperBody({
         }}
       >
         <Box sx={{ flexGrow: 1, minWidth: 112 }}>
-          <Box sx={{ typography: 'h5', textAlign: 'left' }}>R$ {fShortenNumber(total)}</Box>
+          <Box sx={{ typography: 'h5', textAlign: 'left' }}>{fNumberToCurrency(total)}</Box>
         </Box>
       </Box>
 

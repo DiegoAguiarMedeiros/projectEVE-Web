@@ -1,5 +1,5 @@
-import { api } from "../client";
-import { LoginPayload, AuthResponse, RegisterPayload } from "../../types/Auth";
+import { api } from "src/api/client";
+import { LoginPayload, AuthResponse, RegisterPayload } from "src/types/Auth";
 
 export const login = (data: LoginPayload) =>
   api.post<AuthResponse>("/auth/login", data);

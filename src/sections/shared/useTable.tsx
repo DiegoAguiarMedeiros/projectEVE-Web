@@ -1,9 +1,9 @@
 import { useState, useCallback } from "react";
 
 export function useTable() {
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [orderBy, setOrderBy] = useState('createdAt');
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [selected, setSelected] = useState<string[]>([]);
   const [order, setOrder] = useState<'asc' | 'desc'>('desc');
 

@@ -1,5 +1,5 @@
-import { api } from "../client";
-import { User } from "../../types/User";
+import { api } from "src/api/client";
+import { User } from "src/types/User";
 
 export const getUsers = () => api.get<User[]>("/users");
 export const getUser = () => api.get<User>(`/users/me`);

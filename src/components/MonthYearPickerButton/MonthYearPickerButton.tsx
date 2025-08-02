@@ -54,10 +54,6 @@ export const MonthYearPickerButton: React.FC<MonthYearPickerButtonProps> = ({ da
         setAnchorEl(event.currentTarget);
     };
 
-    console.log(" new Date().getMonth()", new Date().getMonth())
-    console.log(" months[selectedMonth]", months[selectedMonth])
-    console.log(" selectedMonth", selectedMonth)
-
     const handleMonthSelect = (monthSelected: Month) => {
         setMonth(monthSelected)
         setSelectedMonth(monthSelected);
@@ -129,9 +125,6 @@ export const MonthYearPickerButton: React.FC<MonthYearPickerButtonProps> = ({ da
                         {months.map((m, i) => {
                             const availableMonths = data[selectedYear] || [];
                             const isAvailable = availableMonths.includes(i + 1 as Month); // +1 porque data usa meses 1–12
-                            console.log("m", m)
-                            console.log("i", i)
-                            console.log("selectedMonth", selectedMonth)
                             return (
                                 <MenuItem
                                     key={m}

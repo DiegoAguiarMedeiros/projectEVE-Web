@@ -29,7 +29,7 @@ export function EnvelopeCard({ data, setEnvelopeAllocation }: EnvelopeProps) {
                     color: envelope.color,
                     percentage: envelope.percentage,
                 });
-                console.log('errorEnvelopeUpdate', errorEnvelopeUpdate);
+
                 if (!errorEnvelopeUpdate) {
                     return errorEnvelopeUpdate;
                 }

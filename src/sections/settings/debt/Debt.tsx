@@ -11,7 +11,7 @@ import { CustomTableHead } from "src/components/table/TableHead";
 import { TableToolbar } from "src/components/table/TableToolbar";
 import DebtsService, { Debts } from "src/services/implementation/DebtsService";
 import EnvelopesService from "src/services/implementation/EnvelopesService";
-import { DebtForm } from "./form";
+import { DebtForm } from "src/sections/settings/debt/form";
 
 
 export function DebtTable() {
@@ -43,8 +43,8 @@ export function DebtTable() {
 
 
     useEffect(() => {
-        console.log("table.page", table.page)
-        console.log("table.rowsPerPage", table.rowsPerPage)
+        console.info("table.page", table.page)
+        console.info("table.rowsPerPage", table.rowsPerPage)
     }, [table.page, table.rowsPerPage])
 
     const queryClient = useQueryClient();

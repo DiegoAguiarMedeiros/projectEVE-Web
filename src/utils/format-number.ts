@@ -87,6 +87,21 @@ export function fShortenNumber(inputValue: InputNumberValue, options?: Options) 
 
 // ----------------------------------------------------------------------
 
+export function fNumberToCurrency(inputValue: InputNumberValue, options?: Options) {
+  const locale = DEFAULT_LOCALE;
+
+  const number = processInput(inputValue);
+  if (number === null) return '';
+
+  const fm = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  }).format(number);
+
+  return fm.replace(/[A-Z]/g, (match) => match.toUpperCase());
+}
+// ----------------------------------------------------------------------
+
 export function fData(inputValue: InputNumberValue) {
   const number = processInput(inputValue);
   if (number === null || number === 0) return '0 bytes';

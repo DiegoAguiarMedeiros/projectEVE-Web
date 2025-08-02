@@ -7,7 +7,7 @@ import { LoadingButton } from '@mui/lab';
 import { Iconify } from 'src/components/iconify';
 import { useRouter } from 'src/routes/hooks';
 import { Logo } from 'src/components/logo';
-import { useRegister } from 'src/hooks/mutations/useRegister';
+import { useRegister } from 'src/hooks/mutations/auth/useRegister';
 
 export function RegistrationView() {
 

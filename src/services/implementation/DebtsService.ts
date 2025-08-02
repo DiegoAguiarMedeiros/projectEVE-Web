@@ -44,7 +44,7 @@ class DebtsService implements ICRUD<DebtsPost, Debts> {
             `${this.baseURL}/`,
             {
                 params: {
-                    page: page + 1, pageSize, orderBy, order
+                    page, pageSize, orderBy, order
                 },
                 withCredentials: true
             }

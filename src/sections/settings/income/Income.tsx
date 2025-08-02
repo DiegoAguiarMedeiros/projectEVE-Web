@@ -3,48 +3,47 @@ import { Card, TableContainer, Table, TableBody, TablePagination } from "@mui/ma
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "notistack";
 import { useTable } from "src/sections/shared/useTable";
-import IncomesService, { Income } from 'src/services/implementation/incomesService';
 import { TableNoData } from "src/components/table/TableNoData";
 import { CustomTableRow } from "src/components/table/TableRow";
 import { Iconify } from "src/components/iconify";
 import { CustomTableHead } from "src/components/table/TableHead";
 import { TableToolbar } from "src/components/table/TableToolbar";
-import { FormIncome } from "./form";
+import { FormIncome } from "src/sections/settings/income/form";
+import { useDeleteIncome } from "src/hooks/mutations/incomes/useDeleteIncome";
+import { useListIncomes } from "src/hooks/queries/incomes/useListIncomes";
+import { Income } from "src/types/Incomes";
 
 
 export function IncomeTable() {
     const table = useTable();
 
-    const { data: income } = useQuery({
-        queryKey: ['income', table.page, table.rowsPerPage,table.orderBy,table.order],
-        queryFn: () => IncomesService.list({
-            page: table.page,
-            pageSize: table.rowsPerPage,
-            orderBy:table.orderBy,
-            order:table.order,
-        }),
-        staleTime: 5000,
-        gcTime: 60000,
-        placeholderData: (previousData) => previousData,
-    });
+    const { data: income, isLoading, error } = useListIncomes(table);
+    
+    console.log("income",income)
+    console.log("isLoading",isLoading)
+    console.log("error",error)
+
+    const { enqueueSnackbar } = useSnackbar();
+
+
+    if(error) enqueueSnackbar(error.message, { autoHideDuration: 3000, variant: 'error', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
+        
 
 
     useEffect(() => {
-        console.log("table.page", table.page)
-        console.log("table.rowsPerPage", table.rowsPerPage)
+        console.info("table.page", table.page)
+        console.info("table.rowsPerPage", table.rowsPerPage)
     }, [table.page, table.rowsPerPage])
 
 
     const queryClient = useQueryClient();
-    const { enqueueSnackbar } = useSnackbar();
 
-    const deleteIncomeMutation = useMutation({
-        mutationFn: (id: string) => IncomesService.delete(id),
-        onSuccess: () => {
-            enqueueSnackbar('Salário deletado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
-            queryClient.invalidateQueries({ queryKey: ["income"] });
-        },
+    const deleteIncomeMutation = useDeleteIncome(() => {
+        enqueueSnackbar('Salário deletado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
+        queryClient.invalidateQueries({ queryKey: ["income"] });
     });
+
+
     const DeleteIncome = useCallback((id: string) => {
         deleteIncomeMutation.mutate(id)
     }, [deleteIncomeMutation]);
@@ -56,12 +55,12 @@ export function IncomeTable() {
         const handleDeleteIncome = () => {
             deleteIncome(id)
         }
-        const {description,amount,paymentDay} = row;
+        const { description, amount, paymentDay } = row;
         return (<CustomTableRow
             key={id}
             selected={table.selected.includes(id)}
             onSelectRow={() => table.onSelectRow(id)}
-            rowKeys={[description,`R$ ${amount}`,paymentDay]}
+            rowKeys={[description, `R$ ${amount}`, paymentDay]}
             form={<FormIncome
                 data={row}
                 buttonIcon={<Iconify icon="solar:pen-bold" />}

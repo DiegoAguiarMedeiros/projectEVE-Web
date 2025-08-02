@@ -11,7 +11,7 @@ import { _langs, _notifications } from 'src/_mock';
 import { Iconify } from 'src/components/iconify';
 import { ThemeSwitch } from 'src/components/themeSwitch/themeSwitch';
 import { MonthYearPickerButton } from 'src/components/MonthYearPickerButton';
-import { useProcessedIncomesMonth } from 'src/hooks/queries/useProcessedIncomesMonth';
+import { useProcessedIncomesMonth } from 'src/hooks/queries/processed-incomes/useProcessedIncomesMonth';
 
 import { Main } from './main';
 import { layoutClasses } from '../classes';
@@ -38,8 +38,6 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
   const theme = useTheme();
   const [navOpen, setNavOpen] = useState(false);
   const { data, isLoading, error } = useProcessedIncomesMonth();
-
-  console.log("data",data)
 
   if (isLoading) return <p>Carregando dados...</p>;
   if (error || !data) return <p>Erro ao carregar os dados</p>;

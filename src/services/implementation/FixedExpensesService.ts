@@ -39,7 +39,7 @@ class FixedExpensesService implements ICRUD<FixedExpensesPost, FixedExpenses> {
             `${this.baseURL}/`,
             {
                 params: {
-                    page: page + 1, pageSize, orderBy, order
+                    page, pageSize, orderBy, order
                 },
                 withCredentials: true
             }

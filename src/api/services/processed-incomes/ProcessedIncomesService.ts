@@ -1,5 +1,5 @@
-import { api } from "../client";
-import { ProcessIncomesPayload ,ProcessIncomesResponse, ProcessedIncomesMonthResponse} from "../../types/ProcessedIncomes";
+import { api } from "src/api/client";
+import { ProcessIncomesPayload ,ProcessIncomesResponse, ProcessedIncomesMonthResponse} from "src/types/ProcessedIncomes";
 
 export const process = (data: ProcessIncomesPayload) =>
     api.post<ProcessIncomesResponse>("/processed-incomes", data);

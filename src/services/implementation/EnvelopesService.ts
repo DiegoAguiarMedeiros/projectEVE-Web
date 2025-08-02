@@ -5,6 +5,7 @@ export interface Envelope {
     name: string;
     color: string;
     percentage: number;
+    amount?: number;
     userId: string;
 }
 export interface EnvelopePost {
@@ -22,9 +23,19 @@ class EnvelopesService {
     }
 
     async list(): Promise<Envelope[]> {
-
         const response = await axios.get(
             `${this.baseURL}/`,
+            {
+                withCredentials: true
+            }
+        );
+        return response.data as Envelope[];
+    }
+    
+    async listWithAmount(year:number,month:number): Promise<Envelope[]> {
+
+        const response = await axios.get(
+            `${this.baseURL}/${year}/${month}`,
             {
                 withCredentials: true
             }

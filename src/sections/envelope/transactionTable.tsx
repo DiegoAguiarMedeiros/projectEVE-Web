@@ -12,7 +12,7 @@ import { TableToolbar } from "src/components/table/TableToolbar";
 import TransactionsService, { Transactions, TransactionsStatus } from "src/services/implementation/TransactionsService";
 import Chips from "src/components/chip/chip";
 import { useSelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
-import { TransactionForm } from "./form";
+import { TransactionForm } from "src/sections/envelope/form";
 
 type TransactionTableProps = {
     envelopeId: string;
@@ -27,45 +27,47 @@ export function TransactionTable({ envelopeId }: TransactionTableProps) {
 
     const queryClient = useQueryClient();
     const onMonthYearChange = useCallback((): void => {
-        console.log("onMonthYearChange month", month)
-        console.log("onMonthYearChange year", year)
-        queryClient.invalidateQueries({
-            queryKey: ["transaction-by-envelope"],
-        });
-    }, [queryClient, month, year]);
+        queryClient.invalidateQueries({ queryKey: ["envelope"] });
+        queryClient.invalidateQueries({ queryKey: ["transaction-by-envelope", envelopeId] });
+    }, [queryClient, envelopeId]);
 
 
     useEffect(() => {
-
-        console.log("month", month)
-        console.log("year", year)
         onMonthYearChange()
-    }, [onMonthYearChange, month, year])
-
-
-    console.log("TransactionTable month", month)
-    console.log("TransactionTable year", year)
+    }, [onMonthYearChange])
 
     const { data: transaction } = useQuery({
-        queryKey: ['transaction-by-envelope', year,month,table.page, table.rowsPerPage, table.orderBy, table.order],
-        queryFn: () => TransactionsService.listByEnvelope({
-            page: table.page,
-            pageSize: table.rowsPerPage,
-            orderBy: table.orderBy,
-            order: table.order,
-            envelope: envelopeId,
+        queryKey: [
+            'transaction-by-envelope',
+            envelopeId,
             year,
-            month
-        }),
+            month,
+            table.page,
+            table.rowsPerPage,
+            table.orderBy,
+            table.order,
+        ],
+        queryFn: () =>
+            TransactionsService.listByEnvelope({
+                page: table.page,
+                pageSize: table.rowsPerPage,
+                orderBy: table.orderBy,
+                order: table.order,
+                envelopeId,
+                year,
+                month,
+            }),
         staleTime: 5000,
         gcTime: 60000,
         placeholderData: (previousData) => previousData,
+        enabled: !!envelopeId && !!year && !!month,
     });
 
 
+
     useEffect(() => {
-        console.log("table.page", table.page)
-        console.log("table.rowsPerPage", table.rowsPerPage)
+        console.info("table.page", table.page)
+        console.info("table.rowsPerPage", table.rowsPerPage)
     }, [table.page, table.rowsPerPage])
 
     const { enqueueSnackbar } = useSnackbar();
@@ -81,7 +83,8 @@ export function TransactionTable({ envelopeId }: TransactionTableProps) {
         mutationFn: ({ id, data }: { id: string; data: TransactionsStatus }) => TransactionsService.updateStatus(id, data),
         onSuccess: () => {
             enqueueSnackbar('Transação Atualizada com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
-            queryClient.invalidateQueries({ queryKey: ["transaction-by-envelope"] });
+            queryClient.invalidateQueries({ queryKey: ["envelope"] });
+            queryClient.invalidateQueries({ queryKey: ["transaction-by-envelope", envelopeId] });
         },
     });
 

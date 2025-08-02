@@ -128,7 +128,7 @@ export function GoalsForm({ buttonLabel, buttonIcon, data }: GoalsFormProps) {
         const months = monthOrYear ? Number(deadlineDate) : Number(deadlineDate) * 12;
         const realTotal = Number(total) - Number(inicial);
         const envelopeBudget = (salary * envelopePercentagem) / 100;
-        console.log("months", months)
+
         if (months > 0) {
             setSave(realTotal / months)
             setSavePercentagem((((realTotal / months) / envelopeBudget) * 100))

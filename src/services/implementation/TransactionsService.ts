@@ -21,7 +21,7 @@ export const allTransactionsType: TransactionsType[] = ['Credit', 'Debit']
 export interface Transactions {
     id: string;
     creditCardId?: string;
-    envelope: Envelope;
+    envelopeId: string;
     description: string;
     amount: string;
     paymentMethod: PaymentMethod;
@@ -31,7 +31,7 @@ export interface Transactions {
 }
 export interface TransactionsPost {
     creditCardId?: string;
-    envelope: Envelope;
+    envelopeId: string;
     description: string;
     amount: string;
     paymentMethod: PaymentMethod;
@@ -45,7 +45,7 @@ interface TransactionListByEnvelope {
     pageSize: number;
     orderBy: string;
     order: string;
-    envelope:string;
+    envelopeId:string;
     year: number;
     month: number;
 }
@@ -69,7 +69,7 @@ class TransactionsService implements ICRUD<TransactionsPost, Transactions> {
             `${this.baseURL}/`,
             {
                 params: {
-                    page: page + 1, pageSize, orderBy, order
+                    page, pageSize, orderBy, order
                 },
                 withCredentials: true
             }
@@ -82,16 +82,16 @@ class TransactionsService implements ICRUD<TransactionsPost, Transactions> {
         pageSize = 10,
         orderBy = 'createdAt',
         order = 'desc',
-        envelope,
+        envelopeId,
         month,
         year
     }:TransactionListByEnvelope): Promise<Pagination<Transactions>> {
-        console.log('listByEnvelope',`${this.baseURL}/envelope/${year}/${month}/${envelope}`)
+
         const response = await axios.get(
-            `${this.baseURL}/envelope/${year}/${month}/${envelope}`,
+            `${this.baseURL}/envelope/${year}/${month}/${envelopeId}`,
             {
                 params: {
-                    page: page + 1, pageSize, orderBy, order
+                    page, pageSize, orderBy, order
                 },
                 withCredentials: true
             }
@@ -100,12 +100,11 @@ class TransactionsService implements ICRUD<TransactionsPost, Transactions> {
     }
 
     async create(data: TransactionsPost): Promise<boolean> {
-        console.log("data", data)
         const response = await axios.post(
             `${this.baseURL}/`,
             {
                 creditCardId: data.creditCardId,
-                envelope: data.envelope,
+                envelopeId: data.envelopeId,
                 description: data.description,
                 amount: data.amount,
                 paymentMethod: data.paymentMethod,
@@ -126,7 +125,7 @@ class TransactionsService implements ICRUD<TransactionsPost, Transactions> {
             `${this.baseURL}/${data.id}`,
             {
                 creditCardId: data.creditCardId,
-                envelope: data.envelope,
+                envelopeId: data.envelopeId,
                 description: data.description,
                 amount: data.amount,
                 paymentMethod: data.paymentMethod,

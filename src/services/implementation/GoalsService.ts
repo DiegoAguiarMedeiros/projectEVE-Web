@@ -48,7 +48,7 @@ class GoalsServiceService implements ICRUD<GoalsPost, Goals> {
             `${this.baseURL}/`,
             {
                 params: {
-                    page: page + 1, pageSize, orderBy, order
+                    page, pageSize, orderBy, order
                 },
                 withCredentials: true
             }

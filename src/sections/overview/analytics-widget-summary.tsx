@@ -32,7 +32,7 @@ export function AnalyticsWidgetSummary({
   ...other
 }: Props) {
   const theme = useTheme();
-  console.log('color', color);
+
   return (
     <Card
       sx={{

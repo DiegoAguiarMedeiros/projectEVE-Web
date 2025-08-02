@@ -56,7 +56,7 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId }: T
                     description: transaction.description,
                     amount: transaction.amount,
                     status: data.status,
-                    envelope: { id: envelopeId } as Envelope,
+                    envelopeId,
                     paymentMethod: transaction.paymentMethod,
                     date: transaction.date,
                     type: 'Debit'
@@ -73,8 +73,8 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId }: T
                     description: transaction.description,
                     amount: transaction.amount,
                     status: transaction.status,
-                    envelope: { id: envelopeId } as Envelope,
-                    paymentMethod:transaction.paymentMethod,
+                    envelopeId,
+                    paymentMethod: transaction.paymentMethod,
                     date: transaction.date,
                     type: 'Debit'
                 });
@@ -103,7 +103,7 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId }: T
                     amount,
                     paymentMethod,
                     status: 'Pending',
-                    envelope: { id: envelopeId } as Envelope,
+                    envelopeId,
                     date,
                     type: 'Debit',
                 });
@@ -201,6 +201,16 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId }: T
                         }
                     }}
                 />
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                        sx={{ width: '100%', mb: 3 }}
+                        name="date"
+                        label="Data do Pagamento"
+                        value={date}
+                        onChange={(newValue) => setDate(newValue)}
+                        format="DD/MM/YYYY"
+                    />
+                </LocalizationProvider>
                 <FormControl fullWidth>
                     <InputLabel id="payment-method-select-label">Método de Pagamento</InputLabel>
                     <Select
@@ -217,16 +227,7 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId }: T
                         ))}
                     </Select>
                 </FormControl>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                        sx={{ width: '100%', mb: 3 }}
-                        name="date"
-                        label="Data do Pagamento"
-                        value={date}
-                        onChange={(newValue) => setDate(newValue)}
-                        format="DD/MM/YYYY"
-                    />
-                </LocalizationProvider>
+
             </Box >
         </TransitionsModal>
     );

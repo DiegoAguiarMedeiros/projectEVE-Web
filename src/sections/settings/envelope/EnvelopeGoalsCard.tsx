@@ -66,7 +66,7 @@ export function EnvelopeGoalsCard({ data, setEnvelopeAllocation }: EnvelopeGoals
                     color: envelope.color,
                     percentage: envelope.percentage,
                 });
-                console.log('errorEnvelopeUpdate', errorEnvelopeUpdate);
+
                 if (!errorEnvelopeUpdate) {
                     return errorEnvelopeUpdate;
                 }
