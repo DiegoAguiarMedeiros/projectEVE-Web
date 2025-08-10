@@ -1,3 +1,3 @@
 // ----------------------------------------------------------------------
 
-export const chartClasses = { root: 'mnl__chart__root' };
+export const chartClasses = { root: "mnl__chart__root" };

@@ -1,5 +1,5 @@
-// import { useState, useEffect, createContext, ReactNode, PropsWithChildren, useMemo } from 'react';
-// import AuthService from '../services/authService';
+// import { useState, useEffect, createContext, ReactNode, PropsWithChildren, useMemo } from "react";
+// import AuthService from "../services/authService";
 
 // interface User {
 //   id: number;
@@ -43,7 +43,7 @@
 //       const authenticatedUser = await AuthService.getUser();
 //       setUser(authenticatedUser);
 //     } catch (error) {
-//       console.error('Erro ao fazer login:', error);
+//       console.error("Erro ao fazer login:", error);
 //       throw error;
 //     } finally {
 //       setLoading(false);
@@ -56,7 +56,7 @@
 //       await AuthService.logout();
 //       setUser(null);
 //     } catch (error) {
-//       console.error('Erro ao fazer logout:', error);
+//       console.error("Erro ao fazer logout:", error);
 //     } finally {
 //       setLoading(false);
 //     }

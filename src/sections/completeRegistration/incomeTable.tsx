@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Box, Button, Modal, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from '@mui/material';
+import React, { useState } from "react";
+import { Box, Button, Modal, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@mui/material";
 
 type Item = {
   description: string;
@@ -8,23 +8,23 @@ type Item = {
 };
 
 const initialData: Item[] = [
-  { description: 'Diego', amount: 3200, paymentDay: 5 },
-  { description: 'Samanta', amount: 3200, paymentDay: 5 },
+  { description: "Diego", amount: 3200, paymentDay: 5 },
+  { description: "Samanta", amount: 3200, paymentDay: 5 },
 ];
 
 export const IncomeTable = () => {
   const [items, setItems] = useState<Item[]>(initialData);
   const [isModalOpen, setModalOpen] = useState(false);
-  const [formData, setFormData] = useState<Item>({ description: '', amount: 0, paymentDay: 1 });
+  const [formData, setFormData] = useState<Item>({ description: "", amount: 0, paymentDay: 1 });
   const [errors, setErrors] = useState<{ description?: string; amount?: string; paymentDay?: string }>({});
 
   const toggleModal = () => setModalOpen(!isModalOpen);
 
   const validateForm = (): boolean => {
     const newErrors: typeof errors = {};
-    if (!formData.description.trim()) newErrors.description = 'Descrição é obrigatória.';
-    if (formData.amount <= 0) newErrors.amount = 'O valor deve ser maior que zero.';
-    if (formData.paymentDay < 1 || formData.paymentDay > 31) newErrors.paymentDay = 'Dia de pagamento deve ser entre 1 e 31.';
+    if (!formData.description.trim()) newErrors.description = "Descrição é obrigatória.";
+    if (formData.amount <= 0) newErrors.amount = "O valor deve ser maior que zero.";
+    if (formData.paymentDay < 1 || formData.paymentDay > 31) newErrors.paymentDay = "Dia de pagamento deve ser entre 1 e 31.";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -33,7 +33,7 @@ export const IncomeTable = () => {
   const handleAddItem = () => {
     if (validateForm()) {
       setItems((prevItems) => [...prevItems, formData]);
-      setFormData({ description: '', amount: 0, paymentDay: 1 });
+      setFormData({ description: "", amount: 0, paymentDay: 1 });
       toggleModal();
     }
   };
@@ -43,7 +43,7 @@ export const IncomeTable = () => {
   };
 
   return (
-    <Box sx={{width:'600px'}}>
+    <Box sx={{width:"600px"}}>
       <Table>
         <TableHead>
           <TableRow>
@@ -68,12 +68,12 @@ export const IncomeTable = () => {
       <Modal open={isModalOpen} onClose={toggleModal}>
         <Box
           sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
             width: 400,
-            bgcolor: 'background.paper',
+            bgcolor: "background.paper",
             boxShadow: 24,
             p: 4,
             borderRadius: 1,
@@ -86,7 +86,7 @@ export const IncomeTable = () => {
             label="Descrição"
             fullWidth
             value={formData.description}
-            onChange={(e) => handleChange('description', e.target.value)}
+            onChange={(e) => handleChange("description", e.target.value)}
             error={!!errors.description}
             helperText={errors.description}
             sx={{ mb: 2 }}
@@ -96,7 +96,7 @@ export const IncomeTable = () => {
             fullWidth
             type="number"
             value={formData.amount}
-            onChange={(e) => handleChange('amount', parseFloat(e.target.value))}
+            onChange={(e) => handleChange("amount", parseFloat(e.target.value))}
             error={!!errors.amount}
             helperText={errors.amount}
             sx={{ mb: 2 }}
@@ -106,7 +106,7 @@ export const IncomeTable = () => {
             fullWidth
             type="number"
             value={formData.paymentDay}
-            onChange={(e) => handleChange('paymentDay', parseInt(e.target.value, 10))}
+            onChange={(e) => handleChange("paymentDay", parseInt(e.target.value, 10))}
             error={!!errors.paymentDay}
             helperText={errors.paymentDay}
             sx={{ mb: 2 }}

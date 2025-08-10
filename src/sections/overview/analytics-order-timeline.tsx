@@ -1,8 +1,8 @@
-import type { CardProps } from '@mui/material/Card';
+import type { CardProps } from "@mui/material/Card";
 
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import { Box, Slider, Typography } from '@mui/material';
+import Card from "@mui/material/Card";
+import CardHeader from "@mui/material/CardHeader";
+import { Box, Slider, Typography } from "@mui/material";
 
 // ----------------------------------------------------------------------
 
@@ -13,7 +13,7 @@ type Props = CardProps & {
     title: string;
     value: number;
     valueMax: number;
-    color: 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning';
+    color: "primary" | "secondary" | "error" | "info" | "success" | "warning";
   }[];
 };
 
@@ -21,11 +21,11 @@ export function AnalyticsOrderTimeline({ title, subheader, list, ...other }: Pro
   const marks = [
     {
       value: 0,
-      label: '0%',
+      label: "0%",
     },
     {
       value: 500,
-      label: '100%',
+      label: "100%",
     },
   ];
 
@@ -52,15 +52,15 @@ export function AnalyticsOrderTimeline({ title, subheader, list, ...other }: Pro
               marks={marks}
               color={item.color}
               sx={{
-                '& .MuiSlider-thumb': {
+                "& .MuiSlider-thumb": {
                   // Mantenha a cor do thumb (ponto de controle)
                   backgroundColor: `${item.color}.main`,
                 },
-                '& .MuiSlider-rail': {
+                "& .MuiSlider-rail": {
                   // Mantenha a cor do rail (trilho)
-                  backgroundColor: 'gray',
+                  backgroundColor: "gray",
                 },
-                '& .MuiSlider-track': {
+                "& .MuiSlider-track": {
                   // Mantenha a cor do track (faixa)
                   backgroundColor: `${item.color}.main`,
                 },

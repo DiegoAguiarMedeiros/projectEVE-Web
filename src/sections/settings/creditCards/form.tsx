@@ -1,9 +1,11 @@
-import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from '@mui/material';
-import { startTransition, useActionState, useCallback, useEffect, useImperativeHandle, useRef, useState, useTransition } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
-import TransitionsModal from 'src/sections/shared/transitionsModal';
-import CreditCardsService, { allFlags, CreditCards, CreditCardsPost, Flags } from 'src/services/implementation/CreditCardsService';
-import { useSnackbar, VariantType } from 'notistack';
+import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
+import { startTransition, useActionState, useCallback, useEffect, useImperativeHandle, useRef, useState, useTransition } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import TransitionsModal from "src/sections/shared/transitionsModal";
+import { useSnackbar, VariantType } from "notistack";
+import { useCreateCreditCards } from "src/hooks/mutations/credit-cards/useCreateCreditCards";
+import { useUpdateCreditCards } from "src/hooks/mutations/credit-cards/useUpdateCreditCards";
+import { allFlags, CreditCards, CreditCardsPost, Flags } from "src/types/CreditCards";
 
 type CreditCardFormProps = {
     buttonIcon?: React.ReactNode;
@@ -18,65 +20,59 @@ export function CreditCardForm({ buttonLabel, buttonIcon, data }: CreditCardForm
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const [name, setName] = useState(data ? data.name : '');
-    const [flag, setFlag] = useState<Flags>(data ? data.flag : 'Visa');
+    const [name, setName] = useState(data ? data.name : "");
+    const [flag, setFlag] = useState<Flags>(data ? data.flag : "Visa");
     const [errorName, setErrorName] = useState<string | null>(null);
     const [erroFlag, setErroFlag] = useState<string | null>(null);
 
     const queryClient = useQueryClient();
 
     const refresh = () => {
-        queryClient.invalidateQueries({ queryKey: ['credit-card'] });
+        queryClient.invalidateQueries({ queryKey: ["credit-cards"] });
     };
     const clearForm = () => {
-        setName('')
-        setFlag('Visa')
+        setName("")
+        setFlag("Visa")
     };
 
 
 
+    const [isPending, setIsPending] = useState(false);
+    const [error, setError] = useState<Error | null>(null);
 
-    const [error, submitAction, isPending] = useActionState(
-        async (previousState: any, creditCard: CreditCardsPost) => {
+    const createMutation = useCreateCreditCards();
+
+    const updateMutation = useUpdateCreditCards();
+
+    const submitAction = async (creditCards: CreditCardsPost) => {
+        setIsPending(true);
+        setError(null);
+
+        try {
             if (data) {
-
-                const errorPostIncomes = await CreditCardsService.update({
+                await updateMutation.mutateAsync({
                     id: data.id,
-                    name: creditCard.name,
-                    flag: creditCard.flag,
-                    active: creditCard.active!,
-                    userId: creditCard.userId!,
+                    name: creditCards.name,
+                    flag: creditCards.flag,
+                    active: data.active!,
+                    userId: data.userId!,
                 });
-
-                if (!errorPostIncomes) {
-                    return errorPostIncomes;
-                }
-                enqueueSnackbar('Cartão de crédito editado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
-
             } else {
-
-                const errorPostIncomes = await CreditCardsService.create({
-                    name: creditCard.name,
-                    flag: creditCard.flag,
-                    active: creditCard.active,
-                    userId: creditCard.userId,
+                await createMutation.mutateAsync({
+                    name: creditCards.name,
+                    flag: creditCards.flag,
                 });
-
-                if (!errorPostIncomes) {
-                    return errorPostIncomes;
-                }
-                enqueueSnackbar('Cartão de crédito cadastrado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
-
-
             }
 
             clearForm();
-            refresh();
             handleClose();
-            return null;
-        },
-        null,
-    );
+        } catch (err: any) {
+            setError(err);
+        } finally {
+            setIsPending(false);
+        }
+    };
+
 
     const handleSubmit = async () => {
         if (validateName() && validateFlag()) {
@@ -88,7 +84,7 @@ export function CreditCardForm({ buttonLabel, buttonIcon, data }: CreditCardForm
 
     const validateName = useCallback(() => {
         if (!name.trim()) {
-            setErrorName('Nome é obrigatório.');
+            setErrorName("Nome é obrigatório.");
             return false;
         }
         setErrorName(null);
@@ -97,7 +93,7 @@ export function CreditCardForm({ buttonLabel, buttonIcon, data }: CreditCardForm
 
     const validateFlag = useCallback(() => {
         if (!flag) {
-            setErrorName('Bandeira é obrigatória.');
+            setErrorName("Bandeira é obrigatória.");
             return false;
         }
         setErroFlag(null);
@@ -105,9 +101,9 @@ export function CreditCardForm({ buttonLabel, buttonIcon, data }: CreditCardForm
     }, [flag]);
 
 
-        const handleSelectChange = (event: SelectChangeEvent<Flags>) => {
-            setFlag(event.target.value as Flags);
-        };
+    const handleSelectChange = (event: SelectChangeEvent<Flags>) => {
+        setFlag(event.target.value as Flags);
+    };
 
     return (
 
@@ -117,17 +113,17 @@ export function CreditCardForm({ buttonLabel, buttonIcon, data }: CreditCardForm
             handleOpen={handleOpen}
             openButton={!buttonIcon
                 ?
-                <Button variant='contained' color='primary' onClick={handleOpen}  >{buttonLabel}</Button>
+                <Button variant="contained" color="primary" onClick={handleOpen}  >{buttonLabel}</Button>
                 :
                 <Button
-                    style={{ display: 'flex', gap: '16px', background: 'none', border: 'none', cursor: 'pointer', margin: 0, padding: 0 }}
+                    style={{ display: "flex", gap: "16px", background: "none", border: "none", cursor: "pointer", margin: 0, padding: 0 }}
                     onClick={handleOpen}
                 >
                     {buttonIcon}{buttonLabel}
                 </Button>
             }
 
-            okButton={<Button type='submit' variant='outlined' color='primary' onClick={handleSubmit} disabled={isPending} >Adicionar</Button>
+            okButton={<Button type="submit" variant="outlined" color="primary" onClick={handleSubmit} disabled={isPending} >Adicionar</Button>
             }>
             <Box
                 gap={1.5}
@@ -135,12 +131,12 @@ export function CreditCardForm({ buttonLabel, buttonIcon, data }: CreditCardForm
                 flexDirection="column"
                 alignItems="center"
                 justifySelf="center"
-                sx={{ width: '100%' }}
+                sx={{ width: "100%" }}
             >
                 <Typography variant="h3" noWrap>
                     Cartão de Crédito
                 </Typography>
-                {error && <p>{error}</p>}
+                {error && <p>{error.message}</p>}
                 <TextField
                     fullWidth
                     name="name"
@@ -150,7 +146,7 @@ export function CreditCardForm({ buttonLabel, buttonIcon, data }: CreditCardForm
                     onBlur={validateName}
                     sx={{ mb: 3 }}
                     error={!!errorName}
-                    helperText={errorName ?? ''}
+                    helperText={errorName ?? ""}
                 />
                 <FormControl fullWidth>
                     <InputLabel id="demo-simple-select-label">Bandeira</InputLabel>
@@ -158,7 +154,7 @@ export function CreditCardForm({ buttonLabel, buttonIcon, data }: CreditCardForm
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
                         label="Bandeira"
-                        sx={{ width: '100%', mb: 3 }}
+                        sx={{ width: "100%", mb: 3 }}
                         name="flag"
                         value={flag}
                         onChange={handleSelectChange}

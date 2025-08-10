@@ -1,19 +1,26 @@
-import * as React from 'react';
-import { useState } from 'react';
-import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
-import Tabs from '@mui/material/Tabs';
-import { Typography } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import * as React from "react";
+import { useState } from "react";
+import Tab from "@mui/material/Tab";
+import Box from "@mui/material/Box";
+import Tabs from "@mui/material/Tabs";
+import { Typography } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
-import { DashboardContent } from 'src/layouts/dashboard';
-import { _incomes } from 'src/_mock';
-import { IncomeTable } from '../income';
-import { CreditCardsTable } from '../creditCards';
-import { FixedExpenseTable } from '../fixedExpense';
-import { DebtTable } from '../debt';
-import { Envelope } from '../envelope';
-import { GoalsTable } from '../goals';
+import { DashboardContent } from "src/layouts/dashboard";
+import { _incomes } from "src/_mock";
+import { IncomeTable } from "src/sections/settings/income";
+import { CreditCardsTable } from "src/sections/settings/creditCards";
+import { FixedExpenseTable } from "src/sections/settings/fixedExpense";
+import { DebtTable } from "src/sections/settings/debt";
+import { EnvelopesTable } from "src/sections/settings/envelope";
+import { GoalsTable } from "src/sections/settings/goals";
+import { Envelopes } from "src/types/Envelopes";
+import { Incomes } from "src/types/Incomes";
+import { Pagination } from "src/types/Pagination";
+import { Goals } from "src/types/Goals";
+import { FixedExpenses } from "src/types/FixedExpenses";
+import { Debts } from "src/types/Debts";
+import { CreditCards } from "src/types/CreditCards";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -41,12 +48,19 @@ function CustomTabPanel(props: TabPanelProps) {
 function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
   };
 }
 
-
-export function SettingsView() {
+type SettingsViewProps = {
+  incomes: Pagination<Incomes> | undefined
+  goals: Pagination<Goals> | undefined
+  fixedExpenses: Pagination<FixedExpenses> | undefined
+  debts: Pagination<Debts> | undefined
+  creditCards: Pagination<CreditCards> | undefined
+  envelopes: Envelopes[]
+}
+export function SettingsView({ incomes, envelopes, goals, fixedExpenses, debts, creditCards }: SettingsViewProps) {
   const [value, setValue] = useState(0);
 
 
@@ -58,8 +72,8 @@ export function SettingsView() {
 
   return (
     <DashboardContent>
-      <Box sx={{ width: '100%' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+      <Box sx={{ width: "100%" }}>
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
             <Tab label="Minha Renda" {...a11yProps(0)} />
             <Tab label="Meus Limites" {...a11yProps(1)} />
@@ -74,31 +88,31 @@ export function SettingsView() {
           <Typography variant="caption" sx={{ m: 2, mb: 4 }}>
             instruções!
           </Typography>
-          <IncomeTable />
+          <IncomeTable incomes={incomes} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
-          <Envelope />
+          <EnvelopesTable envelopes={envelopes} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={2}>
-          <GoalsTable />
+          <GoalsTable goals={goals} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={3}>
           <Typography variant="caption" sx={{ m: 2, mb: 4 }}>
             instruções!
           </Typography>
-          <FixedExpenseTable />
+          <FixedExpenseTable fixedExpenses={fixedExpenses} envelopes={envelopes} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={4}>
           <Typography variant="caption" sx={{ m: 2, mb: 4 }}>
             instruções!
           </Typography>
-          <DebtTable />
+          <DebtTable debts={debts} envelopes={envelopes} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={5}>
           <Typography variant="caption" sx={{ m: 2, mb: 4 }}>
             instruções!
           </Typography>
-          <CreditCardsTable />
+          <CreditCardsTable creditCards={creditCards} />
         </CustomTabPanel>
 
       </Box>

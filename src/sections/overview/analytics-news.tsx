@@ -1,19 +1,19 @@
-import type { BoxProps } from '@mui/material/Box';
-import type { CardProps } from '@mui/material/Card';
+import type { BoxProps } from "@mui/material/Box";
+import type { CardProps } from "@mui/material/Card";
 
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
-import CardHeader from '@mui/material/CardHeader';
-import ListItemText from '@mui/material/ListItemText';
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import Button from "@mui/material/Button";
+import Avatar from "@mui/material/Avatar";
+import CardHeader from "@mui/material/CardHeader";
+import ListItemText from "@mui/material/ListItemText";
 
-import { fToNow } from 'src/utils/format-time';
+import { fToNow } from "src/utils/format-time";
 
-import { Iconify } from 'src/components/iconify';
-import { Scrollbar } from 'src/components/scrollbar';
+import { Iconify } from "src/components/iconify";
+import { Scrollbar } from "src/components/scrollbar";
 
-import type { PostItemProps } from '../blog/post-item';
+import type { PostItemProps } from "../blog/post-item";
 
 // ----------------------------------------------------------------------
 
@@ -36,7 +36,7 @@ export function AnalyticsNews({ title, subheader, list, ...other }: Props) {
         </Box>
       </Scrollbar>
 
-      <Box sx={{ p: 2, textAlign: 'right' }}>
+      <Box sx={{ p: 2, textAlign: "right" }}>
         <Button
           size="small"
           color="inherit"
@@ -51,15 +51,15 @@ export function AnalyticsNews({ title, subheader, list, ...other }: Props) {
 
 // ----------------------------------------------------------------------
 
-function PostItem({ sx, item, ...other }: BoxProps & { item: Props['list'][number] }) {
+function PostItem({ sx, item, ...other }: BoxProps & { item: Props["list"][number] }) {
   return (
     <Box
       sx={{
         py: 2,
         px: 3,
         gap: 2,
-        display: 'flex',
-        alignItems: 'center',
+        display: "flex",
+        alignItems: "center",
         borderBottom: (theme) => `dashed 1px ${theme.palette.divider}`,
         ...sx,
       }}
@@ -75,11 +75,11 @@ function PostItem({ sx, item, ...other }: BoxProps & { item: Props['list'][numbe
       <ListItemText
         primary={item.title}
         secondary={item.description}
-        primaryTypographyProps={{ noWrap: true, typography: 'subtitle2' }}
-        secondaryTypographyProps={{ mt: 0.5, noWrap: true, component: 'span' }}
+        primaryTypographyProps={{ noWrap: true, typography: "subtitle2" }}
+        secondaryTypographyProps={{ mt: 0.5, noWrap: true, component: "span" }}
       />
 
-      <Box sx={{ flexShrink: 0, color: 'text.disabled', typography: 'caption' }}>
+      <Box sx={{ flexShrink: 0, color: "text.disabled", typography: "caption" }}>
         {fToNow(item.postedAt)}
       </Box>
     </Box>

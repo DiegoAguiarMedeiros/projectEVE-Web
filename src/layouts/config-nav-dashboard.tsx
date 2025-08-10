@@ -1,9 +1,9 @@
-import EmailIcon from '@mui/icons-material/Email';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
-import SavingsIcon from '@mui/icons-material/Savings';
+import EmailIcon from "@mui/icons-material/Email";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
+import SavingsIcon from "@mui/icons-material/Savings";
 
-import { SvgColor } from 'src/components/svg-color';
+import { SvgColor } from "src/components/svg-color";
 // ----------------------------------------------------------------------
 
 const icon = (name: string) => (
@@ -12,18 +12,18 @@ const icon = (name: string) => (
 
 export const navData = [
   {
-    title: 'Orçamento',
-    path: '/',
+    title: "Orçamento",
+    path: "/",
     icon: <DashboardIcon />,
   },
   {
-    title: 'Envelopes',
-    path: '/envelopes',
+    title: "Envelopes",
+    path: "/envelopes",
     icon: <EmailIcon />,
   },
   {
-    title: 'Configurações',
-    path: '/configuracoes',
+    title: "Configurações",
+    path: "/configuracoes",
     icon: <SettingsApplicationsIcon />,
   },
 ];

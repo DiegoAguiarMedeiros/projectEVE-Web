@@ -1,16 +1,17 @@
-import { Box, Button, Divider, FormControl, Grid2, IconButton, InputLabel, MenuItem, Paper, Select, SelectChangeEvent, Stack, styled, Switch, TextField, Typography, useTheme } from '@mui/material';
-import { startTransition, useActionState, useCallback, useEffect, useImperativeHandle, useRef, useState, useTransition } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
-import TransitionsModal from 'src/sections/shared/transitionsModal';
-import { useSnackbar, VariantType } from 'notistack';
-import GoalsService, { Goals, GoalsPost } from 'src/services/implementation/GoalsService';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import dayjs, { Dayjs } from 'dayjs';
-import { type } from 'os';
-import { Envelope } from 'src/services/implementation/EnvelopesService';
-import { AntSwitch } from './AntSwitch';
+import { Box, Button, Divider, FormControl, Grid2, IconButton, InputLabel, MenuItem, Paper, Select, SelectChangeEvent, Stack, styled, Switch, TextField, Typography, useTheme } from "@mui/material";
+import { startTransition, useActionState, useCallback, useEffect, useImperativeHandle, useRef, useState, useTransition } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import TransitionsModal from "src/sections/shared/transitionsModal";
+import { useSnackbar, VariantType } from "notistack";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs, { Dayjs } from "dayjs";
+import { type } from "os";
+import { AntSwitch } from "src/sections/settings/goals/AntSwitch";
+import { useCreateGoals } from "src/hooks/mutations/goals/useCreateGoals";
+import { useUpdateGoals } from "src/hooks/mutations/goals/useUpdateGoals";
+import { Goals, GoalsPost } from "src/types/Goals";
 
 type GoalsFormProps = {
     buttonIcon?: React.ReactNode;
@@ -24,18 +25,17 @@ const envelopePercentagem = 10;
 
 export function GoalsForm({ buttonLabel, buttonIcon, data }: GoalsFormProps) {
     const theme = useTheme();
-    const { enqueueSnackbar } = useSnackbar();
 
     const [monthYear, setMonthYear] = useState(false);
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const [description, setDescription] = useState(data ? data.description : '');
-    const [amount, setAmount] = useState(data ? data.amount : '');
-    const [amountTotal, setAmountTotal] = useState(data ? data.amountTotal : '');
-    const [percentage, setPercentage] = useState(data ? data.percentage : '');
-    const [deadline, setDeadline] = useState(data ? data.deadline : '');
+    const [description, setDescription] = useState(data ? data.description : "");
+    const [amount, setAmount] = useState(data ? data.amount : "");
+    const [amountTotal, setAmountTotal] = useState(data ? data.amountTotal : "");
+    const [percentage, setPercentage] = useState(data ? data.percentage : "");
+    const [deadline, setDeadline] = useState(data ? data.deadline : "");
 
     const [save, setSave] = useState(0);
     const [savePercentagem, setSavePercentagem] = useState(0);
@@ -48,25 +48,28 @@ export function GoalsForm({ buttonLabel, buttonIcon, data }: GoalsFormProps) {
     const [errorPercentage, setErrorPercentage] = useState<string | null>(null);
 
     const queryClient = useQueryClient();
-
-    const refresh = () => {
-        queryClient.invalidateQueries({ queryKey: ['goals'] });
-    };
     const clearForm = () => {
-        setDescription('')
-        setAmount('')
-        setAmountTotal('')
-        setPercentage('')
+        setDescription("")
+        setAmount("")
+        setAmountTotal("")
+        setPercentage("")
     };
 
 
+    const [isPending, setIsPending] = useState(false);
+    const [error, setError] = useState<Error | null>(null);
 
+    const createMutation = useCreateGoals();
 
-    const [error, submitAction, isPending] = useActionState(
-        async (previousState: any, goals: GoalsPost) => {
+    const updateMutation = useUpdateGoals();
+
+    const submitAction = async (goals: GoalsPost) => {
+        setIsPending(true);
+        setError(null);
+
+        try {
             if (data) {
-
-                const errorPostIncomes = await GoalsService.update({
+                await updateMutation.mutateAsync({
                     id: data.id,
                     description: goals.description,
                     amount: goals.amount,
@@ -75,15 +78,8 @@ export function GoalsForm({ buttonLabel, buttonIcon, data }: GoalsFormProps) {
                     deadline: goals.deadline,
                     monthYear: goals.monthYear,
                 });
-
-                if (!errorPostIncomes) {
-                    return errorPostIncomes;
-                }
-                enqueueSnackbar('Meta editada com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
-
             } else {
-
-                const errorPostIncomes = await GoalsService.create({
+                await createMutation.mutateAsync({
                     description: goals.description,
                     amount: goals.amount,
                     amountTotal: goals.amountTotal,
@@ -91,22 +87,15 @@ export function GoalsForm({ buttonLabel, buttonIcon, data }: GoalsFormProps) {
                     deadline: goals.deadline,
                     monthYear: goals.monthYear,
                 });
-
-                if (!errorPostIncomes) {
-                    return errorPostIncomes;
-                }
-                enqueueSnackbar('Meta cadastrada com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
-
-
             }
-
             clearForm();
-            refresh();
             handleClose();
-            return null;
-        },
-        null,
-    );
+        } catch (err: any) {
+            setError(err);
+        } finally {
+            setIsPending(false);
+        }
+    };
 
     const handleSubmit = async () => {
         if (validateDescription() && validateAmount()) {
@@ -138,7 +127,7 @@ export function GoalsForm({ buttonLabel, buttonIcon, data }: GoalsFormProps) {
 
     const validateDescription = useCallback(() => {
         if (!description.trim()) {
-            setErrorDescription('Descrição é obrigatória.');
+            setErrorDescription("Descrição é obrigatória.");
             return false;
         }
         setErrorDescription(null);
@@ -147,12 +136,12 @@ export function GoalsForm({ buttonLabel, buttonIcon, data }: GoalsFormProps) {
 
     const validateAmount = useCallback(() => {
         if (!amount.trim()) {
-            setErrorAmount('Valor é obrigatório.');
+            setErrorAmount("Valor é obrigatório.");
             return false;
         }
 
         if (Number.isNaN(Number(amount))) {
-            setErrorAmount('Valor deve ser numérico.');
+            setErrorAmount("Valor deve ser numérico.");
             return false;
         }
         setErrorAmount(null);
@@ -163,12 +152,12 @@ export function GoalsForm({ buttonLabel, buttonIcon, data }: GoalsFormProps) {
 
     const validateAmountTotal = useCallback(() => {
         if (!amountTotal.trim()) {
-            setErrorAmountTotal('Valor é obrigatório.');
+            setErrorAmountTotal("Valor é obrigatório.");
             return false;
         }
 
         if (Number.isNaN(Number(amountTotal))) {
-            setErrorAmountTotal('Valor total deve ser numérico.');
+            setErrorAmountTotal("Valor total deve ser numérico.");
             return false;
         }
         setErrorAmountTotal(null);
@@ -178,12 +167,12 @@ export function GoalsForm({ buttonLabel, buttonIcon, data }: GoalsFormProps) {
 
     const validateDeadline = useCallback(() => {
         if (!deadline.trim()) {
-            setErrorDeadline('Para quando é obrigatório.');
+            setErrorDeadline("Para quando é obrigatório.");
             return false;
         }
 
         if (Number.isNaN(Number(deadline))) {
-            setErrorDeadline('Para quando deve ser numérico.');
+            setErrorDeadline("Para quando deve ser numérico.");
             return false;
         }
         setErrorDeadline(null);
@@ -193,10 +182,10 @@ export function GoalsForm({ buttonLabel, buttonIcon, data }: GoalsFormProps) {
 
     const getMonthYearLabel = useCallback((): string | null => {
 
-        if (monthYear && Number(deadline) === 1) { return 'Mês' }
-        if (monthYear && Number(deadline) > 1) { return 'Meses' }
-        if (!monthYear && Number(deadline) === 1) { return 'Ano' }
-        if (!monthYear && Number(deadline) > 1) { return 'Anos' }
+        if (monthYear && Number(deadline) === 1) { return "Mês" }
+        if (monthYear && Number(deadline) > 1) { return "Meses" }
+        if (!monthYear && Number(deadline) === 1) { return "Ano" }
+        if (!monthYear && Number(deadline) > 1) { return "Anos" }
         return null
     }, [monthYear, deadline]);
 
@@ -215,17 +204,17 @@ export function GoalsForm({ buttonLabel, buttonIcon, data }: GoalsFormProps) {
             handleOpen={handleOpen}
             openButton={!buttonIcon
                 ?
-                <Button variant='contained' color='primary' onClick={handleOpen}  >{buttonLabel}</Button>
+                <Button variant="contained" color="primary" onClick={handleOpen}  >{buttonLabel}</Button>
                 :
                 <Button
-                    style={{ display: 'flex', gap: '16px', background: 'none', border: 'none', cursor: 'pointer', margin: 0, padding: 0 }}
+                    style={{ display: "flex", gap: "16px", background: "none", border: "none", cursor: "pointer", margin: 0, padding: 0 }}
                     onClick={handleOpen}
                 >
                     {buttonIcon}{buttonLabel}
                 </Button>
             }
 
-            okButton={<Button type='submit' variant='outlined' color='primary' onClick={handleSubmit} disabled={isPending} >Salvar</Button>
+            okButton={<Button type="submit" variant="outlined" color="primary" onClick={handleSubmit} disabled={isPending} >Salvar</Button>
             }>
             <Box
                 gap={1.5}
@@ -233,13 +222,13 @@ export function GoalsForm({ buttonLabel, buttonIcon, data }: GoalsFormProps) {
                 flexDirection="column"
                 alignItems="center"
                 justifySelf="center"
-                sx={{ width: '100%', my: 2, mx: 0 }}
+                sx={{ width: "100%", my: 2, mx: 0 }}
             >
 
 
 
 
-                {error && <p>{error}</p>}
+                {error && <p>{error.message}</p>}
 
                 <Typography variant="h3" noWrap >
                     Nova Meta
@@ -251,7 +240,7 @@ export function GoalsForm({ buttonLabel, buttonIcon, data }: GoalsFormProps) {
                     alignItems="stretch"
                     justifyContent="space-between"
                     justifySelf="center"
-                    sx={{ width: '100%' }}
+                    sx={{ width: "100%" }}
                 >
                     <Box
                         gap={1.5}
@@ -268,7 +257,7 @@ export function GoalsForm({ buttonLabel, buttonIcon, data }: GoalsFormProps) {
                             onBlur={validateDescription}
                             sx={{ mb: 3 }}
                             error={!!errorDescription}
-                            helperText={errorDescription ?? ''} /><TextField
+                            helperText={errorDescription ?? ""} /><TextField
                             fullWidth
                             type="number"
                             name="amountTotal"
@@ -278,10 +267,10 @@ export function GoalsForm({ buttonLabel, buttonIcon, data }: GoalsFormProps) {
                             onBlur={validateAmountTotal}
                             sx={{ mb: 3 }}
                             error={!!errorAmountTotal}
-                            helperText={errorAmountTotal ?? ''}
+                            helperText={errorAmountTotal ?? ""}
                             slotProps={{
                                 input: {
-                                    inputMode: 'numeric',
+                                    inputMode: "numeric",
                                 }
                             }} />
 
@@ -295,10 +284,10 @@ export function GoalsForm({ buttonLabel, buttonIcon, data }: GoalsFormProps) {
                             onBlur={validateAmount}
                             sx={{ mb: 3 }}
                             error={!!errorAmount}
-                            helperText={errorAmount ?? ''}
+                            helperText={errorAmount ?? ""}
                             slotProps={{
                                 input: {
-                                    inputMode: 'numeric',
+                                    inputMode: "numeric",
                                 }
                             }} />
                         <TextField
@@ -311,14 +300,14 @@ export function GoalsForm({ buttonLabel, buttonIcon, data }: GoalsFormProps) {
                             onBlur={validateDeadline}
                             sx={{ mb: 3 }}
                             error={!!errorDeadline}
-                            helperText={errorDeadline ?? ''}
+                            helperText={errorDeadline ?? ""}
                             slotProps={{
                                 input: {
-                                    inputMode: 'numeric',
+                                    inputMode: "numeric",
                                     endAdornment: (
                                         deadline ?
-                                            <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-                                                <AntSwitch checked={monthYear} inputProps={{ 'aria-label': 'ant design' }} onChange={() => { setMonthYear(!monthYear); calculatePercentage(deadline, monthYear, amountTotal, amount) }} />
+                                            <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
+                                                <AntSwitch checked={monthYear} inputProps={{ "aria-label": "ant design" }} onChange={() => { setMonthYear(!monthYear); calculatePercentage(deadline, monthYear, amountTotal, amount) }} />
                                                 <Typography>{getMonthYearLabel()}</Typography>
                                             </Stack>
                                             :
@@ -334,7 +323,7 @@ export function GoalsForm({ buttonLabel, buttonIcon, data }: GoalsFormProps) {
                         flexDirection="column"
                         alignItems="center"
                         sx={{
-                            width: '100%',
+                            width: "100%",
                             height: "100%"
 
                         }}
@@ -344,7 +333,7 @@ export function GoalsForm({ buttonLabel, buttonIcon, data }: GoalsFormProps) {
                             Recomendação
                         </Typography>
                         {salaryIdeal > salary ? <Typography variant="body1" color={theme.palette.error.main}>Essa meta não é viável com sua renda atual.</Typography> : <></>}
-                        <Box sx={{ width: '100%', p: 2 }}
+                        <Box sx={{ width: "100%", p: 2 }}
                             display="flex"
                             flexDirection="row">
                             <Box sx={{ flex: 1, m: 1 }} >

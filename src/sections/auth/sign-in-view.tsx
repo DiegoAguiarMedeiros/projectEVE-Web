@@ -1,18 +1,18 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback } from "react";
 
-import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
-import Divider from '@mui/material/Divider';
-import TextField from '@mui/material/TextField';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import LoadingButton from '@mui/lab/LoadingButton';
-import InputAdornment from '@mui/material/InputAdornment';
+import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
+import Divider from "@mui/material/Divider";
+import TextField from "@mui/material/TextField";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import LoadingButton from "@mui/lab/LoadingButton";
+import InputAdornment from "@mui/material/InputAdornment";
 
-import { useRouter } from 'src/routes/hooks';
+import { useRouter } from "src/routes/hooks";
 
-import { Iconify } from 'src/components/iconify';
-import { useLogin } from 'src/hooks/mutations/auth/useLogin';
+import { Iconify } from "src/components/iconify";
+import { useLogin } from "src/hooks/mutations/auth/useLogin";
 // ----------------------------------------------------------------------
 
 export function SignInView() {
@@ -20,12 +20,12 @@ export function SignInView() {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const [email, setEmail] = useState('teste@teste.com');
-  const [password, setPassword] = useState('r1234567');
+  const [email, setEmail] = useState("teste@teste.com");
+  const [password, setPassword] = useState("r1234567");
   const [loading, setLoading] = useState(false);
 
   const { mutate: login, isPending, error } = useLogin(() => {
-    router.push('/');
+    router.push("/");
   });
 
   const handleSubmit = useCallback(() => {
@@ -43,9 +43,9 @@ export function SignInView() {
   //     await AuthService.login(email, password);
   //     const isAuthenticated = await AuthService.checkAuth();
   //     if (isAuthenticated) {
-  //       router.push('/');
+  //       router.push("/");
   //     } else {
-  //       setError('Credenciais inválidas');
+  //       setError("Credenciais inválidas");
   //     }
   //   } catch (err) {
   //     setError(err?.response?.data?.message);
@@ -64,7 +64,7 @@ export function SignInView() {
         onChange={(e) => setEmail(e.target.value)}
         sx={{ mb: 3 }}
         error={!!error} // Adiciona borda vermelha se houver erro
-        helperText={error ? 'Login ou senha incorreto' : ''} // Exibe mensagem de erro específica
+        helperText={error ? "Login ou senha incorreto" : ""} // Exibe mensagem de erro específica
 
       />
 
@@ -78,13 +78,13 @@ export function SignInView() {
         label="Password"
         defaultValue={password}
         onChange={(e) => setPassword(e.target.value)}
-        type={showPassword ? 'text' : 'password'}
+        type={showPassword ? "text" : "password"}
         slotProps={{
           input: {
             endAdornment: (
               <InputAdornment position="end">
                 <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                  <Iconify icon={showPassword ? 'solar:eye-bold' : 'solar:eye-closed-bold'} />
+                  <Iconify icon={showPassword ? "solar:eye-bold" : "solar:eye-closed-bold"} />
                 </IconButton>
               </InputAdornment>
             ),
@@ -112,7 +112,7 @@ export function SignInView() {
         <Typography variant="h5">Sign in</Typography>
         <Typography variant="body2" color="text.secondary">
           Don’t have an account?
-          <Link variant="subtitle2" href='/cadastro' sx={{ ml: 0.5 }}>
+          <Link variant="subtitle2" href="/cadastro" sx={{ ml: 0.5 }}>
             Get started
           </Link>
         </Typography>

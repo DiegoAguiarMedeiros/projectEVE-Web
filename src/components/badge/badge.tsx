@@ -1,6 +1,6 @@
-import Stack from '@mui/material/Stack';
-import { useTheme } from '@mui/material/styles';
-import { Chip } from '@mui/material';
+import Stack from "@mui/material/Stack";
+import { useTheme } from "@mui/material/styles";
+import { Chip } from "@mui/material";
 
 
 type BadgeProps = {
@@ -12,9 +12,9 @@ export default function Badges({ text, bgColor }: BadgeProps) {
 
     return (
         <Chip sx={{
-            width: '200px',
+            width: "200px",
             backgroundColor: bgColor,
-            color: 'white',
+            color: "white",
         }} label={text} />
     );
 }

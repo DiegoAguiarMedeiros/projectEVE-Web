@@ -1,22 +1,22 @@
-import type { BoxProps } from '@mui/material/Box';
-import type { CardProps } from '@mui/material/Card';
+import type { BoxProps } from "@mui/material/Box";
+import type { CardProps } from "@mui/material/Card";
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback } from "react";
 
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import Stack from '@mui/material/Stack';
-import Popover from '@mui/material/Popover';
-import Divider from '@mui/material/Divider';
-import MenuList from '@mui/material/MenuList';
-import Checkbox from '@mui/material/Checkbox';
-import IconButton from '@mui/material/IconButton';
-import CardHeader from '@mui/material/CardHeader';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import MenuItem, { menuItemClasses } from '@mui/material/MenuItem';
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import Stack from "@mui/material/Stack";
+import Popover from "@mui/material/Popover";
+import Divider from "@mui/material/Divider";
+import MenuList from "@mui/material/MenuList";
+import Checkbox from "@mui/material/Checkbox";
+import IconButton from "@mui/material/IconButton";
+import CardHeader from "@mui/material/CardHeader";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import MenuItem, { menuItemClasses } from "@mui/material/MenuItem";
 
-import { Iconify } from 'src/components/iconify';
-import { Scrollbar } from 'src/components/scrollbar';
+import { Iconify } from "src/components/iconify";
+import { Scrollbar } from "src/components/scrollbar";
 
 // ----------------------------------------------------------------------
 
@@ -30,7 +30,7 @@ type Props = CardProps & {
 };
 
 export function AnalyticsTasks({ title, subheader, list, ...other }: Props) {
-  const [selected, setSelected] = useState(['2']);
+  const [selected, setSelected] = useState(["2"]);
 
   const handleClickComplete = (taskId: string) => {
     const tasksCompleted = selected.includes(taskId)
@@ -45,7 +45,7 @@ export function AnalyticsTasks({ title, subheader, list, ...other }: Props) {
       <CardHeader title={title} subheader={subheader} sx={{ mb: 1 }} />
 
       <Scrollbar sx={{ minHeight: 304 }}>
-        <Stack divider={<Divider sx={{ borderStyle: 'dashed' }} />} sx={{ minWidth: 560 }}>
+        <Stack divider={<Divider sx={{ borderStyle: "dashed" }} />} sx={{ minWidth: 560 }}>
           {list.map((item) => (
             <Item
               key={item.id}
@@ -64,7 +64,7 @@ export function AnalyticsTasks({ title, subheader, list, ...other }: Props) {
 
 type ItemProps = BoxProps & {
   checked: boolean;
-  item: Props['list'][number];
+  item: Props["list"][number];
   onChange: (id: string) => void;
 };
 
@@ -81,22 +81,22 @@ function Item({ item, checked, onChange, sx, ...other }: ItemProps) {
 
   const handleMarkComplete = useCallback(() => {
     handleClosePopover();
-    console.info('MARK COMPLETE', item.id);
+    console.info("MARK COMPLETE", item.id);
   }, [handleClosePopover, item.id]);
 
   const handleShare = useCallback(() => {
     handleClosePopover();
-    console.info('SHARE', item.id);
+    console.info("SHARE", item.id);
   }, [handleClosePopover, item.id]);
 
   const handleEdit = useCallback(() => {
     handleClosePopover();
-    console.info('EDIT', item.id);
+    console.info("EDIT", item.id);
   }, [handleClosePopover, item.id]);
 
   const handleDelete = useCallback(() => {
     handleClosePopover();
-    console.info('DELETE', item.id);
+    console.info("DELETE", item.id);
   }, [handleClosePopover, item.id]);
 
   return (
@@ -106,8 +106,8 @@ function Item({ item, checked, onChange, sx, ...other }: ItemProps) {
           pl: 2,
           pr: 1,
           py: 1.5,
-          display: 'flex',
-          ...(checked && { color: 'text.disabled', textDecoration: 'line-through' }),
+          display: "flex",
+          ...(checked && { color: "text.disabled", textDecoration: "line-through" }),
           ...sx,
         }}
         {...other}
@@ -120,7 +120,7 @@ function Item({ item, checked, onChange, sx, ...other }: ItemProps) {
               onChange={onChange}
               inputProps={{
                 name: item.name,
-                'aria-label': 'Checkbox demo',
+                "aria-label": "Checkbox demo",
               }}
             />
           }
@@ -129,9 +129,9 @@ function Item({ item, checked, onChange, sx, ...other }: ItemProps) {
         />
 
         <IconButton
-          color={openPopover ? 'inherit' : 'default'}
+          color={openPopover ? "inherit" : "default"}
           onClick={handleOpenPopover}
-          sx={{ alignSelf: 'flex-start' }}
+          sx={{ alignSelf: "flex-start" }}
         >
           <Iconify icon="eva:more-vertical-fill" />
         </IconButton>
@@ -141,22 +141,22 @@ function Item({ item, checked, onChange, sx, ...other }: ItemProps) {
         open={!!openPopover}
         anchorEl={openPopover}
         onClose={handleClosePopover}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
       >
         <MenuList
           disablePadding
           sx={{
             p: 0.5,
             gap: 0.5,
-            display: 'flex',
-            flexDirection: 'column',
+            display: "flex",
+            flexDirection: "column",
             [`& .${menuItemClasses.root}`]: {
               pl: 1,
               pr: 2,
               gap: 2,
               borderRadius: 0.75,
-              [`&.${menuItemClasses.selected}`]: { bgcolor: 'action.selected' },
+              [`&.${menuItemClasses.selected}`]: { bgcolor: "action.selected" },
             },
           }}
         >
@@ -175,7 +175,7 @@ function Item({ item, checked, onChange, sx, ...other }: ItemProps) {
             Share
           </MenuItem>
 
-          <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>
+          <MenuItem onClick={handleDelete} sx={{ color: "error.main" }}>
             <Iconify icon="solar:trash-bin-trash-bold" />
             Delete
           </MenuItem>

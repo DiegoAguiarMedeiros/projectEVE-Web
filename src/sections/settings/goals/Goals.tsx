@@ -4,31 +4,21 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "notistack";
 import dayjs from "dayjs";
 import { useTable } from "src/sections/shared/useTable";
-import GoalsService, { Goals } from 'src/services/implementation/GoalsService';
 import { TableNoData } from "src/components/table/TableNoData";
 import { CustomTableRow } from "src/components/table/TableRow";
 import { Iconify } from "src/components/iconify";
 import { CustomTableHead } from "src/components/table/TableHead";
 import { TableToolbar } from "src/components/table/TableToolbar";
-import EnvelopesService from "src/services/implementation/EnvelopesService";
 import { GoalsForm } from "src/sections/settings/goals/form";
+import { Pagination } from "src/types/Pagination";
+import { Goals } from "src/types/Goals";
+import { useDeleteGoals } from "src/hooks/mutations/goals/useDeleteGoals";
 
-
-export function GoalsTable() {
+type GoalsTableProps = {
+    goals: Pagination<Goals> | undefined
+}
+export function GoalsTable({ goals }: GoalsTableProps) {
     const table = useTable();
-
-    const { data: goals } = useQuery({
-        queryKey: ['goals', table.page, table.rowsPerPage, table.orderBy, table.order],
-        queryFn: () => GoalsService.list({
-            page: table.page,
-            pageSize: table.rowsPerPage,
-            orderBy: table.orderBy,
-            order: table.order,
-        }),
-        staleTime: 5000,
-        gcTime: 60000,
-        placeholderData: (previousData) => previousData,
-    });
 
     useEffect(() => {
         console.info("table.page", table.page)
@@ -38,13 +28,9 @@ export function GoalsTable() {
     const queryClient = useQueryClient();
     const { enqueueSnackbar } = useSnackbar();
 
-    const deleteGoalsMutation = useMutation({
-        mutationFn: (id: string) => GoalsService.delete(id),
-        onSuccess: () => {
-            enqueueSnackbar('Meta deletada com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
-            queryClient.invalidateQueries({ queryKey: ["goals"] });
-        },
-    });
+    const deleteGoalsMutation = useDeleteGoals();
+
+
     const DeleteGoals = useCallback((id: string) => {
         deleteGoalsMutation.mutate(id)
     }, [deleteGoalsMutation]);
@@ -56,30 +42,30 @@ export function GoalsTable() {
         const handleDeleteGoals = () => {
             deleteGoals(id)
         }
-        const { description,  amountTotal, percentage, deadline } = row;
+        const { description, amountTotal, percentage, deadline } = row;
 
         return (<CustomTableRow
             key={id}
             selected={table.selected.includes(id)}
             onSelectRow={() => table.onSelectRow(id)}
-            rowKeys={[ description, `R$ ${amountTotal}`, `${percentage} %`, dayjs(deadline).format("DD/MM/YYYY")]}
+            rowKeys={[description, `R$ ${amountTotal}`, `${percentage} %`, dayjs(deadline).format("DD/MM/YYYY")]}
             form={<GoalsForm
                 key={id}
                 data={row}
                 buttonIcon={<Iconify icon="solar:pen-bold" />}
-                buttonLabel='Editar' />}
+                buttonLabel="Editar" />}
             handleDelete={handleDeleteGoals} />)
 
     }
 
     return (
-        <Card sx={{ width: '100%' }}>
+        <Card sx={{ width: "100%" }}>
             <TableToolbar
                 numSelected={table.selected.length}
-                form={<GoalsForm buttonLabel='Adicionar' />}
+                form={<GoalsForm buttonLabel="Adicionar" />}
             />
 
-            <TableContainer sx={{ overflow: 'unset' }}>
+            <TableContainer sx={{ overflow: "unset" }}>
                 <Table sx={{ minWidth: 800 }}>
                     {goals && goals.data.length > 0 ? <CustomTableHead
                         order={table.order}
@@ -94,11 +80,11 @@ export function GoalsTable() {
                             )
                         }
                         headLabel={[
-                            { id: 'description', label: 'Descrição' },
-                            { id: 'amount', label: 'Valor' },
-                            { id: 'percentagem', label: 'Porcentagem' },
-                            { id: 'deadline', label: 'Prazo' },
-                            { id: '', label: '' },
+                            { id: "description", label: "Descrição" },
+                            { id: "amount", label: "Valor" },
+                            { id: "percentagem", label: "Porcentagem" },
+                            { id: "deadline", label: "Prazo" },
+                            { id: "", label: "" },
                         ]}
                     /> : <></>}
 

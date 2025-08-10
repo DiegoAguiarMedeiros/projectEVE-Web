@@ -1,16 +1,31 @@
 import { useState, useCallback } from "react";
 
-export function useTable() {
+export type ITable = {
+  page: number;
+  order: "asc" | "desc";
+  orderBy: string;
+  rowsPerPage: number;
+  selected: string[];
+  onSort: (id: string) => void;
+  onSelectAllRows: (checked: boolean, newSelecteds: string[]) => void;
+  onSelectRow: (inputValue: string) => void;
+  onResetPage: () => void;
+  onChangePage: (event: unknown, newPage: number) => void;
+  onChangeRowsPerPage: (event: React.ChangeEvent<HTMLInputElement>) => void;
+};
+
+
+export function useTable(): ITable {
   const [page, setPage] = useState(1);
-  const [orderBy, setOrderBy] = useState('createdAt');
+  const [orderBy, setOrderBy] = useState("createdAt");
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [selected, setSelected] = useState<string[]>([]);
-  const [order, setOrder] = useState<'asc' | 'desc'>('desc');
+  const [order, setOrder] = useState<"asc" | "desc">("desc");
 
   const onSort = useCallback(
     (id: string) => {
-      const isAsc = orderBy === id && order === 'asc';
-      setOrder(isAsc ? 'desc' : 'asc');
+      const isAsc = orderBy === id && order === "asc";
+      setOrder(isAsc ? "desc" : "asc");
       setOrderBy(id);
     },
     [order, orderBy]

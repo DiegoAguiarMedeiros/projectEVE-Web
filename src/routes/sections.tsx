@@ -1,26 +1,26 @@
-import { lazy, Suspense } from 'react';
-import { Outlet, Navigate, useRoutes } from 'react-router-dom';
+import { lazy, Suspense } from "react";
+import { Outlet, Navigate, useRoutes } from "react-router-dom";
 
-import Box from '@mui/material/Box';
-import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
+import Box from "@mui/material/Box";
+import LinearProgress, { linearProgressClasses } from "@mui/material/LinearProgress";
 
-import { varAlpha } from 'src/theme/styles';
-import { AuthLayout } from 'src/layouts/auth';
-import { SimpleLayout } from 'src/layouts/simple';
-import { DashboardLayout } from 'src/layouts/dashboard';
-import { PrivateRoute } from './PrivateRoute';
+import { varAlpha } from "src/theme/styles";
+import { AuthLayout } from "src/layouts/auth";
+import { SimpleLayout } from "src/layouts/simple";
+import { DashboardLayout } from "src/layouts/dashboard";
+import { PrivateRoute } from "./PrivateRoute";
 
 // ----------------------------------------------------------------------
 
-export const HomePage = lazy(() => import('src/pages/home'));
-export const BlogPage = lazy(() => import('src/pages/blog'));
-export const EnvelopePage = lazy(() => import('src/pages/envelope'));
-export const SignInPage = lazy(() => import('src/pages/sign-in'));
-export const ProductsPage = lazy(() => import('src/pages/products'));
-export const SettingsPage = lazy(() => import('src/pages/settings'));
-export const CompleteRegistration = lazy(() => import('src/pages/completeRegistration'));
-export const Registration = lazy(() => import('src/pages/registration'));
-export const Page404 = lazy(() => import('src/pages/page-not-found'));
+export const HomePage = lazy(() => import("src/pages/home"));
+export const BlogPage = lazy(() => import("src/pages/blog"));
+export const EnvelopePage = lazy(() => import("src/pages/envelope"));
+export const SignInPage = lazy(() => import("src/pages/sign-in"));
+export const ProductsPage = lazy(() => import("src/pages/products"));
+export const SettingsPage = lazy(() => import("src/pages/settings"));
+export const CompleteRegistration = lazy(() => import("src/pages/completeRegistration"));
+export const Registration = lazy(() => import("src/pages/registration"));
+export const Page404 = lazy(() => import("src/pages/page-not-found"));
 
 // ----------------------------------------------------------------------
 
@@ -31,7 +31,7 @@ const renderFallback = (
         width: 1,
         maxWidth: 320,
         bgcolor: (theme) => varAlpha(theme.palette.text.primaryChannel, 0.16),
-        [`& .${linearProgressClasses.bar}`]: { bgcolor: 'text.primary' },
+        [`& .${linearProgressClasses.bar}`]: { bgcolor: "text.primary" },
       }}
     />
   </Box>
@@ -52,12 +52,12 @@ export function Router() {
       ),
       children: [
         { element: <HomePage />, index: true },
-        { path: 'envelopes', element: <EnvelopePage /> },
-        { path: 'configuracoes', element: <SettingsPage /> },
+        { path: "envelopes", element: <EnvelopePage /> },
+        { path: "configuracoes", element: <SettingsPage /> },
       ],
     },
     {
-      path: 'entrar',
+      path: "entrar",
       element: (
         <AuthLayout>
           <SignInPage />
@@ -65,7 +65,7 @@ export function Router() {
       ),
     },
     {
-      path: 'cadastro',
+      path: "cadastro",
       element: (
         <SimpleLayout>
           <Registration />
@@ -73,7 +73,7 @@ export function Router() {
       ),
     },
     {
-      path: 'completar-cadastro',
+      path: "completar-cadastro",
       element: (
         <SimpleLayout>
           <CompleteRegistration />
@@ -81,11 +81,11 @@ export function Router() {
       ),
     },
     {
-      path: '404',
+      path: "404",
       element: <Page404 />,
     },
     {
-      path: '*',
+      path: "*",
       element: <Navigate to="/404" replace />,
     },
   ]);

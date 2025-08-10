@@ -1,7 +1,7 @@
-import path from 'path';
-import checker from 'vite-plugin-checker';
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react-swc';
+import path from "path";
+import checker from "vite-plugin-checker";
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react-swc";
 
 // ----------------------------------------------------------------------
 
@@ -13,11 +13,11 @@ export default defineConfig({
     checker({
       typescript: true,
       eslint: {
-        lintCommand: 'eslint "./src/**/*.{js,jsx,ts,tsx}"',
-        dev: { logLevel: ['error'] },
+        lintCommand: "eslint './src/**/*.{js,jsx,ts,tsx}'",
+        dev: { logLevel: ["error"] },
       },
       overlay: {
-        position: 'tl',
+        position: "tl",
         initialIsOpen: false,
       },
     }),
@@ -26,11 +26,11 @@ export default defineConfig({
     alias: [
       {
         find: /^~(.+)/,
-        replacement: path.join(process.cwd(), 'node_modules/$1'),
+        replacement: path.join(process.cwd(), "node_modules/$1"),
       },
       {
         find: /^src(.+)/,
-        replacement: path.join(process.cwd(), 'src/$1'),
+        replacement: path.join(process.cwd(), "src/$1"),
       },
     ],
   },

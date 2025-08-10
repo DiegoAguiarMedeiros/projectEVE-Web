@@ -1,11 +1,11 @@
-import type { CardProps } from '@mui/material/Card';
-import type { ChartOptions } from 'src/components/chart';
+import type { CardProps } from "@mui/material/Card";
+import type { ChartOptions } from "src/components/chart";
 
-import Card from '@mui/material/Card';
-import { useTheme } from '@mui/material/styles';
-import CardHeader from '@mui/material/CardHeader';
+import Card from "@mui/material/Card";
+import { useTheme } from "@mui/material/styles";
+import CardHeader from "@mui/material/CardHeader";
 
-import { Chart, useChart } from 'src/components/chart';
+import { Chart, useChart } from "src/components/chart";
 
 // ----------------------------------------------------------------------
 
@@ -37,7 +37,7 @@ export function AnalyticsWebsiteVisits({ title, subheader, chart, ...other }: Pr
     colors: chartColors,
     stroke: {
       width: 2,
-      colors: ['transparent'],
+      colors: ["transparent"],
     },
     xaxis: {
       categories: chart.categories,

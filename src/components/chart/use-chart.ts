@@ -1,8 +1,8 @@
-import { useTheme } from '@mui/material/styles';
+import { useTheme } from "@mui/material/styles";
 
-import { varAlpha } from 'src/theme/styles';
+import { varAlpha } from "src/theme/styles";
 
-import type { ChartOptions } from './types';
+import type { ChartOptions } from "./types";
 
 // ----------------------------------------------------------------------
 
@@ -11,7 +11,7 @@ export function useChart(options?: ChartOptions): ChartOptions {
 
   const LABEL_TOTAL = {
     show: true,
-    label: 'Total',
+    label: "Total",
     color: theme.palette.text.secondary,
     fontSize: theme.typography.subtitle2.fontSize as string,
     fontWeight: theme.typography.subtitle2.fontWeight,
@@ -31,7 +31,7 @@ export function useChart(options?: ChartOptions): ChartOptions {
         plotOptions: {
           bar: {
             borderRadius: 3,
-            columnWidth: '80%',
+            columnWidth: "80%",
           },
         },
       },
@@ -41,7 +41,7 @@ export function useChart(options?: ChartOptions): ChartOptions {
       options: {
         plotOptions: {
           bar: {
-            columnWidth: '60%',
+            columnWidth: "60%",
           },
         },
       },
@@ -98,12 +98,12 @@ export function useChart(options?: ChartOptions): ChartOptions {
       hover: {
         ...options?.states?.hover,
         // @ts-ignore
-        filter: { type: 'darken', value: 0.88, ...options?.states?.hover?.filter },
+        filter: { type: "darken", value: 0.88, ...options?.states?.hover?.filter },
       },
       active: {
         ...options?.states?.active,
         // @ts-ignore
-        filter: { type: 'darken', value: 0.88, ...options?.states?.active?.filter },
+        filter: { type: "darken", value: 0.88, ...options?.states?.active?.filter },
       },
     },
 
@@ -114,7 +114,7 @@ export function useChart(options?: ChartOptions): ChartOptions {
       opacity: 1,
       ...options?.fill,
       gradient: {
-        type: 'vertical',
+        type: "vertical",
         shadeIntensity: 0,
         opacityFrom: 0.4,
         opacityTo: 0,
@@ -136,8 +136,8 @@ export function useChart(options?: ChartOptions): ChartOptions {
      *************************************** */
     stroke: {
       width: 2.5,
-      curve: 'smooth',
-      lineCap: 'round',
+      curve: "smooth",
+      lineCap: "round",
       ...options?.stroke,
     },
 
@@ -192,7 +192,7 @@ export function useChart(options?: ChartOptions): ChartOptions {
      * Tooltip
      *************************************** */
     tooltip: {
-      theme: 'false',
+      theme: "false",
       fillSeriesColor: false,
       x: {
         show: true,
@@ -205,13 +205,13 @@ export function useChart(options?: ChartOptions): ChartOptions {
      *************************************** */
     legend: {
       show: false,
-      position: 'top',
+      position: "top",
       fontWeight: 500,
-      fontSize: '13px',
-      horizontalAlign: 'right',
+      fontSize: "13px",
+      horizontalAlign: "right",
       ...options?.legend,
       markers: {
-        shape: 'circle',
+        shape: "circle",
         ...options?.legend?.markers,
       },
       labels: {
@@ -233,8 +233,8 @@ export function useChart(options?: ChartOptions): ChartOptions {
       // plotOptions: Bar
       bar: {
         borderRadius: 4,
-        columnWidth: '48%',
-        borderRadiusApplication: 'end',
+        columnWidth: "48%",
+        borderRadiusApplication: "end",
         ...options?.plotOptions?.bar,
       },
 
@@ -263,13 +263,13 @@ export function useChart(options?: ChartOptions): ChartOptions {
         ...options?.plotOptions?.radialBar,
         hollow: {
           margin: -8,
-          size: '100%',
+          size: "100%",
           ...options?.plotOptions?.radialBar?.hollow,
         },
         track: {
           margin: -8,
-          strokeWidth: '50%',
-          background: varAlpha(theme.palette.grey['500Channel'], 0.16),
+          strokeWidth: "50%",
+          background: varAlpha(theme.palette.grey["500Channel"], 0.16),
           ...options?.plotOptions?.radialBar?.track,
         },
         dataLabels: {
@@ -290,7 +290,7 @@ export function useChart(options?: ChartOptions): ChartOptions {
         ...options?.plotOptions?.radar,
         polygons: {
           fill: {
-            colors: ['transparent'],
+            colors: ["transparent"],
           },
           strokeColors: theme.palette.divider,
           connectorColors: theme.palette.divider,

@@ -1,11 +1,11 @@
-import type { SvgIconTypeMap } from '@mui/material';
-import type { OverridableComponent } from '@mui/material/OverridableComponent';
+import type { SvgIconTypeMap } from "@mui/material";
+import type { OverridableComponent } from "@mui/material/OverridableComponent";
 
-import SavingsIcon from '@mui/icons-material/Savings';
-import CallMadeIcon from '@mui/icons-material/CallMade';
-import SouthEastIcon from '@mui/icons-material/SouthEast';
-import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import SavingsIcon from "@mui/icons-material/Savings";
+import CallMadeIcon from "@mui/icons-material/CallMade";
+import SouthEastIcon from "@mui/icons-material/SouthEast";
+import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 
 import {
   _id,
@@ -19,14 +19,14 @@ import {
   _description,
   _productNames,
   _amount,
-} from './_mock';
+} from "./_mock";
 
 // ----------------------------------------------------------------------
 
 export const _myAccount = {
-  displayName: 'Jaydon Frankie',
-  email: 'demo@minimals.cc',
-  photoURL: '/assets/images/avatar/avatar-25.webp',
+  displayName: "Jaydon Frankie",
+  email: "demo@minimals.cc",
+  photoURL: "/assets/images/avatar/avatar-25.webp",
 };
 
 // ----------------------------------------------------------------------
@@ -37,20 +37,20 @@ export const _users = [...Array(24)].map((_, index) => ({
   company: _company(index),
   isVerified: _boolean(index),
   avatarUrl: `/assets/images/avatar/avatar-${index + 1}.webp`,
-  status: index % 4 ? 'active' : 'banned',
+  status: index % 4 ? "active" : "banned",
   role:
     [
-      'Leader',
-      'Hr Manager',
-      'UI Designer',
-      'UX Designer',
-      'UI/UX Designer',
-      'Project Manager',
-      'Backend Developer',
-      'Full Stack Designer',
-      'Front End Developer',
-      'Full Stack Developer',
-    ][index] || 'UI Designer',
+      "Leader",
+      "Hr Manager",
+      "UI Designer",
+      "UX Designer",
+      "UI/UX Designer",
+      "Project Manager",
+      "Backend Developer",
+      "Full Stack Designer",
+      "Front End Developer",
+      "Full Stack Developer",
+    ][index] || "UI Designer",
 }));
 export const _incomes = [...Array(25)].map((_, index) => ({
   id: _id(index),
@@ -85,14 +85,14 @@ export const _posts = [...Array(23)].map((_, index) => ({
 // ----------------------------------------------------------------------
 
 const COLORS = [
-  '#00AB55',
-  '#000000',
-  '#FFFFFF',
-  '#FFC0CB',
-  '#FF4842',
-  '#1890FF',
-  '#94D82D',
-  '#FFC107',
+  "#00AB55",
+  "#000000",
+  "#FFFFFF",
+  "#FFC0CB",
+  "#FF4842",
+  "#1890FF",
+  "#94D82D",
+  "#FFC107",
 ];
 
 export const _products = [...Array(24)].map((_, index) => {
@@ -113,7 +113,7 @@ export const _products = [...Array(24)].map((_, index) => {
       (setIndex === 24 && COLORS.slice(5, 6)) ||
       COLORS,
     status:
-      ([1, 3, 5].includes(setIndex) && 'sale') || ([4, 8, 12].includes(setIndex) && 'new') || '',
+      ([1, 3, 5].includes(setIndex) && "sale") || ([4, 8, 12].includes(setIndex) && "new") || "",
   };
 });
 
@@ -121,19 +121,19 @@ export const _products = [...Array(24)].map((_, index) => {
 
 export const _langs = [
   {
-    value: 'br',
-    label: 'Brasil',
-    icon: '/assets/icons/flags/ic-flag-br.svg',
+    value: "br",
+    label: "Brasil",
+    icon: "/assets/icons/flags/ic-flag-br.svg",
   },
   {
-    value: 'en',
-    label: 'Inglês',
-    icon: '/assets/icons/flags/ic-flag-en.svg',
+    value: "en",
+    label: "Inglês",
+    icon: "/assets/icons/flags/ic-flag-en.svg",
   },
   {
-    value: 'fr',
-    label: 'Espanhol',
-    icon: '/assets/icons/flags/ic-flag-es.svg',
+    value: "fr",
+    label: "Espanhol",
+    icon: "/assets/icons/flags/ic-flag-es.svg",
   },
 ];
 
@@ -143,43 +143,43 @@ export const _timeline: {
   title: string;
   value: number;
   valueMax: number;
-  color: 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning';
+  color: "primary" | "secondary" | "error" | "info" | "success" | "warning";
 }[] = [
   {
-    title: 'Contas Fixas',
+    title: "Contas Fixas",
     value: 250,
     valueMax: 500,
-    color: 'primary',
+    color: "primary",
   },
   {
-    title: 'Alimentação',
+    title: "Alimentação",
     value: 350,
     valueMax: 500,
-    color: 'secondary',
+    color: "secondary",
   },
   {
-    title: 'Lazer',
+    title: "Lazer",
     value: 450,
     valueMax: 500,
-    color: 'info',
+    color: "info",
   },
   {
-    title: 'Transporte',
+    title: "Transporte",
     value: 50,
     valueMax: 500,
-    color: 'warning',
+    color: "warning",
   },
   {
-    title: 'Saúde',
+    title: "Saúde",
     value: 100,
     valueMax: 500,
-    color: 'success',
+    color: "success",
   },
   {
-    title: 'Bem Estar',
+    title: "Bem Estar",
     value: 300,
     valueMax: 500,
-    color: 'error',
+    color: "error",
   },
 ];
 
@@ -195,130 +195,130 @@ export const _tasks = [...Array(5)].map((_, index) => ({
 export const _notifications = [
   {
     id: _id(1),
-    title: 'Your order is placed',
-    description: 'waiting for shipping',
+    title: "Your order is placed",
+    description: "waiting for shipping",
     avatarUrl: null,
-    type: 'order-placed',
+    type: "order-placed",
     postedAt: _times(1),
     isUnRead: true,
   },
   {
     id: _id(2),
     title: _fullName(2),
-    description: 'answered to your comment on the Minimal',
-    avatarUrl: '/assets/images/avatar/avatar-2.webp',
-    type: 'friend-interactive',
+    description: "answered to your comment on the Minimal",
+    avatarUrl: "/assets/images/avatar/avatar-2.webp",
+    type: "friend-interactive",
     postedAt: _times(2),
     isUnRead: true,
   },
   {
     id: _id(3),
-    title: 'You have new message',
-    description: '5 unread messages',
+    title: "You have new message",
+    description: "5 unread messages",
     avatarUrl: null,
-    type: 'chat-message',
+    type: "chat-message",
     postedAt: _times(3),
     isUnRead: false,
   },
   {
     id: _id(4),
-    title: 'You have new mail',
-    description: 'sent from Guido Padberg',
+    title: "You have new mail",
+    description: "sent from Guido Padberg",
     avatarUrl: null,
-    type: 'mail',
+    type: "mail",
     postedAt: _times(4),
     isUnRead: false,
   },
   {
     id: _id(5),
-    title: 'Delivery processing',
-    description: 'Your order is being shipped',
+    title: "Delivery processing",
+    description: "Your order is being shipped",
     avatarUrl: null,
-    type: 'order-shipped',
+    type: "order-shipped",
     postedAt: _times(5),
     isUnRead: false,
   },
 ];
 interface MockDataItem {
   title: string;
-  icon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>> & {
+  icon: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
     muiName: string;
   };
   percent: number;
   total: number;
-  color: 'primary' | 'secondary' | 'info' | 'warning' | 'success' | 'error';
+  color: "primary" | "secondary" | "info" | "warning" | "success" | "error";
 }
 
 export const _inout: MockDataItem[] = [
   {
-    title: 'Minha Renda',
+    title: "Minha Renda",
     icon: CallMadeIcon,
-    color: 'primary',
+    color: "primary",
     percent: 42.3,
     total: 3200,
   },
   {
-    title: 'Metas',
+    title: "Metas",
     icon: SavingsIcon,
-    color: 'info',
+    color: "info",
     percent: 90.0,
     total: 4500,
   },
   {
-    title: 'Gastos',
+    title: "Gastos",
     icon: SouthEastIcon,
-    color: 'error',
+    color: "error",
     percent: 69.5,
     total: 5000,
   },
   {
-    title: 'Saldo',
+    title: "Saldo",
     icon: AttachMoneyIcon,
-    color: 'success',
+    color: "success",
     percent: 69.5,
     total: 5000,
   },
 ];
 export const _envelopes: MockDataItem[] = [
   {
-    title: 'Contas Fixas',
+    title: "Contas Fixas",
     icon: ShoppingBagIcon,
-    color: 'primary',
+    color: "primary",
     percent: 42.3,
     total: 3200,
   },
   {
-    title: 'Alimentação',
+    title: "Alimentação",
     icon: ShoppingBagIcon,
-    color: 'secondary',
+    color: "secondary",
     percent: 69.5,
     total: 5000,
   },
   {
-    title: 'Lazer',
+    title: "Lazer",
     icon: ShoppingBagIcon,
-    color: 'info',
+    color: "info",
     percent: 90.0,
     total: 4500,
   },
   {
-    title: 'Transporte',
+    title: "Transporte",
     icon: ShoppingBagIcon,
-    color: 'warning',
+    color: "warning",
     percent: 30.0,
     total: 1500,
   },
   {
-    title: 'Saúde',
+    title: "Saúde",
     icon: ShoppingBagIcon,
-    color: 'success',
+    color: "success",
     percent: 52.0,
     total: 4000,
   },
   {
-    title: 'Bem Estar',
+    title: "Bem Estar",
     icon: ShoppingBagIcon,
-    color: 'error',
+    color: "error",
     percent: 77.5,
     total: 3500,
   },

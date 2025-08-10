@@ -1,13 +1,13 @@
-import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
-import Card from '@mui/material/Card';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
+import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
+import Card from "@mui/material/Card";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 
-import { fCurrency } from 'src/utils/format-number';
+import { fCurrency } from "src/utils/format-number";
 
-import { Label } from 'src/components/label';
-import { ColorPreview } from 'src/components/color-utils';
+import { Label } from "src/components/label";
+import { ColorPreview } from "src/components/color-utils";
 
 // ----------------------------------------------------------------------
 
@@ -25,13 +25,13 @@ export function ProductItem({ product }: { product: ProductItemProps }) {
   const renderStatus = (
     <Label
       variant="inverted"
-      color={(product.status === 'sale' && 'error') || 'info'}
+      color={(product.status === "sale" && "error") || "info"}
       sx={{
         zIndex: 9,
         top: 16,
         right: 16,
-        position: 'absolute',
-        textTransform: 'uppercase',
+        position: "absolute",
+        textTransform: "uppercase",
       }}
     >
       {product.status}
@@ -47,8 +47,8 @@ export function ProductItem({ product }: { product: ProductItemProps }) {
         top: 0,
         width: 1,
         height: 1,
-        objectFit: 'cover',
-        position: 'absolute',
+        objectFit: "cover",
+        position: "absolute",
       }}
     />
   );
@@ -59,8 +59,8 @@ export function ProductItem({ product }: { product: ProductItemProps }) {
         component="span"
         variant="body1"
         sx={{
-          color: 'text.disabled',
-          textDecoration: 'line-through',
+          color: "text.disabled",
+          textDecoration: "line-through",
         }}
       >
         {product.priceSale && fCurrency(product.priceSale)}
@@ -72,7 +72,7 @@ export function ProductItem({ product }: { product: ProductItemProps }) {
 
   return (
     <Card>
-      <Box sx={{ pt: '100%', position: 'relative' }}>
+      <Box sx={{ pt: "100%", position: "relative" }}>
         {product.status && renderStatus}
 
         {renderImg}

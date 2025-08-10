@@ -1,7 +1,7 @@
-export * from './chart';
+export * from "./chart";
 
-export * from './use-chart';
+export * from "./use-chart";
 
-export type * from './types';
+export type * from "./types";
 
-export * from './chart-legends';
+export * from "./chart-legends";

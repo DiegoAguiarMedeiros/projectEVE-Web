@@ -1,6 +1,6 @@
-import { CONFIG } from 'src/config-global';
+import { CONFIG } from "src/config-global";
 
-import { BlogView } from 'src/sections/blog/view';
+import { BlogView } from "src/sections/blog/view";
 
 // ----------------------------------------------------------------------
 

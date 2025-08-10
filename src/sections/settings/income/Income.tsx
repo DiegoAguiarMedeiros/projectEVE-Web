@@ -8,26 +8,18 @@ import { CustomTableRow } from "src/components/table/TableRow";
 import { Iconify } from "src/components/iconify";
 import { CustomTableHead } from "src/components/table/TableHead";
 import { TableToolbar } from "src/components/table/TableToolbar";
-import { FormIncome } from "src/sections/settings/income/form";
-import { useDeleteIncome } from "src/hooks/mutations/incomes/useDeleteIncome";
-import { useListIncomes } from "src/hooks/queries/incomes/useListIncomes";
-import { Income } from "src/types/Incomes";
+import { FormIncomes } from "src/sections/settings/income/form";
+import { useDeleteIncomes } from "src/hooks/mutations/incomes/useDeleteIncomes";
+import { Incomes } from "src/types/Incomes";
+import { Pagination } from "src/types/Pagination";
 
+type IncomeTableProps = {
+    incomes: Pagination<Incomes> | undefined
+}
 
-export function IncomeTable() {
+export function IncomeTable({ incomes }: IncomeTableProps) {
     const table = useTable();
 
-    const { data: income, isLoading, error } = useListIncomes(table);
-    
-    console.log("income",income)
-    console.log("isLoading",isLoading)
-    console.log("error",error)
-
-    const { enqueueSnackbar } = useSnackbar();
-
-
-    if(error) enqueueSnackbar(error.message, { autoHideDuration: 3000, variant: 'error', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
-        
 
 
     useEffect(() => {
@@ -36,19 +28,15 @@ export function IncomeTable() {
     }, [table.page, table.rowsPerPage])
 
 
-    const queryClient = useQueryClient();
 
-    const deleteIncomeMutation = useDeleteIncome(() => {
-        enqueueSnackbar('Salário deletado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
-        queryClient.invalidateQueries({ queryKey: ["income"] });
-    });
+    const deleteIncomesMutation = useDeleteIncomes();
 
 
-    const DeleteIncome = useCallback((id: string) => {
-        deleteIncomeMutation.mutate(id)
-    }, [deleteIncomeMutation]);
+    const DeleteIncomes = useCallback((id: string) => {
+        deleteIncomesMutation.mutate(id)
+    }, [deleteIncomesMutation]);
 
-    const IncomeRow = (row: Income, deleteIncome: (id: string) => void) => {
+    const IncomeRow = (row: Incomes, deleteIncome: (id: string) => void) => {
         const { id } = row;
 
 
@@ -61,57 +49,57 @@ export function IncomeTable() {
             selected={table.selected.includes(id)}
             onSelectRow={() => table.onSelectRow(id)}
             rowKeys={[description, `R$ ${amount}`, paymentDay]}
-            form={<FormIncome
+            form={<FormIncomes
                 data={row}
                 buttonIcon={<Iconify icon="solar:pen-bold" />}
-                buttonLabel='Editar' />}
+                buttonLabel="Editar" />}
             handleDelete={handleDeleteIncome} />)
 
     }
 
     return (
-        <Card sx={{ width: '100%' }}>
+        <Card sx={{ width: "100%" }}>
             <TableToolbar
                 numSelected={table.selected.length}
-                form={<FormIncome buttonLabel='Adicionar' />}
+                form={<FormIncomes buttonLabel="Adicionar" />}
             />
 
-            <TableContainer sx={{ overflow: 'unset' }}>
+            <TableContainer sx={{ overflow: "unset" }}>
                 <Table sx={{ minWidth: 800 }}>
-                    {income && income.data.length > 0 ? <CustomTableHead
+                    {incomes && incomes.data.length > 0 ? <CustomTableHead
                         order={table.order}
                         orderBy={table.orderBy}
-                        rowCount={income.data.length}
+                        rowCount={incomes.data.length}
                         numSelected={table.selected.length}
                         onSort={table.onSort}
                         onSelectAllRows={(checked) =>
                             table.onSelectAllRows(
                                 checked,
-                                income.data.map((item) => item.id!)
+                                incomes.data.map((item) => item.id!)
                             )
                         }
                         headLabel={[
-                            { id: 'description', label: 'Descrição' },
-                            { id: 'amount', label: 'Salário' },
-                            { id: 'payment_day', label: 'Dia de pagamento' },
-                            { id: '' },
+                            { id: "description", label: "Descrição" },
+                            { id: "amount", label: "Salário" },
+                            { id: "payment_day", label: "Dia de pagamento" },
+                            { id: "" },
                         ]}
                     /> : <></>}
 
                     <TableBody>
-                        {income && income.data.length < 1
+                        {incomes && incomes.data.length < 1
                             ?
                             <TableNoData message="Nenhum salário cadastrado!" />
                             :
-                            income && income.data.map(item => (IncomeRow(item, DeleteIncome)))
+                            incomes && incomes.data.map(item => (IncomeRow(item, DeleteIncomes)))
                         }
                     </TableBody>
                 </Table>
             </TableContainer>
-            {income && income.data.length > 0 ? <TablePagination
+            {incomes && incomes.data.length > 0 ? <TablePagination
                 component="div"
                 page={table.page}
-                count={income.totalItems}
+                count={incomes.totalItems}
                 rowsPerPage={table.rowsPerPage}
                 onPageChange={table.onChangePage}
                 rowsPerPageOptions={[5, 10, 25]}

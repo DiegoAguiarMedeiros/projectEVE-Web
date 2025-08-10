@@ -1,17 +1,17 @@
-import type { Theme, SxProps, Breakpoint } from '@mui/material/styles';
+import type { Theme, SxProps, Breakpoint } from "@mui/material/styles";
 
-import Link from '@mui/material/Link';
-import Alert from '@mui/material/Alert';
+import Link from "@mui/material/Link";
+import Alert from "@mui/material/Alert";
 
-import { RouterLink } from 'src/routes/components';
+import { RouterLink } from "src/routes/components";
 
-import { stylesMode } from 'src/theme/styles';
+import { stylesMode } from "src/theme/styles";
 
-import { Logo } from 'src/components/logo';
+import { Logo } from "src/components/logo";
 
-import { Main } from './main';
-import { HeaderSection } from '../core/header-section';
-import { LayoutSection } from '../core/layout-section';
+import { Main } from "./main";
+import { HeaderSection } from "../core/header-section";
+import { LayoutSection } from "../core/layout-section";
 
 // ----------------------------------------------------------------------
 
@@ -24,7 +24,7 @@ export type SimpleLayoutProps = {
 };
 
 export function SimpleLayout({ sx, children, header }: SimpleLayoutProps) {
-  const layoutQuery: Breakpoint = 'md';
+  const layoutQuery: Breakpoint = "md";
 
   return (
     <LayoutSection
@@ -36,16 +36,16 @@ export function SimpleLayout({ sx, children, header }: SimpleLayoutProps) {
           layoutQuery={layoutQuery}
           slotProps={{
             container: { maxWidth: false },
-            toolbar: { sx: { bgcolor: 'transparent', backdropFilter: 'unset' } },
+            toolbar: { sx: { bgcolor: "transparent", backdropFilter: "unset" } },
           }}
           sx={{
-            position: { [layoutQuery]: 'fixed' },
+            position: { [layoutQuery]: "fixed" },
 
             ...header?.sx,
           }}
           slots={{
             topArea: (
-              <Alert severity="info" sx={{ display: 'none', borderRadius: 0 }}>
+              <Alert severity="info" sx={{ display: "none", borderRadius: 0 }}>
                 This is an info Alert.
               </Alert>
             ),
@@ -55,7 +55,7 @@ export function SimpleLayout({ sx, children, header }: SimpleLayoutProps) {
                 component={RouterLink}
                 href="#"
                 color="inherit"
-                sx={{ typography: 'subtitle2' }}
+                sx={{ typography: "subtitle2" }}
               >
                 Need help?
               </Link>
@@ -70,18 +70,18 @@ export function SimpleLayout({ sx, children, header }: SimpleLayoutProps) {
       /** **************************************
        * Style
        *************************************** */
-      cssVars={{ '--layout-simple-content-width': '820px' }}
+      cssVars={{ "--layout-simple-content-width": "820px" }}
       sx={{
-        '&::before': {
+        "&::before": {
           width: 1,
           height: 1,
           zIndex: -1,
-          content: "''",
+          content: '""',
           opacity: 0.24,
-          position: 'fixed',
-          backgroundSize: 'cover',
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center center',
+          position: "fixed",
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center center",
           backgroundImage: `url(/assets/background/overlay.jpg)`,
           [stylesMode.dark]: { opacity: 0.08 },
         },

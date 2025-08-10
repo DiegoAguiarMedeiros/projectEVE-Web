@@ -1,17 +1,17 @@
-import { forwardRef } from 'react';
+import { forwardRef } from "react";
 
-import Box from '@mui/material/Box';
-import { useTheme } from '@mui/material/styles';
+import Box from "@mui/material/Box";
+import { useTheme } from "@mui/material/styles";
 
-import { labelClasses } from './classes';
+import { labelClasses } from "./classes";
 
-import type { LabelProps } from './types';
+import type { LabelProps } from "./types";
 
 // ----------------------------------------------------------------------
 
 export const Label = forwardRef<HTMLSpanElement, LabelProps>(
   (
-    { children, color = 'default', variant = 'soft', startIcon, endIcon, sx, className, ...other },
+    { children, color = "default", variant = "soft", startIcon, endIcon, sx, className, ...other },
     ref
   ) => {
     const theme = useTheme();
@@ -19,10 +19,10 @@ export const Label = forwardRef<HTMLSpanElement, LabelProps>(
     const iconStyles = {
       width: 16,
       height: 16,
-      '& svg, img': {
+      "& svg, img": {
         width: 1,
         height: 1,
-        objectFit: 'cover',
+        objectFit: "cover",
       },
     };
 
@@ -30,7 +30,7 @@ export const Label = forwardRef<HTMLSpanElement, LabelProps>(
       <Box
         ref={ref}
         component="span"
-        className={labelClasses.root.concat(className ? ` ${className}` : '')}
+        className={labelClasses.root.concat(className ? ` ${className}` : "")}
         sx={{ ...(startIcon && { pl: 0.75 }), ...(endIcon && { pr: 0.75 }), ...sx }}
         {...other}
       >
@@ -40,7 +40,7 @@ export const Label = forwardRef<HTMLSpanElement, LabelProps>(
           </Box>
         )}
 
-        {typeof children === 'string' ? sentenceCase(children) : children}
+        {typeof children === "string" ? sentenceCase(children) : children}
 
         {endIcon && (
           <Box component="span" className={labelClasses.icon} sx={{ ml: 0.75, ...iconStyles }}>

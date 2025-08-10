@@ -1,32 +1,32 @@
-import * as React from 'react';
+import * as React from "react";
 
-import Box from '@mui/material/Box';
-import Step from '@mui/material/Step';
-import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
-import Stepper from '@mui/material/Stepper';
-import StepLabel from '@mui/material/StepLabel';
-import Typography from '@mui/material/Typography';
-import StepContent from '@mui/material/StepContent';
-import { IncomeTable } from './incomeTable';
+import Box from "@mui/material/Box";
+import Step from "@mui/material/Step";
+import Paper from "@mui/material/Paper";
+import Button from "@mui/material/Button";
+import Stepper from "@mui/material/Stepper";
+import StepLabel from "@mui/material/StepLabel";
+import Typography from "@mui/material/Typography";
+import StepContent from "@mui/material/StepContent";
+import { IncomeTable } from "./incomeTable";
 
 const steps = [
   {
-    label: 'Sua Renda',
+    label: "Sua Renda",
     description: <IncomeTable/>,
   },
   {
-    label: 'Seus Contas Fixas',
+    label: "Seus Contas Fixas",
     description: `For each ad campaign that you create, you can control how much
-              you're willing to spend on clicks and conversions, which networks
+              you"re willing to spend on clicks and conversions, which networks
               and geographical locations you want your ads to show on, and more.`,
   },
   {
-    label: 'Suas Dívidas',
+    label: "Suas Dívidas",
     description: `Try out different ad text to see what brings in the most customers,
               and learn how to enhance your ads using features like ad extensions.
               If you run into any problems with your ads, find out how to tell if
-              they're running and how to resolve approval issues.`,
+              they"re running and how to resolve approval issues.`,
   },
 ];
 
@@ -72,7 +72,7 @@ export function CompleteRegistrationView() {
               <Typography>{step.description}</Typography>
               <Box sx={{ mb: 2 }}>
                 <Button variant="contained" onClick={handleNext} sx={{ mt: 1, mr: 1 }}>
-                  {index === steps.length - 1 ? 'Finish' : 'Continue'}
+                  {index === steps.length - 1 ? "Finish" : "Continue"}
                 </Button>
                 <Button disabled={index === 0} onClick={handleBack} sx={{ mt: 1, mr: 1 }}>
                   Back

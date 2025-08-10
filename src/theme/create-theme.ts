@@ -1,16 +1,16 @@
-import type { Theme } from '@mui/material/styles';
+import type { Theme } from "@mui/material/styles";
 
-import { createTheme } from '@mui/material/styles';
+import { createTheme } from "@mui/material/styles";
 
-import { shadows, typography, components, colorSchemes, customShadows } from './core';
+import { shadows, typography, components, colorSchemes, customShadows } from "./core";
 
 // ----------------------------------------------------------------------
 type CreateCustomThemeProps = {
-  mode: 'light' | 'dark';
+  mode: "light" | "dark";
 };
 
 export function createCustomTheme({ mode }: CreateCustomThemeProps): Theme {
-  const palette = mode === 'light' ? colorSchemes.light?.palette : colorSchemes.dark?.palette;
+  const palette = mode === "light" ? colorSchemes.light?.palette : colorSchemes.dark?.palette;
 
   const initialTheme = {
     palette,
@@ -19,7 +19,7 @@ export function createCustomTheme({ mode }: CreateCustomThemeProps): Theme {
     shape: { borderRadius: 8 },
     components,
     typography,
-    cssVarPrefix: '',
+    cssVarPrefix: "",
     shouldSkipGeneratingVar,
   };
 
@@ -31,25 +31,25 @@ export function createCustomTheme({ mode }: CreateCustomThemeProps): Theme {
 
 function shouldSkipGeneratingVar(keys: string[], value: string | number): boolean {
   const skipGlobalKeys = [
-    'mixins',
-    'overlays',
-    'direction',
-    'typography',
-    'breakpoints',
-    'transitions',
-    'cssVarPrefix',
-    'unstable_sxConfig',
+    "mixins",
+    "overlays",
+    "direction",
+    "typography",
+    "breakpoints",
+    "transitions",
+    "cssVarPrefix",
+    "unstable_sxConfig",
   ];
 
   const skipPaletteKeys: {
     [key: string]: string[];
   } = {
-    global: ['tonalOffset', 'dividerChannel', 'contrastThreshold'],
-    grey: ['A100', 'A200', 'A400', 'A700'],
-    text: ['icon'],
+    global: ["tonalOffset", "dividerChannel", "contrastThreshold"],
+    grey: ["A100", "A200", "A400", "A700"],
+    text: ["icon"],
   };
 
-  const isPaletteKey = keys[0] === 'palette';
+  const isPaletteKey = keys[0] === "palette";
 
   if (isPaletteKey) {
     const paletteType = keys[1];

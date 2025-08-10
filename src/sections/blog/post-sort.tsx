@@ -1,15 +1,15 @@
-import type { ButtonProps } from '@mui/material/Button';
+import type { ButtonProps } from "@mui/material/Button";
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback } from "react";
 
-import Button from '@mui/material/Button';
-import Popover from '@mui/material/Popover';
-import MenuList from '@mui/material/MenuList';
-import MenuItem, { menuItemClasses } from '@mui/material/MenuItem';
+import Button from "@mui/material/Button";
+import Popover from "@mui/material/Popover";
+import MenuList from "@mui/material/MenuList";
+import MenuItem, { menuItemClasses } from "@mui/material/MenuItem";
 
-import { varAlpha } from 'src/theme/styles';
+import { varAlpha } from "src/theme/styles";
 
-import { Iconify } from 'src/components/iconify';
+import { Iconify } from "src/components/iconify";
 
 // ----------------------------------------------------------------------
 
@@ -38,14 +38,14 @@ export function PostSort({ options, sortBy, onSort, sx, ...other }: PostSortProp
         onClick={handleOpenPopover}
         endIcon={
           <Iconify
-            icon={openPopover ? 'eva:chevron-up-fill' : 'eva:chevron-down-fill'}
+            icon={openPopover ? "eva:chevron-up-fill" : "eva:chevron-down-fill"}
             sx={{
               ml: -0.5,
             }}
           />
         }
         sx={{
-          bgcolor: (theme) => varAlpha(theme.palette.grey['500Channel'], 0.08),
+          bgcolor: (theme) => varAlpha(theme.palette.grey["500Channel"], 0.08),
           ...sx,
         }}
         {...other}
@@ -57,8 +57,8 @@ export function PostSort({ options, sortBy, onSort, sx, ...other }: PostSortProp
         open={!!openPopover}
         anchorEl={openPopover}
         onClose={handleClosePopover}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
       >
         <MenuList
           disablePadding
@@ -66,13 +66,13 @@ export function PostSort({ options, sortBy, onSort, sx, ...other }: PostSortProp
             p: 0.5,
             gap: 0.5,
             width: 160,
-            display: 'flex',
-            flexDirection: 'column',
+            display: "flex",
+            flexDirection: "column",
             [`& .${menuItemClasses.root}`]: {
               px: 1,
               gap: 2,
               borderRadius: 0.75,
-              [`&.${menuItemClasses.selected}`]: { bgcolor: 'action.selected' },
+              [`&.${menuItemClasses.selected}`]: { bgcolor: "action.selected" },
             },
           }}
         >

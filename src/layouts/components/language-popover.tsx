@@ -1,12 +1,12 @@
-import type { IconButtonProps } from '@mui/material/IconButton';
+import type { IconButtonProps } from "@mui/material/IconButton";
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback } from "react";
 
-import Box from '@mui/material/Box';
-import Popover from '@mui/material/Popover';
-import MenuList from '@mui/material/MenuList';
-import IconButton from '@mui/material/IconButton';
-import MenuItem, { menuItemClasses } from '@mui/material/MenuItem';
+import Box from "@mui/material/Box";
+import Popover from "@mui/material/Popover";
+import MenuList from "@mui/material/MenuList";
+import IconButton from "@mui/material/IconButton";
+import MenuItem, { menuItemClasses } from "@mui/material/MenuItem";
 
 // ----------------------------------------------------------------------
 
@@ -46,7 +46,7 @@ export function LanguagePopover({ data = [], sx, ...other }: LanguagePopoverProp
       component="img"
       alt={label}
       src={icon}
-      sx={{ width: 26, height: 20, borderRadius: 0.5, objectFit: 'cover' }}
+      sx={{ width: 26, height: 20, borderRadius: 0.5, objectFit: "cover" }}
     />
   );
 
@@ -57,7 +57,7 @@ export function LanguagePopover({ data = [], sx, ...other }: LanguagePopoverProp
         sx={{
           width: 40,
           height: 40,
-          ...(openPopover && { bgcolor: 'action.selected' }),
+          ...(openPopover && { bgcolor: "action.selected" }),
           ...sx,
         }}
         {...other}
@@ -69,8 +69,8 @@ export function LanguagePopover({ data = [], sx, ...other }: LanguagePopoverProp
         open={!!openPopover}
         anchorEl={openPopover}
         onClose={handleClosePopover}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
       >
         <MenuList
           disablePadding
@@ -78,15 +78,15 @@ export function LanguagePopover({ data = [], sx, ...other }: LanguagePopoverProp
             p: 0.5,
             gap: 0.5,
             width: 160,
-            display: 'flex',
-            flexDirection: 'column',
+            display: "flex",
+            flexDirection: "column",
             [`& .${menuItemClasses.root}`]: {
               px: 1,
               gap: 2,
               borderRadius: 0.75,
               [`&.${menuItemClasses.selected}`]: {
-                bgcolor: 'action.selected',
-                fontWeight: 'fontWeightSemiBold',
+                bgcolor: "action.selected",
+                fontWeight: "fontWeightSemiBold",
               },
             },
           }}

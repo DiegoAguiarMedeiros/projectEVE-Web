@@ -1,19 +1,19 @@
-import type { IconButtonProps } from '@mui/material/IconButton';
+import type { IconButtonProps } from "@mui/material/IconButton";
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback } from "react";
 
-import Box from '@mui/material/Box';
-import Avatar from '@mui/material/Avatar';
-import Popover from '@mui/material/Popover';
-import Divider from '@mui/material/Divider';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
+import Box from "@mui/material/Box";
+import Avatar from "@mui/material/Avatar";
+import Popover from "@mui/material/Popover";
+import Divider from "@mui/material/Divider";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
 
-import { useRouter } from 'src/routes/hooks';
+import { useRouter } from "src/routes/hooks";
 
-import { _myAccount } from 'src/_mock';
+import { _myAccount } from "src/_mock";
 
-import { AccountPopoverMenu } from './account-popover-menu';
+import { AccountPopoverMenu } from "./account-popover-menu";
 
 // ----------------------------------------------------------------------
 
@@ -44,7 +44,7 @@ export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps)
       <IconButton
         onClick={handleOpenPopover}
         sx={{
-          p: '2px',
+          p: "2px",
           width: 40,
           height: 40,
           background: (theme) =>
@@ -62,8 +62,8 @@ export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps)
         open={!!openPopover}
         anchorEl={openPopover}
         onClose={handleClosePopover}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
         slotProps={{
           paper: {
             sx: { width: 200 },
@@ -75,12 +75,12 @@ export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps)
             {_myAccount?.displayName}
           </Typography>
 
-          <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
+          <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
             {_myAccount?.email}
           </Typography>
         </Box>
 
-        <Divider sx={{ borderStyle: 'dashed' }} />
+        <Divider sx={{ borderStyle: "dashed" }} />
 
         <AccountPopoverMenu data={data} />
       </Popover>

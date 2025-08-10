@@ -1,1 +1,1 @@
-export * from './Envelope';
+export * from "./EnvelopesTable";

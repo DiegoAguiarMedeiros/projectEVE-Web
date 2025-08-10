@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, } from "react";
 import { Card, TableContainer, Table, TableBody, TablePagination } from "@mui/material";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "notistack";
 import dayjs from "dayjs";
 import { useTable } from "src/sections/shared/useTable";
@@ -9,59 +8,26 @@ import { CustomTableRow } from "src/components/table/TableRow";
 import { Iconify } from "src/components/iconify";
 import { CustomTableHead } from "src/components/table/TableHead";
 import { TableToolbar } from "src/components/table/TableToolbar";
-import TransactionsService, { Transactions, TransactionsStatus } from "src/services/implementation/TransactionsService";
 import Chips from "src/components/chip/chip";
 import { useSelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 import { TransactionForm } from "src/sections/envelope/form";
+import { Pagination } from "src/types/Pagination";
+import { Transactions, TransactionsStatus, TransactionsUpdateStatus } from "src/types/Transactions";
+import { useDeleteTransactions } from "src/hooks/mutations/transactions/useDeleteTransactions";
+import { useUpdateTransactions } from "src/hooks/mutations/transactions/useUpdateTransactions";
+import { useUpdateStatusTransactions } from "src/hooks/mutations/transactions/useUpdateStatusTransactions";
 
 type TransactionTableProps = {
     envelopeId: string;
+    transactions: Pagination<Transactions> | undefined
 }
-export function TransactionTable({ envelopeId }: TransactionTableProps) {
+export function TransactionTable({ envelopeId, transactions }: TransactionTableProps) {
 
     const table = useTable();
     const {
         month,
         year,
     } = useSelectedMonthYearStore();
-
-    const queryClient = useQueryClient();
-    const onMonthYearChange = useCallback((): void => {
-        queryClient.invalidateQueries({ queryKey: ["envelope"] });
-        queryClient.invalidateQueries({ queryKey: ["transaction-by-envelope", envelopeId] });
-    }, [queryClient, envelopeId]);
-
-
-    useEffect(() => {
-        onMonthYearChange()
-    }, [onMonthYearChange])
-
-    const { data: transaction } = useQuery({
-        queryKey: [
-            'transaction-by-envelope',
-            envelopeId,
-            year,
-            month,
-            table.page,
-            table.rowsPerPage,
-            table.orderBy,
-            table.order,
-        ],
-        queryFn: () =>
-            TransactionsService.listByEnvelope({
-                page: table.page,
-                pageSize: table.rowsPerPage,
-                orderBy: table.orderBy,
-                order: table.order,
-                envelopeId,
-                year,
-                month,
-            }),
-        staleTime: 5000,
-        gcTime: 60000,
-        placeholderData: (previousData) => previousData,
-        enabled: !!envelopeId && !!year && !!month,
-    });
 
 
 
@@ -72,28 +38,15 @@ export function TransactionTable({ envelopeId }: TransactionTableProps) {
 
     const { enqueueSnackbar } = useSnackbar();
 
-    const deleteTransactionMutation = useMutation({
-        mutationFn: (id: string) => TransactionsService.delete(id),
-        onSuccess: () => {
-            enqueueSnackbar('Transação deletada com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
-            queryClient.invalidateQueries({ queryKey: ["transaction-by-envelope"] });
-        },
-    });
-    const updateStatusTransactionMutation = useMutation({
-        mutationFn: ({ id, data }: { id: string; data: TransactionsStatus }) => TransactionsService.updateStatus(id, data),
-        onSuccess: () => {
-            enqueueSnackbar('Transação Atualizada com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
-            queryClient.invalidateQueries({ queryKey: ["envelope"] });
-            queryClient.invalidateQueries({ queryKey: ["transaction-by-envelope", envelopeId] });
-        },
-    });
+    const deleteTransactionMutation = useDeleteTransactions();
+    const updateStatusTransactionMutation = useUpdateStatusTransactions();
 
     const DeleteTransaction = useCallback((id: string) => {
         deleteTransactionMutation.mutate(id)
     }, [deleteTransactionMutation]);
 
-    const UpdateStatusTransaction = useCallback(({ id, data }: { id: string; data: TransactionsStatus }) => {
-        updateStatusTransactionMutation.mutate({ id, data })
+    const UpdateStatusTransaction = useCallback((data: TransactionsUpdateStatus) => {
+        updateStatusTransactionMutation.mutate(data)
     }, [updateStatusTransactionMutation]);
 
     const TransactionRow = (row: Transactions, deleteTransaction: (id: string) => void) => {
@@ -106,9 +59,10 @@ export function TransactionTable({ envelopeId }: TransactionTableProps) {
         const { description, amount, paymentMethod, date, status, } = row;
 
 
-        const handleClick = () => {
-            UpdateStatusTransaction({ id, data: status === 'Completed' ? 'Pending' : 'Completed' })
-            queryClient.invalidateQueries({ queryKey: ["transaction-by-envelope"] })
+        const handleClick = (transactionsId: string, newStatus: TransactionsStatus) => {
+            UpdateStatusTransaction({
+                id: transactionsId, status: newStatus,
+            })
         }
 
         return (<CustomTableRow
@@ -118,14 +72,14 @@ export function TransactionTable({ envelopeId }: TransactionTableProps) {
             rowKeys={[description, `R$ ${amount}`, paymentMethod, dayjs(date).format("DD/MM/YYYY"),
                 <Chips
                     label={status}
-                    labels={['Pago', 'Pendente']}
+                    labels={["Pago", "Pendente"]}
                     fieldName="Completed"
-                    click={handleClick}
+                    click={() => handleClick(id, status === 'Completed' ? 'Pending' : 'Completed')}
                 />]}
             form={<TransactionForm
                 data={row}
                 buttonIcon={<Iconify icon="solar:pen-bold" />}
-                buttonLabel='Editar'
+                buttonLabel="Editar"
                 envelopeId={envelopeId}
             />}
             handleDelete={handleDeleteTransaction} />)
@@ -133,50 +87,50 @@ export function TransactionTable({ envelopeId }: TransactionTableProps) {
     }
 
     return (
-        <Card sx={{ width: '100%' }}>
+        <Card sx={{ width: "100%" }}>
             <TableToolbar
                 numSelected={table.selected.length}
-                form={<TransactionForm buttonLabel='Adicionar' envelopeId={envelopeId} />}
+                form={<TransactionForm buttonLabel="Adicionar" envelopeId={envelopeId} />}
             />
 
-            <TableContainer sx={{ overflow: 'unset' }}>
+            <TableContainer sx={{ overflow: "unset" }}>
                 <Table sx={{ minWidth: 800 }}>
-                    {transaction && transaction.data.length > 0 ? <CustomTableHead
+                    {transactions && transactions.data.length > 0 ? <CustomTableHead
                         order={table.order}
                         orderBy={table.orderBy}
-                        rowCount={transaction.data.length}
+                        rowCount={transactions.data.length}
                         numSelected={table.selected.length}
                         onSort={table.onSort}
                         onSelectAllRows={(checked) =>
                             table.onSelectAllRows(
                                 checked,
-                                transaction.data.map((t) => t.id!)
+                                transactions.data.map((t) => t.id!)
                             )
                         }
                         headLabel={[
-                            { id: 'description', label: 'Descrição' },
-                            { id: 'amount', label: 'Valor' },
-                            { id: 'paymentMethod', label: 'Método de Pagamento' },
-                            { id: 'date', label: 'Data' },
-                            { id: 'status', label: 'Status' },
-                            { id: '' },
+                            { id: "description", label: "Descrição" },
+                            { id: "amount", label: "Valor" },
+                            { id: "paymentMethod", label: "Método de Pagamento" },
+                            { id: "date", label: "Data" },
+                            { id: "status", label: "Status" },
+                            { id: "" },
                         ]}
                     /> : <></>}
 
                     <TableBody>
-                        {transaction && transaction.data.length < 1
+                        {transactions && transactions.data.length < 1
                             ?
                             <TableNoData message="Nenhuma transação cadastrada!" />
                             :
-                            transaction && transaction.data.map(t => (TransactionRow(t, DeleteTransaction)))
+                            transactions && transactions.data.map(t => (TransactionRow(t, DeleteTransaction)))
                         }
                     </TableBody>
                 </Table>
             </TableContainer>
-            {transaction && transaction.data.length > 0 ? <TablePagination
+            {transactions && transactions.data.length > 0 ? <TablePagination
                 component="div"
                 page={table.page}
-                count={transaction.totalItems}
+                count={transactions.totalItems}
                 rowsPerPage={table.rowsPerPage}
                 onPageChange={table.onChangePage}
                 rowsPerPageOptions={[5, 10, 25]}

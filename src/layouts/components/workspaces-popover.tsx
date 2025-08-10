@@ -1,17 +1,17 @@
-import type { ButtonBaseProps } from '@mui/material/ButtonBase';
+import type { ButtonBaseProps } from "@mui/material/ButtonBase";
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback } from "react";
 
-import Box from '@mui/material/Box';
-import Popover from '@mui/material/Popover';
-import MenuList from '@mui/material/MenuList';
-import ButtonBase from '@mui/material/ButtonBase';
-import MenuItem, { menuItemClasses } from '@mui/material/MenuItem';
+import Box from "@mui/material/Box";
+import Popover from "@mui/material/Popover";
+import MenuList from "@mui/material/MenuList";
+import ButtonBase from "@mui/material/ButtonBase";
+import MenuItem, { menuItemClasses } from "@mui/material/MenuItem";
 
-import { varAlpha } from 'src/theme/styles';
+import { varAlpha } from "src/theme/styles";
 
-import { Label } from 'src/components/label';
-import { Iconify } from 'src/components/iconify';
+import { Label } from "src/components/label";
+import { Iconify } from "src/components/iconify";
 
 // ----------------------------------------------------------------------
 
@@ -46,11 +46,11 @@ export function WorkspacesPopover({ data = [], sx, ...other }: WorkspacesPopover
   );
 
   const renderAvatar = (alt: string, src: string) => (
-    <Box component="img" alt={alt} src={src} sx={{ width: 24, height: 24, borderRadius: '50%' }} />
+    <Box component="img" alt={alt} src={src} sx={{ width: 24, height: 24, borderRadius: "50%" }} />
   );
 
   const renderLabel = (plan: string) => (
-    <Label color={plan === 'Free' ? 'default' : 'info'}>{plan}</Label>
+    <Label color={plan === "Free" ? "default" : "info"}>{plan}</Label>
   );
 
   return (
@@ -65,9 +65,9 @@ export function WorkspacesPopover({ data = [], sx, ...other }: WorkspacesPopover
           pr: 1.5,
           width: 1,
           borderRadius: 1.5,
-          textAlign: 'left',
-          justifyContent: 'flex-start',
-          bgcolor: (theme) => varAlpha(theme.palette.grey['500Channel'], 0.08),
+          textAlign: "left",
+          justifyContent: "flex-start",
+          bgcolor: (theme) => varAlpha(theme.palette.grey["500Channel"], 0.08),
           ...sx,
         }}
         {...other}
@@ -79,13 +79,13 @@ export function WorkspacesPopover({ data = [], sx, ...other }: WorkspacesPopover
           flexGrow={1}
           display="flex"
           alignItems="center"
-          sx={{ typography: 'body2', fontWeight: 'fontWeightSemiBold' }}
+          sx={{ typography: "body2", fontWeight: "fontWeightSemiBold" }}
         >
           {workspace?.name}
           {renderLabel(workspace?.plan)}
         </Box>
 
-        <Iconify width={16} icon="carbon:chevron-sort" sx={{ color: 'text.disabled' }} />
+        <Iconify width={16} icon="carbon:chevron-sort" sx={{ color: "text.disabled" }} />
       </ButtonBase>
 
       <Popover open={!!openPopover} anchorEl={openPopover} onClose={handleClosePopover}>
@@ -95,15 +95,15 @@ export function WorkspacesPopover({ data = [], sx, ...other }: WorkspacesPopover
             p: 0.5,
             gap: 0.5,
             width: 260,
-            display: 'flex',
-            flexDirection: 'column',
+            display: "flex",
+            flexDirection: "column",
             [`& .${menuItemClasses.root}`]: {
               p: 1.5,
               gap: 1.5,
               borderRadius: 0.75,
               [`&.${menuItemClasses.selected}`]: {
-                bgcolor: 'action.selected',
-                fontWeight: 'fontWeightSemiBold',
+                bgcolor: "action.selected",
+                fontWeight: "fontWeightSemiBold",
               },
             },
           }}

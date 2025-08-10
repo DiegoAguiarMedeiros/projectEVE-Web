@@ -3,47 +3,29 @@ import { Card, TableContainer, Table, TableBody, TablePagination } from "@mui/ma
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "notistack";
 import { useTable } from "src/sections/shared/useTable";
-import CreditCardsService, { CreditCards } from 'src/services/implementation/CreditCardsService';
 import { TableNoData } from "src/components/table/TableNoData";
 import { CustomTableRow } from "src/components/table/TableRow";
 import { Iconify } from "src/components/iconify";
 import { CustomTableHead } from "src/components/table/TableHead";
 import { TableToolbar } from "src/components/table/TableToolbar";
 import { CreditCardForm } from "src/sections/settings/creditCards/form";
+import { Pagination } from "src/types/Pagination";
+import { CreditCards } from "src/types/CreditCards";
+import { useDeleteCreditCards } from "src/hooks/mutations/credit-cards/useDeleteCreditCards";
 
+type CreditCardsTableProps = {
+    creditCards: Pagination<CreditCards> | undefined
+}
 
-export function CreditCardsTable() {
+export function CreditCardsTable({ creditCards }: CreditCardsTableProps) {
     const table = useTable();
-
-    const { data: creditCards } = useQuery({
-        queryKey: ['credit-card', table.page, table.rowsPerPage,table.orderBy,table.order],
-        queryFn: () => CreditCardsService.list({
-            page: table.page,
-            pageSize: table.rowsPerPage,
-            orderBy:table.orderBy,
-            order:table.order,
-        }),
-        staleTime: 5000,
-        gcTime: 60000,
-        placeholderData: (previousData) => previousData,
-    });
-
 
     useEffect(() => {
         console.info("table.page", table.page)
         console.info("table.rowsPerPage", table.rowsPerPage)
     }, [table.page, table.rowsPerPage])
 
-    const queryClient = useQueryClient();
-    const { enqueueSnackbar } = useSnackbar();
-
-    const deleteCreditCardsMutation = useMutation({
-        mutationFn: (id: string) => CreditCardsService.delete(id),
-        onSuccess: () => {
-            enqueueSnackbar('Cartão de crédito deletado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
-            queryClient.invalidateQueries({ queryKey: ["credit-card"] });
-        },
-    });
+    const deleteCreditCardsMutation = useDeleteCreditCards();
     const DeleteCreditCards = useCallback((id: string) => {
         deleteCreditCardsMutation.mutate(id)
     }, [deleteCreditCardsMutation]);
@@ -55,7 +37,7 @@ export function CreditCardsTable() {
         const handleDeleteCreditCards = () => {
             deleteCreditCards(id)
         }
-        const {name,flag} = row;
+        const { name, flag } = row;
         return (<CustomTableRow
             key={id}
             selected={table.selected.includes(id)}
@@ -64,19 +46,19 @@ export function CreditCardsTable() {
             form={<CreditCardForm
                 data={row}
                 buttonIcon={<Iconify icon="solar:pen-bold" />}
-                buttonLabel='Editar' />}
+                buttonLabel="Editar" />}
             handleDelete={handleDeleteCreditCards} />)
 
     }
 
     return (
-        <Card sx={{ width: '100%' }}>
+        <Card sx={{ width: "100%" }}>
             <TableToolbar
                 numSelected={table.selected.length}
-                form={<CreditCardForm buttonLabel='Adicionar' />}
+                form={<CreditCardForm buttonLabel="Adicionar" />}
             />
 
-            <TableContainer sx={{ overflow: 'unset' }}>
+            <TableContainer sx={{ overflow: "unset" }}>
                 <Table sx={{ minWidth: 800 }}>
                     {creditCards && creditCards.data.length > 0 ? <CustomTableHead
                         order={table.order}
@@ -91,9 +73,9 @@ export function CreditCardsTable() {
                             )
                         }
                         headLabel={[
-                            { id: 'name', label: 'Nome' },
-                            { id: 'flag', label: 'Bandeira' },
-                            { id: '' },
+                            { id: "name", label: "Nome" },
+                            { id: "flag", label: "Bandeira" },
+                            { id: "" },
                         ]}
                     /> : <></>}
 

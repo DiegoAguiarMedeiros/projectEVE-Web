@@ -1,24 +1,24 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback } from "react";
 
-import Box from '@mui/material/Box';
-import Grid2 from '@mui/material/Grid2';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Pagination from '@mui/material/Pagination';
+import Box from "@mui/material/Box";
+import Grid2 from "@mui/material/Grid2";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Pagination from "@mui/material/Pagination";
 
-import { _posts } from 'src/_mock';
-import { DashboardContent } from 'src/layouts/dashboard';
+import { _posts } from "src/_mock";
+import { DashboardContent } from "src/layouts/dashboard";
 
-import { Iconify } from 'src/components/iconify';
+import { Iconify } from "src/components/iconify";
 
-import { PostItem } from '../post-item';
-import { PostSort } from '../post-sort';
-import { PostSearch } from '../post-search';
+import { PostItem } from "../post-item";
+import { PostSort } from "../post-sort";
+import { PostSearch } from "../post-search";
 
 // ----------------------------------------------------------------------
 
 export function BlogView() {
-  const [sortBy, setSortBy] = useState('latest');
+  const [sortBy, setSortBy] = useState("latest");
 
   const handleSort = useCallback((newSort: string) => {
     setSortBy(newSort);
@@ -45,9 +45,9 @@ export function BlogView() {
           sortBy={sortBy}
           onSort={handleSort}
           options={[
-            { value: 'latest', label: 'Latest' },
-            { value: 'popular', label: 'Popular' },
-            { value: 'oldest', label: 'Oldest' },
+            { value: "latest", label: "Latest" },
+            { value: "popular", label: "Popular" },
+            { value: "oldest", label: "Oldest" },
           ]}
         />
       </Box>
@@ -62,9 +62,9 @@ export function BlogView() {
               key={post.id}
               sx={{
                 gridColumn: {
-                  xs: 'span 12', // Sempre ocupa 12 colunas para xs
-                  sm: latestPostLarge ? 'span 12' : 'span 6', // Condicional para sm
-                  md: latestPostLarge ? 'span 6' : 'span 3', // Condicional para md
+                  xs: "span 12", // Sempre ocupa 12 colunas para xs
+                  sm: latestPostLarge ? "span 12" : "span 6", // Condicional para sm
+                  md: latestPostLarge ? "span 6" : "span 3", // Condicional para md
                 },
               }}
             >
@@ -74,7 +74,7 @@ export function BlogView() {
         })}
       </Grid2>
 
-      <Pagination count={10} color="primary" sx={{ mt: 8, mx: 'auto' }} />
+      <Pagination count={10} color="primary" sx={{ mt: 8, mx: "auto" }} />
     </DashboardContent>
   );
 }

@@ -9,54 +9,27 @@ import { CustomTableRow } from "src/components/table/TableRow";
 import { Iconify } from "src/components/iconify";
 import { CustomTableHead } from "src/components/table/TableHead";
 import { TableToolbar } from "src/components/table/TableToolbar";
-import DebtsService, { Debts } from "src/services/implementation/DebtsService";
-import EnvelopesService from "src/services/implementation/EnvelopesService";
 import { DebtForm } from "src/sections/settings/debt/form";
+import { Pagination } from "src/types/Pagination";
+import { Debts } from "src/types/Debts";
+import { useDeleteDebts } from "src/hooks/mutations/debts/useDeleteDebts";
+import { Envelopes } from "src/types/Envelopes";
 
 
-export function DebtTable() {
+type DebtsTableProps = {
+    debts: Pagination<Debts> | undefined
+    envelopes: Envelopes[]
+}
+
+export function DebtTable({ debts, envelopes }: DebtsTableProps) {
     const table = useTable();
-
-    const { data: debts } = useQuery({
-        queryKey: ['debt', table.page, table.rowsPerPage, table.orderBy, table.order],
-        queryFn: () => DebtsService.list({
-            page: table.page,
-            pageSize: table.rowsPerPage,
-            orderBy: table.orderBy,
-            order: table.order,
-        }),
-        staleTime: 5000,
-        gcTime: 60000,
-        placeholderData: (previousData) => previousData,
-    });
-
-
-
-
-    const { data: envelopes } = useQuery({
-        queryKey: ['envelope'],
-        queryFn: () => EnvelopesService.list(),
-        staleTime: 5000,
-        gcTime: 60000,
-        placeholderData: (previousData) => previousData,
-    });
-
 
     useEffect(() => {
         console.info("table.page", table.page)
         console.info("table.rowsPerPage", table.rowsPerPage)
     }, [table.page, table.rowsPerPage])
 
-    const queryClient = useQueryClient();
-    const { enqueueSnackbar } = useSnackbar();
-
-    const deleteDebtMutation = useMutation({
-        mutationFn: (id: string) => DebtsService.delete(id),
-        onSuccess: () => {
-            enqueueSnackbar('Dívida deletada com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
-            queryClient.invalidateQueries({ queryKey: ["debt"] });
-        },
-    });
+    const deleteDebtMutation = useDeleteDebts()
     const DeleteDebt = useCallback((id: string) => {
         deleteDebtMutation.mutate(id)
     }, [deleteDebtMutation]);
@@ -68,7 +41,7 @@ export function DebtTable() {
         const handleDeleteDebt = () => {
             deleteDebt(id)
         }
-        const { description, amount, paymentDay, installmentsPaid, installmentsTotal, } = row;
+        const { description, amount, paymentDay, installmentsPaid, installmentsTotal } = row;
 
         return (<CustomTableRow
             key={id}
@@ -79,19 +52,19 @@ export function DebtTable() {
                 data={row}
                 envelopes={envelopes ?? []}
                 buttonIcon={<Iconify icon="solar:pen-bold" />}
-                buttonLabel='Editar' />}
+                buttonLabel="Editar" />}
             handleDelete={handleDeleteDebt} />)
 
     }
 
     return (
-        <Card sx={{ width: '100%' }}>
+        <Card sx={{ width: "100%" }}>
             <TableToolbar
                 numSelected={table.selected.length}
-                form={<DebtForm envelopes={envelopes ?? []} buttonLabel='Adicionar' />}
+                form={<DebtForm envelopes={envelopes ?? []} buttonLabel="Adicionar" />}
             />
 
-            <TableContainer sx={{ overflow: 'unset' }}>
+            <TableContainer sx={{ overflow: "unset" }}>
                 <Table sx={{ minWidth: 800 }}>
                     {debts && debts.data.length > 0 ? <CustomTableHead
                         order={table.order}
@@ -106,12 +79,12 @@ export function DebtTable() {
                             )
                         }
                         headLabel={[
-                            { id: 'description', label: 'Descrição' },
-                            { id: 'amount', label: 'Valor' },
-                            { id: 'installments_total', label: 'Total pago' },
-                            { id: 'installments_paid', label: 'Total parcelas' },
-                            { id: 'payment_day', label: 'Dia do pagamento' },
-                            { id: '' },
+                            { id: "description", label: "Descrição" },
+                            { id: "amount", label: "Valor" },
+                            { id: "installments_total", label: "Total pago" },
+                            { id: "installments_paid", label: "Total parcelas" },
+                            { id: "payment_day", label: "Dia do pagamento" },
+                            { id: "" },
                         ]}
                     /> : <></>}
 

@@ -1,14 +1,14 @@
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback } from "react";
 
-type ThemeMode = 'light' | 'dark';
+type ThemeMode = "light" | "dark";
 
 const useTheme = () => {
   // Estado inicial para o tema
-  const [mode, setMode] = useState<ThemeMode>('light');
+  const [mode, setMode] = useState<ThemeMode>("light");
   // Alternar entre os temas claro e escuro
   const toggleTheme = useCallback(() => {
-    setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+    setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
   }, []);
 
   // Definir um tema específico

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from "react";
 import {
     Box,
     Button,
@@ -8,17 +8,17 @@ import {
     Select,
     MenuItem as SelectItem,
     Typography,
-} from '@mui/material';
-import { ArrowBack, ArrowForward } from '@mui/icons-material';
-import { Month, ProcessedIncomesMonthResponse } from 'src/types/ProcessedIncomes';
+} from "@mui/material";
+import { ArrowBack, ArrowForward } from "@mui/icons-material";
+import { Month, ProcessedIncomesMonthResponse } from "src/types/ProcessedIncomes";
 import { useSelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 
 
 
 const months = [
-    'Janeiro', 'Fevereiro', 'Março', 'Abril',
-    'Maio', 'Junho', 'Julho', 'Agosto',
-    'Setembro', 'Outubro', 'Novembro', 'Dezembro',
+    "Janeiro", "Fevereiro", "Março", "Abril",
+    "Maio", "Junho", "Julho", "Agosto",
+    "Setembro", "Outubro", "Novembro", "Dezembro",
 ];
 
 
@@ -36,7 +36,7 @@ export const MonthYearPickerButton: React.FC<MonthYearPickerButtonProps> = ({ da
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
     if (years.length === 0) {
-        return (<Button variant="contained" color='primary' disabled>{month}/{year}</Button>)
+        return (<Button variant="contained" color="primary" disabled>{month}/{year}</Button>)
     }
 
     const minYear = years[0];
@@ -98,7 +98,7 @@ export const MonthYearPickerButton: React.FC<MonthYearPickerButtonProps> = ({ da
                 <ArrowBack />
             </IconButton>
 
-            <Button variant="contained" color='primary' onClick={handleOpen}>
+            <Button variant="contained" color="primary" onClick={handleOpen}>
                 {months[selectedMonth - 1]}/{selectedYear}
             </Button>
 
@@ -132,7 +132,7 @@ export const MonthYearPickerButton: React.FC<MonthYearPickerButtonProps> = ({ da
                                     onClick={() => isAvailable && handleMonthSelect(i + 1 as Month)}
                                     disabled={!isAvailable} // desativa o clique se não disponível
                                 >
-                                    <Typography variant="body2" color={isAvailable ? 'text.primary' : 'text.disabled'}>
+                                    <Typography variant="body2" color={isAvailable ? "text.primary" : "text.disabled"}>
                                         {m}
                                     </Typography>
                                 </MenuItem>

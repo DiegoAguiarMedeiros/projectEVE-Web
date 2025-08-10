@@ -1,51 +1,44 @@
 import { Card, CardHeader, Stack, Typography, IconButton, CardContent, FormControl, Slider, Box, FormLabel, Switch } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import EnvelopesService, { Envelope, EnvelopePost, EnvelopeUpdateFiledDTO } from "src/services/implementation/EnvelopesService";
 import { startTransition, useActionState, useState } from "react";
-import { useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "notistack";
 import Chips from "src/components/chip/chip";
+import { useUpdateEnvelopes } from "src/hooks/mutations/envelopes/useUpdateEnvelopes";
+import { Envelopes } from "src/types/Envelopes";
 
 
 type EnvelopeProps = {
-    data: Envelope;
+    data: Envelopes;
     setEnvelopeAllocation: React.Dispatch<React.SetStateAction<number>>
 
 }
 export function EnvelopeCard({ data, setEnvelopeAllocation }: EnvelopeProps) {
 
-    const { enqueueSnackbar } = useSnackbar();
-    const queryClient = useQueryClient();
+    const [envelopeData, setEnvelopeData] = useState<Envelopes>(data);
+    const [isPending, setIsPending] = useState(false);
+    const [error, setError] = useState<Error | null>(null);
+    const updateMutation = useUpdateEnvelopes();
 
-    const [envelopeData, setEnvelopeData] = useState<Envelope>(data);
+    const submitAction = async (envelopes: Envelopes) => {
+        setIsPending(true);
+        setError(null);
 
-    const [error, submitAction, isPending] = useActionState(
-        async (previousState: any, envelope: EnvelopeUpdateFiledDTO) => {
+        try {
             if (data) {
-
-                const errorEnvelopeUpdate = await EnvelopesService.update({
+                await updateMutation.mutateAsync({
                     id: data.id,
-                    name: envelope.name,
-                    color: envelope.color,
-                    percentage: envelope.percentage,
+                    name: envelopes.name,
+                    color: envelopes.color,
+                    percentage: envelopes.percentage,
                 });
-
-                if (!errorEnvelopeUpdate) {
-                    return errorEnvelopeUpdate;
-                }
-                enqueueSnackbar('Envelope editado com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
-
-            }
-            refresh();
-            return null;
-        },
-        null,
-    );
-
-
-    const refresh = () => {
-        queryClient.invalidateQueries({ queryKey: ['envelope'] });
-    };;
+            } 
+        } catch (err: any) {
+            setError(err);
+        } finally {
+            setIsPending(false);
+        }
+    };
 
     const submitForm = () => {
         startTransition(async () => {
@@ -75,20 +68,22 @@ export function EnvelopeCard({ data, setEnvelopeAllocation }: EnvelopeProps) {
         }));
     };
 
+    console.log("envelopeData.name", envelopeData.name === "debts")
+
     return (
         <Card
             key={envelopeData.id}
             sx={{
                 flex: "1 0 25%",
                 minWidth: 200,
-                maxHeight:'144px',
+                maxHeight: "144px",
                 boxSizing: "border-box",
                 padding: 1,
             }}
         >
             <CardHeader
                 title={
-                    <Stack sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Stack sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                         <Typography variant="h6">
                             {envelopeData.name} ({envelopeData.percentage}%)
                         </Typography>
@@ -103,7 +98,7 @@ export function EnvelopeCard({ data, setEnvelopeAllocation }: EnvelopeProps) {
                 }
                 sx={{ p: 1, }}
             />
-            <CardContent sx={{ p: 1, display: 'flex', flexDirection: 'column', gap: 1 }}>
+            <CardContent sx={{ p: 1, display: "flex", flexDirection: "column", gap: 1 }}>
                 <FormControl fullWidth sx={{}}>
                     <Slider
                         getAriaValueText={valueLabelFormat}
@@ -111,27 +106,29 @@ export function EnvelopeCard({ data, setEnvelopeAllocation }: EnvelopeProps) {
                         valueLabelDisplay="on"
                         aria-label="pretto slider"
                         value={envelopeData.percentage}
-                        onChange={(_, value) =>
-                            updateAllocation(value as number)
-                        }
+                        onChange={(_, value) => {
+
+                            if (envelopeData.name !== "debts") updateAllocation(value as number)
+                        }}
                         onBlur={submitForm}
                         max={100}
                         step={1}
+                        disableSwap={envelopeData.name === "debts"}
                     />
                 </FormControl>
-                < FormControl fullWidth sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', gap: 1 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                < FormControl fullWidth sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexDirection: "row", gap: 1 }}>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                         <Typography>Cor:</Typography>
                         <Box
                             component="label"
                             sx={{
                                 width: 24,
                                 height: 24,
-                                borderRadius: '50%',
+                                borderRadius: "50%",
                                 backgroundColor: envelopeData.color,
-                                cursor: 'pointer',
-                                border: '1px solid #ccc',
-                                display: 'inline-block',
+                                cursor: "pointer",
+                                border: "1px solid #ccc",
+                                display: "inline-block",
                             }}
                         >
                             <input
@@ -141,9 +138,9 @@ export function EnvelopeCard({ data, setEnvelopeAllocation }: EnvelopeProps) {
                                 onBlur={submitForm}
                                 style={{
                                     opacity: 0,
-                                    width: '100%',
-                                    height: '100%',
-                                    cursor: 'pointer',
+                                    width: "100%",
+                                    height: "100%",
+                                    cursor: "pointer",
                                 }}
                             />
                         </Box>

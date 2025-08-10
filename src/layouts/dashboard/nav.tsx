@@ -1,22 +1,22 @@
-import type { Theme, SxProps, Breakpoint } from '@mui/material/styles';
+import type { Theme, SxProps, Breakpoint } from "@mui/material/styles";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
-import Box from '@mui/material/Box';
-import { useTheme } from '@mui/material/styles';
-import { Paper, MenuList } from '@mui/material';
-import ListItemButton from '@mui/material/ListItemButton';
-import Drawer, { drawerClasses } from '@mui/material/Drawer';
+import Box from "@mui/material/Box";
+import { useTheme } from "@mui/material/styles";
+import { Paper, MenuList } from "@mui/material";
+import ListItemButton from "@mui/material/ListItemButton";
+import Drawer, { drawerClasses } from "@mui/material/Drawer";
 
-import { usePathname } from 'src/routes/hooks';
-import { RouterLink } from 'src/routes/components';
+import { usePathname } from "src/routes/hooks";
+import { RouterLink } from "src/routes/components";
 
-import { varAlpha } from 'src/theme/styles';
+import { varAlpha } from "src/theme/styles";
 
-import { Logo } from 'src/components/logo';
-import { Scrollbar } from 'src/components/scrollbar';
+import { Logo } from "src/components/logo";
+import { Scrollbar } from "src/components/scrollbar";
 
-import { AccountPopoverMenu } from '../components/account-popover-menu';
+import { AccountPopoverMenu } from "../components/account-popover-menu";
 
 // ----------------------------------------------------------------------
 
@@ -51,15 +51,15 @@ export function NavDesktop({
         top: 0,
         left: 0,
         height: 1,
-        display: 'none',
-        position: 'fixed',
-        flexDirection: 'column',
+        display: "none",
+        position: "fixed",
+        flexDirection: "column",
         bgcolor: theme.palette.background.paper,
-        zIndex: 'var(--layout-nav-zIndex)',
-        width: 'var(--layout-nav-vertical-width)',
-        borderRight: `1px solid var(--layout-nav-border-color, ${varAlpha(theme.palette.grey['500Channel'], 0.12)})`,
+        zIndex: "var(--layout-nav-zIndex)",
+        width: "var(--layout-nav-vertical-width)",
+        borderRight: `1px solid var(--layout-nav-border-color, ${varAlpha(theme.palette.grey["500Channel"], 0.12)})`,
         [theme.breakpoints.up(layoutQuery)]: {
-          display: 'flex',
+          display: "flex",
         },
         ...sx,
       }}
@@ -95,9 +95,9 @@ export function NavMobile({
         [`& .${drawerClasses.paper}`]: {
           pt: 2.5,
           px: 2.5,
-          overflow: 'unset',
+          overflow: "unset",
           bgcolor: theme.palette.background.paper,
-          width: 'var(--layout-nav-mobile-width)',
+          width: "var(--layout-nav-mobile-width)",
           ...sx,
         },
       }}
@@ -121,7 +121,7 @@ export function NavContent({ data, slots, sx }: NavContentProps) {
 
       <Scrollbar fillContent>
         <Paper
-          sx={{ width: 320, maxWidth: '100%', backgroundColor: theme.palette.background.paper }}
+          sx={{ width: 320, maxWidth: "100%", backgroundColor: theme.palette.background.paper }}
         >
           <MenuList>
             {data.map((item, index) => {
@@ -140,16 +140,16 @@ export function NavContent({ data, slots, sx }: NavContentProps) {
                     gap: 2,
                     pr: 1.5,
                     borderRadius: 0.75,
-                    typography: 'body2',
-                    fontWeight: 'fontWeightMedium',
-                    color: 'var(--layout-nav-item-color)',
-                    minHeight: 'var(--layout-nav-item-height)',
+                    typography: "body2",
+                    fontWeight: "fontWeightMedium",
+                    color: "var(--layout-nav-item-color)",
+                    minHeight: "var(--layout-nav-item-height)",
                     ...(isActived && {
-                      fontWeight: 'fontWeightSemiBold',
-                      bgcolor: 'var(--layout-nav-item-active-bg)',
-                      color: 'var(--layout-nav-item-active-color)',
-                      '&:hover': {
-                        bgcolor: 'var(--layout-nav-item-hover-bg)',
+                      fontWeight: "fontWeightSemiBold",
+                      bgcolor: "var(--layout-nav-item-active-bg)",
+                      color: "var(--layout-nav-item-active-color)",
+                      "&:hover": {
+                        bgcolor: "var(--layout-nav-item-hover-bg)",
                       },
                     }),
                   }}

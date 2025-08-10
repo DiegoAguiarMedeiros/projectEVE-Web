@@ -1,16 +1,16 @@
-import './style.css';
+import "./style.css";
 
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 // Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/thumbs';
-import 'swiper/css/free-mode';
-import 'swiper/css/navigation';
+import "swiper/css";
+import "swiper/css/thumbs";
+import "swiper/css/free-mode";
+import "swiper/css/navigation";
 // Import Swiper React components
-import { Swiper, SwiperSlide } from 'swiper/react';
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import { Swiper, SwiperSlide } from "swiper/react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 // import required modules
-import { Controller, FreeMode, Navigation, Thumbs } from 'swiper/modules';
+import { Controller, FreeMode, Navigation, Thumbs } from "swiper/modules";
 
 import {
   Card,
@@ -20,57 +20,32 @@ import {
   TableBody,
   TableContainer,
   TablePagination,
-} from '@mui/material';
+} from "@mui/material";
 
-import { _users } from 'src/_mock';
+import { _users } from "src/_mock";
 
 import DeleteIcon from "@mui/icons-material/Delete";
-import EnvelopesService from 'src/services/implementation/EnvelopesService';
-import { useSelectedMonthYearStore } from 'src/store/useSelectedMonthYearStore';
-import { EnvelopeSwiperBody } from './EnvelopeSwiperBody';
-import { useTable } from '../shared/useTable';
-import { TransactionTable } from './transactionTable';
+import { EnvelopeSwiperBody } from "src/sections/envelope/EnvelopeSwiperBody";
+import { TransactionTable } from "src/sections/envelope/transactionTable";
+import { Pagination } from "src/types/Pagination";
+import { Envelopes } from "src/types/Envelopes";
+import { Transactions } from "src/types/Transactions";
 
-export default function SwiperEnvelop() {
-  const [active, setActive] = useState<string>('');
-  const [currentIndex, setCurrentIndex] = useState(0);
+type SwiperEnvelopProps = {
+  envelopes: Envelopes[]
+  currentIndex: number
+  handleSlideClick: (index: number) => void
+  envelopeActived: string;
+  transactions: Pagination<Transactions> | undefined
+}
+export default function SwiperEnvelop({ envelopes, currentIndex, handleSlideClick, envelopeActived,transactions }: SwiperEnvelopProps) {
 
-  const queryClient = useQueryClient();
-  const { month, year } = useSelectedMonthYearStore();
-
-  const { data: envelopes } = useQuery({
-    queryKey: ['envelope'],
-    queryFn: () => EnvelopesService.listWithAmount(year, month),
-    staleTime: 5000,
-    placeholderData: (prev) => prev,
-  });
-
-  useEffect(() => {
-    if (envelopes && envelopes.length > 0) {
-      const saved = localStorage.getItem('lastSlideIndex');
-      const index = saved ? parseInt(saved, 10) : 0;
-      const envelope = envelopes[index];
-      if (envelope) {
-        setActive(envelope.id);
-      }
-    }
-  }, [envelopes]);
-
-  const handleSlideClick = (index: number) => {
-    localStorage.setItem('lastSlideIndex', index.toString());
-
-    const selected = envelopes?.[index];
-    if (selected) {
-      setActive(selected.id);
-      queryClient.invalidateQueries({ queryKey: ["transaction-by-envelope"] });
-    }
-  };
 
 
   return (
     <>
       <Swiper
-        style={{ cursor: 'pointer' }}
+        style={{ cursor: "pointer" }}
         spaceBetween={10}
         slidesPerView={1}
         loop
@@ -84,9 +59,9 @@ export default function SwiperEnvelop() {
       >
         {envelopes && envelopes.map((envelope, index) => (
           <SwiperSlide key={index}>
-            <Grid2 onClick={() => handleSlideClick(index)} sx={{ width: '100%' }}>
+            <Grid2 onClick={() => handleSlideClick(index)} sx={{ width: "100%" }}>
               <EnvelopeSwiperBody
-                sx={active === envelope.id ? { backgroundColor: envelope.color, padding: 2, width: '100%', } : { padding: 2, width: '100%', }}
+                sx={envelopeActived === envelope.id ? { backgroundColor: envelope.color, padding: 2, width: "100%", } : { padding: 2, width: "100%", }}
                 title={envelope.name}
                 percent={envelope.percentage}
                 total={envelope.amount || 0}
@@ -97,7 +72,7 @@ export default function SwiperEnvelop() {
           </SwiperSlide>
         ))}
       </Swiper>
-      <TransactionTable envelopeId={active} />
+      <TransactionTable transactions={transactions} envelopeId={envelopeActived} />
     </>
   );
 }

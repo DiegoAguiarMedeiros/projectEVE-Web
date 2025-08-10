@@ -1,11 +1,11 @@
-import type { ColorSystemOptions } from '@mui/material/styles';
+import type { ColorSystemOptions } from "@mui/material/styles";
 
-import COLORS from './colors.json';
-import { varAlpha, createPaletteChannel } from '../styles';
+import COLORS from "./colors.json";
+import { varAlpha, createPaletteChannel } from "../styles";
 
 // ----------------------------------------------------------------------
 
-declare module '@mui/material/styles/createPalette' {
+declare module "@mui/material/styles/createPalette" {
   interface CommonColors {
     whiteChannel: string;
     blackChannel: string;
@@ -35,28 +35,28 @@ declare module '@mui/material/styles/createPalette' {
   }
 }
 
-declare module '@mui/material/styles' {
+declare module "@mui/material/styles" {
   interface ThemeVars {
-    transitions: Theme['transitions'];
+    transitions: Theme["transitions"];
   }
 }
 
-declare module '@mui/material' {
+declare module "@mui/material" {
   interface Color {
-    ['50Channel']: string;
-    ['100Channel']: string;
-    ['200Channel']: string;
-    ['300Channel']: string;
-    ['400Channel']: string;
-    ['500Channel']: string;
-    ['600Channel']: string;
-    ['700Channel']: string;
-    ['800Channel']: string;
-    ['900Channel']: string;
+    ["50Channel"]: string;
+    ["100Channel"]: string;
+    ["200Channel"]: string;
+    ["300Channel"]: string;
+    ["400Channel"]: string;
+    ["500Channel"]: string;
+    ["600Channel"]: string;
+    ["700Channel"]: string;
+    ["800Channel"]: string;
+    ["900Channel"]: string;
   }
 }
 
-export type ColorType = 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'error';
+export type ColorType = "primary" | "secondary" | "info" | "success" | "warning" | "error";
 
 // ----------------------------------------------------------------------
 
@@ -96,7 +96,7 @@ export const text = {
 // Background
 export const background = {
   light: createPaletteChannel({
-    paper: '#FFFFFF',
+    paper: "#FFFFFF",
     default: grey[100],
     neutral: grey[200],
   }),
@@ -104,11 +104,11 @@ export const background = {
 
 // Action
 export const baseAction = {
-  hover: varAlpha(grey['500Channel'], 0.08),
-  selected: varAlpha(grey['500Channel'], 0.16),
-  focus: varAlpha(grey['500Channel'], 0.24),
-  disabled: varAlpha(grey['500Channel'], 0.8),
-  disabledBackground: varAlpha(grey['500Channel'], 0.24),
+  hover: varAlpha(grey["500Channel"], 0.08),
+  selected: varAlpha(grey["500Channel"], 0.16),
+  focus: varAlpha(grey["500Channel"], 0.24),
+  disabled: varAlpha(grey["500Channel"], 0.8),
+  disabledBackground: varAlpha(grey["500Channel"], 0.24),
   hoverOpacity: 0.08,
   disabledOpacity: 0.48,
 };
@@ -129,7 +129,7 @@ export const basePalette = {
   error,
   grey,
   common,
-  divider: varAlpha(grey['500Channel'], 0.2),
+  divider: varAlpha(grey["500Channel"], 0.2),
   action,
 };
 
@@ -162,11 +162,11 @@ export const backgroundDark = {
 export const actionDark = {
   ...baseAction,
   active: grey[300],
-  hover: varAlpha(grey['500Channel'], 0.08),
-  selected: varAlpha(grey['500Channel'], 0.16),
-  focus: varAlpha(grey['500Channel'], 0.24),
-  disabled: varAlpha(grey['500Channel'], 0.8),
-  disabledBackground: varAlpha(grey['500Channel'], 0.24),
+  hover: varAlpha(grey["500Channel"], 0.08),
+  selected: varAlpha(grey["500Channel"], 0.16),
+  focus: varAlpha(grey["500Channel"], 0.24),
+  disabled: varAlpha(grey["500Channel"], 0.8),
+  disabledBackground: varAlpha(grey["500Channel"], 0.24),
   hoverOpacity: 0.08,
   disabledOpacity: 0.48,
 };
@@ -180,7 +180,7 @@ export const darkPalette = {
 };
 
 // Add Dark Theme to Color Schemes
-export const colorSchemes: Partial<Record<'light' | 'dark', ColorSystemOptions>> = {
+export const colorSchemes: Partial<Record<"light" | "dark", ColorSystemOptions>> = {
   light: { palette: lightPalette },
   dark: { palette: darkPalette },
 };

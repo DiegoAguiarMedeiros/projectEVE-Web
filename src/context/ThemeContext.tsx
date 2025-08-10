@@ -1,13 +1,13 @@
-import React, { useContext, createContext, useMemo } from 'react';
+import React, { useContext, createContext, useMemo } from "react";
 
-import { CssBaseline, ThemeProvider } from '@mui/material';
+import { CssBaseline, ThemeProvider } from "@mui/material";
 
-import { createCustomTheme } from 'src/theme/create-theme';
+import { createCustomTheme } from "src/theme/create-theme";
 
-import useTheme from '../hooks/useTheme';
+import useTheme from "../hooks/useTheme";
 
 type ThemeContextProps = {
-  mode: 'light' | 'dark';
+  mode: "light" | "dark";
   toggleTheme: () => void;
 };
 
@@ -36,7 +36,7 @@ export const ThemeProviderWrapper: React.FC<{ children: React.ReactNode }> = ({ 
 export const useThemeContext = () => {
   const context = useContext(ThemeContext);
   if (!context) {
-    throw new Error('useThemeContext deve ser usado dentro de ThemeProviderWrapper');
+    throw new Error("useThemeContext deve ser usado dentro de ThemeProviderWrapper");
   }
   return context;
 };

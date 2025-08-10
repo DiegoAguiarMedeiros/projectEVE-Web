@@ -1,12 +1,12 @@
-import type { CardProps } from '@mui/material/Card';
-import type { ChartOptions } from 'src/components/chart';
+import type { CardProps } from "@mui/material/Card";
+import type { ChartOptions } from "src/components/chart";
 
-import Card from '@mui/material/Card';
-import Divider from '@mui/material/Divider';
-import { useTheme } from '@mui/material/styles';
-import CardHeader from '@mui/material/CardHeader';
+import Card from "@mui/material/Card";
+import Divider from "@mui/material/Divider";
+import { useTheme } from "@mui/material/styles";
+import CardHeader from "@mui/material/CardHeader";
 
-import { Chart, useChart, ChartLegends } from 'src/components/chart';
+import { Chart, useChart, ChartLegends } from "src/components/chart";
 
 // ----------------------------------------------------------------------
 
@@ -54,15 +54,15 @@ export function AnalyticsCurrentSubject({ title, subheader, chart, ...other }: P
         options={chartOptions}
         width={300}
         height={300}
-        sx={{ my: 1, mx: 'auto' }}
+        sx={{ my: 1, mx: "auto" }}
       />
 
-      <Divider sx={{ borderStyle: 'dashed' }} />
+      <Divider sx={{ borderStyle: "dashed" }} />
 
       <ChartLegends
         labels={chart.series.map((item) => item.name)}
         colors={chartOptions?.colors}
-        sx={{ p: 3, justifyContent: 'center' }}
+        sx={{ p: 3, justifyContent: "center" }}
       />
     </Card>
   );

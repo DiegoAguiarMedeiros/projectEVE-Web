@@ -1,14 +1,14 @@
-import type { IconButtonProps } from '@mui/material/IconButton';
+import type { IconButtonProps } from "@mui/material/IconButton";
 
-import { useCallback } from 'react';
+import { useCallback } from "react";
 
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
-import MenuList from '@mui/material/MenuList';
-import MenuItem, { menuItemClasses } from '@mui/material/MenuItem';
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
+import MenuList from "@mui/material/MenuList";
+import MenuItem, { menuItemClasses } from "@mui/material/MenuItem";
 
-import { useRouter, usePathname } from 'src/routes/hooks';
+import { useRouter, usePathname } from "src/routes/hooks";
 
 // ----------------------------------------------------------------------
 
@@ -42,18 +42,18 @@ export function AccountPopoverMenu({ data = [], sx, ...other }: AccountPopoverMe
         sx={{
           p: 1,
           gap: 0.5,
-          display: 'flex',
-          flexDirection: 'column',
+          display: "flex",
+          flexDirection: "column",
           [`& .${menuItemClasses.root}`]: {
             px: 1,
             gap: 2,
             borderRadius: 0.75,
-            color: 'text.secondary',
-            '&:hover': { color: 'text.primary' },
+            color: "text.secondary",
+            "&:hover": { color: "text.primary" },
             [`&.${menuItemClasses.selected}`]: {
-              color: 'text.primary',
-              bgcolor: 'action.selected',
-              fontWeight: 'fontWeightSemiBold',
+              color: "text.primary",
+              bgcolor: "action.selected",
+              fontWeight: "fontWeightSemiBold",
             },
           },
         }}
@@ -70,7 +70,7 @@ export function AccountPopoverMenu({ data = [], sx, ...other }: AccountPopoverMe
         ))}
       </MenuList>
 
-      <Divider sx={{ borderStyle: 'dashed' }} />
+      <Divider sx={{ borderStyle: "dashed" }} />
 
       <Box sx={{ p: 1 }}>
         <Button fullWidth color="error" size="medium" variant="text">

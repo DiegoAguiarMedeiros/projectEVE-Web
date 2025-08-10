@@ -1,6 +1,6 @@
-import { CONFIG } from 'src/config-global';
+import { CONFIG } from "src/config-global";
 
-import { RegistrationView } from 'src/sections/registration';
+import { RegistrationView } from "src/sections/registration";
 
 // ----------------------------------------------------------------------
 

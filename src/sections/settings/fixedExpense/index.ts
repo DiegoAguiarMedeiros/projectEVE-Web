@@ -1,1 +1,1 @@
-export * from './FixedExpense';
+export * from "./FixedExpense";

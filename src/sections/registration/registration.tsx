@@ -1,21 +1,21 @@
-import * as React from 'react';
+import * as React from "react";
 
-import Box from '@mui/material/Box';
-import { useCallback, useState } from 'react';
-import { IconButton, InputAdornment, TextField } from '@mui/material';
-import { LoadingButton } from '@mui/lab';
-import { Iconify } from 'src/components/iconify';
-import { useRouter } from 'src/routes/hooks';
-import { Logo } from 'src/components/logo';
-import { useRegister } from 'src/hooks/mutations/auth/useRegister';
+import Box from "@mui/material/Box";
+import { useCallback, useState } from "react";
+import { IconButton, InputAdornment, TextField } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import { Iconify } from "src/components/iconify";
+import { useRouter } from "src/routes/hooks";
+import { Logo } from "src/components/logo";
+import { useRegister } from "src/hooks/mutations/auth/useRegister";
 
 export function RegistrationView() {
 
   const router = useRouter();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const [errorName, setErrorName] = useState<string | null>(null);
   const [errorEmail, setErrorEmail] = useState<string | null>(null);
@@ -27,7 +27,7 @@ export function RegistrationView() {
 
 
   const { mutate: register, isPending, error } = useRegister(() => {
-    router.push('/entrar');
+    router.push("/entrar");
   });
 
   const handleSubmit = useCallback(() => {
@@ -41,7 +41,7 @@ export function RegistrationView() {
 
   const validateName = useCallback(() => {
     if (!name.trim()) {
-      setErrorName('O nome é obrigatório.');
+      setErrorName("O nome é obrigatório.");
       return false;
     }
     setErrorName(null);
@@ -51,11 +51,11 @@ export function RegistrationView() {
   const validateEmail = useCallback(() => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email.trim()) {
-      setErrorEmail('O e-mail é obrigatório.');
+      setErrorEmail("O e-mail é obrigatório.");
       return false;
     }
     if (!emailRegex.test(email)) {
-      setErrorEmail('Digite um e-mail válido.');
+      setErrorEmail("Digite um e-mail válido.");
       return false;
     }
     setErrorEmail(null);
@@ -64,11 +64,11 @@ export function RegistrationView() {
 
   const validatePassword = useCallback(() => {
     if (!password.trim()) {
-      setErrorPassword('A senha é obrigatória.');
+      setErrorPassword("A senha é obrigatória.");
       return false;
     }
     if (password.length < 8) {
-      setErrorPassword('A senha deve ter pelo menos 8 caracteres.');
+      setErrorPassword("A senha deve ter pelo menos 8 caracteres.");
       return false;
     }
     setErrorPassword(null);
@@ -77,7 +77,7 @@ export function RegistrationView() {
 
   const validateConfirmPassword = useCallback(() => {
     if (confirmPassword !== password) {
-      setErrorConfirmPassword('As senhas não coincidem.');
+      setErrorConfirmPassword("As senhas não coincidem.");
       return false;
     }
     setErrorConfirmPassword(null);
@@ -90,7 +90,7 @@ export function RegistrationView() {
     const isPasswordValid = validatePassword();
     const isConfirmPasswordValid = validateConfirmPassword();
     if (confirmPassword !== password) {
-      setErrorConfirmPassword('As senhas não coincidem.');
+      setErrorConfirmPassword("As senhas não coincidem.");
       return;
     }
     if (!isNameValid || !isEmailValid || !isPasswordValid || !isConfirmPasswordValid) {
@@ -115,7 +115,7 @@ export function RegistrationView() {
       justifySelf="center"
       sx={{ mb: 5 }}
     >
-      <Logo isSingle={false} disableLink sx={{ margin: '20px' }} />
+      <Logo isSingle={false} disableLink sx={{ margin: "20px" }} />
 
       <TextField
         fullWidth
@@ -126,7 +126,7 @@ export function RegistrationView() {
         onBlur={validateName}
         sx={{ mb: 3 }}
         error={!!errorName}
-        helperText={errorName ?? ''}
+        helperText={errorName ?? ""}
       />
 
       <TextField
@@ -139,7 +139,7 @@ export function RegistrationView() {
         onBlur={validateEmail}
         sx={{ mb: 3 }}
         error={!!errorEmail}
-        helperText={errorEmail ?? ''}
+        helperText={errorEmail ?? ""}
       />
 
       <TextField
@@ -149,13 +149,13 @@ export function RegistrationView() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         onBlur={validatePassword}
-        type={showPassword ? 'text' : 'password'}
+        type={showPassword ? "text" : "password"}
         slotProps={{
           input: {
             endAdornment: (
               <InputAdornment position="end">
                 <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                  <Iconify icon={showPassword ? 'solar:eye-bold' : 'solar:eye-closed-bold'} />
+                  <Iconify icon={showPassword ? "solar:eye-bold" : "solar:eye-closed-bold"} />
                 </IconButton>
               </InputAdornment>
             ),
@@ -163,7 +163,7 @@ export function RegistrationView() {
         }}
         sx={{ mb: 3 }}
         error={!!errorPassword}
-        helperText={errorPassword ?? ''}
+        helperText={errorPassword ?? ""}
       />
 
       <TextField
@@ -173,13 +173,13 @@ export function RegistrationView() {
         value={confirmPassword}
         onChange={(e) => setConfirmPassword(e.target.value)}
         onBlur={validateConfirmPassword}
-        type={showPassword ? 'text' : 'password'}
+        type={showPassword ? "text" : "password"}
         slotProps={{
           input: {
             endAdornment: (
               <InputAdornment position="end">
                 <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                  <Iconify icon={showPassword ? 'solar:eye-bold' : 'solar:eye-closed-bold'} />
+                  <Iconify icon={showPassword ? "solar:eye-bold" : "solar:eye-closed-bold"} />
                 </IconButton>
               </InputAdornment>
             ),
@@ -187,7 +187,7 @@ export function RegistrationView() {
         }}
         sx={{ mb: 3 }}
         error={!!errorConfirmPassword}
-        helperText={errorConfirmPassword ?? ''}
+        helperText={errorConfirmPassword ?? ""}
       />
 
       <LoadingButton

@@ -1,11 +1,11 @@
-import 'src/global.css';
+import "src/global.css";
 
-import { Router } from 'src/routes/sections';
+import { Router } from "src/routes/sections";
 
-import { useScrollTop } from 'src/hooks/useScrollTop';
+import { useScrollTop } from "src/hooks/useScrollTop";
 
-import useTheme from './hooks/useTheme';
-import { ThemeProviderWrapper } from './context/ThemeContext';
+import useTheme from "./hooks/useTheme";
+import { ThemeProviderWrapper } from "./context/ThemeContext";
 
 // ----------------------------------------------------------------------
 

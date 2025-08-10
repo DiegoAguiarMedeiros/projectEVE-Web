@@ -1,15 +1,15 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback } from "react";
 
-import Box from '@mui/material/Box';
-import Avatar from '@mui/material/Avatar';
-import Popover from '@mui/material/Popover';
-import TableRow from '@mui/material/TableRow';
-import Checkbox from '@mui/material/Checkbox';
-import MenuList from '@mui/material/MenuList';
-import TableCell from '@mui/material/TableCell';
-import IconButton from '@mui/material/IconButton';
-import MenuItem, { menuItemClasses } from '@mui/material/MenuItem';
-import { Iconify } from 'src/components/iconify';
+import Box from "@mui/material/Box";
+import Avatar from "@mui/material/Avatar";
+import Popover from "@mui/material/Popover";
+import TableRow from "@mui/material/TableRow";
+import Checkbox from "@mui/material/Checkbox";
+import MenuList from "@mui/material/MenuList";
+import TableCell from "@mui/material/TableCell";
+import IconButton from "@mui/material/IconButton";
+import MenuItem, { menuItemClasses } from "@mui/material/MenuItem";
+import { Iconify } from "src/components/iconify";
 // ----------------------------------------------------------------------
 
 type IncomesTableRowProps = {
@@ -53,8 +53,8 @@ export function CustomTableRow({ selected, onSelectRow, form, handleDelete, rowK
         open={!!openPopover}
         anchorEl={openPopover}
         onClose={handleClosePopover}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        anchorOrigin={{ vertical: "top", horizontal: "left" }}
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
       >
         <MenuList
           disablePadding
@@ -62,13 +62,13 @@ export function CustomTableRow({ selected, onSelectRow, form, handleDelete, rowK
             p: 0.5,
             gap: 0.5,
             width: 140,
-            display: 'flex',
-            flexDirection: 'column',
+            display: "flex",
+            flexDirection: "column",
             [`& .${menuItemClasses.root}`]: {
               px: 1,
               gap: 2,
               borderRadius: 0.75,
-              [`&.${menuItemClasses.selected}`]: { bgcolor: 'action.selected' },
+              [`&.${menuItemClasses.selected}`]: { bgcolor: "action.selected" },
             },
           }}
         >
@@ -76,7 +76,7 @@ export function CustomTableRow({ selected, onSelectRow, form, handleDelete, rowK
             {form}
           </MenuItem>
 
-          <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>
+          <MenuItem onClick={handleDelete} sx={{ color: "error.main" }}>
             <Iconify icon="solar:trash-bin-trash-bold" />
             Deletar
           </MenuItem>

@@ -1,9 +1,9 @@
-import Tooltip from '@mui/material/Tooltip';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
+import Tooltip from "@mui/material/Tooltip";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
 
-import { Iconify } from 'src/components/iconify';
+import { Iconify } from "src/components/iconify";
 
 // ----------------------------------------------------------------------
 
@@ -21,12 +21,12 @@ export function TableToolbar({ numSelected,form }: TableToolbarProps) {
     <Toolbar
       sx={{
         height: 96,
-        display: 'flex',
-        justifyContent: numSelected > 0 ? 'space-between' : 'flex-end',
+        display: "flex",
+        justifyContent: numSelected > 0 ? "space-between" : "flex-end",
         p: (theme) => theme.spacing(0, 1, 0, 3),
         ...(numSelected > 0 && {
-          color: 'primary.main',
-          bgcolor: 'primary.lighter',
+          color: "primary.main",
+          bgcolor: "primary.lighter",
         }),
       }}
     >

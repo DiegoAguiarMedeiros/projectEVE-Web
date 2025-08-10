@@ -1,13 +1,14 @@
-import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from '@mui/material';
-import { startTransition, useActionState, useCallback, useEffect, useImperativeHandle, useRef, useState, useTransition } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
-import TransitionsModal from 'src/sections/shared/transitionsModal';
-import { useSnackbar, VariantType } from 'notistack';
-import TransactionsService, { allPaymentMethod, PaymentMethod, Transactions, TransactionsPost, TransactionStatus } from 'src/services/implementation/TransactionsService';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs, { Dayjs } from 'dayjs';
-import { Envelope } from 'src/services/implementation/EnvelopesService';
+import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
+import { startTransition, useActionState, useCallback, useEffect, useImperativeHandle, useRef, useState, useTransition } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import TransitionsModal from "src/sections/shared/transitionsModal";
+import { useSnackbar, VariantType } from "notistack";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs, { Dayjs } from "dayjs";
+import { useCreateTransactions } from "src/hooks/mutations/transactions/useCreateTransactions";
+import { useUpdateTransactions } from "src/hooks/mutations/transactions/useUpdateTransactions";
+import { Transactions, PaymentMethod, TransactionsPost, allPaymentMethod } from "src/types/Transactions";
 
 type TransactionFormProps = {
     buttonIcon?: React.ReactNode;
@@ -17,15 +18,14 @@ type TransactionFormProps = {
 }
 
 export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId }: TransactionFormProps) {
-    const { enqueueSnackbar } = useSnackbar();
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const [description, setDescription] = useState(data ? data.description : '');
-    const [amount, setAmount] = useState(data ? data.amount : '');
-    const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(data ? data.paymentMethod : 'DebitCard');
+    const [description, setDescription] = useState(data ? data.description : "");
+    const [amount, setAmount] = useState(data ? data.amount : "");
+    const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(data ? data.paymentMethod : "DebitCard");
     const [date, setDate] = useState<Dayjs | null>(data ? dayjs(data.date) : null);
 
     const [errorDescription, setErrorDescription] = useState<string | null>(null);
@@ -36,64 +36,56 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId }: T
 
     const queryClient = useQueryClient();
 
-    const refresh = () => {
-        queryClient.invalidateQueries({ queryKey: ['transaction-by-envelope'] });
-    };
     const clearForm = () => {
-        setDescription('')
-        setAmount('')
+        setDescription("")
+        setAmount("")
     };
 
 
 
+    const [isPending, setIsPending] = useState(false);
+    const [error, setError] = useState<Error | null>(null);
 
-    const [error, submitAction, isPending] = useActionState(
-        async (previousState: any, transaction: TransactionsPost) => {
+    const createMutation = useCreateTransactions();
+
+    const updateMutation = useUpdateTransactions();
+
+    const submitAction = async (transactions: TransactionsPost) => {
+        setIsPending(true);
+        setError(null);
+
+        try {
             if (data) {
-
-                const errorPostIncomes = await TransactionsService.update({
-                    id: data.id,
-                    description: transaction.description,
-                    amount: transaction.amount,
+                await updateMutation.mutateAsync({
+                   id: data.id,
+                    description: transactions.description,
+                    amount: transactions.amount,
                     status: data.status,
                     envelopeId,
-                    paymentMethod: transaction.paymentMethod,
-                    date: transaction.date,
-                    type: 'Debit'
+                    paymentMethod: transactions.paymentMethod,
+                    date: transactions.date,
+                    type: "Debit"
                 });
-
-                if (!errorPostIncomes) {
-                    return errorPostIncomes;
-                }
-                enqueueSnackbar('Transação editada com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
-
             } else {
-
-                const errorPostIncomes = await TransactionsService.create({
-                    description: transaction.description,
-                    amount: transaction.amount,
-                    status: transaction.status,
+                await createMutation.mutateAsync({
+                    description: transactions.description,
+                    amount: transactions.amount,
+                    status: transactions.status,
                     envelopeId,
-                    paymentMethod: transaction.paymentMethod,
-                    date: transaction.date,
-                    type: 'Debit'
+                    paymentMethod: transactions.paymentMethod,
+                    date: transactions.date,
+                    type: "Debit"
                 });
-
-                if (!errorPostIncomes) {
-                    return errorPostIncomes;
-                }
-                enqueueSnackbar('Transação cadastrada com sucesso!', { autoHideDuration: 3000, variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'bottom' } });
-
-
             }
 
             clearForm();
-            refresh();
             handleClose();
-            return null;
-        },
-        null,
-    );
+        } catch (err: any) {
+            setError(err);
+        } finally {
+            setIsPending(false);
+        }
+    };
 
     const handleSubmit = async () => {
         if (validateDescription() && validateAmount()) {
@@ -102,10 +94,10 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId }: T
                     description,
                     amount,
                     paymentMethod,
-                    status: 'Pending',
+                    status: "Pending",
                     envelopeId,
                     date,
-                    type: 'Debit',
+                    type: "Debit",
                 });
             });
         }
@@ -113,7 +105,7 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId }: T
 
     const validateDescription = useCallback(() => {
         if (!description.trim()) {
-            setErrorDescription('Descrição é obrigatória.');
+            setErrorDescription("Descrição é obrigatória.");
             return false;
         }
         setErrorDescription(null);
@@ -122,12 +114,12 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId }: T
 
     const validateAmount = useCallback(() => {
         if (!amount.trim()) {
-            setErrorAmount('Valor é obrigatório.');
+            setErrorAmount("Valor é obrigatório.");
             return false;
         }
 
         if (Number.isNaN(Number(amount))) {
-            setErrorAmount('Valor deve ser numérico.');
+            setErrorAmount("Valor deve ser numérico.");
             return false;
         }
         setErrorAmount(null);
@@ -147,17 +139,17 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId }: T
             handleOpen={handleOpen}
             openButton={!buttonIcon
                 ?
-                <Button variant='contained' color='primary' onClick={handleOpen}  >{buttonLabel}</Button>
+                <Button variant="contained" color="primary" onClick={handleOpen}  >{buttonLabel}</Button>
                 :
                 <Button
-                    style={{ display: 'flex', gap: '16px', background: 'none', border: 'none', cursor: 'pointer', margin: 0, padding: 0 }}
+                    style={{ display: "flex", gap: "16px", background: "none", border: "none", cursor: "pointer", margin: 0, padding: 0 }}
                     onClick={handleOpen}
                 >
                     {buttonIcon}{buttonLabel}
                 </Button>
             }
 
-            okButton={<Button type='submit' variant='outlined' color='primary' onClick={handleSubmit} disabled={isPending} >Adicionar</Button>
+            okButton={<Button type="submit" variant="outlined" color="primary" onClick={handleSubmit} disabled={isPending} >Adicionar</Button>
             }>
             <Box
                 gap={1.5}
@@ -165,14 +157,14 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId }: T
                 flexDirection="column"
                 alignItems="center"
                 justifySelf="center"
-                sx={{ width: '100%' }}
+                sx={{ width: "100%" }}
             >
 
 
                 <Typography variant="h3" noWrap>
                     Transação
                 </Typography>
-                {error && <p>{error}</p>}
+                {error && <p>{error.message}</p>}
                 <TextField
                     fullWidth
                     name="description"
@@ -182,7 +174,7 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId }: T
                     onBlur={validateDescription}
                     sx={{ mb: 3 }}
                     error={!!errorDescription}
-                    helperText={errorDescription ?? ''}
+                    helperText={errorDescription ?? ""}
                 />
                 <TextField
                     fullWidth
@@ -194,16 +186,16 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId }: T
                     onBlur={validateAmount}
                     sx={{ mb: 3 }}
                     error={!!errorAmount}
-                    helperText={errorAmount ?? ''}
+                    helperText={errorAmount ?? ""}
                     slotProps={{
                         input: {
-                            inputMode: 'numeric',
+                            inputMode: "numeric",
                         }
                     }}
                 />
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
-                        sx={{ width: '100%', mb: 3 }}
+                        sx={{ width: "100%", mb: 3 }}
                         name="date"
                         label="Data do Pagamento"
                         value={date}
@@ -217,13 +209,13 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId }: T
                         labelId="payment-method-select-label"
                         id="payment-method-select"
                         label="Método de Pagamento"
-                        sx={{ width: '100%', mb: 3 }}
+                        sx={{ width: "100%", mb: 3 }}
                         name="paymentMethod"
                         value={paymentMethod}
                         onChange={handleSelectChange}
                     >
-                        {allPaymentMethod.map((f) => (
-                            <MenuItem value={f}>{f}</MenuItem>
+                        {allPaymentMethod.map((f,index) => (
+                            <MenuItem key={index} value={f}>{f}</MenuItem>
                         ))}
                     </Select>
                 </FormControl>

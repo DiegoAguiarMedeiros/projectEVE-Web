@@ -1,18 +1,18 @@
-import type { CardProps } from '@mui/material/Card';
+import type { CardProps } from "@mui/material/Card";
 
-import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
-import Card from '@mui/material/Card';
-import Avatar from '@mui/material/Avatar';
-import Typography from '@mui/material/Typography';
+import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
+import Card from "@mui/material/Card";
+import Avatar from "@mui/material/Avatar";
+import Typography from "@mui/material/Typography";
 
-import { fDate } from 'src/utils/format-time';
-import { fShortenNumber } from 'src/utils/format-number';
+import { fDate } from "src/utils/format-time";
+import { fShortenNumber } from "src/utils/format-number";
 
-import { varAlpha } from 'src/theme/styles';
+import { varAlpha } from "src/theme/styles";
 
-import { Iconify } from 'src/components/iconify';
-import { SvgColor } from 'src/components/svg-color';
+import { Iconify } from "src/components/iconify";
+import { SvgColor } from "src/components/svg-color";
 
 // ----------------------------------------------------------------------
 
@@ -51,7 +51,7 @@ export function PostItem({
         left: 24,
         zIndex: 9,
         bottom: -24,
-        position: 'absolute',
+        position: "absolute",
         ...((latestPostLarge || latestPost) && {
           top: 24,
         }),
@@ -66,13 +66,13 @@ export function PostItem({
       underline="hover"
       sx={{
         height: 44,
-        overflow: 'hidden',
+        overflow: "hidden",
         WebkitLineClamp: 2,
-        display: '-webkit-box',
-        WebkitBoxOrient: 'vertical',
-        ...(latestPostLarge && { typography: 'h5', height: 60 }),
+        display: "-webkit-box",
+        WebkitBoxOrient: "vertical",
+        ...(latestPostLarge && { typography: "h5", height: 60 }),
         ...((latestPostLarge || latestPost) && {
-          color: 'common.white',
+          color: "common.white",
         }),
       }}
     >
@@ -88,13 +88,13 @@ export function PostItem({
       justifyContent="flex-end"
       sx={{
         mt: 3,
-        color: 'text.disabled',
+        color: "text.disabled",
       }}
     >
       {[
-        { number: post.totalComments, icon: 'solar:chat-round-dots-bold' },
-        { number: post.totalViews, icon: 'solar:eye-bold' },
-        { number: post.totalShares, icon: 'solar:share-bold' },
+        { number: post.totalComments, icon: "solar:chat-round-dots-bold" },
+        { number: post.totalViews, icon: "solar:eye-bold" },
+        { number: post.totalShares, icon: "solar:share-bold" },
       ].map((info, _index) => (
         <Box
           key={_index}
@@ -102,7 +102,7 @@ export function PostItem({
           sx={{
             ...((latestPostLarge || latestPost) && {
               opacity: 0.64,
-              color: 'common.white',
+              color: "common.white",
             }),
           }}
         >
@@ -122,8 +122,8 @@ export function PostItem({
         top: 0,
         width: 1,
         height: 1,
-        objectFit: 'cover',
-        position: 'absolute',
+        objectFit: "cover",
+        position: "absolute",
       }}
     />
   );
@@ -134,10 +134,10 @@ export function PostItem({
       component="div"
       sx={{
         mb: 1,
-        color: 'text.disabled',
+        color: "text.disabled",
         ...((latestPostLarge || latestPost) && {
           opacity: 0.48,
-          color: 'common.white',
+          color: "common.white",
         }),
       }}
     >
@@ -154,9 +154,9 @@ export function PostItem({
         left: 0,
         zIndex: 9,
         bottom: -16,
-        position: 'absolute',
-        color: 'background.paper',
-        ...((latestPostLarge || latestPost) && { display: 'none' }),
+        position: "absolute",
+        color: "background.paper",
+        ...((latestPostLarge || latestPost) && { display: "none" }),
       }}
     />
   );
@@ -165,23 +165,23 @@ export function PostItem({
     <Card sx={sx} {...other}>
       <Box
         sx={(theme) => ({
-          position: 'relative',
-          pt: 'calc(100% * 3 / 4)',
+          position: "relative",
+          pt: "calc(100% * 3 / 4)",
           ...((latestPostLarge || latestPost) && {
-            pt: 'calc(100% * 4 / 3)',
-            '&:after': {
+            pt: "calc(100% * 4 / 3)",
+            "&:after": {
               top: 0,
-              content: "''",
-              width: '100%',
-              height: '100%',
-              position: 'absolute',
-              bgcolor: varAlpha(theme.palette.grey['900Channel'], 0.72),
+              content: '""',
+              width: "100%",
+              height: "100%",
+              position: "absolute",
+              bgcolor: varAlpha(theme.palette.grey["900Channel"], 0.72),
             },
           }),
           ...(latestPostLarge && {
             pt: {
-              xs: 'calc(100% * 4 / 3)',
-              sm: 'calc(100% * 3 / 4.66)',
+              xs: "calc(100% * 4 / 3)",
+              sm: "calc(100% * 3 / 4.66)",
             },
           }),
         })}
@@ -197,7 +197,7 @@ export function PostItem({
           ...((latestPostLarge || latestPost) && {
             width: 1,
             bottom: 0,
-            position: 'absolute',
+            position: "absolute",
           }),
         })}
       >

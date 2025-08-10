@@ -1,1 +1,1 @@
-export * from './themeSwitch';
+export * from "./themeSwitch";
