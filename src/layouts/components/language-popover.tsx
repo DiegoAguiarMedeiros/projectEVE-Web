@@ -1,16 +1,15 @@
-import type { IconButtonProps } from "@mui/material/IconButton";
+import { useState } from "react";
+import {
+  MenuItem,
+  Popover,
+  List,
+  ListItemButton,
+  ListItemText,
+  ListItemIcon,
+  Box,
+} from "@mui/material";
 
-import { useState, useCallback } from "react";
-
-import Box from "@mui/material/Box";
-import Popover from "@mui/material/Popover";
-import MenuList from "@mui/material/MenuList";
-import IconButton from "@mui/material/IconButton";
-import MenuItem, { menuItemClasses } from "@mui/material/MenuItem";
-
-// ----------------------------------------------------------------------
-
-export type LanguagePopoverProps = IconButtonProps & {
+export type LanguagePopoverProps = {
   data?: {
     value: string;
     label: string;
@@ -18,26 +17,9 @@ export type LanguagePopoverProps = IconButtonProps & {
   }[];
 };
 
-export function LanguagePopover({ data = [], sx, ...other }: LanguagePopoverProps) {
-  const [locale, setLocale] = useState<string>(data[0].value);
-
-  const [openPopover, setOpenPopover] = useState<HTMLButtonElement | null>(null);
-
-  const handleOpenPopover = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
-    setOpenPopover(event.currentTarget);
-  }, []);
-
-  const handleClosePopover = useCallback(() => {
-    setOpenPopover(null);
-  }, []);
-
-  const handleChangeLang = useCallback(
-    (newLang: string) => {
-      setLocale(newLang);
-      handleClosePopover();
-    },
-    [handleClosePopover]
-  );
+export function LanguagePopover({ data = [] }: LanguagePopoverProps) {
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [locale, setLocale] = useState<string>(data[0]?.value || "");
 
   const currentLang = data.find((lang) => lang.value === locale);
 
@@ -46,62 +28,51 @@ export function LanguagePopover({ data = [], sx, ...other }: LanguagePopoverProp
       component="img"
       alt={label}
       src={icon}
-      sx={{ width: 26, height: 20, borderRadius: 0.5, objectFit: "cover" }}
+      sx={{ width: 22, height: 20, borderRadius: 0.5, objectFit: "cover" }}
     />
   );
 
+  const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleChangeLang = (nextLang: string) => {
+    setLocale(nextLang);
+    handleClose();
+    // Aqui entraria sua lógica para trocar idioma no app
+  };
+
   return (
     <>
-      <IconButton
-        onClick={handleOpenPopover}
-        sx={{
-          width: 40,
-          height: 40,
-          ...(openPopover && { bgcolor: "action.selected" }),
-          ...sx,
-        }}
-        {...other}
-      >
+      {/* Botão no menu principal */}
+      <MenuItem onClick={handleOpen}>
         {renderFlag(currentLang?.label, currentLang?.icon)}
-      </IconButton>
+        {currentLang?.label}
+      </MenuItem>
 
+      {/* Popover com lista de idiomas */}
       <Popover
-        open={!!openPopover}
-        anchorEl={openPopover}
-        onClose={handleClosePopover}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        transformOrigin={{ vertical: "top", horizontal: "right" }}
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
       >
-        <MenuList
-          disablePadding
-          sx={{
-            p: 0.5,
-            gap: 0.5,
-            width: 160,
-            display: "flex",
-            flexDirection: "column",
-            [`& .${menuItemClasses.root}`]: {
-              px: 1,
-              gap: 2,
-              borderRadius: 0.75,
-              [`&.${menuItemClasses.selected}`]: {
-                bgcolor: "action.selected",
-                fontWeight: "fontWeightSemiBold",
-              },
-            },
-          }}
-        >
-          {data?.map((option) => (
-            <MenuItem
+        <List>
+          {data.map((option) => (
+            <ListItemButton
               key={option.value}
-              selected={option.value === currentLang?.value}
+              selected={option.value === locale}
               onClick={() => handleChangeLang(option.value)}
             >
-              {renderFlag(option.label, option.icon)}
-              {option.label}
-            </MenuItem>
+              <ListItemIcon>{renderFlag(option.label, option.icon)}</ListItemIcon>
+              <ListItemText primary={option.label} />
+            </ListItemButton>
           ))}
-        </MenuList>
+        </List>
       </Popover>
     </>
   );

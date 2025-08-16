@@ -23,10 +23,9 @@ export function FixedExpenseTable({ envelopes, fixedExpenses }: FixedExpenseTabl
     const table = useTable();
 
 
-
     useEffect(() => {
-        console.log("table.page", table.page)
-        console.log("table.rowsPerPage", table.rowsPerPage)
+        console.info("table.page", table.page)
+        console.info("table.rowsPerPage", table.rowsPerPage)
     }, [table.page, table.rowsPerPage])
 
     const queryClient = useQueryClient();
@@ -51,7 +50,7 @@ export function FixedExpenseTable({ envelopes, fixedExpenses }: FixedExpenseTabl
             key={id}
             selected={table.selected.includes(id)}
             onSelectRow={() => table.onSelectRow(id)}
-            rowKeys={[envelopeId, description, `R$ ${amount}`, paymentDay]}
+            rowKeys={[envelopes.filter(envelope => envelopeId === envelope.id)[0].name, description, `R$ ${amount}`, paymentDay]}
             form={<FixedExpenseForm
                 key={id}
                 envelopes={envelopes ?? []}
@@ -63,7 +62,7 @@ export function FixedExpenseTable({ envelopes, fixedExpenses }: FixedExpenseTabl
     }
 
     return (
-        <Card sx={{ width: "100%" }}>
+        <Card sx={{ width: "100%", borderTopRightRadius: 0, borderTopLeftRadius: 0  }}>
             <TableToolbar
                 numSelected={table.selected.length}
                 form={<FixedExpenseForm envelopes={envelopes ?? []} buttonLabel="Adicionar" />}

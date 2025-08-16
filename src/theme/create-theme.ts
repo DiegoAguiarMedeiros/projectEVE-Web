@@ -14,8 +14,8 @@ export function createCustomTheme({ mode }: CreateCustomThemeProps): Theme {
 
   const initialTheme = {
     palette,
-    shadows: shadows(),
-    customShadows: customShadows(),
+    shadows: mode === "light" ? shadows() : Array(25).fill('none') as any,
+    customShadows: mode === "light" ? customShadows() : {},
     shape: { borderRadius: 8 },
     components,
     typography,

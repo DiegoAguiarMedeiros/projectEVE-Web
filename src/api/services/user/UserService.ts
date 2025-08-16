@@ -4,4 +4,4 @@ import { User } from "src/types/User";
 export const getUsers = () => api.get<User[]>("/users");
 export const getUser = () => api.get<User>(`/users/me`);
 export const updateUser = (id: string, data: Partial<User>) =>
-  api.put<User>(`/users/${id}`, data);
+  api.patch<User>(`/users/${id}`, data);

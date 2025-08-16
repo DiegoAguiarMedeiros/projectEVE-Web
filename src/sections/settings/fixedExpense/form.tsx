@@ -183,7 +183,7 @@ export function FixedExpenseForm({ buttonLabel, buttonIcon, data, envelopes }: F
                         value={envelope}
                         onChange={handleSelectChange}
                     >
-                        {envelopes.map((t, index) => (
+                        {envelopes.filter((e) => e.name !== 'debts' && e.name !== 'goals').map((t, index) => (
                             <MenuItem key={index} value={t.id}>{t.name}</MenuItem>
                         ))}
                     </Select>

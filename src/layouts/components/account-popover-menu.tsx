@@ -9,6 +9,7 @@ import MenuList from "@mui/material/MenuList";
 import MenuItem, { menuItemClasses } from "@mui/material/MenuItem";
 
 import { useRouter, usePathname } from "src/routes/hooks";
+import { useTheme } from "@mui/material";
 
 // ----------------------------------------------------------------------
 
@@ -18,11 +19,14 @@ export type AccountPopoverMenuProps = IconButtonProps & {
     href: string;
     icon?: React.ReactNode;
     info?: React.ReactNode;
+    button?: React.ReactNode;
+    isLink?: boolean;
   }[];
 };
 
 export function AccountPopoverMenu({ data = [], sx, ...other }: AccountPopoverMenuProps) {
   const router = useRouter();
+  const theme = useTheme();
   const pathname = usePathname();
   const handleClosePopover = useCallback(() => {
     // setOpenPopover(null);
@@ -36,7 +40,7 @@ export function AccountPopoverMenu({ data = [], sx, ...other }: AccountPopoverMe
     [handleClosePopover, router]
   );
   return (
-    <>
+    <Box sx={{ backgroundColor: data.length > 0 ? theme.palette.background.neutral : theme.palette.background.paper }}>
       <MenuList
         disablePadding
         sx={{
@@ -58,25 +62,31 @@ export function AccountPopoverMenu({ data = [], sx, ...other }: AccountPopoverMe
           },
         }}
       >
-        {data.map((option) => (
-          <MenuItem
-            key={option.label}
-            selected={option.href === pathname}
-            onClick={() => handleClickItem(option.href)}
-          >
-            {option.icon}
-            {option.label}
-          </MenuItem>
-        ))}
+        {data.map((option) =>
+          option.isLink ? (
+            <MenuItem
+              key={option.label}
+              selected={option.href === pathname}
+              onClick={() => handleClickItem(option.href)}
+            >
+              {option.icon}
+              {option.label}
+            </MenuItem>
+          ) : (
+            <>
+              {option.icon}
+            </>
+          )
+        )}
       </MenuList>
 
       <Divider sx={{ borderStyle: "dashed" }} />
 
-      <Box sx={{ p: 1 }}>
+      <Box sx={{ p: 1, backgroundColor: data.length > 0 ? theme.palette.background.neutral : theme.palette.background.paper }}>
         <Button fullWidth color="error" size="medium" variant="text">
           Logout
         </Button>
       </Box>
-    </>
+    </Box>
   );
 }

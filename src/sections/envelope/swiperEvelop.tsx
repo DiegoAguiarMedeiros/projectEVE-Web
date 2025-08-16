@@ -8,7 +8,6 @@ import "swiper/css/free-mode";
 import "swiper/css/navigation";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
-import React, { useState, useCallback, useEffect, useRef } from "react";
 // import required modules
 import { Controller, FreeMode, Navigation, Thumbs } from "swiper/modules";
 
@@ -20,6 +19,7 @@ import {
   TableBody,
   TableContainer,
   TablePagination,
+  Box,
 } from "@mui/material";
 
 import { _users } from "src/_mock";
@@ -38,41 +38,44 @@ type SwiperEnvelopProps = {
   envelopeActived: string;
   transactions: Pagination<Transactions> | undefined
 }
-export default function SwiperEnvelop({ envelopes, currentIndex, handleSlideClick, envelopeActived,transactions }: SwiperEnvelopProps) {
+export default function SwiperEnvelop({ envelopes, currentIndex, handleSlideClick, envelopeActived, transactions }: SwiperEnvelopProps) {
 
 
 
   return (
     <>
-      <Swiper
-        style={{ cursor: "pointer" }}
-        spaceBetween={10}
-        slidesPerView={1}
-        loop
-        breakpoints={{
-          600: { slidesPerView: 2 },
-          900: { slidesPerView: 3 },
-          1200: { slidesPerView: 5 },
-        }}
-        modules={[FreeMode, Navigation, Thumbs]}
-        initialSlide={currentIndex}
-      >
-        {envelopes && envelopes.map((envelope, index) => (
-          <SwiperSlide key={index}>
-            <Grid2 onClick={() => handleSlideClick(index)} sx={{ width: "100%" }}>
-              <EnvelopeSwiperBody
-                sx={envelopeActived === envelope.id ? { backgroundColor: envelope.color, padding: 2, width: "100%", } : { padding: 2, width: "100%", }}
-                title={envelope.name}
-                percent={envelope.percentage}
-                total={envelope.amount || 0}
-                icon={<DeleteIcon />}
-                color={envelope.color}
-              />
-            </Grid2>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+      <Box style={{ overflowX: "hidden", width: '100%', padding: '0  0 20px 0' }}>
+        <Swiper
+          style={{ overflow: "visible", cursor: "pointer", }}
+          spaceBetween={10}
+          slidesPerView={1}
+          breakpoints={{
+            600: { slidesPerView: 2 },
+            900: { slidesPerView: 3 },
+            1200: { slidesPerView: 5 },
+          }}
+          modules={[FreeMode, Navigation, Thumbs]}
+          initialSlide={currentIndex}
+        >
+          {envelopes.map((envelope, index) => (
+            <SwiperSlide key={index}>
+              <Grid2 onClick={() => handleSlideClick(index)} sx={{ width: "100%" }}>
+                <EnvelopeSwiperBody
+                  sx={{ padding: 2, width: "100%" }}
+                  title={envelope.name}
+                  percent={envelope.percentage}
+                  total={envelope.amount || 0}
+                  icon={<DeleteIcon />}
+                  color={envelope.color}
+                  activeCard={envelopeActived === envelope.id}
+                />
+              </Grid2>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </Box>
       <TransactionTable transactions={transactions} envelopeId={envelopeActived} />
+
     </>
   );
 }

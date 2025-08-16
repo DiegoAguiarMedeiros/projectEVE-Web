@@ -17,6 +17,7 @@ type Props = CardProps & {
   percent: number;
   color?: string;
   icon: React.ReactNode;
+  activeCard: boolean
 };
 
 export function EnvelopeSwiperBody({
@@ -25,6 +26,7 @@ export function EnvelopeSwiperBody({
   total,
   percent,
   color = "primary",
+  activeCard,
   sx,
   ...other
 }: Props) {
@@ -34,9 +36,8 @@ export function EnvelopeSwiperBody({
       sx={{
         p: 3,
         position: "relative",
-        color: `${theme.palette.contrastThreshold}`,
-        backgroundColor: `#fff`,
-        border:`1px solid ${color}`,
+        color: activeCard ? 'var(--layout-nav-item-active-color)' : 'var(--layout-nav-item-color)',
+        backgroundColor: activeCard ? 'var(--layout-nav-item-active-bg)' : theme.palette.background.paper,
         ...sx,
       }}
       {...other}
@@ -68,13 +69,13 @@ export function EnvelopeSwiperBody({
         src="/assets/background/shape-square.svg"
         sx={{
           top: 0,
-          left: -20,
-          width: 320,
+          right: 20,
+          width: 420,
           zIndex: -1,
           height: 320,
-          opacity: 0.24,
+          opacity: 0.5,
           position: "absolute",
-          color: `#fff`,
+          backgroundColor: `${color}`,
         }}
       />
     </Card>

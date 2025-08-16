@@ -31,7 +31,7 @@ export function CustomTableHead({
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
+        <TableCell padding="checkbox" sx={{backgroundColor: "var(--layout-nav-item-active-bg)"}}>
           <Checkbox
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
@@ -46,7 +46,7 @@ export function CustomTableHead({
             key={headCell.id}
             align={headCell.align || "left"}
             sortDirection={orderBy === headCell.id ? order : false}
-            sx={{ width: headCell.width, minWidth: headCell.minWidth }}
+            sx={{ width: headCell.width, minWidth: headCell.minWidth,backgroundColor: "var(--layout-nav-item-active-bg)" }}
           >
             <TableSortLabel
               hideSortIcon

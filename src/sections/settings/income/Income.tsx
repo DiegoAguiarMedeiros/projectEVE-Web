@@ -58,7 +58,7 @@ export function IncomeTable({ incomes }: IncomeTableProps) {
     }
 
     return (
-        <Card sx={{ width: "100%" }}>
+        <Card sx={{ width: "100%", borderTopRightRadius: 0, borderTopLeftRadius: 0 }}>
             <TableToolbar
                 numSelected={table.selected.length}
                 form={<FormIncomes buttonLabel="Adicionar" />}

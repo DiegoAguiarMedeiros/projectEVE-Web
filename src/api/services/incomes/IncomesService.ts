@@ -22,7 +22,7 @@ export const getIncomes = (id: string) =>
   api.get<Incomes>(`/incomes/${id}`);
 
 export const updateIncomes = (data: Incomes) =>
-  api.put<Incomes>(`/incomes/${data.id}`, data);
+  api.patch<Incomes>(`/incomes/${data.id}`, data);
 
 export const deleteIncomes = (id: string) =>
   api.delete<void>(`/incomes/${id}`);

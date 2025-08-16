@@ -2,29 +2,24 @@ import { Box, Button, Divider, FormControl, Grid2, IconButton, InputLabel, MenuI
 import { startTransition, useActionState, useCallback, useEffect, useImperativeHandle, useRef, useState, useTransition } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import TransitionsModal from "src/sections/shared/transitionsModal";
-import { useSnackbar, VariantType } from "notistack";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import dayjs, { Dayjs } from "dayjs";
-import { type } from "os";
 import { AntSwitch } from "src/sections/settings/goals/AntSwitch";
 import { useCreateGoals } from "src/hooks/mutations/goals/useCreateGoals";
 import { useUpdateGoals } from "src/hooks/mutations/goals/useUpdateGoals";
 import { Goals, GoalsPost } from "src/types/Goals";
+import { IncomeStore } from "src/store/useIncomeStore";
+import { Envelopes } from "src/types/Envelopes";
 
 type GoalsFormProps = {
     buttonIcon?: React.ReactNode;
     buttonLabel: string;
     data?: Goals;
+    envelope: Envelopes
 }
 
-
-const salary = 10000;
-const envelopePercentagem = 10;
-
-export function GoalsForm({ buttonLabel, buttonIcon, data }: GoalsFormProps) {
+export function GoalsForm({ buttonLabel, buttonIcon, data, envelope }: GoalsFormProps) {
     const theme = useTheme();
+
+    const { income } = IncomeStore()
 
     const [monthYear, setMonthYear] = useState(false);
     const [open, setOpen] = useState(false);
@@ -116,14 +111,16 @@ export function GoalsForm({ buttonLabel, buttonIcon, data }: GoalsFormProps) {
     const calculatePercentage = useCallback((deadlineDate: string, monthOrYear: boolean, total: string, inicial: string): void => {
         const months = monthOrYear ? Number(deadlineDate) : Number(deadlineDate) * 12;
         const realTotal = Number(total) - Number(inicial);
-        const envelopeBudget = (salary * envelopePercentagem) / 100;
+        const envelopeBudget = (income * envelope.percentage) / 100;
 
         if (months > 0) {
             setSave(realTotal / months)
             setSavePercentagem((((realTotal / months) / envelopeBudget) * 100))
-            setSalaryIdeal((realTotal / months * 100) / envelopePercentagem)
+
+            const salary = (realTotal / months * 100) / envelope.percentage
+            setSalaryIdeal((realTotal / months * 100) / envelope.percentage)
         }
-    }, []);
+    }, [envelope, income]);
 
     const validateDescription = useCallback(() => {
         if (!description.trim()) {
@@ -332,7 +329,7 @@ export function GoalsForm({ buttonLabel, buttonIcon, data }: GoalsFormProps) {
                         <Typography variant="body1" noWrap >
                             Recomendação
                         </Typography>
-                        {salaryIdeal > salary ? <Typography variant="body1" color={theme.palette.error.main}>Essa meta não é viável com sua renda atual.</Typography> : <></>}
+                        {salaryIdeal > income ? <Typography variant="body1" color={theme.palette.error.main}>Essa meta não é viável com sua renda atual que é R${income}.</Typography> : <></>}
                         <Box sx={{ width: "100%", p: 2 }}
                             display="flex"
                             flexDirection="row">

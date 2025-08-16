@@ -24,18 +24,6 @@ export default function Page() {
   const { data: creditCards, isLoading: creditCardsIsLoading, error: creditCardsError } = useListCreditCards(table);
   const { data: envelopes, isLoading: envelopesIsLoading, error: envelopesError } = useListEnvelopes();
 
-  const um = 1
-
-  useEffect(() => {
-    console.log("incomes:", incomes)
-  }, [incomes])
-
-
-  useEffect(() => {
-    console.log("envelopes:", envelopes)
-  }, [envelopes])
-
-
   if (incomesIsLoading && envelopesIsLoading && goalsIsLoading && debtsIsLoading && fixedExpensesIsLoading && creditCardsIsLoading) {
     return (
       <>

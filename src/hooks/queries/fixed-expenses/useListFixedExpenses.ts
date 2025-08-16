@@ -4,7 +4,7 @@ import { ITable } from "src/sections/shared/useTable";
 
 export function useListFixedExpenses(table: ITable) {
   return useQuery({
-    queryKey: ["goals", table.page, table.rowsPerPage, table.orderBy, table.order],
+    queryKey: ["fixed-expenses", table.page, table.rowsPerPage, table.orderBy, table.order],
     queryFn: () => listFixedExpenses({
       page: table.page ?? 1,
       pageSize: table.rowsPerPage ?? 10,

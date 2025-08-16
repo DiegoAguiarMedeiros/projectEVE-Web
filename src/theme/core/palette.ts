@@ -96,7 +96,7 @@ export const text = {
 // Background
 export const background = {
   light: createPaletteChannel({
-    paper: "#FFFFFF",
+    paper: "#F5F5F5",
     default: grey[100],
     neutral: grey[200],
   }),
@@ -152,9 +152,9 @@ export const textDark = {
 // Background (Dark Theme)
 export const backgroundDark = {
   dark: createPaletteChannel({
-    paper: grey[800],
-    default: grey[900],
-    neutral: grey[700],
+    paper: grey[950],
+    default: grey[1000],
+    neutral: grey[900],
   }),
 };
 

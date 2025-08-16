@@ -48,7 +48,7 @@ export function AnalyticsConversionRates({ title, subheader, chart, ...other }: 
     dataLabels: {
       enabled: true,
       offsetX: -6,
-      style: { fontSize: "10px", colors: ["#FFFFFF", theme.palette.text.primary] },
+      style: { fontSize: "10px", colors: ["#F5F5F5", theme.palette.text.primary] },
     },
     plotOptions: {
       bar: {

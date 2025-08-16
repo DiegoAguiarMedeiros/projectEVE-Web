@@ -16,7 +16,7 @@ export const getGoals = (id: string) =>
   api.get<Goals>(`/goals/${id}`);
 
 export const updateGoals = (data: Goals) =>
-  api.put<Goals>(`/goals/${data.id}`, data);
+  api.patch<Goals>(`/goals/${data.id}`, data);
 
 export const deleteGoals = (id: string) =>
   api.delete<void>(`/goals/${id}`);

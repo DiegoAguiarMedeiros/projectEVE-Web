@@ -41,7 +41,7 @@ const PRICE_OPTIONS = [
 const COLOR_OPTIONS = [
   "#00AB55",
   "#000000",
-  "#FFFFFF",
+  "#F5F5F5",
   "#FFC0CB",
   "#FF4842",
   "#1890FF",

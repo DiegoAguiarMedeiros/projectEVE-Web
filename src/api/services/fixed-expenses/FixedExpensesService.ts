@@ -16,7 +16,7 @@ export const getFixedExpenses = (id: string) =>
   api.get<FixedExpenses>(`/fixed-expenses/${id}`);
 
 export const updateFixedExpenses = (data: FixedExpenses) =>
-  api.put<FixedExpenses>(`/fixed-expenses/${data.id}`, data);
+  api.patch<FixedExpenses>(`/fixed-expenses/${data.id}`, data);
 
 export const deleteFixedExpenses = (id: string) =>
   api.delete<void>(`/fixed-expenses/${id}`);

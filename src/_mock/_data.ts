@@ -87,7 +87,7 @@ export const _posts = [...Array(23)].map((_, index) => ({
 const COLORS = [
   "#00AB55",
   "#000000",
-  "#FFFFFF",
+  "#F5F5F5",
   "#FFC0CB",
   "#FF4842",
   "#1890FF",

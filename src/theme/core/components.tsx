@@ -1,27 +1,34 @@
 import type { Theme, Components } from "@mui/material/styles";
-
 import SvgIcon from "@mui/material/SvgIcon";
-
 import { varAlpha } from "../styles";
 
-// ----------------------------------------------------------------------
+const transition = "background-color 0.03s, color 0.03s, border-color 0.03s";
 
+// ----------------------------------------------------------------------
+// MuiCssBaseline para aplicar transição global
+const MuiCssBaseline: Components<Theme>["MuiCssBaseline"] = {
+  styleOverrides: {
+    body: { transition },
+    "*": { transition },
+  },
+};
+
+// ----------------------------------------------------------------------
+// Componentes
 const MuiBackdrop: Components<Theme>["MuiBackdrop"] = {
   styleOverrides: {
     root: ({ theme }) => ({
       backgroundColor: varAlpha(theme.palette.grey["900Channel"], 0.8),
+      transition,
     }),
-    invisible: {
-      background: "transparent",
-    },
+    invisible: { background: "transparent", transition },
   },
 };
 
 const MuiButton: Components<Theme>["MuiButton"] = {
-  defaultProps: {
-    disableElevation: true,
-  },
+  defaultProps: { disableElevation: true },
   styleOverrides: {
+    root: { transition },
     containedInherit: ({ theme }) => ({
       color: theme.palette.common.white,
       backgroundColor: theme.palette.grey[800],
@@ -29,10 +36,9 @@ const MuiButton: Components<Theme>["MuiButton"] = {
         color: theme.palette.common.white,
         backgroundColor: theme.palette.grey[800],
       },
+      transition,
     }),
-    sizeLarge: {
-      minHeight: 48,
-    },
+    sizeLarge: { minHeight: 48 },
   },
 };
 
@@ -43,6 +49,7 @@ const MuiCard: Components<Theme>["MuiCard"] = {
       position: "relative",
       boxShadow: theme.customShadows.card,
       borderRadius: theme.shape.borderRadius * 2,
+      transition,
     }),
   },
 };
@@ -55,6 +62,7 @@ const MuiCardHeader: Components<Theme>["MuiCardHeader"] = {
   styleOverrides: {
     root: ({ theme }) => ({
       padding: theme.spacing(3, 3, 0),
+      transition,
     }),
   },
 };
@@ -63,18 +71,22 @@ const MuiOutlinedInput: Components<Theme>["MuiOutlinedInput"] = {
   styleOverrides: {
     notchedOutline: ({ theme }) => ({
       borderColor: varAlpha(theme.palette.grey["500Channel"], 0.2),
+      transition,
     }),
   },
 };
 
 const MuiPaper: Components<Theme>["MuiPaper"] = {
-  defaultProps: {
-    elevation: 0,
-  },
+  defaultProps: { elevation: 0 },
   styleOverrides: {
-    root: { backgroundImage: "none" },
+    root: ({ theme }) => ({
+      backgroundImage: "none",
+      backgroundColor: theme.palette.background.paper,
+      transition,
+    }),
     outlined: ({ theme }) => ({
       borderColor: varAlpha(theme.palette.grey["500Channel"], 0.16),
+      transition,
     }),
   },
 };
@@ -86,6 +98,7 @@ const MuiTableCell: Components<Theme>["MuiTableCell"] = {
       color: theme.palette.text.secondary,
       fontWeight: theme.typography.fontWeightSemiBold,
       backgroundColor: theme.palette.background.neutral,
+      transition,
     }),
   },
 };
@@ -94,18 +107,23 @@ const MuiMenuItem: Components<Theme>["MuiMenuItem"] = {
   styleOverrides: {
     root: ({ theme }) => ({
       ...theme.typography.body2,
+      transition,
     }),
   },
 };
 
 const MuiLink: Components<Theme>["MuiLink"] = {
   defaultProps: { underline: "hover" },
+  styleOverrides: {
+    root: { transition },
+  },
 };
 
 const MuiFormControlLabel: Components<Theme>["MuiFormControlLabel"] = {
   styleOverrides: {
     label: ({ theme }) => ({
       ...theme.typography.body2,
+      transition,
     }),
   },
 };
@@ -155,11 +173,38 @@ const MuiRadio: Components<Theme>["MuiRadio"] = {
   },
 };
 
+const MuiAppBar: Components<Theme>["MuiAppBar"] = {
+  styleOverrides: {
+    root: ({ theme }) => ({
+      backgroundColor: theme.palette.background.paper,
+      color: theme.palette.text.primary,
+      boxShadow: theme.customShadows.card,
+      transition, // mesma transição global
+    }),
+  },
+};
+
+const MuiToolbar: Components<Theme>["MuiToolbar"] = {
+  styleOverrides: {
+    root: {
+      transition, // mesma transição global
+    },
+  },
+};
+const MuiContainer: Components<Theme>["MuiContainer"] = {
+  styleOverrides: {
+    root: {
+      transition, // mesma transição global
+    },
+  },
+};
+
 // ----------------------------------------------------------------------
 
-export const components = {
+export const components: Components<Theme> = {
+  MuiCssBaseline,
   MuiCard,
-  MuiLink,
+  MuiLink: { defaultProps: { underline: "hover" } },
   MuiPaper,
   MuiRadio,
   MuiButton,
@@ -170,4 +215,7 @@ export const components = {
   MuiCardHeader,
   MuiOutlinedInput,
   MuiFormControlLabel,
+  MuiAppBar,
+  MuiToolbar,
+  MuiContainer
 };

@@ -6,9 +6,11 @@ import Divider from "@mui/material/Divider";
 import { useTheme } from "@mui/material/styles";
 import CardHeader from "@mui/material/CardHeader";
 
-import { fNumber } from "src/utils/format-number";
+import { fNumber, fNumberToCurrency } from "src/utils/format-number";
 
 import { Chart, useChart, ChartLegends } from "src/components/chart";
+
+import AirlineStopsIcon from '@mui/icons-material/AirlineStops';
 
 // ----------------------------------------------------------------------
 
@@ -25,11 +27,11 @@ type Props = CardProps & {
   };
 };
 
-export function AnalyticsCurrentVisits({ title, subheader, chart, ...other }: Props) {
+export function AnalyticsCurrentEnvelopes({ title, subheader, chart, ...other }: Props) {
   const theme = useTheme();
 
   const chartSeries = chart.series.map((item) => item.value);
-
+  console.log("chartSeries", chartSeries)
   const chartColors = chart.colors ?? [
     theme.palette.primary.main,
     theme.palette.secondary.main,
@@ -72,8 +74,10 @@ export function AnalyticsCurrentVisits({ title, subheader, chart, ...other }: Pr
 
       <ChartLegends
         labels={chartOptions?.labels}
+        sublabels={chartSeries.map(serie => fNumberToCurrency(serie))}
         colors={chartOptions?.colors}
-        sx={{ p: 3, justifyContent: "center" }}
+        sx={{ p: 3, justifyContent: "center", display: 'flex', flexWrap: 'wrap', gap: 1, flexDirection: 'column' }}
+      // icons={[<AirlineStopsIcon />]}
       />
     </Card>
   );

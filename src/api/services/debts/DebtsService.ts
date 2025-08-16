@@ -16,7 +16,7 @@ export const getDebts = (id: string) =>
   api.get<Debts>(`/debts/${id}`);
 
 export const updateDebts = (data: Debts) =>
-  api.put<Debts>(`/debts/${data.id}`, data);
+  api.patch<Debts>(`/debts/${data.id}`, data);
 
 export const deleteDebts = (id: string) =>
   api.delete<void>(`/debts/${id}`);

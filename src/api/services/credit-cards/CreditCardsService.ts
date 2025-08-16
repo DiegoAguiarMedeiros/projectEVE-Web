@@ -16,7 +16,7 @@ export const getCreditCards = (id: string) =>
   api.get<CreditCards>(`/credit-cards/${id}`);
 
 export const updateCreditCards = (data: CreditCards) =>
-  api.put<CreditCards>(`/credit-cards/${data.id}`, data);
+  api.patch<CreditCards>(`/credit-cards/${data.id}`, data);
 
 export const deleteCreditCards = (id: string) =>
   api.delete<void>(`/credit-cards/${id}`);

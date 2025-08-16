@@ -1,3 +1,4 @@
+import { LinearProgress, linearProgressClasses, Typography } from "@mui/material";
 import type { BoxProps } from "@mui/material/Box";
 
 import Box from "@mui/material/Box";
@@ -7,12 +8,12 @@ import { styled } from "@mui/material/styles";
 // ----------------------------------------------------------------------
 
 export const StyledLegend = styled(Box)(({ theme }) => ({
-  gap: 6,
   alignItems: "center",
-  display: "inline-flex",
+  display: "flex",
+  flexDirection: 'column',
   justifyContent: "flex-start",
   fontSize: theme.typography.pxToRem(13),
-  fontWeight: theme.typography.fontWeightMedium,
+  fontWeight: theme.typography.fontWeightMedium
 }));
 
 export const StyledDot = styled(Box)(() => ({
@@ -37,6 +38,63 @@ type Props = BoxProps & {
   icons?: React.ReactNode[];
 };
 
+interface ProgressWithLabelProps {
+  value: number;          // 0–100
+  label?: string;         // ex: "75%"
+  color?: string;         // pode ser cor ou gradient CSS
+}
+
+const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
+  height: 15,
+  borderRadius: 10,
+  [`&.${linearProgressClasses.colorPrimary}`]: {
+    backgroundColor: theme.palette.grey[200],
+    ...theme.applyStyles("dark", { backgroundColor: theme.palette.grey[800] }),
+  },
+  [`& .${linearProgressClasses.bar}`]: {
+    borderRadius: 10,
+    background: "linear-gradient(90deg,#19d3a2,#0ea5e9)", // fallback
+  },
+}));
+
+export function ProgressWithLabel({ value, label, color }: ProgressWithLabelProps) {
+  const safe = Math.max(0, Math.min(100, value));
+
+  return (
+    <Box position="relative" width="100%">
+      <BorderLinearProgress
+        variant="determinate"
+        value={safe}
+        sx={{
+          [`& .${linearProgressClasses.bar}`]: {
+            background: color || "linear-gradient(90deg,#19d3a2,#0ea5e9)",
+          },
+        }}
+      />
+
+      {/* Contêiner do label com largura igual ao fill */}
+      <Box
+        sx={{
+          position: "absolute",
+          inset: 0,
+          width: `${safe}%`,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          pointerEvents: "none", // não bloquear cliques
+        }}
+      >
+        <Typography
+          variant="caption"
+          sx={{ color: "common.white", fontWeight: 700, textShadow: "0 1px 2px rgba(0,0,0,.35)" }}
+        >
+          {label ?? `${safe}%`}
+        </Typography>
+      </Box>
+    </Box>
+  );
+}
+
 export function ChartLegends({
   icons,
   values,
@@ -46,25 +104,17 @@ export function ChartLegends({
   ...other
 }: Props) {
   return (
-    <Box gap={2} display="flex" flexWrap="wrap" {...other}>
+    <Box {...other}>
       {labels?.map((series, index) => (
         <Stack key={series} spacing={1}>
           <StyledLegend>
-            {icons?.length ? (
-              <Box
-                component="span"
-                sx={{ color: colors[index], "& svg, & img": { width: 20, height: 20 } }}
-              >
-                {icons?.[index]}
-              </Box>
-            ) : (
-              <StyledDot sx={{ color: colors[index] }} />
-            )}
 
-            <Box component="span" sx={{ flexShrink: 0 }}>
-              {series}
-              {sublabels && <> {` (${sublabels[index]})`}</>}
+            <Box component="span" sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+              {icons?.length ? icons?.[0] : null}
+              <Typography variant="caption">{series}</Typography>
+              <Typography variant="caption">{sublabels && sublabels[index]}</Typography>
             </Box>
+            <ProgressWithLabel value={50} color={colors[index]} label="50%" />
           </StyledLegend>
 
           {values && <Box sx={{ typography: "h6" }}>{values[index]}</Box>}

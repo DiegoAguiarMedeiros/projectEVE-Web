@@ -8,6 +8,9 @@ import {
     Select,
     MenuItem as SelectItem,
     Typography,
+    FormControl,
+    InputLabel,
+    useTheme,
 } from "@mui/material";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import { Month, ProcessedIncomesMonthResponse } from "src/types/ProcessedIncomes";
@@ -28,7 +31,7 @@ interface MonthYearPickerButtonProps {
 export const MonthYearPickerButton: React.FC<MonthYearPickerButtonProps> = ({ data }) => {
 
     const years = Object.keys(data).map(Number).sort((a, b) => a - b);
-
+    const theme = useTheme();
 
     const { month, year, setMonth, setYear } = useSelectedMonthYearStore();
     const [selectedMonth, setSelectedMonth] = useState(month);
@@ -91,9 +94,16 @@ export const MonthYearPickerButton: React.FC<MonthYearPickerButtonProps> = ({ da
         }
 
     };
+    const getTextColor = (isAvailable: boolean, monthSelected: boolean): string => {
+        if (isAvailable) {
+            if (monthSelected) return "var(--layout-nav-item-active-color)"
+            return "var(--layout-nav-item-color)"
+        }
+        return "text.disabled"
+    };
 
     return (
-        <Box display="flex" alignItems="center" gap={1}>
+        <Box display="flex" alignItems="center" gap={1} >
             <IconButton onClick={handlePrevMonth} disabled={selectedMonth === minMonth && selectedYear === minYear}>
                 <ArrowBack />
             </IconButton>
@@ -106,38 +116,53 @@ export const MonthYearPickerButton: React.FC<MonthYearPickerButtonProps> = ({ da
                 <ArrowForward />
             </IconButton>
 
-            <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-                <Box display="flex" flexDirection="column" px={2} py={1}>
-                    <Select
-                        value={selectedYear}
-                        onChange={handleYearChange}
-                        variant="standard"
-                        sx={{ mb: 2 }}
-                    >
-                        {getYearsAvailable().map((y) => (
-                            <SelectItem key={y} value={y}>
-                                {y}
-                            </SelectItem>
-                        ))}
-                    </Select>
+            <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose} >
+                <Box display="flex" flexDirection="column" sx={{ backgroundColor: theme.palette.background.neutral, borderRadius: '8px', margin: -1 }}>
+                    <Box display="flex" flexDirection="column" p={2} >
+                        <FormControl fullWidth>
+                            <InputLabel id="year-select-label">Ano</InputLabel>
+                            <Select
+                                labelId="year-select-label"
+                                id="year-select"
+                                label="Ano"
+                                value={selectedYear}
+                                onChange={handleYearChange}
+                                sx={{ mb: 2 }}
+                                size="small"
+                            >
+                                {getYearsAvailable().map((y) => (
+                                    <SelectItem key={y} value={y}>
+                                        {y}
+                                    </SelectItem>
+                                ))}
+                            </Select>
+                        </FormControl>
 
-                    <Box display="grid" gridTemplateColumns="repeat(3, 1fr)" gap={1}>
-                        {months.map((m, i) => {
-                            const availableMonths = data[selectedYear] || [];
-                            const isAvailable = availableMonths.includes(i + 1 as Month); // +1 porque data usa meses 1–12
-                            return (
-                                <MenuItem
-                                    key={m}
-                                    selected={i + 1 === selectedMonth}
-                                    onClick={() => isAvailable && handleMonthSelect(i + 1 as Month)}
-                                    disabled={!isAvailable} // desativa o clique se não disponível
-                                >
-                                    <Typography variant="body2" color={isAvailable ? "text.primary" : "text.disabled"}>
-                                        {m}
-                                    </Typography>
-                                </MenuItem>
-                            );
-                        })}
+                        <Box display="grid" gridTemplateColumns="repeat(3, 1fr)" gap={1}>
+                            {months.map((m, i) => {
+                                const availableMonths = data[selectedYear] || [];
+                                const isAvailable = availableMonths.includes(i + 1 as Month);
+                                return (
+                                    <MenuItem
+                                        key={m}
+                                        selected={i + 1 === selectedMonth}
+                                        onClick={() => isAvailable && handleMonthSelect(i + 1 as Month)}
+                                        disabled={!isAvailable}
+                                        sx={{
+                                            border: '1px solid var(--layout-nav-item-hover-bg)',
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            borderRadius: 0.75,
+                                        }}
+                                    >
+                                        <Typography variant="body2" color={getTextColor(isAvailable, i + 1 === selectedMonth)}>
+                                            {m}
+                                        </Typography>
+                                    </MenuItem>
+                                );
+                            })}
+                        </Box>
                     </Box>
                 </Box>
             </Menu>

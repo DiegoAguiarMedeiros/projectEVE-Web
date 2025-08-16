@@ -9,7 +9,7 @@ import "swiper/css/pagination"; // Para paginação (se necessário)
 import { _inout } from "src/_mock";
 import { DashboardContent } from "src/layouts/dashboard";
 
-import { AnalyticsCurrentVisits } from "../analytics-current-visits";
+import { AnalyticsCurrentEnvelopes } from "../analytics-current-envelopes";
 import { AnalyticsWebsiteVisits } from "../analytics-website-visits";
 import { AnalyticsWidgetSummary } from "../analytics-widget-summary";
 
@@ -72,7 +72,7 @@ export function OverviewAnalyticsView() {
           />
         </Grid2>
         <Grid2 size={{ xs: 12, sm: 6, md: 4 }}>
-          <AnalyticsCurrentVisits
+          <AnalyticsCurrentEnvelopes
             title="Envelopes"
             chart={{
               series: [

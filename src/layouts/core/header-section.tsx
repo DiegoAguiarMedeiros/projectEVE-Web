@@ -41,7 +41,6 @@ export function HeaderSection({
 
   const toolbarStyles = {
     default: {
-      ...bgBlur({ color: varAlpha(theme.palette.background.defaultChannel, 0.8) }),
       minHeight: "auto",
       height: "var(--layout-header-mobile-height)",
       transition: theme.transitions.create(["height", "background-color"], {
@@ -60,11 +59,11 @@ export function HeaderSection({
   return (
     <AppBar
       position="sticky"
-      color="transparent"
       className={layoutClasses.header}
       sx={{
         boxShadow: "none",
         zIndex: "var(--layout-header-zIndex)",
+        backgroundColor: theme.palette.background.paper,
         ...sx,
       }}
       {...other}

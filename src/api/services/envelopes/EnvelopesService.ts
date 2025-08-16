@@ -21,7 +21,7 @@ export const getEnvelopes = (id: string) =>
   api.get<Envelopes>(`/envelopes/${id}`);
 
 export const updateEnvelopes = (data: Envelopes) =>
-  api.put<Envelopes>(`/envelopes/${data.id}`, data);
+  api.patch<Envelopes>(`/envelopes/${data.id}`, data);
 
 export const deleteEnvelopes = (id: string) =>
   api.delete<void>(`/envelopes/${id}`);

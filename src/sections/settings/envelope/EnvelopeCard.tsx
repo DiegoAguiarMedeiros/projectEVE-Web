@@ -1,4 +1,4 @@
-import { Card, CardHeader, Stack, Typography, IconButton, CardContent, FormControl, Slider, Box, FormLabel, Switch } from "@mui/material";
+import { Card, CardHeader, Stack, Typography, IconButton, CardContent, FormControl, Slider, Box, FormLabel, Switch, useTheme } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { startTransition, useActionState, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
@@ -10,11 +10,10 @@ import { Envelopes } from "src/types/Envelopes";
 
 type EnvelopeProps = {
     data: Envelopes;
-    setEnvelopeAllocation: React.Dispatch<React.SetStateAction<number>>
 
 }
-export function EnvelopeCard({ data, setEnvelopeAllocation }: EnvelopeProps) {
-
+export function EnvelopeCard({ data }: EnvelopeProps) {
+    const theme = useTheme();
     const [envelopeData, setEnvelopeData] = useState<Envelopes>(data);
     const [isPending, setIsPending] = useState(false);
     const [error, setError] = useState<Error | null>(null);
@@ -32,7 +31,7 @@ export function EnvelopeCard({ data, setEnvelopeAllocation }: EnvelopeProps) {
                     color: envelopes.color,
                     percentage: envelopes.percentage,
                 });
-            } 
+            }
         } catch (err: any) {
             setError(err);
         } finally {
@@ -68,17 +67,17 @@ export function EnvelopeCard({ data, setEnvelopeAllocation }: EnvelopeProps) {
         }));
     };
 
-    console.log("envelopeData.name", envelopeData.name === "debts")
-
     return (
         <Card
             key={envelopeData.id}
             sx={{
-                flex: "1 0 25%",
+                flex: "1 0 20%",
                 minWidth: 200,
                 maxHeight: "144px",
                 boxSizing: "border-box",
                 padding: 1,
+                bgcolor: "var(--layout-nav-item-active-bg)",
+
             }}
         >
             <CardHeader

@@ -9,7 +9,7 @@ import { useTheme } from "@mui/material/styles";
 import { _langs, _notifications } from "src/_mock";
 
 import { Iconify } from "src/components/iconify";
-import { ThemeSwitch } from "src/components/themeSwitch/themeSwitch";
+import { ThemeToggleButton } from "src/components/themeSwitch/themeSwitch";
 import { MonthYearPickerButton } from "src/components/MonthYearPickerButton";
 import { useProcessedIncomesMonth } from "src/hooks/queries/processed-incomes/useProcessedIncomesMonth";
 
@@ -104,29 +104,28 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
                 <AccountPopover
                   data={[
                     {
-                      label: "Home",
-                      href: "/",
-                      icon: <Iconify width={22} icon="solar:home-angle-bold-duotone" />,
-                    },
-                    {
                       label: "Tema",
                       href: "#",
-                      icon: <ThemeSwitch />,
+                      icon: <ThemeToggleButton />,
+                      isLink:false
                     },
                     {
                       label: "Idioma",
                       href: "#",
                       icon: <LanguagePopover data={_langs} />,
+                      isLink:false
                     },
                     {
                       label: "Profile",
                       href: "#",
                       icon: <Iconify width={22} icon="solar:shield-keyhole-bold-duotone" />,
+                      isLink:true
                     },
                     {
                       label: "Settings",
                       href: "#",
                       icon: <Iconify width={22} icon="solar:settings-bold-duotone" />,
+                      isLink:true
                     },
                   ]}
                 />

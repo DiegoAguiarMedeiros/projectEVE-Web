@@ -8,12 +8,13 @@ import Popover from "@mui/material/Popover";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
+import { useTheme } from "@mui/material";
 
 import { useRouter } from "src/routes/hooks";
 
 import { _myAccount } from "src/_mock";
 
-import { AccountPopoverMenu } from "./account-popover-menu";
+import { AccountPopoverMenu } from "src/layouts/components/account-popover-menu";
 
 // ----------------------------------------------------------------------
 
@@ -23,12 +24,13 @@ export type AccountPopoverProps = IconButtonProps & {
     href: string;
     icon?: React.ReactNode;
     info?: React.ReactNode;
+    button?: React.ReactNode;
+    isLink?: boolean;
   }[];
 };
 
 export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps) {
   const router = useRouter();
-
   const [openPopover, setOpenPopover] = useState<HTMLButtonElement | null>(null);
 
   const handleOpenPopover = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
@@ -69,8 +71,9 @@ export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps)
             sx: { width: 200 },
           },
         }}
+
       >
-        <Box sx={{ p: 2, pb: 1.5 }}>
+        <Box sx={{ p: 2, pb: 1.5, backgroundColor:(theme) => theme.palette.background.neutral }}>
           <Typography variant="subtitle2" noWrap>
             {_myAccount?.displayName}
           </Typography>
@@ -83,7 +86,7 @@ export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps)
         <Divider sx={{ borderStyle: "dashed" }} />
 
         <AccountPopoverMenu data={data} />
-      </Popover>
+      </Popover >
     </>
   );
 }

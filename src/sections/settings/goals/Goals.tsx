@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Card, TableContainer, Table, TableBody, TablePagination } from "@mui/material";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {  useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "notistack";
 import dayjs from "dayjs";
 import { useTable } from "src/sections/shared/useTable";
@@ -13,11 +13,13 @@ import { GoalsForm } from "src/sections/settings/goals/form";
 import { Pagination } from "src/types/Pagination";
 import { Goals } from "src/types/Goals";
 import { useDeleteGoals } from "src/hooks/mutations/goals/useDeleteGoals";
+import { Envelopes } from "src/types/Envelopes";
 
 type GoalsTableProps = {
     goals: Pagination<Goals> | undefined
+    envelope: Envelopes
 }
-export function GoalsTable({ goals }: GoalsTableProps) {
+export function GoalsTable({ goals, envelope }: GoalsTableProps) {
     const table = useTable();
 
     useEffect(() => {
@@ -50,6 +52,7 @@ export function GoalsTable({ goals }: GoalsTableProps) {
             onSelectRow={() => table.onSelectRow(id)}
             rowKeys={[description, `R$ ${amountTotal}`, `${percentage} %`, dayjs(deadline).format("DD/MM/YYYY")]}
             form={<GoalsForm
+                envelope={envelope}
                 key={id}
                 data={row}
                 buttonIcon={<Iconify icon="solar:pen-bold" />}
@@ -59,10 +62,10 @@ export function GoalsTable({ goals }: GoalsTableProps) {
     }
 
     return (
-        <Card sx={{ width: "100%" }}>
+        <Card sx={{ width: "100%", borderTopRightRadius: 0, borderTopLeftRadius: 0  }}>
             <TableToolbar
                 numSelected={table.selected.length}
-                form={<GoalsForm buttonLabel="Adicionar" />}
+                form={<GoalsForm envelope={envelope} buttonLabel="Adicionar" />}
             />
 
             <TableContainer sx={{ overflow: "unset" }}>

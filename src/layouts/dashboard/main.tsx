@@ -19,6 +19,7 @@ export function Main({ children, sx, ...other }: BoxProps) {
         display: "flex",
         flex: "1 1 auto",
         flexDirection: "column",
+        pt:4,
         ...sx,
       }}
       {...other}
@@ -46,32 +47,20 @@ export function DashboardContent({
   const layoutQuery: Breakpoint = "lg";
 
   return (
-    <Container
-      className={layoutClasses.content}
-      maxWidth={maxWidth || false}
+    <Box
       sx={{
+        width:'100%',
         display: "flex",
         flex: "1 1 auto",
         flexDirection: "column",
         pt: "var(--layout-dashboard-content-pt)",
         pb: "var(--layout-dashboard-content-pb)",
-        [theme.breakpoints.up(layoutQuery)]: {
-          px: "var(--layout-dashboard-content-px)",
-        },
-        ...(disablePadding && {
-          p: {
-            xs: 0,
-            sm: 0,
-            md: 0,
-            lg: 0,
-            xl: 0,
-          },
-        }),
+        px: "var(--layout-dashboard-content-px)",
         ...sx,
       }}
       {...other}
     >
       {children}
-    </Container>
+    </Box>
   );
 }

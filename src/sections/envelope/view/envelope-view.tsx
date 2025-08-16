@@ -16,7 +16,7 @@ type EnvelopeViewProps = {
   envelopeActived: string;
   transactions: Pagination<Transactions> | undefined
 }
-export function EnvelopeView({ envelopes, currentIndex, handleSlideClick, envelopeActived,transactions }: EnvelopeViewProps) {
+export function EnvelopeView({ envelopes, currentIndex, handleSlideClick, envelopeActived, transactions }: EnvelopeViewProps) {
   return (
     <DashboardContent>
       <Grid2 container spacing={3}>
