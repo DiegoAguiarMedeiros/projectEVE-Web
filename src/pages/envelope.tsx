@@ -7,7 +7,7 @@ import { useListTransactionsByEnvelope } from "src/hooks/queries/transactions/us
 
 import { EnvelopeView } from "src/sections/envelope/view";
 import { useTable } from "src/sections/shared/useTable";
-import { useSelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
+import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 
 // ----------------------------------------------------------------------
 
@@ -16,7 +16,7 @@ export default function Page() {
   const table = useTable();
   const [envelopeActived, setEnvelopeActive] = useState<string>("");
   const [currentIndex, setCurrentIndex] = useState(0);
-  const { month, year } = useSelectedMonthYearStore();
+  const { month, year } = SelectedMonthYearStore();
   const { data: envelopes, isLoading: envelopesIsLoading, error: envelopesError } = useListEnvelopesWithAmount(year, month);
   const { data: transactions, isLoading: transactionsIsLoading, error: transactionsError } = useListTransactionsByEnvelope(envelopeActived, year, month, table);
 

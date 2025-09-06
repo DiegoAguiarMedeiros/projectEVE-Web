@@ -13,7 +13,8 @@ export function useUpdateIncomes() {
         variant: "success",
         anchorOrigin: { horizontal: "right", vertical: "bottom" },
       });
-      queryClient.invalidateQueries({ queryKey: ["incomes"], exact: false });
+            queryClient.invalidateQueries({ queryKey: ["incomes"]});
+      queryClient.invalidateQueries({ queryKey: ["incomes-total"]});
       queryClient.invalidateQueries({ queryKey: ["envelopes"] });
     },
   });

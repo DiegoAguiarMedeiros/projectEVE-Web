@@ -4,6 +4,8 @@ import type { BoxProps } from "@mui/material/Box";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
+import useTheme from "src/hooks/useTheme";
+import { fNumberToPercentage } from "src/utils/format-number";
 
 // ----------------------------------------------------------------------
 
@@ -34,45 +36,37 @@ type Props = BoxProps & {
   labels?: string[];
   colors?: string[];
   values?: string[];
+  subValues?: number[];
   sublabels?: string[];
   icons?: React.ReactNode[];
 };
 
 interface ProgressWithLabelProps {
-  value: number;          // 0–100
-  label?: string;         // ex: "75%"
-  color?: string;         // pode ser cor ou gradient CSS
+  value: number;
+  color?: string;
 }
 
-const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
-  height: 15,
-  borderRadius: 10,
-  [`&.${linearProgressClasses.colorPrimary}`]: {
-    backgroundColor: theme.palette.grey[200],
-    ...theme.applyStyles("dark", { backgroundColor: theme.palette.grey[800] }),
-  },
-  [`& .${linearProgressClasses.bar}`]: {
-    borderRadius: 10,
-    background: "linear-gradient(90deg,#19d3a2,#0ea5e9)", // fallback
-  },
-}));
 
-export function ProgressWithLabel({ value, label, color }: ProgressWithLabelProps) {
+export function ProgressWithLabel({ value, color }: ProgressWithLabelProps) {
   const safe = Math.max(0, Math.min(100, value));
-
+  const { mode } = useTheme();
   return (
     <Box position="relative" width="100%">
-      <BorderLinearProgress
+      <LinearProgress
         variant="determinate"
         value={safe}
         sx={{
+          height: 15,
+          borderRadius: 10,
+          backgroundColor: theme => theme.palette.linearProgress.primaryBg,
           [`& .${linearProgressClasses.bar}`]: {
-            background: color || "linear-gradient(90deg,#19d3a2,#0ea5e9)",
+            background: color,
+            borderRadius: 10,
           },
         }}
       />
 
-      {/* Contêiner do label com largura igual ao fill */}
+
       <Box
         sx={{
           position: "absolute",
@@ -81,14 +75,14 @@ export function ProgressWithLabel({ value, label, color }: ProgressWithLabelProp
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          pointerEvents: "none", // não bloquear cliques
+          pointerEvents: "none",
         }}
       >
         <Typography
           variant="caption"
-          sx={{ color: "common.white", fontWeight: 700, textShadow: "0 1px 2px rgba(0,0,0,.35)" }}
+          sx={{ color: "common.white", fontWeight: 700 }}
         >
-          {label ?? `${safe}%`}
+          {Number(value) > 10 ? `${safe}%` : <></>}
         </Typography>
       </Box>
     </Box>
@@ -98,6 +92,7 @@ export function ProgressWithLabel({ value, label, color }: ProgressWithLabelProp
 export function ChartLegends({
   icons,
   values,
+  subValues,
   sublabels,
   labels = [],
   colors = [],
@@ -114,7 +109,7 @@ export function ChartLegends({
               <Typography variant="caption">{series}</Typography>
               <Typography variant="caption">{sublabels && sublabels[index]}</Typography>
             </Box>
-            <ProgressWithLabel value={50} color={colors[index]} label="50%" />
+            {subValues && <ProgressWithLabel value={subValues[index]} color={colors[index]} />}
           </StyledLegend>
 
           {values && <Box sx={{ typography: "h6" }}>{values[index]}</Box>}

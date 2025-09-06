@@ -9,7 +9,7 @@ import { Iconify } from "src/components/iconify";
 import { CustomTableHead } from "src/components/table/TableHead";
 import { TableToolbar } from "src/components/table/TableToolbar";
 import Chips from "src/components/chip/chip";
-import { useSelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
+import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 import { TransactionForm } from "src/sections/envelope/form";
 import { Pagination } from "src/types/Pagination";
 import { Transactions, TransactionsStatus, TransactionsUpdateStatus } from "src/types/Transactions";
@@ -27,7 +27,7 @@ export function TransactionTable({ envelopeId, transactions }: TransactionTableP
     const {
         month,
         year,
-    } = useSelectedMonthYearStore();
+    } = SelectedMonthYearStore();
 
 
 

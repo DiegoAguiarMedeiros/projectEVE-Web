@@ -16,7 +16,10 @@ import { varAlpha } from "src/theme/styles";
 import { Logo } from "src/components/logo";
 import { Scrollbar } from "src/components/scrollbar";
 
-import { AccountPopoverMenu } from "../components/account-popover-menu";
+import { AccountPopoverMenu } from "src/layouts/components/account-popover-menu";
+import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
+import { Month } from "src/types/ProcessedIncomes";
+import LockIcon from '@mui/icons-material/Lock';
 
 // ----------------------------------------------------------------------
 
@@ -110,8 +113,21 @@ export function NavMobile({
 // ----------------------------------------------------------------------
 
 export function NavContent({ data, slots, sx }: NavContentProps) {
+  const { month, hasMonthProcessed, nextMonthToProcess, nextYearToProcess } = SelectedMonthYearStore();
+  const currentMonth = (new Date().getMonth() + 1) as Month;
+
+  const isBlockEnvelopeItemMenu = (): boolean => {
+    if (!hasMonthProcessed) {
+      return true
+    }
+
+    if (currentMonth === nextMonthToProcess || month === nextMonthToProcess) {
+      return true
+    }
+    return false
+  }
+
   const pathname = usePathname();
-  const theme = useTheme();
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   return (
     <>
@@ -121,7 +137,7 @@ export function NavContent({ data, slots, sx }: NavContentProps) {
 
       <Scrollbar fillContent>
         <Paper
-          sx={{ width: 320, maxWidth: "100%", backgroundColor: theme.palette.background.paper }}
+          sx={{ width: 320, maxWidth: "100%", backgroundColor: (theme) => theme.palette.background.paper }}
         >
           <MenuList>
             {data.map((item, index) => {
@@ -131,6 +147,7 @@ export function NavContent({ data, slots, sx }: NavContentProps) {
                 <ListItemButton
                   key={`ListItemButton${index}`}
                   disableGutters
+                  disabled={(item.title === 'Envelopes' && isBlockEnvelopeItemMenu())}
                   component={RouterLink}
                   href={item.path}
                   onMouseEnter={() => setHoveredItem(item.path)}
@@ -152,6 +169,14 @@ export function NavContent({ data, slots, sx }: NavContentProps) {
                         bgcolor: "var(--layout-nav-item-hover-bg)",
                       },
                     }),
+                    ...((item.title === 'Envelopes' && isBlockEnvelopeItemMenu()) && {
+                      fontWeight: "fontWeightSemiBold",
+                      bgcolor: "var(--layout-nav-item-block-bg)",
+                      color: "var(--layout-nav-item-block-color)",
+                      "&:hover": {
+                        bgcolor: "var(--layout-nav-item-block-hover-bg)",
+                      },
+                    }),
                   }}
                 >
                   <Box component="span" sx={{ width: 24, height: 24 }}>
@@ -160,6 +185,8 @@ export function NavContent({ data, slots, sx }: NavContentProps) {
                   <Box component="span" flexGrow={1}>
                     {item.title}
                   </Box>
+
+                  {(item.title === 'Envelopes' && isBlockEnvelopeItemMenu()) && <LockIcon sx={{ color: theme => theme.palette.error.main }} />}
 
                   {item.info && item.info}
                 </ListItemButton>

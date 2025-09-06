@@ -3,48 +3,28 @@ import type { ChartOptions } from "src/components/chart";
 
 import Card from "@mui/material/Card";
 import Divider from "@mui/material/Divider";
-import { useTheme } from "@mui/material/styles";
 import CardHeader from "@mui/material/CardHeader";
 
 import { fNumber, fNumberToCurrency } from "src/utils/format-number";
 
 import { Chart, useChart, ChartLegends } from "src/components/chart";
 
-import AirlineStopsIcon from '@mui/icons-material/AirlineStops';
+import { AnalyticsCurrentEnvelopes } from 'src/types/Graph';
 
 // ----------------------------------------------------------------------
 
 type Props = CardProps & {
   title?: string;
+  analyticsCurrentEnvelopes: AnalyticsCurrentEnvelopes | undefined
   subheader?: string;
-  chart: {
-    colors?: string[];
-    series: {
-      label: string;
-      value: number;
-    }[];
-    options?: ChartOptions;
-  };
 };
 
-export function AnalyticsCurrentEnvelopes({ title, subheader, chart, ...other }: Props) {
-  const theme = useTheme();
-
-  const chartSeries = chart.series.map((item) => item.value);
-  console.log("chartSeries", chartSeries)
-  const chartColors = chart.colors ?? [
-    theme.palette.primary.main,
-    theme.palette.secondary.main,
-    theme.palette.info.main,
-    theme.palette.warning.main,
-    theme.palette.success.main,
-    theme.palette.error.main,
-  ];
+export function AnalyticsCurrentEnvelopesGraph({ title, subheader,  analyticsCurrentEnvelopes, ...other }: Props) {
 
   const chartOptions = useChart({
     chart: { sparkline: { enabled: true } },
-    colors: chartColors,
-    labels: chart.series.map((item) => item.label),
+    colors: analyticsCurrentEnvelopes?.colors,
+    labels: analyticsCurrentEnvelopes?.labels.map((item) => item),
     stroke: { width: 0 },
     dataLabels: { enabled: true, dropShadow: { enabled: false } },
     tooltip: {
@@ -54,8 +34,11 @@ export function AnalyticsCurrentEnvelopes({ title, subheader, chart, ...other }:
       },
     },
     plotOptions: { pie: { donut: { labels: { show: false } } } },
-    ...chart.options,
   });
+
+  if (!analyticsCurrentEnvelopes) {
+    return (<>No data</>)
+  }
 
   return (
     <Card {...other}>
@@ -63,7 +46,7 @@ export function AnalyticsCurrentEnvelopes({ title, subheader, chart, ...other }:
 
       <Chart
         type="pie"
-        series={chartSeries}
+        series={analyticsCurrentEnvelopes.values}
         options={chartOptions}
         width={{ xs: 240, xl: 260 }}
         height={{ xs: 240, xl: 260 }}
@@ -73,9 +56,14 @@ export function AnalyticsCurrentEnvelopes({ title, subheader, chart, ...other }:
       <Divider sx={{ borderStyle: "dashed" }} />
 
       <ChartLegends
-        labels={chartOptions?.labels}
-        sublabels={chartSeries.map(serie => fNumberToCurrency(serie))}
-        colors={chartOptions?.colors}
+        labels={analyticsCurrentEnvelopes?.labels}
+        sublabels={analyticsCurrentEnvelopes.values.map((value, index) => {
+          const amountToGo = value * (100 - analyticsCurrentEnvelopes.subValues[index]) / 100;
+          if (amountToGo === 0) return `Sem fundos`
+          return `Disponível: ${fNumberToCurrency(amountToGo)}`
+        })}
+        subValues={analyticsCurrentEnvelopes.subValues}
+        colors={analyticsCurrentEnvelopes?.colors}
         sx={{ p: 3, justifyContent: "center", display: 'flex', flexWrap: 'wrap', gap: 1, flexDirection: 'column' }}
       // icons={[<AirlineStopsIcon />]}
       />

@@ -6,27 +6,20 @@ import { useTheme } from "@mui/material/styles";
 import CardHeader from "@mui/material/CardHeader";
 
 import { Chart, useChart } from "src/components/chart";
+import { AnalyticsEnvelopesByYear } from "src/types/Graph";
 
 // ----------------------------------------------------------------------
 
 type Props = CardProps & {
   title?: string;
   subheader?: string;
-  chart: {
-    colors?: string[];
-    categories?: string[];
-    series: {
-      name: string;
-      data: number[];
-    }[];
-    options?: ChartOptions;
-  };
+  chart: AnalyticsEnvelopesByYear | undefined
 };
 
-export function AnalyticsWebsiteVisits({ title, subheader, chart, ...other }: Props) {
+export function AnalyticsEnvelopesByYearGraph({ title, subheader, chart, ...other }: Props) {
   const theme = useTheme();
 
-  const chartColors = chart.colors ?? [
+  const chartColors = [
     theme.palette.primary.main,
     theme.palette.info.main,
     theme.palette.error.main,
@@ -40,7 +33,7 @@ export function AnalyticsWebsiteVisits({ title, subheader, chart, ...other }: Pr
       colors: ["transparent"],
     },
     xaxis: {
-      categories: chart.categories,
+      categories: chart?.categories,
     },
     legend: {
       show: true,
@@ -50,8 +43,9 @@ export function AnalyticsWebsiteVisits({ title, subheader, chart, ...other }: Pr
         formatter: (value: number) => `R$ ${value}`,
       },
     },
-    ...chart.options,
   });
+
+  if(!chart) return <>no data</>
 
   return (
     <Card {...other}>

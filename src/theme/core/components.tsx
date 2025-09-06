@@ -179,7 +179,7 @@ const MuiAppBar: Components<Theme>["MuiAppBar"] = {
       backgroundColor: theme.palette.background.paper,
       color: theme.palette.text.primary,
       boxShadow: theme.customShadows.card,
-      transition, // mesma transição global
+      transition, 
     }),
   },
 };
@@ -187,14 +187,14 @@ const MuiAppBar: Components<Theme>["MuiAppBar"] = {
 const MuiToolbar: Components<Theme>["MuiToolbar"] = {
   styleOverrides: {
     root: {
-      transition, // mesma transição global
+      transition,
     },
   },
 };
 const MuiContainer: Components<Theme>["MuiContainer"] = {
   styleOverrides: {
     root: {
-      transition, // mesma transição global
+      transition,
     },
   },
 };
@@ -217,5 +217,5 @@ export const components: Components<Theme> = {
   MuiFormControlLabel,
   MuiAppBar,
   MuiToolbar,
-  MuiContainer
+  MuiContainer,
 };

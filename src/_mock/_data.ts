@@ -240,86 +240,28 @@ export const _notifications = [
   },
 ];
 interface MockDataItem {
-  title: string;
   icon: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
     muiName: string;
   };
-  percent: number;
-  total: number;
   color: "primary" | "secondary" | "info" | "warning" | "success" | "error";
 }
 
-export const _inout: MockDataItem[] = [
+export const icons: MockDataItem[] = [
   {
-    title: "Minha Renda",
     icon: CallMadeIcon,
     color: "primary",
-    percent: 42.3,
-    total: 3200,
   },
   {
-    title: "Metas",
     icon: SavingsIcon,
     color: "info",
-    percent: 90.0,
-    total: 4500,
   },
   {
-    title: "Gastos",
     icon: SouthEastIcon,
     color: "error",
-    percent: 69.5,
-    total: 5000,
   },
   {
-    title: "Saldo",
     icon: AttachMoneyIcon,
     color: "success",
-    percent: 69.5,
-    total: 5000,
   },
 ];
-export const _envelopes: MockDataItem[] = [
-  {
-    title: "Contas Fixas",
-    icon: ShoppingBagIcon,
-    color: "primary",
-    percent: 42.3,
-    total: 3200,
-  },
-  {
-    title: "Alimentação",
-    icon: ShoppingBagIcon,
-    color: "secondary",
-    percent: 69.5,
-    total: 5000,
-  },
-  {
-    title: "Lazer",
-    icon: ShoppingBagIcon,
-    color: "info",
-    percent: 90.0,
-    total: 4500,
-  },
-  {
-    title: "Transporte",
-    icon: ShoppingBagIcon,
-    color: "warning",
-    percent: 30.0,
-    total: 1500,
-  },
-  {
-    title: "Saúde",
-    icon: ShoppingBagIcon,
-    color: "success",
-    percent: 52.0,
-    total: 4000,
-  },
-  {
-    title: "Bem Estar",
-    icon: ShoppingBagIcon,
-    color: "error",
-    percent: 77.5,
-    total: 3500,
-  },
-];
+

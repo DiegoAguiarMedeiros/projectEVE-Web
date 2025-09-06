@@ -24,7 +24,9 @@ import { AccountPopover } from "src/layouts/components/account-popover";
 import { LanguagePopover } from "src/layouts/components/language-popover";
 import { NotificationsPopover } from "src/layouts/components/notifications-popover";
 import { IncomeStore } from "src/store/useIncomeStore";
+import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 import { useTotalIncomes } from "src/hooks/queries/incomes/useTotalIncomes";
+import { Month, ProcessedIncomesMonthResponse } from "src/types/ProcessedIncomes";
 
 // ----------------------------------------------------------------------
 
@@ -36,9 +38,24 @@ export type DashboardLayoutProps = {
   };
 };
 
+const getLastProcessed = (processed: ProcessedIncomesMonthResponse): { lastProcessedYear: number, lastProcessedMonth: Month } => {
+  const years = Object.keys(processed)
+    .map(Number)
+    .sort((a, b) => a - b);
+
+  const lastYear = years[years.length - 1];
+  const months = processed[lastYear].sort((a, b) => a - b);
+
+  const lastMonth = months[months.length - 1];
+
+  return { lastProcessedYear: lastYear, lastProcessedMonth: lastMonth };
+}
+
+
 export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) {
   const theme = useTheme();
   const { setIncome } = IncomeStore();
+  const { setHasMonthProcessed, setNextMonthToProcess, setNextYearToProcess } = SelectedMonthYearStore();
   const [navOpen, setNavOpen] = useState(false);
   const {
     data: processedIncomesMonths,
@@ -51,22 +68,37 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
     isLoading: isLoadingTotal,
     error: errorTotal,
   } = useTotalIncomes();
-  
+
   useEffect(() => {
     if (totalIncomes?.total != null) {
       setIncome(totalIncomes.total);
     }
   }, [totalIncomes, setIncome]);
 
+  useEffect(() => {
+    if (processedIncomesMonths) {
+
+      const hasInfo = Object.keys(processedIncomesMonths).length > 0;
+      setHasMonthProcessed(hasInfo)
+
+      if (hasInfo) {
+        const { lastProcessedYear, lastProcessedMonth } = getLastProcessed(processedIncomesMonths);
+        if (lastProcessedMonth === 12) {
+          setNextMonthToProcess(1);
+          setNextYearToProcess(lastProcessedYear + 1);
+          return;
+        }
+        setNextMonthToProcess((lastProcessedMonth + 1) as Month);
+        setNextYearToProcess(lastProcessedYear);
+      }
+    }
+  }, [setHasMonthProcessed, setNextMonthToProcess, setNextYearToProcess, processedIncomesMonths])
 
 
   if (isLoadingMonths || isLoadingTotal) return <p>Carregando dados...</p>;
   if (errorMonths || errorTotal || !processedIncomesMonths || !totalIncomes) {
     return <p>Erro ao carregar os dados</p>;
   }
-
-
-
 
   const layoutQuery: Breakpoint = "lg";
 
@@ -107,25 +139,25 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
                       label: "Tema",
                       href: "#",
                       icon: <ThemeToggleButton />,
-                      isLink:false
+                      isLink: false
                     },
                     {
                       label: "Idioma",
                       href: "#",
                       icon: <LanguagePopover data={_langs} />,
-                      isLink:false
+                      isLink: false
                     },
                     {
                       label: "Profile",
                       href: "#",
                       icon: <Iconify width={22} icon="solar:shield-keyhole-bold-duotone" />,
-                      isLink:true
+                      isLink: true
                     },
                     {
                       label: "Settings",
                       href: "#",
                       icon: <Iconify width={22} icon="solar:settings-bold-duotone" />,
-                      isLink:true
+                      isLink: true
                     },
                   ]}
                 />

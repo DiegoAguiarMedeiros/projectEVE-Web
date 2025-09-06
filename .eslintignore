@@ -34,3 +34,5 @@ public/*
 
 # misc
 **/jsconfig.json
+
+src/components/icon/iconsMap.ts

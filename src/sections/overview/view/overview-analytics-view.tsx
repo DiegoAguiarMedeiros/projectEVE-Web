@@ -6,29 +6,25 @@ import { useRef, useCallback } from "react";
 import { Box } from "@mui/material";
 import Grid2 from "@mui/material/Grid2"; // Para navegação (se necessário)
 import "swiper/css/pagination"; // Para paginação (se necessário)
-import { _inout } from "src/_mock";
 import { DashboardContent } from "src/layouts/dashboard";
 
-import { AnalyticsCurrentEnvelopes } from "../analytics-current-envelopes";
-import { AnalyticsWebsiteVisits } from "../analytics-website-visits";
-import { AnalyticsWidgetSummary } from "../analytics-widget-summary";
+import { AnalyticsCurrentEnvelopesGraph } from "src/sections/overview/analytics-current-envelopes";
+import { AnalyticsEnvelopesByYearGraph } from "src/sections/overview/analytics-envelopes-by-year";
+import { AnalyticsEnvelopesMonthOverviewCards } from "src/sections/overview/analytics-envelopes-month-overview";
+import { useListAnalyticsCurrentEnvelopes } from "src/hooks/queries/graph/useListAnalyticsCurrentEnvelopes";
+import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
+import { useListAnalyticsEnvelopesByYear } from "src/hooks/queries/graph/useListAnalyticsEnvelopesByYear";
+import { useListAnalyticsEnvelopesMonthOverview } from "src/hooks/queries/graph/useListAnalyticsEnvelopesMonthOverview";
 
 // ----------------------------------------------------------------------
 
 export function OverviewAnalyticsView() {
-  const sliderRef = useRef(null);
 
-  const handlePrev = useCallback(() => {
-    if (!sliderRef.current) return;
-    // @ts-ignore
-    sliderRef.current.swiper.slidePrev();
-  }, []);
+  const { month, year } = SelectedMonthYearStore();
+  const { data: analyticsCurrentEnvelopes, isLoading: analyticsCurrentEnvelopesIsLoading, error: analyticsCurrentEnvelopesError } = useListAnalyticsCurrentEnvelopes(year, month);
+  const { data: analyticsEnvelopesMonthOverview, isLoading: analyticsEnvelopesMonthOverviewIsLoading, error: analyticsEnvelopesMonthOverviewError } = useListAnalyticsEnvelopesMonthOverview(year, month);
+  const { data: analyticsEnvelopesByYear, isLoading: analyticsEnvelopesByYearIsLoading, error: analyticsEnvelopesByYearError } = useListAnalyticsEnvelopesByYear(year);
 
-  const handleNext = useCallback(() => {
-    if (!sliderRef.current) return;
-    // @ts-ignore
-    sliderRef.current.swiper.slideNext();
-  }, []);
   return (
     <DashboardContent maxWidth="xl">
       <Grid2 container spacing={3}>
@@ -38,52 +34,22 @@ export function OverviewAnalyticsView() {
           justifyContent="space-between"
           sx={{ width: "100%" }}
         >
-          <Grid2 container spacing={2} sx={{ width: "100%" }}>
-            {_inout.map((envelope, index) => (
-              <Grid2
-                key={`_inout${index}`}
-                size={{ xs: 12, sm: 6, md: 3 }}
-              >
-                <AnalyticsWidgetSummary
-                  title={envelope.title}
-                  percent={envelope.percent}
-                  total={envelope.total}
-                  icon={<envelope.icon />}
-                  color={envelope.color}
-                />
-              </Grid2>
-            ))}
-          </Grid2>
+          <AnalyticsEnvelopesMonthOverviewCards
+          analyticsEnvelopesMonthOverview={analyticsEnvelopesMonthOverview}
+          />
         </Box>
 
         <Grid2 size={{ xs: 12, sm: 6, md: 8 }}>
-          <AnalyticsWebsiteVisits
+          <AnalyticsEnvelopesByYearGraph
             title="Orçamento"
             subheader="(+43%) than last year"
-            chart={{
-              categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep"],
-              series: [
-                { name: "Minha Renda", data: [43, 33, 22, 37, 67, 68, 37, 24, 55] },
-                { name: "Metas", data: [20, 10, 17, 27, 30, 7, 4, 17, 24] },
-                { name: "Gastos", data: [51, 70, 47, 67, 40, 37, 24, 70, 24] },
-                { name: "Saldo", data: [20, 10, 17, 27, 30, 7, 4, 17, 24] },
-              ],
-            }}
+            chart={analyticsEnvelopesByYear}
           />
         </Grid2>
         <Grid2 size={{ xs: 12, sm: 6, md: 4 }}>
-          <AnalyticsCurrentEnvelopes
+          <AnalyticsCurrentEnvelopesGraph
             title="Envelopes"
-            chart={{
-              series: [
-                { label: "Contas Fixas", value: 3500 },
-                { label: "Alimentação", value: 2500 },
-                { label: "Lazer", value: 1500 },
-                { label: "Transporte", value: 500 },
-                { label: "Saúde", value: 600 },
-                { label: "Bem Estar", value: 700 },
-              ],
-            }}
+            analyticsCurrentEnvelopes={analyticsCurrentEnvelopes}
           />
         </Grid2>
         {/* <Grid2 size={{ xs: 12, sm: 6, md: 4 }}>

@@ -15,11 +15,7 @@ const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 
 export const ThemeProviderWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { mode, toggleTheme } = useTheme();
-
-  // Atualiza o tema dinamicamente
   const theme = createCustomTheme({ mode });
-
-  // Memoiza o valor do contexto
   const contextValue = useMemo(() => ({ mode, toggleTheme }), [mode, toggleTheme]);
 
   return (

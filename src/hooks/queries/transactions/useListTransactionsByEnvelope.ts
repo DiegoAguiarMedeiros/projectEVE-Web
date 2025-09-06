@@ -4,7 +4,7 @@ import { ITable } from "src/sections/shared/useTable";
 
 export function useListTransactionsByEnvelope(envelopeId: string, year: number, month: number, table: ITable) {
   return useQuery({
-    queryKey: ["transactions", envelopeId, table.page, table.rowsPerPage, table.orderBy, table.order],
+    queryKey: ["transactions", envelopeId, table.page, table.rowsPerPage, table.orderBy, table.order, year, month],
     queryFn: () => listTransactionsByEnvelope(envelopeId, year, month, {
       page: table.page ?? 1,
       pageSize: table.rowsPerPage ?? 10,

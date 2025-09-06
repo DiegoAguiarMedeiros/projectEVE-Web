@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import { Month, ProcessedIncomesMonthResponse } from "src/types/ProcessedIncomes";
-import { useSelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
+import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 
 
 
@@ -33,20 +33,30 @@ export const MonthYearPickerButton: React.FC<MonthYearPickerButtonProps> = ({ da
     const years = Object.keys(data).map(Number).sort((a, b) => a - b);
     const theme = useTheme();
 
-    const { month, year, setMonth, setYear } = useSelectedMonthYearStore();
+    const { month, year, setMonth, setYear } = SelectedMonthYearStore();
     const [selectedMonth, setSelectedMonth] = useState(month);
     const [selectedYear, setSelectedYear] = useState(year);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-    if (years.length === 0) {
-        return (<Button variant="contained" color="primary" disabled>{month}/{year}</Button>)
-    }
 
     const minYear = years[0];
     const maxYear = years[years.length - 1];
 
     const minMonth = Math.min(...data[minYear]);
     const maxMonth = Math.max(...data[maxYear]);
+
+
+    const isNextButtonDisabled = useCallback((): boolean => {
+        if (maxMonth === 12 && selectedYear === maxYear && selectedMonth === maxMonth) return false;
+        if (maxMonth === 12 && selectedYear === maxYear + 1 && selectedMonth === 1) return true;
+        if (maxMonth < 12 && selectedYear === maxYear && selectedMonth === maxMonth + 1) return true;
+        if (selectedYear === maxYear && selectedMonth === maxMonth) return false;
+        return false;
+    }, [selectedMonth, selectedYear, maxMonth, maxYear]);
+
+    if (years.length === 0) {
+        return (<Button variant="contained" color="primary" disabled>{month}/{year}</Button>)
+    }
+
 
     const getYearsAvailable = (): number[] => (Object.keys(data).map(Number))
 
@@ -104,17 +114,27 @@ export const MonthYearPickerButton: React.FC<MonthYearPickerButtonProps> = ({ da
 
     return (
         <Box display="flex" alignItems="center" gap={1} >
-            <IconButton onClick={handlePrevMonth} disabled={selectedMonth === minMonth && selectedYear === minYear}>
-                <ArrowBack />
-            </IconButton>
+            <Box display="flex" alignItems="center" gap={1}>
+                {!(selectedMonth === minMonth && selectedYear === minYear) ? (
+                    <IconButton onClick={handlePrevMonth}>
+                        <ArrowBack />
+                    </IconButton>
+                ) : (
+                    <Box width={40} />
+                )}
 
-            <Button variant="contained" color="primary" onClick={handleOpen}>
-                {months[selectedMonth - 1]}/{selectedYear}
-            </Button>
+                <Button variant="contained" color="primary" onClick={handleOpen}>
+                    {months[selectedMonth - 1]}/{selectedYear}
+                </Button>
 
-            <IconButton onClick={handleNextMonth} disabled={selectedMonth === maxMonth && selectedYear === maxYear}>
-                <ArrowForward />
-            </IconButton>
+                {!isNextButtonDisabled() ? (
+                    <IconButton onClick={handleNextMonth}>
+                        <ArrowForward />
+                    </IconButton>
+                ) : (
+                    <Box width={40} />
+                )}
+            </Box>
 
             <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose} >
                 <Box display="flex" flexDirection="column" sx={{ backgroundColor: theme.palette.background.neutral, borderRadius: '8px', margin: -1 }}>

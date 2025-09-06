@@ -1,5 +1,4 @@
 import type { ColorSystemOptions } from "@mui/material/styles";
-
 import COLORS from "./colors.json";
 import { varAlpha, createPaletteChannel } from "../styles";
 
@@ -10,21 +9,25 @@ declare module "@mui/material/styles/createPalette" {
     whiteChannel: string;
     blackChannel: string;
   }
+
   interface TypeText {
     disabledChannel: string;
     primaryChannel: string;
   }
+
   interface TypeBackground {
     neutral: string;
     neutralChannel: string;
     defaultChannel: string;
   }
+
   interface SimplePaletteColorOptions {
     lighter: string;
     darker: string;
     lighterChannel: string;
     darkerChannel: string;
   }
+
   interface PaletteColor {
     lighter: string;
     darker: string;
@@ -32,6 +35,21 @@ declare module "@mui/material/styles/createPalette" {
     darkerChannel: string;
     main: string;
     mainChannel: string;
+  }
+
+  // Adicionando suporte para LinearProgress na palette
+  interface Palette {
+    linearProgress: {
+      primaryBg: string;
+      secondaryBg: string;
+    };
+  }
+
+  interface PaletteOptions {
+    linearProgress?: {
+      primaryBg: string;
+      secondaryBg: string;
+    };
   }
 }
 
@@ -114,7 +132,10 @@ export const baseAction = {
 };
 
 export const action = {
-  light: { ...baseAction, active: grey[600] },
+  light: {
+    ...baseAction,
+    active: grey[600],
+  },
 };
 
 /*
@@ -131,6 +152,10 @@ export const basePalette = {
   common,
   divider: varAlpha(grey["500Channel"], 0.2),
   action,
+  linearProgress: {
+    primaryBg: varAlpha(grey["500Channel"], 0.24),
+    secondaryBg: varAlpha(grey["500Channel"], 0.08),
+  },
 };
 
 export const lightPalette = {

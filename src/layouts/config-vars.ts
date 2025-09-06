@@ -15,7 +15,10 @@ export const baseVars = (theme: Theme) => ({
   "--layout-nav-item-color": theme.palette.text.secondary,
   "--layout-nav-item-active-color": theme.palette.primary.main,
   "--layout-nav-item-active-bg": varAlpha(theme.palette.primary.mainChannel, 0.08),
+  "--layout-nav-item-block-bg": varAlpha(theme.palette.error.mainChannel, 0.08),
+  "--layout-nav-item-block-color": theme.palette.error.main,
   "--layout-nav-item-hover-bg": varAlpha(theme.palette.primary.mainChannel, 0.16),
+  "--layout-nav-item-block-hover-bg": varAlpha(theme.palette.error.mainChannel, 0.16),
   // header
   "--layout-header-blur": "8px",
   "--layout-header-zIndex": 1100,
