@@ -9,9 +9,9 @@ import { stylesMode } from "src/theme/styles";
 
 import { Logo } from "src/components/logo";
 
+import { HeaderSection } from "src/layouts/core/header-section";
+import { LayoutSection } from "src/layouts/core/layout-section";
 import { Main } from "./main";
-import { HeaderSection } from "../core/header-section";
-import { LayoutSection } from "../core/layout-section";
 
 // ----------------------------------------------------------------------
 

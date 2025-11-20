@@ -27,6 +27,7 @@ import { IncomeStore } from "src/store/useIncomeStore";
 import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 import { useTotalIncomes } from "src/hooks/queries/incomes/useTotalIncomes";
 import { Month, ProcessedIncomesMonthResponse } from "src/types/ProcessedIncomes";
+import dayjs from "dayjs";
 
 // ----------------------------------------------------------------------
 
@@ -63,6 +64,8 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
     error: errorMonths,
   } = useProcessedIncomesMonth();
 
+  console.log("Processed Incomes Months:", processedIncomesMonths);
+
   const {
     data: totalIncomes,
     isLoading: isLoadingTotal,
@@ -76,11 +79,11 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
   }, [totalIncomes, setIncome]);
 
   useEffect(() => {
-    if (processedIncomesMonths) {
+    if (processedIncomesMonths !== undefined) {
 
       const hasInfo = Object.keys(processedIncomesMonths).length > 0;
       setHasMonthProcessed(hasInfo)
-
+      console.log("hasInfo", hasInfo)
       if (hasInfo) {
         const { lastProcessedYear, lastProcessedMonth } = getLastProcessed(processedIncomesMonths);
         if (lastProcessedMonth === 12) {
@@ -90,6 +93,11 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
         }
         setNextMonthToProcess((lastProcessedMonth + 1) as Month);
         setNextYearToProcess(lastProcessedYear);
+      } else {
+        const currentDate = new Date();
+        const currentMonth = currentDate.getMonth() + 1;
+        setNextMonthToProcess(currentMonth as Month);
+        setNextYearToProcess(currentDate.getFullYear());
       }
     }
   }, [setHasMonthProcessed, setNextMonthToProcess, setNextYearToProcess, processedIncomesMonths])
@@ -132,9 +140,15 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
             rightArea: (
               <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
 
-                <NotificationsPopover data={_notifications} />
+
                 <AccountPopover
                   data={[
+                    {
+                      label: "Notificação",
+                      href: "#",
+                      icon: <NotificationsPopover data={_notifications} />,
+                      isLink: false
+                    },
                     {
                       label: "Tema",
                       href: "#",

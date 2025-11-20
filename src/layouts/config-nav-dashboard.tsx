@@ -1,4 +1,5 @@
 import EmailIcon from "@mui/icons-material/Email";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
 import SavingsIcon from "@mui/icons-material/Savings";
@@ -20,6 +21,11 @@ export const navData = [
     title: "Envelopes",
     path: "/envelopes",
     icon: <EmailIcon />,
+  },
+  {
+    title: "Minhas Rendas",
+    path: "/renda",
+    icon: <AttachMoneyIcon />,
   },
   {
     title: "Configurações",

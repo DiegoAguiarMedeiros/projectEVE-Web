@@ -9,7 +9,7 @@ import { alpha as hexAlpha } from "@mui/material/styles";
 
 import { varAlpha } from "src/theme/styles";
 
-import { Iconify } from "../iconify";
+import { Iconify } from "src/components/iconify/iconify";
 
 import type { ColorPickerProps } from "./types";
 

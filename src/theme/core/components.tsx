@@ -1,6 +1,6 @@
 import type { Theme, Components } from "@mui/material/styles";
 import SvgIcon from "@mui/material/SvgIcon";
-import { varAlpha } from "../styles";
+import { varAlpha } from "src/theme/styles";
 
 const transition = "background-color 0.03s, color 0.03s, border-color 0.03s";
 
@@ -69,12 +69,20 @@ const MuiCardHeader: Components<Theme>["MuiCardHeader"] = {
 
 const MuiOutlinedInput: Components<Theme>["MuiOutlinedInput"] = {
   styleOverrides: {
+    root: ({ theme }) => ({
+      "& input:-webkit-autofill": {
+        WebkitBoxShadow: "0 0 0 1000px transparent inset",
+        WebkitTextFillColor: theme.palette.text.primary, // agora pega do tema
+        transition: "background-color 9999s ease-in-out 0s",
+      },
+    }),
     notchedOutline: ({ theme }) => ({
       borderColor: varAlpha(theme.palette.grey["500Channel"], 0.2),
       transition,
     }),
   },
 };
+
 
 const MuiPaper: Components<Theme>["MuiPaper"] = {
   defaultProps: { elevation: 0 },
@@ -179,7 +187,7 @@ const MuiAppBar: Components<Theme>["MuiAppBar"] = {
       backgroundColor: theme.palette.background.paper,
       color: theme.palette.text.primary,
       boxShadow: theme.customShadows.card,
-      transition, 
+      transition,
     }),
   },
 };

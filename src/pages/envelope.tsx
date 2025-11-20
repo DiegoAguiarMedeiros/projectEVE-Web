@@ -13,6 +13,7 @@ import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 
 export default function Page() {
 
+  const queryClient = useQueryClient();
   const table = useTable();
   const [envelopeActived, setEnvelopeActive] = useState<string>("");
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -20,19 +21,22 @@ export default function Page() {
   const { data: envelopes, isLoading: envelopesIsLoading, error: envelopesError } = useListEnvelopesWithAmount(year, month);
   const { data: transactions, isLoading: transactionsIsLoading, error: transactionsError } = useListTransactionsByEnvelope(envelopeActived, year, month, table);
 
-
-
-  const queryClient = useQueryClient();
-  const onMonthYearChange = useCallback((): void => {
-    queryClient.invalidateQueries({ queryKey: ["envelopes"] });
+  useEffect(() => {
     queryClient.invalidateQueries({ queryKey: ["transactions", envelopeActived] });
-  }, [queryClient, envelopeActived]);
+  }, [table,queryClient, envelopeActived])
+
+
+  const onMonthYearChange = useCallback((): void => {
+    queryClient.invalidateQueries({ queryKey: ["transactions", envelopeActived] });
+    table.onResetPage()
+  }, [table,queryClient, envelopeActived]);
 
   useEffect(() => {
     onMonthYearChange()
   }, [onMonthYearChange])
 
   useEffect(() => {
+    console.log("envelopes", envelopes)
     if (envelopes && envelopes.length > 0) {
       const saved = localStorage.getItem("lastSlideIndex");
       const index = saved ? parseInt(saved, 10) : 0;
@@ -72,7 +76,9 @@ export default function Page() {
         handleSlideClick={handleSlideClick}
         envelopeActived={envelopeActived}
         transactions={transactions}
-        envelopes={envelopes || []} />
+        envelopes={envelopes || []}
+        table={table}
+      />
     </>
   );
 }

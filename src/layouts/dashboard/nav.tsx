@@ -113,7 +113,7 @@ export function NavMobile({
 // ----------------------------------------------------------------------
 
 export function NavContent({ data, slots, sx }: NavContentProps) {
-  const { month, hasMonthProcessed, nextMonthToProcess, nextYearToProcess } = SelectedMonthYearStore();
+  const { month, year, hasMonthProcessed, nextMonthToProcess, nextYearToProcess } = SelectedMonthYearStore();
   const currentMonth = (new Date().getMonth() + 1) as Month;
 
   const isBlockEnvelopeItemMenu = (): boolean => {
@@ -121,7 +121,7 @@ export function NavContent({ data, slots, sx }: NavContentProps) {
       return true
     }
 
-    if (currentMonth === nextMonthToProcess || month === nextMonthToProcess) {
+    if ((currentMonth === nextMonthToProcess || month === nextMonthToProcess) && year === nextYearToProcess) {
       return true
     }
     return false

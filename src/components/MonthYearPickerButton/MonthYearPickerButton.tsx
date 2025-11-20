@@ -38,12 +38,14 @@ export const MonthYearPickerButton: React.FC<MonthYearPickerButtonProps> = ({ da
     const [selectedYear, setSelectedYear] = useState(year);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-    const minYear = years[0];
+    const minYear = years[0] ? years[0] : year;
     const maxYear = years[years.length - 1];
 
-    const minMonth = Math.min(...data[minYear]);
-    const maxMonth = Math.max(...data[maxYear]);
+    console.log("data", data)
+    console.log("years", years)
 
+    const minMonth = years.length > 0 ? Math.min(...data[minYear]) : month;
+    const maxMonth =  years.length > 0 ? Math.max(...data[maxYear]) : year;
 
     const isNextButtonDisabled = useCallback((): boolean => {
         if (maxMonth === 12 && selectedYear === maxYear && selectedMonth === maxMonth) return false;
@@ -75,8 +77,17 @@ export const MonthYearPickerButton: React.FC<MonthYearPickerButtonProps> = ({ da
     };
 
     const handleYearChange = (event: any) => {
-        setYear(Number(event.target.value));
-        setSelectedYear(Number(event.target.value));
+        const newYear = Number(event.target.value)
+        if (newYear === maxYear) {
+            setMonth(maxMonth as Month)
+            setSelectedMonth(maxMonth as Month);
+        }
+        if (newYear === minYear) {
+            setMonth(minMonth as Month)
+            setSelectedMonth(minMonth as Month);
+        }
+        setYear(newYear);
+        setSelectedYear(newYear);
     };
 
     const handlePrevMonth = () => {
@@ -136,8 +147,19 @@ export const MonthYearPickerButton: React.FC<MonthYearPickerButtonProps> = ({ da
                 )}
             </Box>
 
-            <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose} >
-                <Box display="flex" flexDirection="column" sx={{ backgroundColor: theme.palette.background.neutral, borderRadius: '8px', margin: -1 }}>
+            <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+                anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "center",
+                }}
+                transformOrigin={{
+                    vertical: "top",
+                    horizontal: "center",
+                }} >
+                <Box display="flex" flexDirection="column" sx={{ backgroundColor: theme.palette.background.neutral, borderRadius: '8px' }}>
                     <Box display="flex" flexDirection="column" p={2} >
                         <FormControl fullWidth>
                             <InputLabel id="year-select-label">Ano</InputLabel>

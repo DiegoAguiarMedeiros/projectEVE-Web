@@ -13,7 +13,7 @@ import { fToNow } from "src/utils/format-time";
 import { Iconify } from "src/components/iconify";
 import { Scrollbar } from "src/components/scrollbar";
 
-import type { PostItemProps } from "../blog/post-item";
+import type { PostItemProps } from "src/sections/blog/post-item";
 
 // ----------------------------------------------------------------------
 

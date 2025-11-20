@@ -4,7 +4,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 
 import { createCustomTheme } from "src/theme/create-theme";
 
-import useTheme from "../hooks/useTheme";
+import useTheme from "src/hooks/useTheme";
 
 type ThemeContextProps = {
   mode: "light" | "dark";

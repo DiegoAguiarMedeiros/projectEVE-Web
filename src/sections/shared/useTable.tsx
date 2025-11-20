@@ -16,9 +16,9 @@ export type ITable = {
 
 
 export function useTable(): ITable {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [orderBy, setOrderBy] = useState("createdAt");
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [selected, setSelected] = useState<string[]>([]);
   const [order, setOrder] = useState<"asc" | "desc">("desc");
 

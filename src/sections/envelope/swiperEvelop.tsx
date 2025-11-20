@@ -20,6 +20,7 @@ import {
   TableContainer,
   TablePagination,
   Box,
+  useMediaQuery,
 } from "@mui/material";
 
 import { _users } from "src/_mock";
@@ -30,6 +31,8 @@ import { TransactionTable } from "src/sections/envelope/transactionTable";
 import { Pagination } from "src/types/Pagination";
 import { Envelopes } from "src/types/Envelopes";
 import { Transactions } from "src/types/Transactions";
+import { ITable } from "src/sections/shared/useTable";
+import { TransactionList } from "src/sections/envelope/transactionList";
 
 type SwiperEnvelopProps = {
   envelopes: Envelopes[]
@@ -37,16 +40,26 @@ type SwiperEnvelopProps = {
   handleSlideClick: (index: number) => void
   envelopeActived: string;
   transactions: Pagination<Transactions> | undefined
+  table: ITable
 }
-export default function SwiperEnvelop({ envelopes, currentIndex, handleSlideClick, envelopeActived, transactions }: SwiperEnvelopProps) {
+export default function SwiperEnvelop({
+  envelopes,
+  currentIndex,
+  handleSlideClick,
+  envelopeActived,
+  transactions,
+  table
+}: SwiperEnvelopProps) {
 
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
 
   return (
     <>
       <Box style={{ overflowX: "hidden", width: '100%', padding: '0  0 20px 0' }}>
         <Swiper
-          style={{ overflow: "visible", cursor: "pointer", }}
+          style={{ overflow: "visible", cursor: "pointer" }}
           spaceBetween={10}
           slidesPerView={1}
           breakpoints={{
@@ -56,6 +69,12 @@ export default function SwiperEnvelop({ envelopes, currentIndex, handleSlideClic
           }}
           modules={[FreeMode, Navigation, Thumbs]}
           initialSlide={currentIndex}
+          onSlideChange={(swiper) => {
+            // quando for mobile (apenas 1 slide visível)
+            if (window.innerWidth < 600) {
+              handleSlideClick(swiper.activeIndex);
+            }
+          }}
         >
           {envelopes.map((envelope, index) => (
             <SwiperSlide key={index}>
@@ -74,7 +93,19 @@ export default function SwiperEnvelop({ envelopes, currentIndex, handleSlideClic
           ))}
         </Swiper>
       </Box>
-      <TransactionTable transactions={transactions} envelopeId={envelopeActived} />
+      {isMobile ? (
+        <TransactionList
+          transactions={transactions}
+          envelopeId={envelopeActived}
+          table={table}
+        />
+      ) : (
+        <TransactionTable
+          transactions={transactions}
+          envelopeId={envelopeActived}
+          table={table}
+        />
+      )}
 
     </>
   );

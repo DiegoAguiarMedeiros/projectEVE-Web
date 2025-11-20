@@ -1,5 +1,4 @@
 import type { CardProps } from "@mui/material/Card";
-import type { ColorType } from "src/theme/core/palette";
 
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -12,7 +11,6 @@ import { varAlpha, bgGradient } from "src/theme/styles";
 import { SvgColor } from "src/components/svg-color";
 import { Grid2, Typography } from "@mui/material";
 import { AnalyticsEnvelopesMonthOverview } from "src/types/Graph";
-import React from "react";
 import { iconsMap } from "src/components/icon/iconsMap";
 
 // ----------------------------------------------------------------------

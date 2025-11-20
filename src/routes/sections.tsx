@@ -16,7 +16,7 @@ export const HomePage = lazy(() => import("src/pages/home"));
 export const BlogPage = lazy(() => import("src/pages/blog"));
 export const EnvelopePage = lazy(() => import("src/pages/envelope"));
 export const SignInPage = lazy(() => import("src/pages/sign-in"));
-export const ProductsPage = lazy(() => import("src/pages/products"));
+export const IncomesPage = lazy(() => import("src/pages/incomes"));
 export const SettingsPage = lazy(() => import("src/pages/settings"));
 export const CompleteRegistration = lazy(() => import("src/pages/completeRegistration"));
 export const Registration = lazy(() => import("src/pages/registration"));
@@ -53,6 +53,7 @@ export function Router() {
       children: [
         { element: <HomePage />, index: true },
         { path: "envelopes", element: <EnvelopePage /> },
+        { path: "renda", element: <IncomesPage /> },
         { path: "configuracoes", element: <SettingsPage /> },
       ],
     },

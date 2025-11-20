@@ -35,18 +35,20 @@ export function OverviewAnalyticsView() {
           sx={{ width: "100%" }}
         >
           <AnalyticsEnvelopesMonthOverviewCards
-          analyticsEnvelopesMonthOverview={analyticsEnvelopesMonthOverview}
+            analyticsEnvelopesMonthOverview={analyticsEnvelopesMonthOverview}
           />
         </Box>
 
-        <Grid2 size={{ xs: 12, sm: 6, md: 8 }}>
+        <Grid2 size={{ xs: 12, sm: 6, md: 8 }}
+          order={{ xs: 2, sm: 1 }}>
           <AnalyticsEnvelopesByYearGraph
             title="Orçamento"
             subheader="(+43%) than last year"
             chart={analyticsEnvelopesByYear}
           />
         </Grid2>
-        <Grid2 size={{ xs: 12, sm: 6, md: 4 }}>
+        <Grid2 size={{ xs: 12, sm: 6, md: 4 }}
+          order={{ xs: 1, sm: 2 }}>
           <AnalyticsCurrentEnvelopesGraph
             title="Envelopes"
             analyticsCurrentEnvelopes={analyticsCurrentEnvelopes}

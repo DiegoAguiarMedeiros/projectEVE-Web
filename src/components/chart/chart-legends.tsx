@@ -106,8 +106,8 @@ export function ChartLegends({
 
             <Box component="span" sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
               {icons?.length ? icons?.[0] : null}
-              <Typography variant="caption">{series}</Typography>
-              <Typography variant="caption">{sublabels && sublabels[index]}</Typography>
+              <Typography variant="caption" color={colors[index]}>{series}</Typography>
+              <Typography variant="caption" color={colors[index]}>{sublabels && sublabels[index]}</Typography>
             </Box>
             {subValues && <ProgressWithLabel value={subValues[index]} color={colors[index]} />}
           </StyledLegend>

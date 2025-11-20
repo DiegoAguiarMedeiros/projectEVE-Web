@@ -4,8 +4,8 @@ import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
 import GlobalStyles from "@mui/material/GlobalStyles";
 
-import { baseVars } from "../config-vars";
-import { layoutClasses } from "../classes";
+import { baseVars } from "src/layouts/config-vars";
+import { layoutClasses } from "src/layouts/classes";
 
 // ----------------------------------------------------------------------
 

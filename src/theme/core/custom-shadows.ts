@@ -1,4 +1,4 @@
-import { varAlpha } from "../styles";
+import { varAlpha } from "src/theme/styles";
 import { grey, info, error, common, primary, success, warning, secondary } from "./palette";
 
 // ----------------------------------------------------------------------

@@ -1,4 +1,4 @@
-import { UserProps } from "../user/user-table-row";
+import { UserProps } from "src/sections/user/user-table-row";
 
 // ----------------------------------------------------------------------
 

@@ -21,7 +21,7 @@ export const getTransactions = (id: string) =>
   api.get<Transactions>(`/transactions/${id}`);
 
 export const updateTransactions = (data: Transactions) =>
-  api.patch<Transactions>(`/transactions/${data.id}`, data);
+  api.put<Transactions>(`/transactions/${data.id}`, data);
 
 export const updateStatusTransactions = (data: TransactionsUpdateStatus) =>
   api.patch<Transactions>(`/transactions/${data.id}/change-status`, { status: data.status });

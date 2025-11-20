@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import { useProcessIncomes } from "src/hooks/mutations/process-incomes/useProcessIncomes";
+import { useCreateProcessedIncomes } from "src/hooks/mutations/processed-incomes/useCreateProcessedIncomes";
 
 import { RouterLink } from "src/routes/components";
 import { IncomeStore } from "src/store/useIncomeStore";
@@ -10,22 +10,23 @@ import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 
 // ----------------------------------------------------------------------
 
-type NoDataViewProps = {
+type NoEnvelopeViewProps = {
   title?: string;
   description?: string;
 };
 
-export function NoDataView({ title, description }: NoDataViewProps) {
+export function NoEnvelopeView({ title, description }: NoEnvelopeViewProps) {
 
   const { income } = IncomeStore();
   const { nextMonthToProcess, nextYearToProcess } = SelectedMonthYearStore();
-  const processMutation = useProcessIncomes();
+  const processMutation = useCreateProcessedIncomes();
   const handleClickProcess = async () => {
     await processMutation.mutateAsync({
-      totalIncomeProcessed: income,
-      month: nextMonthToProcess,
-      day: 5,
-      year: nextYearToProcess,
+      description:`Renda do mês ${nextMonthToProcess}/${nextYearToProcess}`,
+      totalIncomeProcessed: String(income),
+      month: String(nextMonthToProcess),
+      day: String(5),
+      year: String(nextYearToProcess),
       isSplitted: true,
     });
   }
@@ -43,7 +44,6 @@ export function NoDataView({ title, description }: NoDataViewProps) {
       <Button variant="contained" color="primary" onClick={handleClickProcess}>
         Processar {`${nextMonthToProcess} / ${nextYearToProcess}`}
       </Button>
-      income: {income}
     </Container>
   );
 }

@@ -11,7 +11,7 @@ import { useTheme } from "@mui/material/styles";
 
 import { bgBlur, varAlpha } from "src/theme/styles";
 
-import { layoutClasses } from "../classes";
+import { layoutClasses } from "src/layouts/classes";
 
 // ----------------------------------------------------------------------
 

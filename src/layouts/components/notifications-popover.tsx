@@ -21,7 +21,7 @@ import { fToNow } from "src/utils/format-time";
 
 import { Iconify } from "src/components/iconify";
 import { Scrollbar } from "src/components/scrollbar";
-import { useTheme } from "@mui/material";
+import { MenuItem, useTheme } from "@mui/material";
 
 // ----------------------------------------------------------------------
 
@@ -46,8 +46,8 @@ export function NotificationsPopover({ data = [], sx, ...other }: NotificationsP
 
   const [openPopover, setOpenPopover] = useState<HTMLButtonElement | null>(null);
 
-  const handleOpenPopover = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
-    setOpenPopover(event.currentTarget);
+  const handleOpenPopover = useCallback(() => {
+    console.log('Notificação');
   }, []);
 
   const handleClosePopover = useCallback(() => {
@@ -65,16 +65,14 @@ export function NotificationsPopover({ data = [], sx, ...other }: NotificationsP
 
   return (
     <>
-      <IconButton
-        color={openPopover ? "primary" : "default"}
+      <MenuItem
         onClick={handleOpenPopover}
-        sx={sx}
-        {...other}
       >
         <Badge badgeContent={totalUnRead} color="error">
           <Iconify width={24} icon="solar:bell-bing-bold-duotone" />
         </Badge>
-      </IconButton>
+        Notificação
+      </MenuItem>
 
       <Popover
         open={!!openPopover}

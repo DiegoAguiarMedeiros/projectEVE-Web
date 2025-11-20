@@ -8,12 +8,12 @@ import Typography from "@mui/material/Typography";
 import { _products } from "src/_mock";
 import { DashboardContent } from "src/layouts/dashboard";
 
-import { ProductItem } from "../product-item";
-import { ProductSort } from "../product-sort";
-import { CartIcon } from "../product-cart-widget";
-import { ProductFilters } from "../product-filters";
+import { ProductItem } from "src/sections/product/product-item";
+import { ProductSort } from "src/sections/product/product-sort";
+import { CartIcon } from "src/sections/product/product-cart-widget";
+import { ProductFilters } from "src/sections/product/product-filters";
 
-import type { FiltersProps } from "../product-filters";
+import type { FiltersProps } from "src/sections/product/product-filters";
 
 // ----------------------------------------------------------------------
 

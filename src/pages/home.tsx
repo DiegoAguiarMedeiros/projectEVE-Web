@@ -1,5 +1,5 @@
 import { CONFIG } from "src/config-global";
-import { NoDataView } from "src/sections/noData";
+import { NoEnvelopeView } from "src/sections/no-envelope-view";
 
 import { OverviewAnalyticsView } from "src/sections/overview/view";
 import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
@@ -9,16 +9,16 @@ import { Month } from "src/types/ProcessedIncomes";
 
 export default function Page() {
 
-  const { month,hasMonthProcessed, nextMonthToProcess, nextYearToProcess } = SelectedMonthYearStore();
+  const { month,year,hasMonthProcessed, nextMonthToProcess, nextYearToProcess } = SelectedMonthYearStore();
 
   const currentMonth = (new Date().getMonth() + 1) as Month;
 
   if (!hasMonthProcessed) {
-    return (<NoDataView title="Você não possui envelopes criados" description="Você ainda não processou nenhum mês."/>)
+    return (<NoEnvelopeView title="Você não possui envelopes criados" description="Você ainda não processou nenhum mês."/>)
   }
 
-  if (currentMonth === nextMonthToProcess || month === nextMonthToProcess) {
-    return (<NoDataView title="Você não possui envelopes criados" description="Você ainda não processou o mês"/>)
+  if ((currentMonth === nextMonthToProcess || month === nextMonthToProcess) && year === nextYearToProcess) {
+    return (<NoEnvelopeView title="Você não possui envelopes criados" description="Você ainda não processou o mês"/>)
 
   }
 

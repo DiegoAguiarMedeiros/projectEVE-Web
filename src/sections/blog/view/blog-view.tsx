@@ -11,9 +11,9 @@ import { DashboardContent } from "src/layouts/dashboard";
 
 import { Iconify } from "src/components/iconify";
 
-import { PostItem } from "../post-item";
-import { PostSort } from "../post-sort";
-import { PostSearch } from "../post-search";
+import { PostItem } from "src/sections/blog/post-item";
+import { PostSort } from "src/sections/blog/post-sort";
+import { PostSearch } from "src/sections/blog/post-search";
 
 // ----------------------------------------------------------------------
 

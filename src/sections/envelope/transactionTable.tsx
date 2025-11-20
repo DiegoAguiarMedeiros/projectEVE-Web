@@ -2,7 +2,7 @@ import { useCallback, useEffect, } from "react";
 import { Card, TableContainer, Table, TableBody, TablePagination } from "@mui/material";
 import { useSnackbar } from "notistack";
 import dayjs from "dayjs";
-import { useTable } from "src/sections/shared/useTable";
+import { ITable, useTable } from "src/sections/shared/useTable";
 import { TableNoData } from "src/components/table/TableNoData";
 import { CustomTableRow } from "src/components/table/TableRow";
 import { Iconify } from "src/components/iconify";
@@ -16,27 +16,19 @@ import { Transactions, TransactionsStatus, TransactionsUpdateStatus } from "src/
 import { useDeleteTransactions } from "src/hooks/mutations/transactions/useDeleteTransactions";
 import { useUpdateTransactions } from "src/hooks/mutations/transactions/useUpdateTransactions";
 import { useUpdateStatusTransactions } from "src/hooks/mutations/transactions/useUpdateStatusTransactions";
+import { useQueryClient } from "@tanstack/react-query";
 
 type TransactionTableProps = {
     envelopeId: string;
     transactions: Pagination<Transactions> | undefined
+    table: ITable
 }
-export function TransactionTable({ envelopeId, transactions }: TransactionTableProps) {
+export function TransactionTable({ envelopeId, transactions, table }: TransactionTableProps) {
 
-    const table = useTable();
     const {
         month,
         year,
     } = SelectedMonthYearStore();
-
-
-
-    useEffect(() => {
-        console.info("table.page", table.page)
-        console.info("table.rowsPerPage", table.rowsPerPage)
-    }, [table.page, table.rowsPerPage])
-
-    const { enqueueSnackbar } = useSnackbar();
 
     const deleteTransactionMutation = useDeleteTransactions();
     const updateStatusTransactionMutation = useUpdateStatusTransactions();
