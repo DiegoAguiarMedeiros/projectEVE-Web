@@ -16,14 +16,14 @@ import { Transactions, TransactionsStatus, TransactionsUpdateStatus } from "src/
 import { useDeleteTransactions } from "src/hooks/mutations/transactions/useDeleteTransactions";
 import { useUpdateTransactions } from "src/hooks/mutations/transactions/useUpdateTransactions";
 import { useUpdateStatusTransactions } from "src/hooks/mutations/transactions/useUpdateStatusTransactions";
-import { useQueryClient } from "@tanstack/react-query";
 
 type TransactionTableProps = {
     envelopeId: string;
     transactions: Pagination<Transactions> | undefined
-    table: ITable
+    table: ITable,
+    activeBorderColor: string
 }
-export function TransactionTable({ envelopeId, transactions, table }: TransactionTableProps) {
+export function TransactionTable({ envelopeId, transactions, table, activeBorderColor }: TransactionTableProps) {
 
     const {
         month,
@@ -79,13 +79,18 @@ export function TransactionTable({ envelopeId, transactions, table }: Transactio
     }
 
     return (
-        <Card sx={{ width: "100%" }}>
+        <Card sx={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            boxShadow:  `0 0 0 4px ${activeBorderColor}, 0 12px 24px rgba(0,0,0,0.2)` ,
+        }}>
             <TableToolbar
                 numSelected={table.selected.length}
                 form={<TransactionForm buttonLabel="Adicionar" envelopeId={envelopeId} />}
             />
 
-            <TableContainer sx={{ overflow: "unset" }}>
+            <TableContainer sx={{ overflow: "unset", flex: '1 0 0' }}>
                 <Table sx={{ minWidth: 800 }}>
                     {transactions && transactions.data.length > 0 ? <CustomTableHead
                         order={table.order}
@@ -107,6 +112,7 @@ export function TransactionTable({ envelopeId, transactions, table }: Transactio
                             { id: "status", label: "Status" },
                             { id: "" },
                         ]}
+                        activeBorderColor={activeBorderColor}
                     /> : <></>}
 
                     <TableBody>

@@ -17,32 +17,33 @@ export default function Page() {
   const table = useTable();
   const [envelopeActived, setEnvelopeActive] = useState<string>("");
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [activeBorderColor, setActiveBorderColor] = useState<string>("");
   const { month, year } = SelectedMonthYearStore();
   const { data: envelopes, isLoading: envelopesIsLoading, error: envelopesError } = useListEnvelopesWithAmount(year, month);
   const { data: transactions, isLoading: transactionsIsLoading, error: transactionsError } = useListTransactionsByEnvelope(envelopeActived, year, month, table);
 
   useEffect(() => {
     queryClient.invalidateQueries({ queryKey: ["transactions", envelopeActived] });
-  }, [table,queryClient, envelopeActived])
+  }, [table, queryClient, envelopeActived])
 
 
   const onMonthYearChange = useCallback((): void => {
     queryClient.invalidateQueries({ queryKey: ["transactions", envelopeActived] });
     table.onResetPage()
-  }, [table,queryClient, envelopeActived]);
+  }, [table, queryClient, envelopeActived]);
 
   useEffect(() => {
     onMonthYearChange()
   }, [onMonthYearChange])
 
   useEffect(() => {
-    console.log("envelopes", envelopes)
     if (envelopes && envelopes.length > 0) {
       const saved = localStorage.getItem("lastSlideIndex");
       const index = saved ? parseInt(saved, 10) : 0;
       const envelope = envelopes[index];
       if (envelope) {
         setEnvelopeActive(envelope.id);
+        setActiveBorderColor(envelope.color);
       }
     }
   }, [envelopes]);
@@ -53,6 +54,7 @@ export default function Page() {
     const selected = envelopes?.[index];
     if (selected) {
       setEnvelopeActive(selected.id);
+      setActiveBorderColor(selected.color);
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
     }
   };
@@ -77,6 +79,7 @@ export default function Page() {
         envelopeActived={envelopeActived}
         transactions={transactions}
         envelopes={envelopes || []}
+        activeBorderColor={activeBorderColor}
         table={table}
       />
     </>

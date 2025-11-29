@@ -41,9 +41,6 @@ export const MonthYearPickerButton: React.FC<MonthYearPickerButtonProps> = ({ da
     const minYear = years[0] ? years[0] : year;
     const maxYear = years[years.length - 1];
 
-    console.log("data", data)
-    console.log("years", years)
-
     const minMonth = years.length > 0 ? Math.min(...data[minYear]) : month;
     const maxMonth =  years.length > 0 ? Math.max(...data[maxYear]) : year;
 

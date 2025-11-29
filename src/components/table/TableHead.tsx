@@ -6,7 +6,6 @@ import TableCell from "@mui/material/TableCell";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import { visuallyHidden } from "src/sections/shared/utils";
 
-
 // ----------------------------------------------------------------------
 
 type CustomTableHeadProps = {
@@ -17,6 +16,7 @@ type CustomTableHeadProps = {
   onSort: (id: string) => void;
   headLabel: Record<string, any>[];
   onSelectAllRows: (checked: boolean) => void;
+  activeBorderColor?: string;
 };
 
 export function CustomTableHead({
@@ -27,11 +27,12 @@ export function CustomTableHead({
   headLabel,
   numSelected,
   onSelectAllRows,
+  activeBorderColor
 }: CustomTableHeadProps) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox" sx={{backgroundColor: "var(--layout-nav-item-active-bg)"}}>
+        <TableCell padding="checkbox" sx={{ backgroundColor: activeBorderColor ? `${activeBorderColor}87` : "var(--layout-nav-item-active-bg)" }}>
           <Checkbox
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
@@ -46,7 +47,7 @@ export function CustomTableHead({
             key={headCell.id}
             align={headCell.align || "left"}
             sortDirection={orderBy === headCell.id ? order : false}
-            sx={{ width: headCell.width, minWidth: headCell.minWidth,backgroundColor: "var(--layout-nav-item-active-bg)" }}
+            sx={{ width: headCell.width, minWidth: headCell.minWidth, backgroundColor: activeBorderColor ? `${activeBorderColor}87` : "var(--layout-nav-item-active-bg)" }}
           >
             <TableSortLabel
               hideSortIcon

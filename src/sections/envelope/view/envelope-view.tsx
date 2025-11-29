@@ -16,9 +16,10 @@ type EnvelopeViewProps = {
   handleSlideClick: (index: number) => void
   envelopeActived: string;
   transactions: Pagination<Transactions> | undefined
-  table: ITable
+  table: ITable,
+  activeBorderColor: string
 }
-export function EnvelopeView({ envelopes, currentIndex, handleSlideClick, envelopeActived, transactions,table }: EnvelopeViewProps) {
+export function EnvelopeView({ envelopes, currentIndex, handleSlideClick, envelopeActived, transactions,table,activeBorderColor }: EnvelopeViewProps) {
   return (
     <DashboardContent>
       <Grid2 container spacing={3}>
@@ -29,6 +30,7 @@ export function EnvelopeView({ envelopes, currentIndex, handleSlideClick, envelo
           transactions={transactions}
           envelopes={envelopes}
           table={table}
+          activeBorderColor={activeBorderColor}
           />
       </Grid2>
     </DashboardContent>

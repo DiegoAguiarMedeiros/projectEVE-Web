@@ -64,7 +64,6 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
     error: errorMonths,
   } = useProcessedIncomesMonth();
 
-  console.log("Processed Incomes Months:", processedIncomesMonths);
 
   const {
     data: totalIncomes,
@@ -83,7 +82,7 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
 
       const hasInfo = Object.keys(processedIncomesMonths).length > 0;
       setHasMonthProcessed(hasInfo)
-      console.log("hasInfo", hasInfo)
+
       if (hasInfo) {
         const { lastProcessedYear, lastProcessedMonth } = getLastProcessed(processedIncomesMonths);
         if (lastProcessedMonth === 12) {

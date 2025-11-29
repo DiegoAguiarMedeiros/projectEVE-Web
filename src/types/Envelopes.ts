@@ -4,6 +4,7 @@ export interface Envelopes {
     color: string;
     percentage: number;
     amount?: number;
+    used?: number;
     userId?: string;
 }
 
