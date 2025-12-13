@@ -20,7 +20,7 @@ const style = {
 
 
 type TransitionsModalProps = {
-  openButton: React.ReactNode;
+  openButton?: React.ReactNode;
   okButton: React.ReactNode;
   open: boolean;
   handleOpen: VoidFunction;

@@ -3,9 +3,9 @@ import { Box, Card, Typography, useTheme } from "@mui/material";
 import { _timeline } from "src/_mock/_data";
 import { useQuery } from "@tanstack/react-query";
 import Badges from "src/components/badge/badge";
-import { EnvelopeCard } from "src/sections/settings/envelope/EnvelopeCard";
 import { Envelopes } from "src/types/Envelopes";
-import { EnvelopeList } from "./EnvelopeList";
+import { EnvelopeCard } from "./EnvelopeCard";
+import { EnvelopeForm } from "./form";
 
 type EnvelopesProps = {
     envelopes: Envelopes[]
@@ -15,10 +15,23 @@ export function EnvelopesTable({ envelopes }: EnvelopesProps) {
 
 
     const theme = useTheme();
+
+
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+    const [envelopeActive, setEnvelopeActive] = useState<Envelopes>(envelopes[0]);
     const [envelopeAlocation, setEnvelopeAllocation] = useState(0);
+
+
+    const handleActiveEnvelope = (envelope: Envelopes) => {
+        setEnvelopeActive(envelope);
+        handleOpen()
+    }
     useEffect(() => {
         if (envelopes) {
             const totalAllocation = envelopes.reduce((acc, item) => acc + item.percentage, 0);
+            console.log("totalAllocation", totalAllocation)
             setEnvelopeAllocation(totalAllocation);
         }
     }, [envelopes]);
@@ -26,7 +39,7 @@ export function EnvelopesTable({ envelopes }: EnvelopesProps) {
     return (
         <Card sx={{ width: "100%", borderTopRightRadius: 0, borderTopLeftRadius: 0 }}>
             <Box sx={{ display: "flex", alignItems: "center", p: 4, justifyContent: "flex-end", gap: 2 }}>
-
+                <EnvelopeForm data={envelopeActive} buttonLabel="Adicionar" open={open} handleOpen={handleOpen} handleClose={handleClose} />
                 <Badges text={envelopeAlocation <= 100 ? `Faltam ${100 - envelopeAlocation}% para alocação` : `Passou ${envelopeAlocation - 100}% do máximo`} bgColor={envelopeAlocation <= 100 ? theme.palette.success.main : theme.palette.error.main} />
             </Box>
             <Box sx={{
@@ -38,7 +51,7 @@ export function EnvelopesTable({ envelopes }: EnvelopesProps) {
                 paddingTop: 0
             }}>
                 {envelopes && envelopes.map((item) => (
-                    <EnvelopeList key={item.id} envelope={item} />
+                    <EnvelopeCard key={item.id} envelope={item} handleActiveEnvelope={handleActiveEnvelope} />
                 ))}
             </Box>
 

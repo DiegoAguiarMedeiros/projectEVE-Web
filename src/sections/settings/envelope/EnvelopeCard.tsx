@@ -1,161 +1,93 @@
-import { Card, CardHeader, Stack, Typography, IconButton, CardContent, FormControl, Slider, Box, FormLabel, Switch, useTheme } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { startTransition, useActionState, useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
-import { useSnackbar } from "notistack";
-import Chips from "src/components/chip/chip";
-import { useUpdateEnvelopes } from "src/hooks/mutations/envelopes/useUpdateEnvelopes";
-import { Envelopes } from "src/types/Envelopes";
-import IconifyPicker from "@zunicornshift/mui-iconify-picker";
-import { IconPicker } from "src/components/IconPicker";
-import { iconsMap } from "src/components/icon/iconsMap";
+import React from 'react';
+import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
+import { Box, Card, Typography, IconButton } from '@mui/material';
+import { Envelopes } from 'src/types/Envelopes';
+import { fNumberToCurrency } from 'src/utils/format-number';
 
-
-
-type EnvelopeProps = {
-    data: Envelopes;
-
+interface EnvelopeCardProps {
+    envelope: Envelopes;
+    handleActiveEnvelope: (envelope: Envelopes) => void
 }
-export function EnvelopeCard({ data }: EnvelopeProps) {
-    const theme = useTheme();
-    const [envelopeData, setEnvelopeData] = useState<Envelopes>(data);
-    const [isPending, setIsPending] = useState(false);
-    const [error, setError] = useState<Error | null>(null);
-    const updateMutation = useUpdateEnvelopes();
 
-    const [selectedIcon, setSelectedIcon] = useState<string>("");
+export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({ envelope, handleActiveEnvelope }) => (
 
-    const submitAction = async (envelopes: Envelopes) => {
-        setIsPending(true);
-        setError(null);
+    <Card
+        key={envelope.id}
+        sx={{
 
-        try {
-            if (data) {
-                await updateMutation.mutateAsync({
-                    id: data.id,
-                    name: envelopes.name,
-                    color: envelopes.color,
-                    percentage: envelopes.percentage,
-                });
+            backgroundColor: (theme) => theme.palette.background.neutral,
+            borderTop: 4,
+            borderColor: envelope.color,
+            p: 1.5,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 1,
+            position: 'relative',
+            '&:hover .actions': {
+                opacity: 1
             }
-        } catch (err: any) {
-            setError(err);
-        } finally {
-            setIsPending(false);
-        }
-    };
+        }}
+    >
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
 
-    const submitForm = () => {
-        startTransition(async () => {
-            submitAction({
-                id: envelopeData.id,
-                name: envelopeData.name,
-                color: envelopeData.color,
-                percentage: envelopeData.percentage,
-            })
-        });
-    }
-    const valueLabelFormat = (value: number) => (`${value} %`);
+            <Typography variant="h5" component="h4" fontWeight="600">
+                {envelope.name}
+            </Typography>
+            <Box
+                className="actions"
+                sx={{
+                    display: 'flex',
+                    gap: 1,
+                    opacity: 0,
+                    transition: 'opacity 0.2s'
+                }}
+            >
+                <IconButton onClick={() => handleActiveEnvelope(envelope)} size="small">
+                    <EditIcon fontSize="small" />
+                </IconButton>
+                {/* <IconButton onClick={() => console.log(envelope.id)} size="small" color="error">
+                    <DeleteIcon fontSize="small" />
+                </IconButton> */}
+            </Box>
+        </Box>
 
-    const updateAllocation = (newAllocation: number) => {
-        setEnvelopeData((prev) => ({
-            ...prev,
-            percentage: newAllocation,
-        }));
-    };
-
-    const deleteEnvelope = (id: string) => { };
-
-    const updateColor = (newColor: string) => {
-        setEnvelopeData((prev) => ({
-            ...prev,
-            color: newColor,
-        }));
-    };
-
-    return (
-        <Card
-            key={envelopeData.id}
-            sx={{
-                flex: "1 0 20%",
-                minWidth: 200,
-                maxHeight: "144px",
-                boxSizing: "border-box",
-                padding: 1,
-                bgcolor: "var(--layout-nav-item-active-bg)",
-
-            }}
-        >
-            <CardHeader
-                title={
-                    <Stack sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-                        <Typography variant="h6">
-                            {envelopeData.name} ({envelopeData.percentage}%)
-                        </Typography>
-                        <IconButton
-                            onClick={() => deleteEnvelope(envelopeData.id)}
-                            color="error"
-                            size="small"
-                        >
-                            <DeleteIcon />
-                        </IconButton>
-                    </Stack>
-                }
-                sx={{ p: 1, }}
-            />
-            <CardContent sx={{ p: 1, display: "flex", flexDirection: "column", gap: 1 }}>
-                <FormControl fullWidth sx={{}}>
-                    <Slider
-                        getAriaValueText={valueLabelFormat}
-                        valueLabelFormat={valueLabelFormat}
-                        valueLabelDisplay="on"
-                        aria-label="pretto slider"
-                        value={envelopeData.percentage}
-                        onChange={(_, value) => {
-
-                            if (envelopeData.name !== "debts") updateAllocation(value as number)
-                        }}
-                        onBlur={submitForm}
-                        max={100}
-                        step={1}
-                        disableSwap={envelopeData.name === "debts"}
-                    />
-                </FormControl>
-                < FormControl fullWidth sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexDirection: "row", gap: 1 }}>
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                        <Typography>Cor:</Typography>
-                        <Box
-                            component="label"
-                            sx={{
-                                width: 24,
-                                height: 24,
-                                borderRadius: "50%",
-                                backgroundColor: envelopeData.color,
-                                cursor: "pointer",
-                                border: "1px solid #ccc",
-                                display: "inline-block",
-                            }}
-                        >
-                            <input
-                                type="color"
-                                value={envelopeData.color}
-                                onChange={(e) => updateColor(e.target.value)}
-                                onBlur={submitForm}
-                                style={{
-                                    opacity: 0,
-                                    width: "100%",
-                                    height: "100%",
-                                    cursor: "pointer",
-                                }}
-                            />
-                        </Box>
-                    </Box>
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                        <IconPicker iconsMap={iconsMap} value={selectedIcon}
-                            onSelect={(iconKey) => setSelectedIcon(iconKey)} />
-                    </Box>
-                </FormControl>
-            </CardContent>
-        </Card >
-    )
-}
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2 }}>
+            <Box
+                sx={{
+                    flex: 1,
+                    height: 18,
+                    bgcolor: `${envelope.color}20`,
+                    borderRadius: 1,
+                    overflow: 'hidden',
+                    position: 'relative'
+                }}
+            >
+                <Box
+                    sx={{
+                        height: '100%',
+                        width: `${envelope.percentage}%`,
+                        bgcolor: envelope.color,
+                        borderRadius: 1,
+                        transition: 'width 0.5s ease-out'
+                    }}
+                />
+                <Typography
+                    sx={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        fontSize: '0.75rem',
+                        fontWeight: 700,
+                        color: 'text.primary',
+                        textShadow: '0 0 2px rgba(255,255,255,0.8)',
+                        width: '100%',
+                        textAlign: 'center'
+                    }}
+                >
+                    {envelope.percentage}%
+                </Typography>
+            </Box>
+        </Box>
+    </Card>
+);
