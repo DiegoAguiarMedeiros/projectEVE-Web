@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { Card, TableContainer, Table, TableBody, TablePagination } from "@mui/material";
+import { Card, TableContainer, Table, TableBody, TablePagination, TableRow, TableCell } from "@mui/material";
+import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "notistack";
 import dayjs from "dayjs";
@@ -62,7 +63,7 @@ export function FixedExpenseTable({ envelopes, fixedExpenses }: FixedExpenseTabl
     }
 
     return (
-        <Card sx={{ width: "100%", borderTopRightRadius: 0, borderTopLeftRadius: 0  }}>
+        <Card sx={{ width: "100%", borderTopRightRadius: 0, borderTopLeftRadius: 0 }}>
             <TableToolbar
                 numSelected={table.selected.length}
                 form={<FixedExpenseForm envelopes={envelopes ?? []} buttonLabel="Adicionar" />}
@@ -92,11 +93,17 @@ export function FixedExpenseTable({ envelopes, fixedExpenses }: FixedExpenseTabl
                     /> : <></>}
 
                     <TableBody>
-                        {fixedExpenses && fixedExpenses.data.length < 1
+                        {!fixedExpenses ? (
+                            <TableRow>
+                                <TableCell colSpan={5}>
+                                    <SkeletonLoading count={5} height={60} />
+                                </TableCell>
+                            </TableRow>
+                        ) : fixedExpenses.data.length < 1
                             ?
                             <TableNoData message="Nenhuma Contas Fixas cadastrado!" />
                             :
-                            fixedExpenses && fixedExpenses.data.map(fixedExpense => (FixedExpenseRow(fixedExpense, DeleteFixedExpense)))
+                            fixedExpenses.data.map(fixedExpense => (FixedExpenseRow(fixedExpense, DeleteFixedExpense)))
                         }
                     </TableBody>
                 </Table>

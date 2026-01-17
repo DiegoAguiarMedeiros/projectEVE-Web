@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { Card, TableContainer, Table, TableBody, TablePagination } from "@mui/material";
+import { Card, TableContainer, Table, TableBody, TablePagination, TableRow, TableCell } from "@mui/material";
+import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "notistack";
 import { useTable } from "src/sections/shared/useTable";
@@ -52,7 +53,7 @@ export function CreditCardsTable({ creditCards }: CreditCardsTableProps) {
     }
 
     return (
-        <Card sx={{ width: "100%", borderTopRightRadius: 0, borderTopLeftRadius: 0  }}>
+        <Card sx={{ width: "100%", borderTopRightRadius: 0, borderTopLeftRadius: 0 }}>
             <TableToolbar
                 numSelected={table.selected.length}
                 form={<CreditCardForm buttonLabel="Adicionar" />}
@@ -80,11 +81,17 @@ export function CreditCardsTable({ creditCards }: CreditCardsTableProps) {
                     /> : <></>}
 
                     <TableBody>
-                        {creditCards && creditCards.data.length < 1
+                        {!creditCards ? (
+                            <TableRow>
+                                <TableCell colSpan={3}>
+                                    <SkeletonLoading count={5} height={60} />
+                                </TableCell>
+                            </TableRow>
+                        ) : creditCards.data.length < 1
                             ?
                             <TableNoData message="Nenhum Cartão de crétido cadastrado!" />
                             :
-                            creditCards && creditCards.data.map(creditCard => (CreditCardsRow(creditCard, DeleteCreditCards)))
+                            creditCards.data.map(creditCard => (CreditCardsRow(creditCard, DeleteCreditCards)))
                         }
                     </TableBody>
                 </Table>

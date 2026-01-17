@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { Card, TableContainer, Table, TableBody, TablePagination } from "@mui/material";
+import { Card, TableContainer, Table, TableBody, TablePagination, TableRow, TableCell } from "@mui/material";
+import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "notistack";
 import dayjs from "dayjs";
@@ -58,7 +59,7 @@ export function DebtTable({ debts, envelopes }: DebtsTableProps) {
     }
 
     return (
-        <Card sx={{ width: "100%", borderTopRightRadius: 0, borderTopLeftRadius: 0  }}>
+        <Card sx={{ width: "100%", borderTopRightRadius: 0, borderTopLeftRadius: 0 }}>
             <TableToolbar
                 numSelected={table.selected.length}
                 form={<DebtForm envelopes={envelopes ?? []} buttonLabel="Adicionar" />}
@@ -89,11 +90,17 @@ export function DebtTable({ debts, envelopes }: DebtsTableProps) {
                     /> : <></>}
 
                     <TableBody>
-                        {debts && debts.data.length < 1
+                        {!debts ? (
+                            <TableRow>
+                                <TableCell colSpan={6}>
+                                    <SkeletonLoading count={5} height={60} />
+                                </TableCell>
+                            </TableRow>
+                        ) : debts.data.length < 1
                             ?
                             <TableNoData message="Nenhuma Dívida cadastrada!" />
                             :
-                            debts && debts.data.map(debt => (DebtRow(debt, DeleteDebt)))
+                            debts.data.map(debt => (DebtRow(debt, DeleteDebt)))
                         }
                     </TableBody>
                 </Table>

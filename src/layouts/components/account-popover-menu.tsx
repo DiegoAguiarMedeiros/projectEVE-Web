@@ -10,6 +10,7 @@ import MenuItem, { menuItemClasses } from "@mui/material/MenuItem";
 
 import { useRouter, usePathname } from "src/routes/hooks";
 import { useTheme } from "@mui/material";
+import { useLogout } from "src/hooks/mutations/auth/useLogout";
 
 // ----------------------------------------------------------------------
 
@@ -28,6 +29,11 @@ export function AccountPopoverMenu({ data = [], sx, ...other }: AccountPopoverMe
   const router = useRouter();
   const theme = useTheme();
   const pathname = usePathname();
+
+  const { mutate: logout, isPending } = useLogout(() => {
+    router.push("/entrar");
+  });
+
   const handleClosePopover = useCallback(() => {
     // setOpenPopover(null);
   }, []);
@@ -39,6 +45,10 @@ export function AccountPopoverMenu({ data = [], sx, ...other }: AccountPopoverMe
     },
     [handleClosePopover, router]
   );
+
+  const handleLogout = useCallback(() => {
+    logout();
+  }, [logout]);
   return (
     <Box sx={{ backgroundColor: data.length > 0 ? theme.palette.background.neutral : theme.palette.background.paper }}>
       <MenuList
@@ -83,8 +93,15 @@ export function AccountPopoverMenu({ data = [], sx, ...other }: AccountPopoverMe
       <Divider sx={{ borderStyle: "dashed" }} />
 
       <Box sx={{ p: 1, backgroundColor: data.length > 0 ? theme.palette.background.neutral : theme.palette.background.paper }}>
-        <Button fullWidth color="error" size="medium" variant="text">
-          Logout
+        <Button
+          fullWidth
+          color="error"
+          size="medium"
+          variant="text"
+          onClick={handleLogout}
+          disabled={isPending}
+        >
+          {isPending ? 'Logging out...' : 'Logout'}
         </Button>
       </Box>
     </Box>

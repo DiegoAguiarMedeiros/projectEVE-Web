@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import { Card, TableContainer, Table, TableBody, TablePagination } from "@mui/material";
-import {  useQueryClient } from "@tanstack/react-query";
+import { Card, TableContainer, Table, TableBody, TablePagination, TableRow, TableCell } from "@mui/material";
+import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
+import { useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "notistack";
 import dayjs from "dayjs";
 import { useTable } from "src/sections/shared/useTable";
@@ -62,7 +63,7 @@ export function GoalsTable({ goals, envelope }: GoalsTableProps) {
     }
 
     return (
-        <Card sx={{ width: "100%", borderTopRightRadius: 0, borderTopLeftRadius: 0  }}>
+        <Card sx={{ width: "100%", borderTopRightRadius: 0, borderTopLeftRadius: 0 }}>
             <TableToolbar
                 numSelected={table.selected.length}
                 form={<GoalsForm envelope={envelope} buttonLabel="Adicionar" />}
@@ -92,11 +93,17 @@ export function GoalsTable({ goals, envelope }: GoalsTableProps) {
                     /> : <></>}
 
                     <TableBody>
-                        {goals && goals.data.length < 1
+                        {!goals ? (
+                            <TableRow>
+                                <TableCell colSpan={5}>
+                                    <SkeletonLoading count={5} height={60} />
+                                </TableCell>
+                            </TableRow>
+                        ) : goals.data.length < 1
                             ?
                             <TableNoData message="Nenhuma Metas cadastrada!" />
                             :
-                            goals && goals.data.map(goal => (GoalsRow(goal, DeleteGoals)))
+                            goals.data.map(goal => (GoalsRow(goal, DeleteGoals)))
                         }
                     </TableBody>
                 </Table>

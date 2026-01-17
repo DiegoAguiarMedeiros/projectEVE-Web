@@ -4,8 +4,10 @@ import { _timeline } from "src/_mock/_data";
 import { useQuery } from "@tanstack/react-query";
 import Badges from "src/components/badge/badge";
 import { Envelopes } from "src/types/Envelopes";
-import { EnvelopeCard } from "./EnvelopeCard";
-import { EnvelopeForm } from "./form";
+import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
+import { EnvelopeCard } from "src/sections/settings/envelope/EnvelopeCard";
+import { EnvelopeForm } from "src/sections/settings/envelope/form";
+
 
 type EnvelopesProps = {
     envelopes: Envelopes[]
@@ -20,7 +22,7 @@ export function EnvelopesTable({ envelopes }: EnvelopesProps) {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const [envelopeActive, setEnvelopeActive] = useState<Envelopes>(envelopes[0]);
+    const [envelopeActive, setEnvelopeActive] = useState<Envelopes>(envelopes ? envelopes[0] : {} as Envelopes);
     const [envelopeAlocation, setEnvelopeAllocation] = useState(0);
 
 
@@ -36,6 +38,8 @@ export function EnvelopesTable({ envelopes }: EnvelopesProps) {
         }
     }, [envelopes]);
 
+
+
     return (
         <Card sx={{ width: "100%", borderTopRightRadius: 0, borderTopLeftRadius: 0 }}>
             <Box sx={{ display: "flex", alignItems: "center", p: 4, justifyContent: "flex-end", gap: 2 }}>
@@ -50,10 +54,20 @@ export function EnvelopesTable({ envelopes }: EnvelopesProps) {
                 padding: 3,
                 paddingTop: 0
             }}>
-                {envelopes && envelopes.map((item) => (
-                    <EnvelopeCard key={item.id} envelope={item} handleActiveEnvelope={handleActiveEnvelope} />
+                {!envelopes ? (
+                    <Box sx={{ gridColumn: "1 / -1" }}>
+                        <SkeletonLoading count={1} height={200} />
+                    </Box>
+                ) : envelopes.map((item) => (
+                    <EnvelopeCard
+                        key={item.id}
+                        envelope={item}
+                        handleActiveEnvelope={handleActiveEnvelope}
+                    />
                 ))}
             </Box>
+
+
 
         </Card>
     );

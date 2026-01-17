@@ -8,6 +8,7 @@ import { varAlpha } from "src/theme/styles";
 import { AuthLayout } from "src/layouts/auth";
 import { SimpleLayout } from "src/layouts/simple";
 import { DashboardLayout } from "src/layouts/dashboard";
+import { NavlessLayout } from "src/layouts/navless";
 import { PrivateRoute } from "./PrivateRoute";
 
 // ----------------------------------------------------------------------
@@ -43,18 +44,33 @@ export function Router() {
     {
       element: (
         <PrivateRoute>
-          <DashboardLayout>
-            <Suspense fallback={renderFallback}>
-              <Outlet />
-            </Suspense>
-          </DashboardLayout>
+          <Suspense fallback={renderFallback}>
+            <Outlet />
+          </Suspense>
         </PrivateRoute>
       ),
       children: [
-        { element: <HomePage />, index: true },
-        { path: "envelopes", element: <EnvelopePage /> },
-        { path: "renda", element: <IncomesPage /> },
-        { path: "configuracoes", element: <SettingsPage /> },
+        {
+          element: (
+            <DashboardLayout>
+              <Outlet />
+            </DashboardLayout>
+          ),
+          children: [
+            { element: <HomePage />, index: true },
+            { path: "envelopes", element: <EnvelopePage /> },
+            { path: "renda", element: <IncomesPage /> },
+            { path: "configuracoes", element: <SettingsPage /> },
+          ],
+        },
+        {
+          path: "completar-cadastro",
+          element: (
+            <NavlessLayout>
+              <CompleteRegistration />
+            </NavlessLayout>
+          ),
+        },
       ],
     },
     {
@@ -70,14 +86,6 @@ export function Router() {
       element: (
         <SimpleLayout>
           <Registration />
-        </SimpleLayout>
-      ),
-    },
-    {
-      path: "completar-cadastro",
-      element: (
-        <SimpleLayout>
-          <CompleteRegistration />
         </SimpleLayout>
       ),
     },

@@ -11,14 +11,17 @@ import Chips from "src/components/chip/chip";
 import { Pagination } from "src/types/Pagination";
 import { SlidingWindow, MAX_BUFFER } from "src/sections/shared/useSlidingWindow";
 import { ITable } from "src/sections/shared/useTable";
+import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
+import { Envelopes } from "src/types/Envelopes";
 
 type TransactionListProps = {
     envelopeId: string;
     transactions: Pagination<Transactions> | undefined;
     table: ITable;
+    allEnvelopes?: Envelopes[];
 };
 
-export function TransactionList({ envelopeId, transactions, table }: TransactionListProps) {
+export function TransactionList({ envelopeId, transactions, table, allEnvelopes }: TransactionListProps) {
     const deleteTransactionMutation = useDeleteTransactions();
     const updateStatusTransactionMutation = useUpdateStatusTransactions();
 
@@ -164,9 +167,9 @@ export function TransactionList({ envelopeId, transactions, table }: Transaction
     // se estamos aguardando primeiro load, mostra mensagem loading (evita renderar itens antigos)
     if (awaitingFirstLoad) {
         return (
-            <Typography align="center" sx={{ p: 2 }}>
-                Carregando transações...
-            </Typography>
+            <Box sx={{ p: 2 }}>
+                <SkeletonLoading count={3} height={100} spacing={2} />
+            </Box>
         );
     }
 
@@ -194,7 +197,7 @@ export function TransactionList({ envelopeId, transactions, table }: Transaction
                 dataLength={items.length}
                 next={fetchMoreDown}
                 hasMore={hasMoreDown}
-                loader={<Typography align="center" sx={{ p: 2 }}>Carregando...</Typography>}
+                loader={<Box sx={{ p: 2 }}><SkeletonLoading count={1} height={100} /></Box>}
                 endMessage={<Typography align="center" sx={{ p: 2 }}>Todas as transações foram carregadas</Typography>}
                 scrollableTarget="scrollableDiv"
                 scrollThreshold={0.9}
@@ -225,7 +228,7 @@ export function TransactionList({ envelopeId, transactions, table }: Transaction
                                         <Divider />
 
                                         <Box display="flex" justifyContent="flex-end" gap={1}>
-                                            <TransactionForm data={row} buttonIcon={<Edit />} buttonLabel="Editar" envelopeId={envelopeId} />
+                                            <TransactionForm data={row} buttonIcon={<Edit />} buttonLabel="Editar" envelopeId={envelopeId} allEnvelopes={allEnvelopes} />
                                             <IconButton color="error" onClick={() => DeleteTransaction(id)}><Delete /></IconButton>
                                         </Box>
                                     </Stack>

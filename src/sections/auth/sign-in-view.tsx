@@ -109,9 +109,9 @@ export function SignInView() {
   return (
     <>
       <Box gap={1.5} display="flex" flexDirection="column" alignItems="center" sx={{ mb: 5 }}>
-        <Typography variant="h5">Sign in</Typography>
+        <Typography variant="h5">Entrar na sua conta</Typography>
         <Typography variant="body2" color="text.secondary">
-          Don’t have an account?
+          Dont have an account?
           <Link variant="subtitle2" href="/cadastro" sx={{ ml: 0.5 }}>
             Get started
           </Link>

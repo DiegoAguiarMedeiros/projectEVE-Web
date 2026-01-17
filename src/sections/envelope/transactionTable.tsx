@@ -13,6 +13,7 @@ import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 import { TransactionForm } from "src/sections/envelope/form";
 import { Pagination } from "src/types/Pagination";
 import { Transactions, TransactionsStatus, TransactionsUpdateStatus } from "src/types/Transactions";
+import { Envelopes } from "src/types/Envelopes";
 import { useDeleteTransactions } from "src/hooks/mutations/transactions/useDeleteTransactions";
 import { useUpdateTransactions } from "src/hooks/mutations/transactions/useUpdateTransactions";
 import { useUpdateStatusTransactions } from "src/hooks/mutations/transactions/useUpdateStatusTransactions";
@@ -21,9 +22,10 @@ type TransactionTableProps = {
     envelopeId: string;
     transactions: Pagination<Transactions> | undefined
     table: ITable,
-    activeBorderColor: string
+    activeBorderColor: string,
+    allEnvelopes?: Envelopes[]
 }
-export function TransactionTable({ envelopeId, transactions, table, activeBorderColor }: TransactionTableProps) {
+export function TransactionTable({ envelopeId, transactions, table, activeBorderColor, allEnvelopes }: TransactionTableProps) {
 
     const {
         month,
@@ -73,6 +75,7 @@ export function TransactionTable({ envelopeId, transactions, table, activeBorder
                 buttonIcon={<Iconify icon="solar:pen-bold" />}
                 buttonLabel="Editar"
                 envelopeId={envelopeId}
+                allEnvelopes={allEnvelopes}
             />}
             handleDelete={handleDeleteTransaction} />)
 
@@ -83,11 +86,11 @@ export function TransactionTable({ envelopeId, transactions, table, activeBorder
             width: "100%",
             display: "flex",
             flexDirection: "column",
-            boxShadow:  `0 0 0 4px ${activeBorderColor}, 0 12px 24px rgba(0,0,0,0.2)` ,
+            boxShadow: `0 0 0 4px ${activeBorderColor}, 0 12px 24px rgba(0,0,0,0.2)`,
         }}>
             <TableToolbar
                 numSelected={table.selected.length}
-                form={<TransactionForm buttonLabel="Adicionar" envelopeId={envelopeId} />}
+                form={<TransactionForm buttonLabel="Adicionar" envelopeId={envelopeId} allEnvelopes={allEnvelopes} />}
             />
 
             <TableContainer sx={{ overflow: "unset", flex: '1 0 0' }}>

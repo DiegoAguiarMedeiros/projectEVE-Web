@@ -6,7 +6,7 @@ import { fNumberToCurrency } from 'src/utils/format-number';
 
 interface EnvelopeCardProps {
     envelope: Envelopes;
-    handleActiveEnvelope: (envelope: Envelopes) => void
+    handleActiveEnvelope: (envelope: Envelopes) => void;
 }
 
 export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({ envelope, handleActiveEnvelope }) => (

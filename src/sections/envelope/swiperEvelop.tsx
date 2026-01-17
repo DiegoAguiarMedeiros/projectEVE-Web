@@ -89,6 +89,7 @@ export default function SwiperEnvelop({
           transactions={transactions}
           envelopeId={envelopeActived}
           table={table}
+          allEnvelopes={envelopes}
         />
       ) : (
         <TransactionTable
@@ -96,6 +97,7 @@ export default function SwiperEnvelop({
           envelopeId={envelopeActived}
           table={table}
           activeBorderColor={activeBorderColor}
+          allEnvelopes={envelopes}
         />
       )}
 

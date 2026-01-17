@@ -27,7 +27,8 @@ import { IncomeStore } from "src/store/useIncomeStore";
 import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 import { useTotalIncomes } from "src/hooks/queries/incomes/useTotalIncomes";
 import { Month, ProcessedIncomesMonthResponse } from "src/types/ProcessedIncomes";
-import dayjs from "dayjs";
+import { CircularProgress } from "@mui/material";
+import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
 
 // ----------------------------------------------------------------------
 
@@ -102,9 +103,20 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
   }, [setHasMonthProcessed, setNextMonthToProcess, setNextYearToProcess, processedIncomesMonths])
 
 
-  if (isLoadingMonths || isLoadingTotal) return <p>Carregando dados...</p>;
+  if (isLoadingMonths || isLoadingTotal) {
+    return (
+      <Box sx={{ width: '100%', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <SkeletonLoading count={1} height={100} width={100} variant="circular" />
+      </Box>
+    );
+  }
+
   if (errorMonths || errorTotal || !processedIncomesMonths || !totalIncomes) {
-    return <p>Erro ao carregar os dados</p>;
+    return (
+      <Box sx={{ width: '100%', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Alert severity="error">Erro ao carregar os dados</Alert>
+      </Box>
+    )
   }
 
   const layoutQuery: Breakpoint = "lg";
