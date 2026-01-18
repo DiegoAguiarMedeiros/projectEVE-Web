@@ -3,4 +3,5 @@ export type GetAllParams = {
   pageSize?: number;
   orderBy?: string;
   order?: "asc" | "desc";
+  type?: string;
 };

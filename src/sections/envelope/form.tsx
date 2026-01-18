@@ -1,4 +1,6 @@
-import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography, Tabs, Tab, Stack, InputAdornment } from "@mui/material";
+import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography, Tabs, Tab, Stack, InputAdornment, Tooltip } from "@mui/material";
+import { Iconify } from "src/components/iconify";
+import { RealEnvelopesCard } from "src/sections/envelope/RealEnvelopeCard";
 import { startTransition, useActionState, useCallback, useEffect, useImperativeHandle, useRef, useState, useTransition } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import TransitionsModal from "src/sections/shared/transitionsModal";
@@ -33,17 +35,34 @@ function TabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props;
 
     return (
-        <div
+        <Box
             role="tabpanel"
             hidden={value !== index}
             id={`transaction-tabpanel-${index}`}
             aria-labelledby={`transaction-tab-${index}`}
+            sx={{ width: '100%' }}
             {...other}
         >
             {value === index && <Box sx={{ pt: 3 }}>{children}</Box>}
-        </div>
+        </Box>
     );
 }
+
+const paymentMethodLabels: Record<PaymentMethod, string> = {
+    CreditCard: 'Cartão de Crédito',
+    DebitCard: 'Cartão de Débito',
+    Cash: 'Dinheiro',
+    BankTransfer: 'Transferência Bancária',
+    Pix: 'PIX',
+};
+
+const paymentMethodIcons: Record<PaymentMethod, React.ReactNode> = {
+    CreditCard: <Iconify icon="solar:card-outline" />,
+    DebitCard: <Iconify icon="solar:card-2-outline" />,
+    Cash: <Iconify icon="solar:wad-of-money-outline" />,
+    BankTransfer: <Iconify icon="solar:bank-note-outline" />,
+    Pix: <Iconify icon="solar:qr-code-outline" />,
+};
 
 export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, allEnvelopes = [] }: TransactionFormProps) {
     const { month, year } = SelectedMonthYearStore();
@@ -243,18 +262,34 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
 
             okButton={
                 tabValue === 0 ? (
-                    <Button type="submit" variant="outlined" color="primary" onClick={handleTransactionSubmit} disabled={isPending}>
-                        Adicionar
-                    </Button>
-                ) : (
                     <LoadingButton
+                        type="submit"
                         variant="contained"
-                        onClick={handleTransferSubmit}
-                        loading={transferMutation.isPending}
-                        disabled={!isTransferValid || !allEnvelopes || allEnvelopes.length === 0}
+                        color="primary"
+                        onClick={handleTransactionSubmit}
+                        disabled={isPending}
+                        loading={isPending}
                     >
-                        Transferir
+                        Adicionar
                     </LoadingButton>
+                ) : (
+                    <Tooltip title={!isTransferValid ?
+                        (!toEnvelopeId ? 'Selecione um envelope' :
+                            !transferAmount ? 'Informe o valor' :
+                                Number(transferAmount) > (sourceEnvelope?.amount || 0) ? 'Saldo insuficiente' : '')
+                        : ''
+                    }>
+                        <span>
+                            <LoadingButton
+                                variant="contained"
+                                onClick={handleTransferSubmit}
+                                loading={transferMutation.isPending}
+                                disabled={!isTransferValid || !allEnvelopes || allEnvelopes.length === 0}
+                            >
+                                Transferir
+                            </LoadingButton>
+                        </span>
+                    </Tooltip>
                 )
             }>
             <Box
@@ -265,12 +300,29 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
                 justifySelf="center"
                 sx={{ width: "100%" }}
             >
-                <Typography variant="h3" noWrap>
-                    {tabValue === 0 ? "Transação" : "Transferência"}
-                </Typography>
-
-                <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%' }}>
-                    <Tabs value={tabValue} onChange={handleTabChange} aria-label="transaction tabs">
+                <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%', mb: 3 }}>
+                    <Tabs
+                        value={tabValue}
+                        onChange={handleTabChange}
+                        aria-label="transaction tabs"
+                        variant="fullWidth"
+                        sx={{
+                            '& .MuiTab-root': {
+                                fontSize: '1.1rem',
+                                fontWeight: 600,
+                                color: 'text.secondary',
+                                textTransform: 'none',
+                                py: 2,
+                            },
+                            '& .Mui-selected': {
+                                color: 'primary.main',
+                            },
+                            '& .MuiTabs-indicator': {
+                                height: 3,
+                                borderRadius: '3px 3px 0 0',
+                            },
+                        }}
+                    >
                         <Tab label="Transação" />
                         <Tab label="Transferência" disabled={!allEnvelopes || allEnvelopes.length <= 1} />
                     </Tabs>
@@ -283,6 +335,7 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
                             fullWidth
                             name="description"
                             label="Descrição"
+                            placeholder="Ex: Aluguel"
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                             onBlur={validateDescription}
@@ -294,6 +347,7 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
                             type="number"
                             name="amount"
                             label="Valor"
+                            placeholder="0,00"
                             value={amount}
                             onChange={(e) => setAmount(e.target.value)}
                             onBlur={validateAmount}
@@ -302,6 +356,8 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
                             slotProps={{
                                 input: {
                                     inputMode: "numeric",
+                                    startAdornment: <InputAdornment position="start">R$</InputAdornment>,
+                                    sx: { textAlign: 'right' },
                                 }
                             }}
                         />
@@ -327,7 +383,12 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
                                 onChange={handleSelectChange}
                             >
                                 {allPaymentMethod.map((f, index) => (
-                                    <MenuItem key={index} value={f}>{f}</MenuItem>
+                                    <MenuItem key={index} value={f}>
+                                        <Stack direction="row" spacing={1} alignItems="center">
+                                            {paymentMethodIcons[f]}
+                                            <span>{paymentMethodLabels[f]}</span>
+                                        </Stack>
+                                    </MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
@@ -335,50 +396,127 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
                 </TabPanel>
 
                 <TabPanel value={tabValue} index={1}>
-                    <Stack spacing={3} sx={{ width: '100%' }}>
-                        {sourceEnvelope && (
-                            <Box sx={{ bgcolor: 'background.neutral', p: 2, borderRadius: 1 }}>
-                                <Typography variant="subtitle2" color="text.secondary">
-                                    De:
-                                </Typography>
-                                <Typography variant="h6">
-                                    {sourceEnvelope.name}
-                                </Typography>
-                                <Typography variant="body2" color={(sourceEnvelope.amount ?? 0) < 0 ? 'error.main' : 'success.main'}>
-                                    Saldo atual: {fCurrency(sourceEnvelope.amount || 0)}
-                                </Typography>
+                    <Stack spacing={4} sx={{ width: '100%', alignItems: 'center' }}>
+
+                        {/* Transfer Cards Layout */}
+                        <Box sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: 2,
+                            width: '100%',
+                            flexDirection: { xs: 'column', sm: 'row' }
+                        }}>
+                            {/* Source Envelope */}
+                            <Box sx={{ flex: 1, width: '100%', maxWidth: 240}}>
+                                <Typography variant="caption" color="text.secondary" sx={{ mb: 1, display: 'block', textAlign: 'center' }}>De</Typography>
+                                {sourceEnvelope && <RealEnvelopesCard envelope={sourceEnvelope} activeCard={false} />}
                             </Box>
-                        )}
+
+                            {/* Arrow Icon */}
+                            <Iconify icon="solar:arrow-right-username-bold-duotone" width={32} sx={{ color: 'text.disabled', transform: { xs: 'rotate(90deg)', sm: 'none' } }} />
+
+                            {/* Destination Envelope Selector */}
+                            <Box sx={{ flex: 1, width: '100%', maxWidth: 286}}>
+                                <Typography variant="caption" color="text.secondary" sx={{ mb: 1, display: 'block', textAlign: 'center' }}>Para</Typography>
+                                <FormControl fullWidth>
+                                    <Select
+                                        value={toEnvelopeId}
+                                        onChange={(e) => setToEnvelopeId(e.target.value)}
+                                        displayEmpty
+                                        renderValue={(selected) => {
+                                            if (!selected) {
+                                                return <Typography color="text.disabled" align="center">Selecione o envelope</Typography>;
+                                            }
+                                            const env = destinationEnvelopes.find(e => e.id === selected);
+                                            return env ? (
+                                                <Box sx={{ width: '100%', pointerEvents: 'none', minHeight: 110 }}>
+                                                    <RealEnvelopesCard envelope={env} activeCard={false} />
+                                                </Box>
+                                            ) : selected;
+                                        }}
+                                        sx={{
+                                            width: '100%',
+                                            '& .MuiSelect-select': {
+                                                padding: '0 !important',
+                                                minHeight: 'auto',
+                                                display: 'flex',
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                            },
+                                            '& fieldset': { border: 'none' },
+                                            // Styles for when no value is selected (Placeholder state)
+                                            ...(!toEnvelopeId && {
+                                                border: '1px dashed',
+                                                borderColor: 'text.disabled',
+                                                borderRadius: 2,
+                                                minHeight: 130,
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                            }),
+                                            // Styles for when a value IS selected
+                                            ...(toEnvelopeId && {
+                                                '& .MuiSelect-select': {
+                                                    overflow: 'visible', // Ensure card isn't clipped
+                                                }
+                                            })
+                                        }}
+                                        MenuProps={{
+                                            PaperProps: {
+                                                sx: {
+                                                    maxHeight: 400,
+                                                    bgcolor: 'transparent',
+                                                    boxShadow: 'none',
+                                                    '& .MuiList-root': {
+                                                        display: 'flex',
+                                                        flexDirection: 'column',
+                                                        gap: 1,
+                                                        p: 1
+                                                    }
+                                                }
+                                            }
+                                        }}
+                                    >
+                                        {destinationEnvelopes.map((env) => (
+                                            <MenuItem
+                                                key={env.id}
+                                                value={env.id}
+                                                sx={{
+                                                    p: 0,
+                                                    bgcolor: 'transparent !important',
+                                                    '&:hover': { transform: 'scale(1.02)' },
+                                                    transition: 'transform 0.2s',
+                                                    mb: 1
+                                                }}
+                                            >
+                                                <RealEnvelopesCard envelope={env} activeCard={false} />
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </Box>
+                        </Box>
 
                         <TextField
-                            select
-                            label="Para Envelope"
                             fullWidth
-                            value={toEnvelopeId}
-                            onChange={(e) => setToEnvelopeId(e.target.value)}
-                            disabled={!allEnvelopes || destinationEnvelopes.length === 0}
-                        >
-                            {destinationEnvelopes.map((env) => (
-                                <MenuItem key={env.id} value={env.id}>
-                                    {env.name} ({fCurrency(env.amount || 0)})
-                                </MenuItem>
-                            ))}
-                        </TextField>
-
-                        <TextField
-                            label="Valor"
                             type="number"
-                            fullWidth
+                            label="Valor da transferência"
+                            placeholder="0,00"
                             value={transferAmount}
                             onChange={(e) => {
                                 setTransferAmount(e.target.value);
                                 setTransferError(null);
                             }}
-                            InputProps={{
-                                startAdornment: <InputAdornment position="start">R$</InputAdornment>,
+                            error={!!transferError || (Number(transferAmount) > (sourceEnvelope?.amount || 0))}
+                            helperText={transferError || (Number(transferAmount) > (sourceEnvelope?.amount || 0) ? "Saldo insuficiente" : "")}
+                            slotProps={{
+                                input: {
+                                    inputMode: "numeric",
+                                    startAdornment: <InputAdornment position="start">R$</InputAdornment>,
+                                    sx: { textAlign: 'right', color: (Number(transferAmount) > (sourceEnvelope?.amount || 0)) ? 'error.main' : 'inherit' },
+                                }
                             }}
-                            error={!!transferError}
-                            helperText={transferError}
                         />
                     </Stack>
                 </TabPanel>

@@ -18,10 +18,12 @@ export const RealEnvelopesCard: React.FC<RealEnvelopesCardProps> = ({ envelope, 
     return (
         <Card
             sx={{
+                boxSizing: 'border-box!important',
                 position: 'relative',
                 overflow: 'hidden',
                 borderRadius: '8px',
                 minHeight: 130,
+                maxHeight: 130,
                 p: '10px',
                 display: 'flex',
                 flexDirection: 'column',

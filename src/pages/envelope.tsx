@@ -18,9 +18,10 @@ export default function Page() {
   const [envelopeActived, setEnvelopeActive] = useState<string>("");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [activeBorderColor, setActiveBorderColor] = useState<string>("");
+  const [typeFilter, setTypeFilter] = useState<string>("both");
   const { month, year } = SelectedMonthYearStore();
   const { data: envelopes, isLoading: envelopesIsLoading, error: envelopesError } = useListEnvelopesWithAmount(year, month);
-  const { data: transactions, isLoading: transactionsIsLoading, error: transactionsError } = useListTransactionsByEnvelope(envelopeActived, year, month, table);
+  const { data: transactions, isLoading: transactionsIsLoading, error: transactionsError } = useListTransactionsByEnvelope(envelopeActived, year, month, table, typeFilter === "both" ? undefined : typeFilter);
 
   useEffect(() => {
     queryClient.invalidateQueries({ queryKey: ["transactions", envelopeActived] });
@@ -81,6 +82,8 @@ export default function Page() {
         envelopes={envelopes || []}
         activeBorderColor={activeBorderColor}
         table={table}
+        typeFilter={typeFilter}
+        onTypeFilterChange={setTypeFilter}
       />
     </>
   );

@@ -25,6 +25,12 @@ html {
   height: 100%;
   -webkit-overflow-scrolling: touch;
 }
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 body,
 #root,
 #root__layout {

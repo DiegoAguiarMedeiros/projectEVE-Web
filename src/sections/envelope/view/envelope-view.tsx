@@ -18,8 +18,10 @@ type EnvelopeViewProps = {
   transactions: Pagination<Transactions> | undefined
   table: ITable,
   activeBorderColor: string
+  typeFilter?: string;
+  onTypeFilterChange?: (type: string) => void;
 }
-export function EnvelopeView({ envelopes, currentIndex, handleSlideClick, envelopeActived, transactions,table,activeBorderColor }: EnvelopeViewProps) {
+export function EnvelopeView({ envelopes, currentIndex, handleSlideClick, envelopeActived, transactions, table, activeBorderColor, typeFilter, onTypeFilterChange }: EnvelopeViewProps) {
   return (
     <DashboardContent>
       <Grid2 container spacing={3}>
@@ -31,7 +33,9 @@ export function EnvelopeView({ envelopes, currentIndex, handleSlideClick, envelo
           envelopes={envelopes}
           table={table}
           activeBorderColor={activeBorderColor}
-          />
+          typeFilter={typeFilter}
+          onTypeFilterChange={onTypeFilterChange}
+        />
       </Grid2>
     </DashboardContent>
   );

@@ -31,6 +31,8 @@ type SwiperEnvelopProps = {
   transactions: Pagination<Transactions> | undefined
   table: ITable,
   activeBorderColor: string
+  typeFilter?: string;
+  onTypeFilterChange?: (type: string) => void;
 }
 export default function SwiperEnvelop({
   envelopes,
@@ -39,7 +41,9 @@ export default function SwiperEnvelop({
   envelopeActived,
   transactions,
   table,
-  activeBorderColor
+  activeBorderColor,
+  typeFilter = "both",
+  onTypeFilterChange = () => { },
 }: SwiperEnvelopProps) {
 
   const theme = useTheme();
@@ -98,6 +102,8 @@ export default function SwiperEnvelop({
           table={table}
           activeBorderColor={activeBorderColor}
           allEnvelopes={envelopes}
+          typeFilter={typeFilter}
+          onTypeFilterChange={onTypeFilterChange}
         />
       )}
 

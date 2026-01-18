@@ -1,5 +1,5 @@
-import { useCallback, useEffect, } from "react";
-import { Card, TableContainer, Table, TableBody, TablePagination } from "@mui/material";
+import { useCallback, useEffect, useState } from "react";
+import { Card, TableContainer, Table, TableBody, TablePagination, Box, FormControl, Select, MenuItem, InputLabel } from "@mui/material";
 import { useSnackbar } from "notistack";
 import dayjs from "dayjs";
 import { ITable, useTable } from "src/sections/shared/useTable";
@@ -24,8 +24,10 @@ type TransactionTableProps = {
     table: ITable,
     activeBorderColor: string,
     allEnvelopes?: Envelopes[]
+    typeFilter?: string;
+    onTypeFilterChange?: (type: string) => void;
 }
-export function TransactionTable({ envelopeId, transactions, table, activeBorderColor, allEnvelopes }: TransactionTableProps) {
+export function TransactionTable({ envelopeId, transactions, table, activeBorderColor, allEnvelopes, typeFilter, onTypeFilterChange }: TransactionTableProps) {
 
     const {
         month,
@@ -50,7 +52,7 @@ export function TransactionTable({ envelopeId, transactions, table, activeBorder
         const handleDeleteTransaction = () => {
             deleteTransaction(id)
         }
-        const { description, amount, paymentMethod, date, status, } = row;
+        const { description, amount, paymentMethod, date, status, type } = row;
 
 
         const handleClick = (transactionsId: string, newStatus: TransactionsStatus) => {
@@ -63,7 +65,12 @@ export function TransactionTable({ envelopeId, transactions, table, activeBorder
             key={id}
             selected={table.selected.includes(id)}
             onSelectRow={() => table.onSelectRow(id)}
-            rowKeys={[description, `R$ ${amount}`, paymentMethod, dayjs(date).format("DD/MM/YYYY"),
+            rowKeys={[
+                description,
+                type === "Debit" ? "Débito" : "Crédito",
+                `R$ ${amount}`,
+                paymentMethod,
+                dayjs(date).format("DD/MM/YYYY"),
                 <Chips
                     label={status}
                     labels={["Pago", "Pendente"]}
@@ -91,6 +98,8 @@ export function TransactionTable({ envelopeId, transactions, table, activeBorder
             <TableToolbar
                 numSelected={table.selected.length}
                 form={<TransactionForm buttonLabel="Adicionar" envelopeId={envelopeId} allEnvelopes={allEnvelopes} />}
+                typeFilter={typeFilter}
+                onTypeFilterChange={onTypeFilterChange}
             />
 
             <TableContainer sx={{ overflow: "unset", flex: '1 0 0' }}>
@@ -109,6 +118,7 @@ export function TransactionTable({ envelopeId, transactions, table, activeBorder
                         }
                         headLabel={[
                             { id: "description", label: "Descrição" },
+                            { id: "type", label: "Tipo" },
                             { id: "amount", label: "Valor" },
                             { id: "paymentMethod", label: "Método de Pagamento" },
                             { id: "date", label: "Data" },

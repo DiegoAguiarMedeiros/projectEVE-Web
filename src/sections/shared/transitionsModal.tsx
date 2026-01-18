@@ -25,10 +25,10 @@ type TransitionsModalProps = {
   open: boolean;
   handleOpen: VoidFunction;
   handleClose: VoidFunction;
-  width?:number;
+  width?: number;
 }
 
-export default function TransitionsModal({ openButton, okButton, children, open, handleOpen, handleClose,width }: React.PropsWithChildren<TransitionsModalProps>) {
+export default function TransitionsModal({ openButton, okButton, children, open, handleOpen, handleClose, width }: React.PropsWithChildren<TransitionsModalProps>) {
 
   return (
     <>
@@ -53,10 +53,11 @@ export default function TransitionsModal({ openButton, okButton, children, open,
             <Box
               display="flex"
               alignSelf="flex-end"
-              justifyContent="space-between"
-              sx={{ width: "100%" }}
+              justifyContent="flex-end"
+              gap={2}
+              sx={{ width: "100%", mt: 3 }}
             >
-              <Button variant="outlined" color="warning" onClick={handleClose}>Fechar</Button>
+              <Button variant="text" color="inherit" onClick={handleClose}>Fechar</Button>
 
               {okButton}
             </Box>
