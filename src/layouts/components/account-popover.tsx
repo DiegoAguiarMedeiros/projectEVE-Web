@@ -11,6 +11,7 @@ import IconButton from "@mui/material/IconButton";
 import { useTheme } from "@mui/material";
 
 import { useRouter } from "src/routes/hooks";
+import { useUser } from "src/hooks/queries/user/useUser";
 
 import { _myAccount } from "src/_mock";
 
@@ -32,6 +33,7 @@ export type AccountPopoverProps = IconButtonProps & {
 export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps) {
   const router = useRouter();
   const [openPopover, setOpenPopover] = useState<HTMLButtonElement | null>(null);
+  const { data: user } = useUser();
 
   const handleOpenPopover = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
     setOpenPopover(event.currentTarget);
@@ -55,8 +57,8 @@ export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps)
         }}
         {...other}
       >
-        <Avatar src={_myAccount.photoURL} alt={_myAccount.displayName} sx={{ width: 1, height: 1 }}>
-          {_myAccount.displayName.charAt(0).toUpperCase()}
+        <Avatar src={_myAccount.photoURL} alt={user?.name} sx={{ width: 1, height: 1 }}>
+          {user?.name?.charAt(0).toUpperCase()}
         </Avatar>
       </IconButton>
 
@@ -73,13 +75,13 @@ export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps)
         }}
 
       >
-        <Box sx={{ p: 2, pb: 1.5, backgroundColor:(theme) => theme.palette.background.neutral }}>
+        <Box sx={{ p: 2, pb: 1.5, backgroundColor: (theme) => theme.palette.background.neutral }}>
           <Typography variant="subtitle2" noWrap>
-            {_myAccount?.displayName}
+            {user?.name}
           </Typography>
 
           <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
-            {_myAccount?.email}
+            {user?.email}
           </Typography>
         </Box>
 

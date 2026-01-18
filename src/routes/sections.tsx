@@ -19,6 +19,7 @@ export const EnvelopePage = lazy(() => import("src/pages/envelope"));
 export const SignInPage = lazy(() => import("src/pages/sign-in"));
 export const IncomesPage = lazy(() => import("src/pages/incomes"));
 export const SettingsPage = lazy(() => import("src/pages/settings"));
+export const ProfilePage = lazy(() => import("src/pages/profile"));
 export const CompleteRegistration = lazy(() => import("src/pages/completeRegistration"));
 export const Registration = lazy(() => import("src/pages/registration"));
 export const Page404 = lazy(() => import("src/pages/page-not-found"));
@@ -61,6 +62,7 @@ export function Router() {
             { path: "envelopes", element: <EnvelopePage /> },
             { path: "renda", element: <IncomesPage /> },
             { path: "configuracoes", element: <SettingsPage /> },
+            { path: "perfil", element: <ProfilePage /> },
           ],
         },
         {

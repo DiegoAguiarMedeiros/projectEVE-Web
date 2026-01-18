@@ -1,14 +1,17 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateUser } from "src/api/services/user/UserService";
+import { updateProfile } from "src/api/services/user/UserService";
 
-export function useUpdateUser() {
+
+export function useUpdateUser(onSuccess?: () => void) {
   const queryClient = useQueryClient();
 
+
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: any }) =>
-      updateUser(id, data).then(res => res.data),
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: ["user", variables.id] });
+    mutationFn: updateProfile,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+      // Ideally checking if we can refresh auth context user
+      if (onSuccess) onSuccess();
     },
   });
 }
