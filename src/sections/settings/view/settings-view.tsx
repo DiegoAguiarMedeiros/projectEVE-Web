@@ -5,6 +5,8 @@ import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import { Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import { useTranslation } from "react-i18next";
+
 
 import { DashboardContent } from "src/layouts/dashboard";
 import { _incomes } from "src/_mock";
@@ -62,6 +64,7 @@ type SettingsViewProps = {
   envelopes: Envelopes[]
 }
 export function SettingsView({ incomes, envelopes, goals, fixedExpenses, debts, creditCards }: SettingsViewProps) {
+  const { t } = useTranslation();
   const [value, setValue] = useState(0);
   const theme = useTheme();
 
@@ -76,12 +79,12 @@ export function SettingsView({ incomes, envelopes, goals, fixedExpenses, debts, 
       <Box sx={{ width: "100%" }}>
         <Box sx={{ borderBottom: 1, borderColor: "divider", borderTopRightRadius: '16px', borderTopLeftRadius: '16px', backgroundColor: theme.palette.background.paper, boxShadow: '0 0 2px 0 rgba(145 158 171 / 0.2), 0 12px 24px -4px rgba(145 158 171 / 0.12)' }}>
           <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-            <Tab label="Minha Renda" {...a11yProps(0)} sx={value === 0 ? { backgroundColor: "var(--layout-nav-item-active-bg)" } : null} />
-            <Tab label="Meus Limites" {...a11yProps(1)} sx={value === 1 ? { backgroundColor: "var(--layout-nav-item-active-bg)" } : null} />
-            <Tab label="Minhas Metas" {...a11yProps(2)} sx={value === 2 ? { backgroundColor: "var(--layout-nav-item-active-bg)" } : null} />
-            <Tab label="Minhas Contas Fixas" {...a11yProps(3)} sx={value === 3 ? { backgroundColor: "var(--layout-nav-item-active-bg)" } : null} />
-            <Tab label="Minhas Dívidas" {...a11yProps(4)} sx={value === 4 ? { backgroundColor: "var(--layout-nav-item-active-bg)" } : null} />
-            <Tab label="Meus Cartões" {...a11yProps(5)} sx={value === 5 ? { backgroundColor: "var(--layout-nav-item-active-bg)" } : null} />
+            <Tab label={t('settings.tabs.income')} {...a11yProps(0)} sx={value === 0 ? { backgroundColor: "var(--layout-nav-item-active-bg)" } : null} />
+            <Tab label={t('settings.tabs.envelopes')} {...a11yProps(1)} sx={value === 1 ? { backgroundColor: "var(--layout-nav-item-active-bg)" } : null} />
+            <Tab label={t('settings.tabs.goals')} {...a11yProps(2)} sx={value === 2 ? { backgroundColor: "var(--layout-nav-item-active-bg)" } : null} />
+            <Tab label={t('settings.tabs.fixed_expenses')} {...a11yProps(3)} sx={value === 3 ? { backgroundColor: "var(--layout-nav-item-active-bg)" } : null} />
+            <Tab label={t('settings.tabs.debts')} {...a11yProps(4)} sx={value === 4 ? { backgroundColor: "var(--layout-nav-item-active-bg)" } : null} />
+            <Tab label={t('settings.tabs.credit_cards')} {...a11yProps(5)} sx={value === 5 ? { backgroundColor: "var(--layout-nav-item-active-bg)" } : null} />
           </Tabs>
         </Box>
 

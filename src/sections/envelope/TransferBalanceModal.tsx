@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
     Box,
     Button,
@@ -30,6 +31,7 @@ export function TransferBalanceModal({
 }: TransferBalanceModalProps) {
     const { month, year } = SelectedMonthYearStore();
     const { mutate, isPending } = useTransferBalance();
+    const { t } = useTranslation();
 
     const [toEnvelopeId, setToEnvelopeId] = useState("");
     const [amount, setAmount] = useState<number | string>("");
@@ -51,18 +53,18 @@ export function TransferBalanceModal({
     const handleSubmit = () => {
         if (!sourceEnvelope) return;
         if (!toEnvelopeId) {
-            setError("Selecione um envelope de destino");
+            setError(t('envelope.validation.select_target'));
             return;
         }
 
         const numAmount = Number(amount);
         if (!amount || numAmount <= 0) {
-            setError("O valor deve ser maior que zero");
+            setError(t('envelope.validation.amount_positive'));
             return;
         }
 
         if (numAmount > (sourceEnvelope.amount || 0)) {
-            setError("Saldo insuficiente");
+            setError(t('envelope.validation.insufficient_funds'));
             return;
         }
 
@@ -102,7 +104,7 @@ export function TransferBalanceModal({
                     loading={isPending}
                     disabled={!isValid}
                 >
-                    Transferir
+                    {t('common.transfer')}
                 </LoadingButton>
             }
             openButton={<></>}
@@ -114,26 +116,26 @@ export function TransferBalanceModal({
                 alignItems="center"
                 sx={{ width: "100%", pt: 2 }}
             >
-                <Typography variant="h4">Transferir Saldo</Typography>
+                <Typography variant="h4">{t('envelope.transfer.title')}</Typography>
 
                 <Stack spacing={3} sx={{ width: '100%' }}>
                     {sourceEnvelope && (
                         <Box sx={{ bgcolor: 'background.neutral', p: 2, borderRadius: 1 }}>
                             <Typography variant="subtitle2" color="text.secondary">
-                                De:
+                                {t('envelope.transfer.from')}:
                             </Typography>
                             <Typography variant="h6">
                                 {sourceEnvelope.name}
                             </Typography>
                             <Typography variant="body2" color={(sourceEnvelope.amount ?? 0) < 0 ? 'error.main' : 'success.main'}>
-                                Saldo atual: {fCurrency(sourceEnvelope.amount || 0)}
+                                {t('overview.envelopes.available', { amount: fCurrency(sourceEnvelope.amount || 0) })}
                             </Typography>
                         </Box>
                     )}
 
                     <TextField
                         select
-                        label="Para Envelope"
+                        label={t('envelope.transfer.target')}
                         fullWidth
                         value={toEnvelopeId}
                         onChange={(e) => setToEnvelopeId(e.target.value)}
@@ -146,7 +148,7 @@ export function TransferBalanceModal({
                     </TextField>
 
                     <TextField
-                        label="Valor"
+                        label={t('envelope.transfer.amount_label')}
                         type="number"
                         fullWidth
                         value={amount}

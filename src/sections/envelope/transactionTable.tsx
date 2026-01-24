@@ -17,6 +17,8 @@ import { Envelopes } from "src/types/Envelopes";
 import { useDeleteTransactions } from "src/hooks/mutations/transactions/useDeleteTransactions";
 import { useUpdateTransactions } from "src/hooks/mutations/transactions/useUpdateTransactions";
 import { useUpdateStatusTransactions } from "src/hooks/mutations/transactions/useUpdateStatusTransactions";
+import { useTranslation } from "react-i18next";
+import { fCurrency } from "src/utils/format-number";
 
 type TransactionTableProps = {
     envelopeId: string;
@@ -28,6 +30,7 @@ type TransactionTableProps = {
     onTypeFilterChange?: (type: string) => void;
 }
 export function TransactionTable({ envelopeId, transactions, table, activeBorderColor, allEnvelopes, typeFilter, onTypeFilterChange }: TransactionTableProps) {
+    const { t } = useTranslation();
 
     const {
         month,
@@ -67,20 +70,20 @@ export function TransactionTable({ envelopeId, transactions, table, activeBorder
             onSelectRow={() => table.onSelectRow(id)}
             rowKeys={[
                 description,
-                type === "Debit" ? "Débito" : "Crédito",
-                `R$ ${amount}`,
-                paymentMethod,
+                type === "Debit" ? t('envelope.transaction.type.debit') : t('envelope.transaction.type.credit'),
+                fCurrency(amount),
+                t(`envelope.transaction.payment_method.${paymentMethod}`),
                 dayjs(date).format("DD/MM/YYYY"),
                 <Chips
-                    label={status}
-                    labels={["Pago", "Pendente"]}
+                    label={t(`envelope.transaction.status.${status}`)}
+                    labels={[t('transaction.status.paid'), t('transaction.status.pending')]}
                     fieldName="Completed"
                     click={() => handleClick(id, status === 'Completed' ? 'Pending' : 'Completed')}
                 />]}
             form={<TransactionForm
                 data={row}
                 buttonIcon={<Iconify icon="solar:pen-bold" />}
-                buttonLabel="Editar"
+                buttonLabel={t('common.edit')}
                 envelopeId={envelopeId}
                 allEnvelopes={allEnvelopes}
             />}
@@ -97,7 +100,7 @@ export function TransactionTable({ envelopeId, transactions, table, activeBorder
         }}>
             <TableToolbar
                 numSelected={table.selected.length}
-                form={<TransactionForm buttonLabel="Adicionar" envelopeId={envelopeId} allEnvelopes={allEnvelopes} />}
+                form={<TransactionForm buttonLabel={t('common.add')} envelopeId={envelopeId} allEnvelopes={allEnvelopes} />}
                 typeFilter={typeFilter}
                 onTypeFilterChange={onTypeFilterChange}
             />
@@ -113,16 +116,16 @@ export function TransactionTable({ envelopeId, transactions, table, activeBorder
                         onSelectAllRows={(checked) =>
                             table.onSelectAllRows(
                                 checked,
-                                transactions.data.map((t) => t.id!)
+                                transactions.data.map(transaction => transaction.id!)
                             )
                         }
                         headLabel={[
-                            { id: "description", label: "Descrição" },
-                            { id: "type", label: "Tipo" },
-                            { id: "amount", label: "Valor" },
-                            { id: "paymentMethod", label: "Método de Pagamento" },
-                            { id: "date", label: "Data" },
-                            { id: "status", label: "Status" },
+                            { id: "description", label: t('transaction.headers.description') },
+                            { id: "type", label: t('transaction.headers.type') },
+                            { id: "amount", label: t('transaction.headers.amount') },
+                            { id: "paymentMethod", label: t('transaction.headers.payment_method') },
+                            { id: "date", label: t('transaction.headers.date') },
+                            { id: "status", label: t('transaction.headers.status') },
                             { id: "" },
                         ]}
                         activeBorderColor={activeBorderColor}
@@ -131,9 +134,9 @@ export function TransactionTable({ envelopeId, transactions, table, activeBorder
                     <TableBody>
                         {transactions && transactions.data.length < 1
                             ?
-                            <TableNoData message="Nenhuma transação cadastrada!" />
+                            <TableNoData message={t('transaction.empty')} />
                             :
-                            transactions && transactions.data.map(t => (TransactionRow(t, DeleteTransaction)))
+                            transactions && transactions.data.map(transaction => (TransactionRow(transaction, DeleteTransaction)))
                         }
                     </TableBody>
                 </Table>

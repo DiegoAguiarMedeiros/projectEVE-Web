@@ -8,6 +8,8 @@ import { useUpdateGoals } from "src/hooks/mutations/goals/useUpdateGoals";
 import { Goals, GoalsPost } from "src/types/Goals";
 import { IncomeStore } from "src/store/useIncomeStore";
 import { Envelopes } from "src/types/Envelopes";
+import { useTranslation } from "react-i18next";
+
 
 type GoalsFormProps = {
     buttonIcon?: React.ReactNode;
@@ -17,6 +19,7 @@ type GoalsFormProps = {
 }
 
 export function GoalsForm({ buttonLabel, buttonIcon, data, envelope }: GoalsFormProps) {
+    const { t } = useTranslation();
     const theme = useTheme();
 
     const { income } = IncomeStore()
@@ -124,67 +127,67 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope }: GoalsForm
 
     const validateDescription = useCallback(() => {
         if (!description.trim()) {
-            setErrorDescription("Descrição é obrigatória.");
+            setErrorDescription(t('settings.goals.validation.description_required'));
             return false;
         }
         setErrorDescription(null);
         return true;
-    }, [description]);
+    }, [description, t]);
 
     const validateAmount = useCallback(() => {
         if (!amount.trim()) {
-            setErrorAmount("Valor é obrigatório.");
+            setErrorAmount(t('settings.goals.validation.amount_required'));
             return false;
         }
 
         if (Number.isNaN(Number(amount))) {
-            setErrorAmount("Valor deve ser numérico.");
+            setErrorAmount(t('settings.goals.validation.amount_numeric'));
             return false;
         }
         setErrorAmount(null);
         calculatePercentage(deadline, monthYear, amountTotal, amount);
         return true;
-    }, [deadline, amountTotal, monthYear, amount, calculatePercentage]);
+    }, [deadline, amountTotal, monthYear, amount, calculatePercentage, t]);
 
 
     const validateAmountTotal = useCallback(() => {
         if (!amountTotal.trim()) {
-            setErrorAmountTotal("Valor é obrigatório.");
+            setErrorAmountTotal(t('settings.goals.validation.amount_required'));
             return false;
         }
 
         if (Number.isNaN(Number(amountTotal))) {
-            setErrorAmountTotal("Valor total deve ser numérico.");
+            setErrorAmountTotal(t('settings.goals.validation.amount_total_numeric'));
             return false;
         }
         setErrorAmountTotal(null);
         calculatePercentage(deadline, monthYear, amountTotal, amount);
         return true;
-    }, [deadline, amountTotal, monthYear, amount, calculatePercentage]);
+    }, [deadline, amountTotal, monthYear, amount, calculatePercentage, t]);
 
     const validateDeadline = useCallback(() => {
         if (!deadline.trim()) {
-            setErrorDeadline("Para quando é obrigatório.");
+            setErrorDeadline(t('settings.goals.validation.deadline_required'));
             return false;
         }
 
         if (Number.isNaN(Number(deadline))) {
-            setErrorDeadline("Para quando deve ser numérico.");
+            setErrorDeadline(t('settings.goals.validation.deadline_numeric'));
             return false;
         }
         setErrorDeadline(null);
         calculatePercentage(deadline, monthYear, amountTotal, amount);
         return true;
-    }, [deadline, amountTotal, monthYear, amount, calculatePercentage]);
+    }, [deadline, amountTotal, monthYear, amount, calculatePercentage, t]);
 
     const getMonthYearLabel = useCallback((): string | null => {
 
-        if (monthYear && Number(deadline) === 1) { return "Mês" }
-        if (monthYear && Number(deadline) > 1) { return "Meses" }
-        if (!monthYear && Number(deadline) === 1) { return "Ano" }
-        if (!monthYear && Number(deadline) > 1) { return "Anos" }
+        if (monthYear && Number(deadline) === 1) { return t('settings.goals.time.month') }
+        if (monthYear && Number(deadline) > 1) { return t('settings.goals.time.months') }
+        if (!monthYear && Number(deadline) === 1) { return t('settings.goals.time.year') }
+        if (!monthYear && Number(deadline) > 1) { return t('settings.goals.time.years') }
         return null
-    }, [monthYear, deadline]);
+    }, [monthYear, deadline, t]);
 
 
 
@@ -207,11 +210,11 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope }: GoalsForm
                     style={{ display: "flex", gap: "16px", background: "none", border: "none", cursor: "pointer", margin: 0, padding: 0 }}
                     onClick={handleOpen}
                 >
-                    {buttonIcon}{buttonLabel}
+                    {buttonIcon}{buttonLabel === 'Adicionar' ? t('common.add') : buttonLabel === 'Editar' ? t('common.edit') : buttonLabel}
                 </Button>
             }
 
-            okButton={<Button type="submit" variant="outlined" color="primary" onClick={handleSubmit} disabled={isPending} >Salvar</Button>
+            okButton={<Button type="submit" variant="outlined" color="primary" onClick={handleSubmit} disabled={isPending} >{t('settings.goals.save')}</Button>
             }>
             <Box
                 gap={1.5}
@@ -228,7 +231,7 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope }: GoalsForm
                 {error && <p>{error.message}</p>}
 
                 <Typography variant="h3" noWrap >
-                    Nova Meta
+                    {t('settings.goals.title')}
                 </Typography>
                 <Box
                     gap={1.5}
@@ -248,7 +251,7 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope }: GoalsForm
                         <TextField
                             fullWidth
                             name="description"
-                            label="Qual sua meta"
+                            label={t('settings.goals.description')}
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                             onBlur={validateDescription}
@@ -258,7 +261,7 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope }: GoalsForm
                             fullWidth
                             type="number"
                             name="amountTotal"
-                            label="De quanto precisa"
+                            label={t('settings.goals.amount_total')}
                             value={amountTotal}
                             onChange={(e) => setAmountTotal(e.target.value)}
                             onBlur={validateAmountTotal}
@@ -275,7 +278,7 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope }: GoalsForm
                             fullWidth
                             type="number"
                             name="amount"
-                            label="Quanto você já tem"
+                            label={t('settings.goals.amount_current')}
                             value={amount}
                             onChange={(e) => setAmount(e.target.value)}
                             onBlur={validateAmount}
@@ -291,7 +294,7 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope }: GoalsForm
                             fullWidth
                             type="number"
                             name="deadline"
-                            label="Em quanto tempo"
+                            label={t('settings.goals.deadline')}
                             value={deadline}
                             onChange={(e) => setDeadline(e.target.value)}
                             onBlur={validateDeadline}
@@ -327,9 +330,9 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope }: GoalsForm
                     >
 
                         <Typography variant="body1" noWrap >
-                            Recomendação
+                            {t('settings.goals.recommendation.title')}
                         </Typography>
-                        {salaryIdeal > income ? <Typography variant="body1" color={theme.palette.error.main}>Essa meta não é viável com sua renda atual que é R${income}.</Typography> : <></>}
+                        {salaryIdeal > income ? <Typography variant="body1" color={theme.palette.error.main}>{t('settings.goals.recommendation.unfeasible', { income })}</Typography> : <></>}
                         <Box sx={{ width: "100%", p: 2 }}
                             display="flex"
                             flexDirection="row">
@@ -346,7 +349,7 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope }: GoalsForm
                                         background: theme.palette.primary.main
                                     }}
                                 >
-                                    <Typography>Você deve guardar R$ {save.toFixed(2)} por mês</Typography>
+                                    <Typography>{t('settings.goals.recommendation.monthly_save', { amount: save.toFixed(2) })}</Typography>
                                 </Paper>
                             </Box>
                             <Box sx={{ flex: 1, m: 1 }} >
@@ -362,7 +365,7 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope }: GoalsForm
                                         background: theme.palette.background.paper
                                     }}
                                 >
-                                    <Typography>Isso representa {savePercentagem.toFixed(2)}% do seu envelope</Typography>
+                                    <Typography>{t('settings.goals.recommendation.envelope_percentage', { percentage: savePercentagem.toFixed(2) })}</Typography>
                                 </Paper>
 
                             </Box>
@@ -378,7 +381,7 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope }: GoalsForm
                                         background: theme.palette.background.paper
                                     }}
                                 >
-                                    <Typography>Sua renda deve ser de R$ {salaryIdeal.toFixed(2)}</Typography>
+                                    <Typography>{t('settings.goals.recommendation.ideal_income', { amount: salaryIdeal.toFixed(2) })}</Typography>
                                 </Paper>
                             </Box>
                         </Box>

@@ -6,6 +6,8 @@ import { useSnackbar, VariantType } from "notistack";
 import { useUpdateIncomes } from "src/hooks/mutations/incomes/useUpdateIncomes";
 import { useCreateIncomes } from "src/hooks/mutations/incomes/useCreateIncomes";
 import { Incomes, IncomesPost } from "src/types/Incomes";
+import { useTranslation } from "react-i18next";
+
 
 type FormIncomesProps = {
     buttonIcon?: React.ReactNode;
@@ -14,6 +16,7 @@ type FormIncomesProps = {
 }
 
 export function FormIncomes({ buttonLabel, buttonIcon, data }: FormIncomesProps) {
+    const { t } = useTranslation();
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -77,40 +80,40 @@ export function FormIncomes({ buttonLabel, buttonIcon, data }: FormIncomesProps)
 
     const validateDescription = useCallback(() => {
         if (!description.trim()) {
-            setErrorDescription("Descrição é obrigatória.");
+            setErrorDescription(t('settings.income.validation.description_required'));
             return false;
         }
         setErrorDescription(null);
         return true;
-    }, [description]);
+    }, [description, t]);
 
     const validateAmount = useCallback(() => {
         if (!amount.trim()) {
-            setErrorAmount("Valor é obrigatório.");
+            setErrorAmount(t('settings.income.validation.amount_required'));
             return false;
         }
 
         if (Number.isNaN(Number(amount))) {
-            setErrorAmount("Valor deve ser numérico.");
+            setErrorAmount(t('settings.income.validation.amount_numeric'));
             return false;
         }
         setErrorAmount(null);
         return true;
-    }, [amount]);
+    }, [amount, t]);
 
     const validatePaymentDay = useCallback(() => {
         const day = Number(paymentDay);
         if (!day && !paymentDay.trim()) {
-            setErrorPaymentDay("Dia do pagamento é obrigatório.");
+            setErrorPaymentDay(t('settings.income.validation.payment_day_required'));
             return false;
         }
         if (Number.isNaN(day) || day < 1 || day > 31) {
-            setErrorPaymentDay("O dia do pagamento deve estar entre 1 e 31.");
+            setErrorPaymentDay(t('settings.income.validation.payment_day_range'));
             return false;
         }
         setErrorPaymentDay(null);
         return true;
-    }, [paymentDay]);
+    }, [paymentDay, t]);
 
 
     return (
@@ -127,11 +130,11 @@ export function FormIncomes({ buttonLabel, buttonIcon, data }: FormIncomesProps)
                     style={{ display: "flex", gap: "16px", background: "none", border: "none", cursor: "pointer", margin: 0, padding: 0 }}
                     onClick={handleOpen}
                 >
-                    {buttonIcon}{buttonLabel}
+                    {buttonIcon}{buttonLabel === 'Adicionar' ? t('common.add') : buttonLabel === 'Editar' ? t('common.edit') : buttonLabel}
                 </Button>
             }
 
-            okButton={<Button type="submit" variant="outlined" color="primary" onClick={handleSubmit} disabled={isPending} >Adicionar</Button>
+            okButton={<Button type="submit" variant="outlined" color="primary" onClick={handleSubmit} disabled={isPending} >{t('common.add')}</Button>
             }>
             <Box
                 gap={1.5}
@@ -142,13 +145,13 @@ export function FormIncomes({ buttonLabel, buttonIcon, data }: FormIncomesProps)
                 sx={{ width: "100%" }}
             >
                 <Typography variant="h3" noWrap>
-                    Salário
+                    {t('settings.income.title')}
                 </Typography>
                 {error && <p>{error.message}</p>}
                 <TextField
                     fullWidth
                     name="description"
-                    label="Descrição"
+                    label={t('settings.income.description')}
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     onBlur={validateDescription}
@@ -160,7 +163,7 @@ export function FormIncomes({ buttonLabel, buttonIcon, data }: FormIncomesProps)
                     fullWidth
                     type="number"
                     name="amount"
-                    label="Valor"
+                    label={t('settings.income.amount')}
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     onBlur={validateAmount}
@@ -177,7 +180,7 @@ export function FormIncomes({ buttonLabel, buttonIcon, data }: FormIncomesProps)
                     fullWidth
                     type="number"
                     name="paymentDay"
-                    label="Dia do pagamento"
+                    label={t('settings.income.payment_day')}
                     value={paymentDay}
                     onChange={(e) => setPaymentDay(e.target.value)}
                     onBlur={validatePaymentDay}

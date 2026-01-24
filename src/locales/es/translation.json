@@ -1,0 +1,348 @@
+{
+    "app_name": "Project EVE",
+    "welcome": "Bienvenido de nuevo",
+    "no_funds": "Sin fondos",
+    "available": "Disponible: {{amount}}",
+    "language": "Idioma",
+    "goals": "Metas",
+    "housing": "Vivienda",
+    "groceries": "Mercado",
+    "health": "Salud",
+    "leisure": "Ocio",
+    "education": "Educación",
+    "transport": "Transporte",
+    "others": "Otros",
+    "incomes": "Ingresos",
+    "expenses": "Gastos",
+    "balance": "Balance",
+    "months": {
+        "january": "Enero",
+        "february": "Febrero",
+        "march": "Marzo",
+        "april": "Abril",
+        "may": "Mayo",
+        "june": "Junio",
+        "july": "Julio",
+        "august": "Agosto",
+        "september": "Septiembre",
+        "october": "Octubre",
+        "november": "Noviembre",
+        "december": "Diciembre"
+    },
+    "common": {
+        "save": "Guardar",
+        "cancel": "Cancelar",
+        "delete": "Eliminar",
+        "edit": "Editar",
+        "create": "Crear",
+        "update": "Actualizar",
+        "search": "Buscar...",
+        "loading": "Cargando...",
+        "expenses": "Gastos",
+        "no_data": "Sin datos",
+        "transfer": "Transferir",
+        "add": "Añadir",
+        "payment_method": {
+            "credit_card": "Tarjeta de Crédito",
+            "debit_card": "Tarjeta de Débito",
+            "cash": "Efectivo",
+            "bank_transfer": "Transferencia Bancaria",
+            "pix": "PIX"
+        }
+    },
+    "errors": {
+        "unexpected": "Ocurrió un error inesperado",
+        "unauthorized": "Acceso no autorizado",
+        "forbidden": "Acceso prohibido",
+        "not_found": "Recurso no encontrado",
+        "conflict": "Conflicto",
+        "too_many_requests": "Demasiadas solicitudes",
+        "payment_required": "Pago requerido",
+        "validation": "Error de validación"
+    },
+    "nav": {
+        "budget": "Presupuesto",
+        "envelopes": "Sobres",
+        "incomes": "Ingresos",
+        "settings": "Configuración"
+    },
+    "account": {
+        "notification": "Notificación",
+        "theme": "Tema",
+        "language": "Idioma",
+        "profile": "Perfil",
+        "settings": "Configuración de la Cuenta",
+        "logout": "Cerrar sesión",
+        "logging_out": "Cerrando sesión..."
+    },
+    "overview": {
+        "budget": "Presupuesto",
+        "envelopes_title": "Sobres",
+        "than_last_year": "que el año pasado",
+        "envelopes": {
+            "no_funds": "Sin fondos",
+            "available": "Disponible: {{amount}}"
+        }
+    },
+    "envelope": {
+        "transaction": {
+            "description": "Descripción",
+            "amount": "Monto",
+            "date": "Fecha de Pago",
+            "payment_method_label": "Método de Pago",
+            "tabs": {
+                "transaction": "Transacción",
+                "transfer": "Transferencia"
+            },
+            "placeholder": {
+                "description": "Ej: Alquiler",
+                "amount": "0.00"
+            },
+            "payment_method": {
+                "CreditCard": "Tarjeta de Crédito",
+                "DebitCard": "Tarjeta de Débito",
+                "Cash": "Efectivo",
+                "BankTransfer": "Transferencia Bancaria",
+                "Pix": "Pix"
+            },
+            "status": {
+                "paid": "Pagado",
+                "pending": "Pendiente",
+                "Completed": "Pagado",
+                "Pending": "Pendiente"
+            },
+            "type": {
+                "debit": "Débito",
+                "credit": "Crédito"
+            }
+        },
+        "transfer": {
+            "title": "Transferir Saldo",
+            "from": "De",
+            "to": "Para",
+            "target": "Para Sobre",
+            "amount_label": "Monto de transferencia",
+            "select_envelope": "Seleccione el sobre",
+            "select_envelope_placeholder": "Seleccione el sobre"
+        },
+        "validation": {
+            "description_required": "Descripción es obligatoria",
+            "amount_required": "Monto es obligatorio",
+            "amount_numeric": "Monto debe ser numérico",
+            "amount_positive": "El monto debe ser mayor que cero",
+            "insufficient_funds": "Saldo insuficiente",
+            "select_target": "Seleccione un sobre de destino",
+            "enter_amount": "Ingrese el monto"
+        }
+    },
+    "transaction": {
+        "status": {
+            "paid": "Pagado",
+            "pending": "Pendiente",
+            "completed": "Pagado"
+        },
+        "type": {
+            "debit": "Débito",
+            "credit": "Crédito"
+        },
+        "empty": "¡No se encontraron transacciones!",
+        "all_loaded": "Todas las transacciones cargadas",
+        "headers": {
+            "description": "Descripción",
+            "type": "Tipo",
+            "amount": "Monto",
+            "payment_method": "Método de Pago",
+            "date": "Fecha",
+            "status": "Estado"
+        }
+    },
+    "income": {
+        "title": "Ingresos",
+        "split": "Dividir entre sobres",
+        "yes": "Sí",
+        "no": "No",
+        "validation": {
+            "description_required": "Descripción es obligatoria",
+            "amount_required": "Monto es obligatorio",
+            "amount_numeric": "Monto debe ser numérico"
+        },
+        "table": {
+            "headers": {
+                "description": "Descripción",
+                "amount": "Monto",
+                "date": "Fecha",
+                "envelope": "Sobre"
+            },
+            "empty": "¡No hay ingresos registrados!",
+            "all": "Todos",
+            "one": "Uno"
+        }
+    },
+    "user": {
+        "title": "Usuarios",
+        "new": "Nuevo usuario",
+        "search": "Buscar usuario...",
+        "table": {
+            "headers": {
+                "name": "Nombre",
+                "company": "Empresa",
+                "role": "Rol",
+                "verified": "Verificado",
+                "status": "Estado"
+            },
+            "selected": "{{count}} seleccionado(s)",
+            "no_data": "No encontrado",
+            "no_results": "No se encontraron resultados para",
+            "typo_suggestion": "Intente verificar errores tipográficos o usar palabras completas."
+        }
+    },
+    "settings": {
+        "credit_card": {
+            "title": "Tarjeta de Crédito",
+            "name": "Nombre",
+            "flag": "Marca",
+            "validation": {
+                "name_required": "Nombre es obligatorio",
+                "flag_required": "Marca es obligatoria"
+            },
+            "table": {
+                "headers": {
+                    "name": "Nombre",
+                    "flag": "Marca"
+                },
+                "no_data": "¡No hay tarjetas de crédito registradas!"
+            }
+        },
+        "debt": {
+            "title": "Deuda",
+            "description": "Descripción",
+            "amount": "Valor de la cuota",
+            "installments_paid": "Cuotas pagadas",
+            "installments_total": "Total de cuotas",
+            "payment_day": "Día de pago",
+            "validation": {
+                "description_required": "Descripción es obligatoria",
+                "amount_required": "Valor es obligatorio",
+                "amount_numeric": "Valor debe ser numérico",
+                "installments_total_required": "Valor es obligatorio",
+                "installments_total_numeric": "Valor debe ser numérico",
+                "installments_paid_required": "Valor es obligatorio",
+                "installments_paid_numeric": "Valor debe ser numérico",
+                "payment_day_required": "Día de pago es obligatorio",
+                "payment_day_range": "El día de pago debe estar entre 1 y 31"
+            },
+            "table": {
+                "headers": {
+                    "description": "Descripción",
+                    "amount": "Valor",
+                    "installments_paid": "Total pagado",
+                    "installments_total": "Total cuotas",
+                    "payment_day": "Día de pago"
+                },
+                "no_data": "¡No hay deudas registradas!"
+            }
+        },
+        "envelope": {
+            "title": "Sobre",
+            "name": "Nombre",
+            "color": "Color",
+            "percentage": "Porcentaje: {{count}}%",
+            "allocation_remaining": "Faltan {{count}}% para la asignación",
+            "allocation_exceeded": "Excedió {{count}}% del máximo",
+            "save": "Guardar",
+            "validation": {
+                "name_required": "Nombre es obligatorio"
+            }
+        },
+        "fixed_expense": {
+            "title": "Gastos Fijos",
+            "envelope": "Sobre",
+            "description": "Descripción",
+            "amount": "Valor",
+            "payment_day": "Día de Pago",
+            "validation": {
+                "description_required": "Descripción es obligatoria",
+                "amount_required": "Valor es obligatorio",
+                "amount_numeric": "Valor debe ser numérico",
+                "payment_day_required": "Día de pago es obligatorio",
+                "payment_day_range": "El día de pago debe estar entre 1 y 31"
+            },
+            "table": {
+                "headers": {
+                    "envelope": "Sobre",
+                    "description": "Descripción",
+                    "amount": "Valor",
+                    "payment_day": "Día de Pago"
+                },
+                "no_data": "¡No hay gastos fijos registrados!"
+            }
+        },
+        "goals": {
+            "title": "Nueva Meta",
+            "description": "¿Cuál es tu meta?",
+            "amount_total": "¿Cuánto necesitas?",
+            "amount_current": "¿Cuánto ya tienes?",
+            "deadline": "¿En cuánto tiempo?",
+            "save": "Guardar",
+            "validation": {
+                "description_required": "Descripción es obligatoria",
+                "amount_required": "Valor es obligatorio",
+                "amount_numeric": "Valor debe ser numérico",
+                "amount_total_numeric": "Valor total debe ser numérico",
+                "deadline_required": "Plazo es obligatorio",
+                "deadline_numeric": "Plazo debe ser numérico"
+            },
+            "table": {
+                "headers": {
+                    "description": "Descripción",
+                    "amount": "Valor",
+                    "percentage": "Porcentaje",
+                    "deadline": "Plazo"
+                },
+                "no_data": "¡No hay metas registradas!"
+            },
+            "recommendation": {
+                "title": "Recomendación",
+                "unfeasible": "Esta meta no es viable con tu ingreso actual de {{income}}.",
+                "monthly_save": "Debes guardar {{amount}} por mes",
+                "envelope_percentage": "Esto representa el {{percentage}}% de tu sobre",
+                "ideal_income": "Tu ingreso debería ser de {{amount}}"
+            },
+            "time": {
+                "month": "Mes",
+                "months": "Meses",
+                "year": "Año",
+                "years": "Años"
+            }
+        },
+        "income": {
+            "title": "Ingresos",
+            "description": "Descripción",
+            "amount": "Salario",
+            "payment_day": "Día de Pago",
+            "validation": {
+                "description_required": "Descripción es obligatoria",
+                "amount_required": "Valor es obligatorio",
+                "amount_numeric": "Valor debe ser numérico",
+                "payment_day_required": "Día de pago es obligatorio",
+                "payment_day_range": "El día de pago debe estar entre 1 y 31"
+            },
+            "table": {
+                "headers": {
+                    "description": "Descripción",
+                    "amount": "Salario",
+                    "payment_day": "Día de Pago"
+                },
+                "no_data": "¡No hay ingresos registrados!"
+            }
+        },
+        "tabs": {
+            "income": "Mis Ingresos",
+            "envelopes": "Mis Límites",
+            "goals": "Mis Metas",
+            "fixed_expenses": "Mis Gastos Fijos",
+            "debts": "Mis Deudas",
+            "credit_cards": "Mis Tarjetas"
+        }
+    }
+}

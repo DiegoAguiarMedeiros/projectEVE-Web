@@ -61,7 +61,7 @@ export const _incomes = [...Array(25)].map((_, index) => ({
     6000
   ][index] || 6000,
   payDay: 5,
-  
+
 }));
 
 // ----------------------------------------------------------------------
@@ -121,18 +121,18 @@ export const _products = [...Array(24)].map((_, index) => {
 
 export const _langs = [
   {
-    value: "br",
-    label: "Brasil",
+    value: "pt-BR",
+    label: "Português",
     icon: "/assets/icons/flags/ic-flag-br.svg",
   },
   {
     value: "en",
-    label: "Inglês",
+    label: "English",
     icon: "/assets/icons/flags/ic-flag-en.svg",
   },
   {
-    value: "fr",
-    label: "Espanhol",
+    value: "es",
+    label: "Español",
     icon: "/assets/icons/flags/ic-flag-es.svg",
   },
 ];
@@ -145,43 +145,43 @@ export const _timeline: {
   valueMax: number;
   color: "primary" | "secondary" | "error" | "info" | "success" | "warning";
 }[] = [
-  {
-    title: "Contas Fixas",
-    value: 250,
-    valueMax: 500,
-    color: "primary",
-  },
-  {
-    title: "Alimentação",
-    value: 350,
-    valueMax: 500,
-    color: "secondary",
-  },
-  {
-    title: "Lazer",
-    value: 450,
-    valueMax: 500,
-    color: "info",
-  },
-  {
-    title: "Transporte",
-    value: 50,
-    valueMax: 500,
-    color: "warning",
-  },
-  {
-    title: "Saúde",
-    value: 100,
-    valueMax: 500,
-    color: "success",
-  },
-  {
-    title: "Bem Estar",
-    value: 300,
-    valueMax: 500,
-    color: "error",
-  },
-];
+    {
+      title: "Contas Fixas",
+      value: 250,
+      valueMax: 500,
+      color: "primary",
+    },
+    {
+      title: "Alimentação",
+      value: 350,
+      valueMax: 500,
+      color: "secondary",
+    },
+    {
+      title: "Lazer",
+      value: 450,
+      valueMax: 500,
+      color: "info",
+    },
+    {
+      title: "Transporte",
+      value: 50,
+      valueMax: 500,
+      color: "warning",
+    },
+    {
+      title: "Saúde",
+      value: 100,
+      valueMax: 500,
+      color: "success",
+    },
+    {
+      title: "Bem Estar",
+      value: 300,
+      valueMax: 500,
+      color: "error",
+    },
+  ];
 
 // ----------------------------------------------------------------------
 

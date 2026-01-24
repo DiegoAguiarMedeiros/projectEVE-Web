@@ -8,6 +8,8 @@ import CardHeader from "@mui/material/CardHeader";
 import { Chart, useChart } from "src/components/chart";
 import { AnalyticsEnvelopesByYear } from "src/types/Graph";
 
+import { useTranslation } from "react-i18next";
+
 // ----------------------------------------------------------------------
 
 type Props = CardProps & {
@@ -17,6 +19,7 @@ type Props = CardProps & {
 };
 
 export function AnalyticsEnvelopesByYearGraph({ title, subheader, chart, ...other }: Props) {
+  const { t } = useTranslation();
   const theme = useTheme();
 
   const chartColors = [
@@ -33,7 +36,7 @@ export function AnalyticsEnvelopesByYearGraph({ title, subheader, chart, ...othe
       colors: ["transparent"],
     },
     xaxis: {
-      categories: chart?.categories,
+      categories: chart?.categories.map((c) => t(c)),
     },
     legend: {
       show: true,
@@ -45,7 +48,7 @@ export function AnalyticsEnvelopesByYearGraph({ title, subheader, chart, ...othe
     },
   });
 
-  if(!chart) return <>no data</>
+  if (!chart) return <>{t('common.no_data')}</>
 
   return (
     <Card {...other}>

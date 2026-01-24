@@ -15,6 +15,8 @@ import { Pagination } from "src/types/Pagination";
 import { Debts } from "src/types/Debts";
 import { useDeleteDebts } from "src/hooks/mutations/debts/useDeleteDebts";
 import { Envelopes } from "src/types/Envelopes";
+import { useTranslation } from "react-i18next";
+
 
 
 type DebtsTableProps = {
@@ -23,6 +25,7 @@ type DebtsTableProps = {
 }
 
 export function DebtTable({ debts, envelopes }: DebtsTableProps) {
+    const { t } = useTranslation();
     const table = useTable();
 
     useEffect(() => {
@@ -53,7 +56,7 @@ export function DebtTable({ debts, envelopes }: DebtsTableProps) {
                 data={row}
                 envelopes={envelopes ?? []}
                 buttonIcon={<Iconify icon="solar:pen-bold" />}
-                buttonLabel="Editar" />}
+                buttonLabel={t('common.edit')} />}
             handleDelete={handleDeleteDebt} />)
 
     }
@@ -62,7 +65,7 @@ export function DebtTable({ debts, envelopes }: DebtsTableProps) {
         <Card sx={{ width: "100%", borderTopRightRadius: 0, borderTopLeftRadius: 0 }}>
             <TableToolbar
                 numSelected={table.selected.length}
-                form={<DebtForm envelopes={envelopes ?? []} buttonLabel="Adicionar" />}
+                form={<DebtForm envelopes={envelopes ?? []} buttonLabel={t('common.add')} />}
             />
 
             <TableContainer sx={{ overflow: "unset" }}>
@@ -80,11 +83,11 @@ export function DebtTable({ debts, envelopes }: DebtsTableProps) {
                             )
                         }
                         headLabel={[
-                            { id: "description", label: "Descrição" },
-                            { id: "amount", label: "Valor" },
-                            { id: "installments_total", label: "Total pago" },
-                            { id: "installments_paid", label: "Total parcelas" },
-                            { id: "payment_day", label: "Dia do pagamento" },
+                            { id: "description", label: t('settings.debt.table.headers.description') },
+                            { id: "amount", label: t('settings.debt.table.headers.amount') },
+                            { id: "installments_total", label: t('settings.debt.table.headers.installments_paid') },
+                            { id: "installments_paid", label: t('settings.debt.table.headers.installments_total') },
+                            { id: "payment_day", label: t('settings.debt.table.headers.payment_day') },
                             { id: "" },
                         ]}
                     /> : <></>}
@@ -98,7 +101,7 @@ export function DebtTable({ debts, envelopes }: DebtsTableProps) {
                             </TableRow>
                         ) : debts.data.length < 1
                             ?
-                            <TableNoData message="Nenhuma Dívida cadastrada!" />
+                            <TableNoData message={t('settings.debt.table.no_data')} />
                             :
                             debts.data.map(debt => (DebtRow(debt, DeleteDebt)))
                         }

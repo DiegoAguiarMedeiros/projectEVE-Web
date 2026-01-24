@@ -3,6 +3,7 @@ import type { CardProps } from "@mui/material/Card";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import { Box, Slider, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 // ----------------------------------------------------------------------
 
@@ -18,6 +19,7 @@ type Props = CardProps & {
 };
 
 export function AnalyticsOrderTimeline({ title, subheader, list, ...other }: Props) {
+  const { t } = useTranslation();
   const marks = [
     {
       value: 0,
@@ -42,7 +44,7 @@ export function AnalyticsOrderTimeline({ title, subheader, list, ...other }: Pro
             </Typography>
             <Slider
               key={`SliderItem${index}`}
-              aria-label="Gastos"
+              aria-label={t('common.expenses')}
               value={item.value}
               getAriaValueText={valuetext}
               step={10}

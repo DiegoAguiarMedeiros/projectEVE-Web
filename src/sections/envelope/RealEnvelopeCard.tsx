@@ -1,9 +1,12 @@
 import React from 'react';
 import { Card, Box, Typography, IconButton, Switch, Tooltip } from '@mui/material';
 import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
-import { Envelopes } from 'src/types/Envelopes';
 import { getContrastColor, adjustBrightness } from 'src/utils/colorUtils';
-import { fNumberToCurrency } from 'src/utils/format-number';
+import { useNavigate } from "react-router-dom";
+import { fCurrency, fNumberToCurrency } from 'src/utils/format-number';
+import { useTranslation } from "react-i18next";
+import { Envelopes } from 'src/types/Envelopes';
+
 
 interface RealEnvelopesCardProps {
     envelope: Envelopes;
@@ -11,6 +14,7 @@ interface RealEnvelopesCardProps {
 }
 
 export const RealEnvelopesCard: React.FC<RealEnvelopesCardProps> = ({ envelope, activeCard }) => {
+    const { t } = useTranslation();
     const textColor = getContrastColor(envelope.color);
     const darkerColor = adjustBrightness(envelope.color, -15);
     const used = envelope?.used ?? 0;
@@ -31,7 +35,7 @@ export const RealEnvelopesCard: React.FC<RealEnvelopesCardProps> = ({ envelope, 
                 color: textColor,
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 transform: activeCard ? 'scale(1.02)' : 'none',
-                boxShadow: activeCard ? `0 0 0 4px ${envelope.color}, 0 12px 24px rgba(0,0,0,0.2)` : 3,
+                boxShadow: activeCard ? `0 0 0 4px ${envelope.color}, 0 12px 24px rgba(0, 0, 0, 0.2)` : 3,
                 maxWidth: 240,
                 width: '100%',
                 mx: 'auto',
@@ -41,7 +45,7 @@ export const RealEnvelopesCard: React.FC<RealEnvelopesCardProps> = ({ envelope, 
             elevation={activeCard ? 8 : 3}
         >
             {/* Flap Effect */}
-            < Box
+            <Box
                 sx={{
                     position: 'absolute',
                     top: 0,
@@ -53,7 +57,7 @@ export const RealEnvelopesCard: React.FC<RealEnvelopesCardProps> = ({ envelope, 
                     zIndex: 0
                 }}
             />
-            < Box
+            <Box
                 className="envelope-flap"
                 sx={{
                     position: 'absolute',
@@ -68,16 +72,20 @@ export const RealEnvelopesCard: React.FC<RealEnvelopesCardProps> = ({ envelope, 
                 }}
             />
 
-            < Box sx={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'space-between' }}>
+            <Box sx={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'space-between' }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', mb: 0.5 }}>
                         <Typography variant="h6" sx={{ fontWeight: 700, lineHeight: 1.2, fontSize: '1.1rem' }}>
-                            {envelope.name}
+                            {t(envelope.name)}
                         </Typography>
                         <Typography variant="body2" sx={{ fontWeight: 500, opacity: 0.9 }}>
                             {fNumberToCurrency(envelope.amount)}
                         </Typography>
                     </Box>
+                    <div style={{ display: "flex", gap: "8px" }}>
+                        <Typography variant="caption" sx={{ color: "text.secondary" }}>{fCurrency(envelope.amount)}</Typography>
+                        {activeCard && <Typography variant="caption" sx={{ color: "text.secondary" }}>{t('overview.envelopes.available', { amount: fCurrency(envelope.amount) })}</Typography>}
+                    </div>
 
                     {/* Custom Progress Bar with Dual Layer Text */}
                     <Box
@@ -150,7 +158,7 @@ export const RealEnvelopesCard: React.FC<RealEnvelopesCardProps> = ({ envelope, 
                         </Box>
                     </Box>
                 </Box>
-            </Box >
-        </Card >
+            </Box>
+        </Card>
     );
 };

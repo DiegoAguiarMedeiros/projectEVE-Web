@@ -1,4 +1,6 @@
 import { useState, useCallback } from "react";
+import { useTranslation } from "react-i18next";
+
 
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -27,6 +29,7 @@ import type { UserProps } from "src/sections/user/user-table-row";
 // ----------------------------------------------------------------------
 
 export function UserView() {
+  const { t } = useTranslation();
   const table = useTable();
 
   const [filterName, setFilterName] = useState("");
@@ -43,14 +46,14 @@ export function UserView() {
     <DashboardContent>
       <Box display="flex" alignItems="center" mb={5}>
         <Typography variant="h4" flexGrow={1}>
-          Users
+          {t('user.title')}
         </Typography>
         <Button
           variant="contained"
           color="inherit"
           startIcon={<Iconify icon="mingcute:add-line" />}
         >
-          New user
+          {t('user.new')}
         </Button>
       </Box>
 
@@ -80,11 +83,11 @@ export function UserView() {
                   )
                 }
                 headLabel={[
-                  { id: "name", label: "Name" },
-                  { id: "company", label: "Company" },
-                  { id: "role", label: "Role" },
-                  { id: "isVerified", label: "Verified", align: "center" },
-                  { id: "status", label: "Status" },
+                  { id: "name", label: t('user.table.headers.name') },
+                  { id: "company", label: t('user.table.headers.company') },
+                  { id: "role", label: t('user.table.headers.role') },
+                  { id: "isVerified", label: t('user.table.headers.verified'), align: "center" },
+                  { id: "status", label: t('user.table.headers.status') },
                   { id: "" },
                 ]}
               />

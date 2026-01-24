@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   MenuItem,
   Popover,
@@ -18,10 +19,10 @@ export type LanguagePopoverProps = {
 };
 
 export function LanguagePopover({ data = [] }: LanguagePopoverProps) {
+  const { i18n } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-  const [locale, setLocale] = useState<string>(data[0]?.value || "");
 
-  const currentLang = data.find((lang) => lang.value === locale);
+  const currentLang = data.find((lang) => lang.value === i18n.language) || data[0];
 
   const renderFlag = (label?: string, icon?: string) => (
     <Box
@@ -41,17 +42,16 @@ export function LanguagePopover({ data = [] }: LanguagePopoverProps) {
   };
 
   const handleChangeLang = (nextLang: string) => {
-    setLocale(nextLang);
+    i18n.changeLanguage(nextLang);
     handleClose();
-    // Aqui entraria sua lógica para trocar idioma no app
   };
 
   return (
     <>
       {/* Botão no menu principal */}
-      <MenuItem onClick={handleOpen}>
+      <MenuItem onClick={handleOpen} sx={{ p: 1 }}>
         {renderFlag(currentLang?.label, currentLang?.icon)}
-        {currentLang?.label}
+        <span style={{ marginLeft: 8, fontWeight: 600 }}>{currentLang?.label}</span>
       </MenuItem>
 
       {/* Popover com lista de idiomas */}
@@ -60,15 +60,16 @@ export function LanguagePopover({ data = [] }: LanguagePopoverProps) {
         anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+        transformOrigin={{ vertical: "top", horizontal: "left" }}
       >
-        <List>
+        <List sx={{ width: 160 }}>
           {data.map((option) => (
             <ListItemButton
               key={option.value}
-              selected={option.value === locale}
+              selected={option.value === i18n.language}
               onClick={() => handleChangeLang(option.value)}
             >
-              <ListItemIcon>{renderFlag(option.label, option.icon)}</ListItemIcon>
+              <ListItemIcon sx={{ mr: 1, minWidth: 'unset' }}>{renderFlag(option.label, option.icon)}</ListItemIcon>
               <ListItemText primary={option.label} />
             </ListItemButton>
           ))}

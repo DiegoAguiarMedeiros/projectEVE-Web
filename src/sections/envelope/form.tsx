@@ -16,6 +16,7 @@ import { useTransferBalance } from "src/hooks/mutations/envelopes/useTransferBal
 import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 import { fCurrency } from "src/utils/format-number";
 import { LoadingButton } from "@mui/lab";
+import { useTranslation } from "react-i18next";
 
 type TransactionFormProps = {
     buttonIcon?: React.ReactNode;
@@ -47,14 +48,6 @@ function TabPanel(props: TabPanelProps) {
         </Box>
     );
 }
-
-const paymentMethodLabels: Record<PaymentMethod, string> = {
-    CreditCard: 'Cartão de Crédito',
-    DebitCard: 'Cartão de Débito',
-    Cash: 'Dinheiro',
-    BankTransfer: 'Transferência Bancária',
-    Pix: 'PIX',
-};
 
 const paymentMethodIcons: Record<PaymentMethod, React.ReactNode> = {
     CreditCard: <Iconify icon="solar:card-outline" />,
@@ -213,28 +206,38 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
         );
     };
 
+    const { t } = useTranslation();
+
+    const paymentMethodLabels: Record<PaymentMethod, string> = {
+        CreditCard: t('common.payment_method.credit_card'),
+        DebitCard: t('common.payment_method.debit_card'),
+        Cash: t('common.payment_method.cash'),
+        BankTransfer: t('common.payment_method.bank_transfer'),
+        Pix: t('common.payment_method.pix'),
+    };
+
     const validateDescription = useCallback(() => {
         if (!description.trim()) {
-            setErrorDescription("Descrição é obrigatória.");
+            setErrorDescription(t('envelope.validation.description_required'));
             return false;
         }
         setErrorDescription(null);
         return true;
-    }, [description]);
+    }, [description, t]);
 
     const validateAmount = useCallback(() => {
         if (!amount.trim()) {
-            setErrorAmount("Valor é obrigatório.");
+            setErrorAmount(t('envelope.validation.amount_required'));
             return false;
         }
 
         if (Number.isNaN(Number(amount))) {
-            setErrorAmount("Valor deve ser numérico.");
+            setErrorAmount(t('envelope.validation.amount_numeric'));
             return false;
         }
         setErrorAmount(null);
         return true;
-    }, [amount]);
+    }, [amount, t]);
 
     const handleSelectChange = (event: SelectChangeEvent<PaymentMethod>) => {
         setPaymentMethod(event.target.value as PaymentMethod);
@@ -250,13 +253,13 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
             handleOpen={handleOpen}
             openButton={!buttonIcon
                 ?
-                <Button variant="contained" color="primary" onClick={handleOpen}  >{buttonLabel}</Button>
+                <Button variant="contained" color="primary" onClick={handleOpen}>{buttonLabel}</Button>
                 :
                 <Button
                     style={{ display: "flex", gap: "16px", background: "none", border: "none", cursor: "pointer", margin: 0, padding: 0 }}
                     onClick={handleOpen}
                 >
-                    {buttonIcon}{buttonLabel}
+                    {buttonIcon}{buttonLabel === 'Adicionar' ? t('common.add') : buttonLabel}
                 </Button>
             }
 
@@ -270,13 +273,13 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
                         disabled={isPending}
                         loading={isPending}
                     >
-                        Adicionar
+                        {t('common.add')}
                     </LoadingButton>
                 ) : (
                     <Tooltip title={!isTransferValid ?
-                        (!toEnvelopeId ? 'Selecione um envelope' :
-                            !transferAmount ? 'Informe o valor' :
-                                Number(transferAmount) > (sourceEnvelope?.amount || 0) ? 'Saldo insuficiente' : '')
+                        (!toEnvelopeId ? t('envelope.validation.select_target') :
+                            !transferAmount ? t('envelope.validation.enter_amount') :
+                                Number(transferAmount) > (sourceEnvelope?.amount || 0) ? t('envelope.validation.insufficient_funds') : '')
                         : ''
                     }>
                         <span>
@@ -286,7 +289,7 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
                                 loading={transferMutation.isPending}
                                 disabled={!isTransferValid || !allEnvelopes || allEnvelopes.length === 0}
                             >
-                                Transferir
+                                {t('common.transfer')}
                             </LoadingButton>
                         </span>
                     </Tooltip>
@@ -323,8 +326,8 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
                             },
                         }}
                     >
-                        <Tab label="Transação" />
-                        <Tab label="Transferência" disabled={!allEnvelopes || allEnvelopes.length <= 1} />
+                        <Tab label={t('envelope.transaction.tabs.transaction')} />
+                        <Tab label={t('envelope.transaction.tabs.transfer')} disabled={!allEnvelopes || allEnvelopes.length <= 1} />
                     </Tabs>
                 </Box>
 
@@ -334,8 +337,8 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
                         <TextField
                             fullWidth
                             name="description"
-                            label="Descrição"
-                            placeholder="Ex: Aluguel"
+                            label={t('envelope.transaction.description')}
+                            placeholder={t('envelope.transaction.placeholder.description')}
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                             onBlur={validateDescription}
@@ -346,8 +349,8 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
                             fullWidth
                             type="number"
                             name="amount"
-                            label="Valor"
-                            placeholder="0,00"
+                            label={t('envelope.transaction.amount')}
+                            placeholder={t('envelope.transaction.placeholder.amount')}
                             value={amount}
                             onChange={(e) => setAmount(e.target.value)}
                             onBlur={validateAmount}
@@ -365,18 +368,18 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
                             <DatePicker
                                 sx={{ width: "100%" }}
                                 name="date"
-                                label="Data do Pagamento"
+                                label={t('envelope.transaction.date')}
                                 value={date}
                                 onChange={(newValue) => setDate(newValue)}
                                 format="DD/MM/YYYY"
                             />
                         </LocalizationProvider>
                         <FormControl fullWidth>
-                            <InputLabel id="payment-method-select-label">Método de Pagamento</InputLabel>
+                            <InputLabel id="payment-method-select-label">{t('envelope.transaction.payment_method_label')}</InputLabel>
                             <Select
                                 labelId="payment-method-select-label"
                                 id="payment-method-select"
-                                label="Método de Pagamento"
+                                label={t('envelope.transaction.payment_method_label')}
                                 sx={{ width: "100%" }}
                                 name="paymentMethod"
                                 value={paymentMethod}
@@ -408,7 +411,7 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
                             flexDirection: { xs: 'column', sm: 'row' }
                         }}>
                             {/* Source Envelope */}
-                            <Box sx={{ flex: 1, width: '100%', maxWidth: 240}}>
+                            <Box sx={{ flex: 1, width: '100%', maxWidth: 240 }}>
                                 <Typography variant="caption" color="text.secondary" sx={{ mb: 1, display: 'block', textAlign: 'center' }}>De</Typography>
                                 {sourceEnvelope && <RealEnvelopesCard envelope={sourceEnvelope} activeCard={false} />}
                             </Box>
@@ -417,7 +420,7 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
                             <Iconify icon="solar:arrow-right-username-bold-duotone" width={32} sx={{ color: 'text.disabled', transform: { xs: 'rotate(90deg)', sm: 'none' } }} />
 
                             {/* Destination Envelope Selector */}
-                            <Box sx={{ flex: 1, width: '100%', maxWidth: 286}}>
+                            <Box sx={{ flex: 1, width: '100%', maxWidth: 286 }}>
                                 <Typography variant="caption" color="text.secondary" sx={{ mb: 1, display: 'block', textAlign: 'center' }}>Para</Typography>
                                 <FormControl fullWidth>
                                     <Select

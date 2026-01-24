@@ -1,6 +1,7 @@
 import type { Theme, SxProps, Breakpoint } from "@mui/material/styles";
 
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
@@ -129,6 +130,7 @@ export function NavContent({ data, slots, sx }: NavContentProps) {
 
   const pathname = usePathname();
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const { t } = useTranslation();
   return (
     <>
       <Logo />
@@ -183,7 +185,7 @@ export function NavContent({ data, slots, sx }: NavContentProps) {
                     {item.icon}
                   </Box>
                   <Box component="span" flexGrow={1}>
-                    {item.title}
+                    {t(item.title)}
                   </Box>
 
                   {(item.title === 'Envelopes' && isBlockEnvelopeItemMenu()) && <LockIcon sx={{ color: theme => theme.palette.error.main }} />}

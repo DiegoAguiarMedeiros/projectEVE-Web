@@ -13,6 +13,8 @@ import { Grid2, Typography } from "@mui/material";
 import { AnalyticsEnvelopesMonthOverview } from "src/types/Graph";
 import { iconsMap } from "src/components/icon/iconsMap";
 
+import { useTranslation } from "react-i18next";
+
 // ----------------------------------------------------------------------
 
 type Props = CardProps & {
@@ -24,6 +26,7 @@ export function AnalyticsEnvelopesMonthOverviewCards({
   sx,
   ...other
 }: Props) {
+  const { t } = useTranslation();
   const theme = useTheme();
 
   return (
@@ -60,7 +63,7 @@ export function AnalyticsEnvelopesMonthOverviewCards({
                 </Box>
                 <Box sx={{ mb: 1, }}>
                   <Typography color={envelope.color} variant="h5">
-                    {envelope.title}
+                    {t(envelope.title)}
                   </Typography>
                 </Box>
               </Box>

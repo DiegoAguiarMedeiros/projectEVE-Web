@@ -3,18 +3,20 @@ import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { Box, Card, Typography, IconButton } from '@mui/material';
 import { Envelopes } from 'src/types/Envelopes';
 import { fNumberToCurrency } from 'src/utils/format-number';
+import { useTranslation } from "react-i18next";
+
 
 interface EnvelopeCardProps {
     envelope: Envelopes;
     handleActiveEnvelope: (envelope: Envelopes) => void;
 }
 
-export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({ envelope, handleActiveEnvelope }) => (
+export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({ envelope, handleActiveEnvelope }) => {
+    const { t } = useTranslation();
 
-    <Card
+    return (<Card
         key={envelope.id}
         sx={{
-
             backgroundColor: (theme) => theme.palette.background.neutral,
             borderTop: 4,
             borderColor: envelope.color,
@@ -30,8 +32,8 @@ export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({ envelope, handleActi
     >
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
 
-            <Typography variant="h5" component="h4" fontWeight="600">
-                {envelope.name}
+            <Typography variant="h6" fontWeight="bold">
+                {t(envelope.name)}
             </Typography>
             <Box
                 className="actions"
@@ -90,4 +92,5 @@ export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({ envelope, handleActi
             </Box>
         </Box>
     </Card>
-);
+    );
+}

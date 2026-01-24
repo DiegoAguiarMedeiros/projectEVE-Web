@@ -10,6 +10,7 @@ import { fNumber, fNumberToCurrency } from "src/utils/format-number";
 import { Chart, useChart, ChartLegends } from "src/components/chart";
 
 import { AnalyticsCurrentEnvelopes } from 'src/types/Graph';
+import { useTranslation } from "react-i18next";
 
 // ----------------------------------------------------------------------
 
@@ -19,12 +20,13 @@ type Props = CardProps & {
   subheader?: string;
 };
 
-export function AnalyticsCurrentEnvelopesGraph({ title, subheader,  analyticsCurrentEnvelopes, ...other }: Props) {
+export function AnalyticsCurrentEnvelopesGraph({ title, subheader, analyticsCurrentEnvelopes, ...other }: Props) {
+  const { t } = useTranslation();
 
   const chartOptions = useChart({
     chart: { sparkline: { enabled: true } },
     colors: analyticsCurrentEnvelopes?.colors,
-    labels: analyticsCurrentEnvelopes?.labels.map((item) => item),
+    labels: analyticsCurrentEnvelopes?.labels.map((item) => t(item)),
     stroke: { width: 0 },
     dataLabels: { enabled: true, dropShadow: { enabled: false } },
     tooltip: {
@@ -37,7 +39,7 @@ export function AnalyticsCurrentEnvelopesGraph({ title, subheader,  analyticsCur
   });
 
   if (!analyticsCurrentEnvelopes) {
-    return (<>No data</>)
+    return (<>{t('common.no_data')}</>)
   }
 
   return (
@@ -56,11 +58,11 @@ export function AnalyticsCurrentEnvelopesGraph({ title, subheader,  analyticsCur
       <Divider sx={{ borderStyle: "dashed" }} />
 
       <ChartLegends
-        labels={analyticsCurrentEnvelopes?.labels}
+        labels={analyticsCurrentEnvelopes?.labels.map(label => t(label))}
         sublabels={analyticsCurrentEnvelopes.values.map((value, index) => {
           const amountToGo = value * (100 - analyticsCurrentEnvelopes.subValues[index]) / 100;
-          if (amountToGo === 0) return `Sem fundos`
-          return `Disponível: ${fNumberToCurrency(amountToGo)}`
+          if (amountToGo === 0) return t('overview.envelopes.no_funds');
+          return t('overview.envelopes.available', { amount: fNumberToCurrency(amountToGo) });
         })}
         subValues={analyticsCurrentEnvelopes.subValues}
         colors={analyticsCurrentEnvelopes?.colors}

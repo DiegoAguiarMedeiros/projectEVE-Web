@@ -15,12 +15,16 @@ import { Envelopes } from "src/types/Envelopes";
 import { FixedExpenses } from "src/types/FixedExpenses";
 import { Pagination } from "src/types/Pagination";
 import { useDeleteFixedExpenses } from "src/hooks/mutations/fixed-expenses/useDeleteFixedExpenses";
+import { useTranslation } from "react-i18next";
+import { fCurrency } from "src/utils/format-number";
+
 
 type FixedExpenseTableProps = {
     envelopes: Envelopes[];
     fixedExpenses: Pagination<FixedExpenses> | undefined
 }
 export function FixedExpenseTable({ envelopes, fixedExpenses }: FixedExpenseTableProps) {
+    const { t } = useTranslation();
     const table = useTable();
 
 
@@ -51,13 +55,17 @@ export function FixedExpenseTable({ envelopes, fixedExpenses }: FixedExpenseTabl
             key={id}
             selected={table.selected.includes(id)}
             onSelectRow={() => table.onSelectRow(id)}
-            rowKeys={[envelopes.filter(envelope => envelopeId === envelope.id)[0].name, description, `R$ ${amount}`, paymentDay]}
+            rowKeys={[
+                t(envelopes.filter(envelope => envelope.id === envelopeId)[0].name),
+                description,
+                fCurrency(amount),
+                paymentDay]}
             form={<FixedExpenseForm
                 key={id}
                 envelopes={envelopes ?? []}
                 data={row}
                 buttonIcon={<Iconify icon="solar:pen-bold" />}
-                buttonLabel="Editar" />}
+                buttonLabel={t('common.edit')} />}
             handleDelete={handleDeleteFixedExpense} />)
 
     }
@@ -66,7 +74,7 @@ export function FixedExpenseTable({ envelopes, fixedExpenses }: FixedExpenseTabl
         <Card sx={{ width: "100%", borderTopRightRadius: 0, borderTopLeftRadius: 0 }}>
             <TableToolbar
                 numSelected={table.selected.length}
-                form={<FixedExpenseForm envelopes={envelopes ?? []} buttonLabel="Adicionar" />}
+                form={<FixedExpenseForm envelopes={envelopes ?? []} buttonLabel={t('common.add')} />}
             />
 
             <TableContainer sx={{ overflow: "unset" }}>
@@ -84,10 +92,10 @@ export function FixedExpenseTable({ envelopes, fixedExpenses }: FixedExpenseTabl
                             )
                         }
                         headLabel={[
-                            { id: "evelope", label: "Envelope" },
-                            { id: "description", label: "Descrição" },
-                            { id: "amount", label: "Valor" },
-                            { id: "paymentDay", label: "Dia do Pagamento" },
+                            { id: "evelope", label: t('settings.fixed_expense.table.headers.envelope') },
+                            { id: "description", label: t('settings.fixed_expense.table.headers.description') },
+                            { id: "amount", label: t('settings.fixed_expense.table.headers.amount') },
+                            { id: "paymentDay", label: t('settings.fixed_expense.table.headers.payment_day') },
                             { id: "" },
                         ]}
                     /> : <></>}
@@ -101,7 +109,7 @@ export function FixedExpenseTable({ envelopes, fixedExpenses }: FixedExpenseTabl
                             </TableRow>
                         ) : fixedExpenses.data.length < 1
                             ?
-                            <TableNoData message="Nenhuma Contas Fixas cadastrado!" />
+                            <TableNoData message={t('settings.fixed_expense.table.no_data')} />
                             :
                             fixedExpenses.data.map(fixedExpense => (FixedExpenseRow(fixedExpense, DeleteFixedExpense)))
                         }

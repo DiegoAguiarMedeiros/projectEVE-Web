@@ -6,6 +6,8 @@ import { useSnackbar, VariantType } from "notistack";
 import { useCreateCreditCards } from "src/hooks/mutations/credit-cards/useCreateCreditCards";
 import { useUpdateCreditCards } from "src/hooks/mutations/credit-cards/useUpdateCreditCards";
 import { allFlags, CreditCards, CreditCardsPost, Flags } from "src/types/CreditCards";
+import { useTranslation } from "react-i18next";
+
 
 type CreditCardFormProps = {
     buttonIcon?: React.ReactNode;
@@ -15,6 +17,7 @@ type CreditCardFormProps = {
 
 export function CreditCardForm({ buttonLabel, buttonIcon, data }: CreditCardFormProps) {
     const { enqueueSnackbar } = useSnackbar();
+    const { t } = useTranslation();
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -84,21 +87,21 @@ export function CreditCardForm({ buttonLabel, buttonIcon, data }: CreditCardForm
 
     const validateName = useCallback(() => {
         if (!name.trim()) {
-            setErrorName("Nome é obrigatório.");
+            setErrorName(t('settings.credit_card.validation.name_required'));
             return false;
         }
         setErrorName(null);
         return true;
-    }, [name]);
+    }, [name, t]);
 
     const validateFlag = useCallback(() => {
         if (!flag) {
-            setErrorName("Bandeira é obrigatória.");
+            setErrorName(t('settings.credit_card.validation.flag_required'));
             return false;
         }
         setErroFlag(null);
         return true;
-    }, [flag]);
+    }, [flag, t]);
 
 
     const handleSelectChange = (event: SelectChangeEvent<Flags>) => {
@@ -119,11 +122,11 @@ export function CreditCardForm({ buttonLabel, buttonIcon, data }: CreditCardForm
                     style={{ display: "flex", gap: "16px", background: "none", border: "none", cursor: "pointer", margin: 0, padding: 0 }}
                     onClick={handleOpen}
                 >
-                    {buttonIcon}{buttonLabel}
+                    {buttonIcon}{buttonLabel === 'Adicionar' ? t('common.add') : buttonLabel === 'Editar' ? t('common.edit') : buttonLabel}
                 </Button>
             }
 
-            okButton={<Button type="submit" variant="outlined" color="primary" onClick={handleSubmit} disabled={isPending} >Adicionar</Button>
+            okButton={<Button type="submit" variant="outlined" color="primary" onClick={handleSubmit} disabled={isPending} >{t('common.add')}</Button>
             }>
             <Box
                 gap={1.5}
@@ -134,13 +137,13 @@ export function CreditCardForm({ buttonLabel, buttonIcon, data }: CreditCardForm
                 sx={{ width: "100%" }}
             >
                 <Typography variant="h3" noWrap>
-                    Cartão de Crédito
+                    {t('settings.credit_card.title')}
                 </Typography>
                 {error && <p>{error.message}</p>}
                 <TextField
                     fullWidth
                     name="name"
-                    label="Nome"
+                    label={t('settings.credit_card.name')}
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     onBlur={validateName}
@@ -149,11 +152,11 @@ export function CreditCardForm({ buttonLabel, buttonIcon, data }: CreditCardForm
                     helperText={errorName ?? ""}
                 />
                 <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">Bandeira</InputLabel>
+                    <InputLabel id="demo-simple-select-label">{t('settings.credit_card.flag')}</InputLabel>
                     <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        label="Bandeira"
+                        label={t('settings.credit_card.flag')}
                         sx={{ width: "100%", mb: 3 }}
                         name="flag"
                         value={flag}

@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SnackbarProvider } from "notistack";
 
 import App from "./app";
+import "./i18n";
 // import { AuthProvider } from "./context/AuthProvider";
 
 // ----------------------------------------------------------------------

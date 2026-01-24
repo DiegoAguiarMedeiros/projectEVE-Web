@@ -16,9 +16,10 @@ import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 import { useListAnalyticsEnvelopesByYear } from "src/hooks/queries/graph/useListAnalyticsEnvelopesByYear";
 import { useListAnalyticsEnvelopesMonthOverview } from "src/hooks/queries/graph/useListAnalyticsEnvelopesMonthOverview";
 
-// ----------------------------------------------------------------------
+import { useTranslation } from "react-i18next";
 
 export function OverviewAnalyticsView() {
+  const { t } = useTranslation();
 
   const { month, year } = SelectedMonthYearStore();
   const { data: analyticsCurrentEnvelopes, isLoading: analyticsCurrentEnvelopesIsLoading, error: analyticsCurrentEnvelopesError } = useListAnalyticsCurrentEnvelopes(year, month);
@@ -42,15 +43,15 @@ export function OverviewAnalyticsView() {
         <Grid2 size={{ xs: 12, sm: 6, md: 8 }}
           order={{ xs: 2, sm: 1 }}>
           <AnalyticsEnvelopesByYearGraph
-            title="Orçamento"
-            subheader="(+43%) than last year"
+            title={t('overview.budget')}
+            subheader={`(+43%) ${t('overview.than_last_year')}`}
             chart={analyticsEnvelopesByYear}
           />
         </Grid2>
         <Grid2 size={{ xs: 12, sm: 6, md: 4 }}
           order={{ xs: 1, sm: 2 }}>
           <AnalyticsCurrentEnvelopesGraph
-            title="Envelopes"
+            title={t('overview.envelopes_title')}
             analyticsCurrentEnvelopes={analyticsCurrentEnvelopes}
           />
         </Grid2>

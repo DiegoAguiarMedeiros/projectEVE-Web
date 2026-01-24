@@ -13,6 +13,8 @@ import { SlidingWindow, MAX_BUFFER } from "src/sections/shared/useSlidingWindow"
 import { ITable } from "src/sections/shared/useTable";
 import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
 import { Envelopes } from "src/types/Envelopes";
+import { useTranslation } from "react-i18next";
+import { fCurrency } from "src/utils/format-number";
 
 type TransactionListProps = {
     envelopeId: string;
@@ -164,6 +166,8 @@ export function TransactionList({ envelopeId, transactions, table, allEnvelopes 
         }
     };
 
+    const { t } = useTranslation();
+
     // se estamos aguardando primeiro load, mostra mensagem loading (evita renderar itens antigos)
     if (awaitingFirstLoad) {
         return (
@@ -176,7 +180,7 @@ export function TransactionList({ envelopeId, transactions, table, allEnvelopes 
     if (!transactions || (items.length === 0 && (!transactions.data || transactions.data.length === 0))) {
         return (
             <Typography align="center" sx={{ p: 2 }}>
-                Nenhuma transação cadastrada!
+                {t('transaction.empty')}
             </Typography>
         );
     }
@@ -198,7 +202,7 @@ export function TransactionList({ envelopeId, transactions, table, allEnvelopes 
                 next={fetchMoreDown}
                 hasMore={hasMoreDown}
                 loader={<Box sx={{ p: 2 }}><SkeletonLoading count={1} height={100} /></Box>}
-                endMessage={<Typography align="center" sx={{ p: 2 }}>Todas as transações foram carregadas</Typography>}
+                endMessage={<Typography align="center" sx={{ p: 2 }}>{t('transaction.all_loaded')}</Typography>}
                 scrollableTarget="scrollableDiv"
                 scrollThreshold={0.9}
             >
@@ -216,19 +220,19 @@ export function TransactionList({ envelopeId, transactions, table, allEnvelopes 
                                     <Stack spacing={1}>
                                         <Box display="flex" justifyContent="space-between" alignItems="center">
                                             <Typography variant="subtitle1" fontWeight="bold">{description}</Typography>
-                                            <Typography variant="subtitle1" color="primary">R$ {amount}</Typography>
+                                            <Typography variant="subtitle1" color="primary">{fCurrency(amount)}</Typography>
                                         </Box>
 
                                         <Typography variant="body2" color="text.secondary">
-                                            {paymentMethod} • {dayjs(date).format("DD/MM/YYYY")}
+                                            {t(`envelope.transaction.payment_method.${paymentMethod}`)} • {dayjs(date).format("DD/MM/YYYY")}
                                         </Typography>
 
-                                        <Chips label={status} labels={["Pago", "Pendente"]} fieldName="Completed" click={handleClickStatus} />
+                                        <Chips label={t(`envelope.transaction.status.${status}`)} labels={[t('transaction.status.paid'), t('transaction.status.pending')]} fieldName="Completed" click={handleClickStatus} />
 
                                         <Divider />
 
                                         <Box display="flex" justifyContent="flex-end" gap={1}>
-                                            <TransactionForm data={row} buttonIcon={<Edit />} buttonLabel="Editar" envelopeId={envelopeId} allEnvelopes={allEnvelopes} />
+                                            <TransactionForm data={row} buttonIcon={<Edit />} buttonLabel={t('common.edit')} envelopeId={envelopeId} allEnvelopes={allEnvelopes} />
                                             <IconButton color="error" onClick={() => DeleteTransaction(id)}><Delete /></IconButton>
                                         </Box>
                                     </Stack>

@@ -7,6 +7,9 @@ import { useUpdateDebts } from "src/hooks/mutations/debts/useUpdateDebts";
 import { Debts, DebtsPost } from "src/types/Debts";
 import { useUpdateEnvelopes } from "src/hooks/mutations/envelopes/useUpdateEnvelopes";
 import SaveIcon from '@mui/icons-material/Save';
+import { useTranslation } from "react-i18next";
+
+
 
 type EnvelopeFormProps = {
     buttonIcon?: React.ReactNode;
@@ -18,6 +21,7 @@ type EnvelopeFormProps = {
 }
 
 export function EnvelopeForm({ buttonLabel, buttonIcon, data, open, handleOpen, handleClose }: EnvelopeFormProps) {
+    const { t } = useTranslation();
 
     const [color, setColor] = useState('#4ECDC4');
     const [percentage, setPercentage] = useState(0);
@@ -77,12 +81,12 @@ export function EnvelopeForm({ buttonLabel, buttonIcon, data, open, handleOpen, 
 
     const validateName = useCallback(() => {
         if (!name.trim()) {
-            setErrorName("Descrição é obrigatória.");
+            setErrorName(t('settings.envelope.validation.name_required'));
             return false;
         }
         setErrorName(null);
         return true;
-    }, [name]);
+    }, [name, t]);
 
 
 
@@ -92,7 +96,7 @@ export function EnvelopeForm({ buttonLabel, buttonIcon, data, open, handleOpen, 
             open={open}
             handleClose={handleClose}
             handleOpen={handleOpen}
-            okButton={<Button type="submit" variant="outlined" color="primary" onClick={handleSubmit} disabled={isPending} startIcon={<SaveIcon sx={{ fontSize: 20 }} />}>Salvar</Button>
+            okButton={<Button type="submit" variant="outlined" color="primary" onClick={handleSubmit} disabled={isPending} startIcon={<SaveIcon sx={{ fontSize: 20 }} />}>{t('settings.envelope.save')}</Button>
             }>
 
 
@@ -107,7 +111,7 @@ export function EnvelopeForm({ buttonLabel, buttonIcon, data, open, handleOpen, 
 
 
                 <Typography variant="h3" noWrap>
-                    Envelope
+                    {t('settings.envelope.title')}
                 </Typography>
 
 
@@ -117,7 +121,7 @@ export function EnvelopeForm({ buttonLabel, buttonIcon, data, open, handleOpen, 
                 <TextField
                     fullWidth
                     name="name"
-                    label="Nome"
+                    label={t('settings.envelope.name')}
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     onBlur={validateName}
@@ -127,7 +131,7 @@ export function EnvelopeForm({ buttonLabel, buttonIcon, data, open, handleOpen, 
                 />
                 <Box sx={{ width: '100%', display: 'flex', px: 2, pb: 4, gap: 4 }}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                        <Typography variant="subtitle2" sx={{ mb: 2 }}>Color</Typography>
+                        <Typography variant="subtitle2" sx={{ mb: 2 }}>{t('settings.envelope.color')}</Typography>
                         <Box sx={{ display: 'flex', gap: 2 }}>
                             <input
                                 type="color"
@@ -148,7 +152,7 @@ export function EnvelopeForm({ buttonLabel, buttonIcon, data, open, handleOpen, 
                     </Box>
 
                     <Box sx={{ flex: '1 0 0', flexDirection: 'column', gap: 2 }}>
-                        <Typography variant="subtitle2" sx={{ mb: 2 }}>Percentage: {percentage}%</Typography>
+                        <Typography variant="subtitle2" sx={{ mb: 2 }}>{t('settings.envelope.percentage', { count: percentage })}</Typography>
                         <Slider
                             value={percentage}
                             onChange={(_, value) => setPercentage(value as number)}

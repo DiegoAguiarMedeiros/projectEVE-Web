@@ -17,6 +17,9 @@ import { ProcessedIncomes } from "src/types/ProcessedIncomes";
 // import { useUpdateIncomes } from "src/hooks/mutations/processed-incomes/useUpdateIncomes";
 import { useQueryClient } from "@tanstack/react-query";
 import { Envelopes } from "src/types/Envelopes";
+import { useTranslation } from "react-i18next";
+import { fCurrency } from "src/utils/format-number";
+
 
 type IncomeTableProps = {
     processedIncomes: Pagination<ProcessedIncomes> | undefined
@@ -24,6 +27,7 @@ type IncomeTableProps = {
     envelopes: Envelopes[]
 }
 export function IncomeTable({ processedIncomes, table, envelopes }: IncomeTableProps) {
+    const { t } = useTranslation();
 
     const {
         month,
@@ -62,11 +66,11 @@ export function IncomeTable({ processedIncomes, table, envelopes }: IncomeTableP
             key={id}
             selected={table.selected.includes(id)}
             onSelectRow={() => table.onSelectRow(id)}
-            rowKeys={[description, `R$ ${totalIncomeProcessed}`, dayjs(`${incomeDay}/${incomeMonth}/${incomeYear}`).format("DD/MM/YYYY"), isSplitted ? 'Todos' : 'um']}
+            rowKeys={[description, fCurrency(totalIncomeProcessed), dayjs(`${incomeDay}/${incomeMonth}/${incomeYear}`).format("DD/MM/YYYY"), isSplitted ? t('income.table.all') : t('income.table.one')]}
             form={<IncomeForm envelopes={envelopes}
                 data={row}
                 buttonIcon={<Iconify icon="solar:pen-bold" />}
-                buttonLabel="Editar"
+                buttonLabel={t('common.edit')}
             />}
             handleDelete={handleDeleteIncome} />)
 
@@ -76,7 +80,7 @@ export function IncomeTable({ processedIncomes, table, envelopes }: IncomeTableP
         <Card sx={{ width: "100%" }}>
             <TableToolbar
                 numSelected={table.selected.length}
-                form={<IncomeForm envelopes={envelopes} buttonLabel="Adicionar" />}
+                form={<IncomeForm envelopes={envelopes} buttonLabel={t('common.add')} />}
             />
 
             <TableContainer sx={{ overflow: "unset" }}>
@@ -90,14 +94,14 @@ export function IncomeTable({ processedIncomes, table, envelopes }: IncomeTableP
                         onSelectAllRows={(checked) =>
                             table.onSelectAllRows(
                                 checked,
-                                processedIncomes.data.map((t) => t.id!)
+                                processedIncomes.data.map((processedIncome) => processedIncome.id!)
                             )
                         }
                         headLabel={[
-                            { id: "description", label: "Descrição" },
-                            { id: "amount", label: "Valor" },
-                            { id: "date", label: "Data" },
-                            { id: "envelope", label: "Envelope" },
+                            { id: "description", label: t('income.table.headers.description') },
+                            { id: "amount", label: t('income.table.headers.amount') },
+                            { id: "date", label: t('income.table.headers.date') },
+                            { id: "envelope", label: t('income.table.headers.envelope') },
                             { id: "" },
                         ]}
                     /> : <></>}
@@ -105,9 +109,9 @@ export function IncomeTable({ processedIncomes, table, envelopes }: IncomeTableP
                     <TableBody>
                         {processedIncomes && processedIncomes.data.length < 1
                             ?
-                            <TableNoData message="Nenhuma renda cadastrada!" />
+                            <TableNoData message={t('income.table.empty')} />
                             :
-                            processedIncomes && processedIncomes.data.map(t => (IncomeRow(t, DeleteIncome)))
+                            processedIncomes && processedIncomes.data.map(processedIncome => (IncomeRow(processedIncome, DeleteIncome)))
                         }
                     </TableBody>
                 </Table>

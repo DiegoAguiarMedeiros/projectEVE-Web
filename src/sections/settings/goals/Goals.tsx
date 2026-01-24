@@ -15,12 +15,15 @@ import { Pagination } from "src/types/Pagination";
 import { Goals } from "src/types/Goals";
 import { useDeleteGoals } from "src/hooks/mutations/goals/useDeleteGoals";
 import { Envelopes } from "src/types/Envelopes";
+import { useTranslation } from "react-i18next";
+
 
 type GoalsTableProps = {
     goals: Pagination<Goals> | undefined
     envelope: Envelopes
 }
 export function GoalsTable({ goals, envelope }: GoalsTableProps) {
+    const { t } = useTranslation();
     const table = useTable();
 
     useEffect(() => {
@@ -57,7 +60,7 @@ export function GoalsTable({ goals, envelope }: GoalsTableProps) {
                 key={id}
                 data={row}
                 buttonIcon={<Iconify icon="solar:pen-bold" />}
-                buttonLabel="Editar" />}
+                buttonLabel={t('common.edit')} />}
             handleDelete={handleDeleteGoals} />)
 
     }
@@ -66,7 +69,7 @@ export function GoalsTable({ goals, envelope }: GoalsTableProps) {
         <Card sx={{ width: "100%", borderTopRightRadius: 0, borderTopLeftRadius: 0 }}>
             <TableToolbar
                 numSelected={table.selected.length}
-                form={<GoalsForm envelope={envelope} buttonLabel="Adicionar" />}
+                form={<GoalsForm envelope={envelope} buttonLabel={t('common.add')} />}
             />
 
             <TableContainer sx={{ overflow: "unset" }}>
@@ -84,10 +87,10 @@ export function GoalsTable({ goals, envelope }: GoalsTableProps) {
                             )
                         }
                         headLabel={[
-                            { id: "description", label: "Descrição" },
-                            { id: "amount", label: "Valor" },
-                            { id: "percentagem", label: "Porcentagem" },
-                            { id: "deadline", label: "Prazo" },
+                            { id: "description", label: t('settings.goals.table.headers.description') },
+                            { id: "amount", label: t('settings.goals.table.headers.amount') },
+                            { id: "percentagem", label: t('settings.goals.table.headers.percentage') },
+                            { id: "deadline", label: t('settings.goals.table.headers.deadline') },
                             { id: "", label: "" },
                         ]}
                     /> : <></>}
@@ -101,7 +104,7 @@ export function GoalsTable({ goals, envelope }: GoalsTableProps) {
                             </TableRow>
                         ) : goals.data.length < 1
                             ?
-                            <TableNoData message="Nenhuma Metas cadastrada!" />
+                            <TableNoData message={t('settings.goals.table.no_data')} />
                             :
                             goals.data.map(goal => (GoalsRow(goal, DeleteGoals)))
                         }

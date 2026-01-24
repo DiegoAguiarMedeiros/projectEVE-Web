@@ -7,28 +7,30 @@ import SavingsIcon from "@mui/icons-material/Savings";
 import { SvgColor } from "src/components/svg-color";
 // ----------------------------------------------------------------------
 
+import i18n from 'src/i18n';
+
 const icon = (name: string) => (
   <SvgColor width="100%" height="100%" src={`/assets/icons/navbar/${name}.svg`} />
 );
 
 export const navData = [
   {
-    title: "Orçamento",
+    title: "nav.budget",
     path: "/",
     icon: <DashboardIcon />,
   },
   {
-    title: "Envelopes",
+    title: "nav.envelopes",
     path: "/envelopes",
     icon: <EmailIcon />,
   },
   {
-    title: "Minhas Rendas",
+    title: "nav.incomes",
     path: "/renda",
     icon: <AttachMoneyIcon />,
   },
   {
-    title: "Configurações",
+    title: "nav.settings",
     path: "/configuracoes",
     icon: <SettingsApplicationsIcon />,
   },

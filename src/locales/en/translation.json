@@ -1,0 +1,347 @@
+{
+    "app_name": "Project EVE",
+    "welcome": "Welcome back",
+    "no_funds": "No funds",
+    "available": "Available: {{amount}}",
+    "language": "Language",
+    "goals": "Goals",
+    "housing": "Housing",
+    "groceries": "Groceries",
+    "health": "Health",
+    "leisure": "Leisure",
+    "education": "Education",
+    "transport": "Transport",
+    "others": "Others",
+    "incomes": "Incomes",
+    "expenses": "Expenses",
+    "balance": "Balance",
+    "months": {
+        "january": "January",
+        "february": "February",
+        "march": "March",
+        "april": "April",
+        "may": "May",
+        "june": "June",
+        "july": "July",
+        "august": "August",
+        "september": "September",
+        "october": "October",
+        "november": "November",
+        "december": "December"
+    },
+    "common": {
+        "save": "Save",
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "edit": "Edit",
+        "create": "Create",
+        "update": "Update",
+        "search": "Search...",
+        "loading": "Loading...",
+        "expenses": "Expenses",
+        "no_data": "No data",
+        "transfer": "Transfer",
+        "add": "Add",
+        "payment_method": {
+            "credit_card": "Credit Card",
+            "debit_card": "Debit Card",
+            "cash": "Cash",
+            "bank_transfer": "Bank Transfer",
+            "pix": "PIX"
+        }
+    },
+    "errors": {
+        "unexpected": "An unexpected error occurred",
+        "unauthorized": "Unauthorized access",
+        "forbidden": "Access forbidden",
+        "not_found": "Resource not found",
+        "conflict": "Conflict",
+        "too_many_requests": "Too many requests",
+        "payment_required": "Payment required",
+        "validation": "Validation error"
+    },
+    "nav": {
+        "budget": "Budget",
+        "envelopes": "Envelopes",
+        "incomes": "Incomes",
+        "settings": "Settings"
+    },
+    "account": {
+        "notification": "Notification",
+        "theme": "Theme",
+        "language": "Language",
+        "profile": "Profile",
+        "settings": "Account Settings",
+        "logout": "Logout",
+        "logging_out": "Logging out..."
+    },
+    "overview": {
+        "budget": "Budget",
+        "envelopes_title": "Envelopes",
+        "than_last_year": "than last year",
+        "envelopes": {
+            "no_funds": "No funds",
+            "available": "Available: {{amount}}"
+        }
+    },
+    "envelope": {
+        "transaction": {
+            "description": "Description",
+            "amount": "Amount",
+            "payment_method_label": "Payment Method",
+            "tabs": {
+                "transaction": "Transaction",
+                "transfer": "Transfer"
+            },
+            "placeholder": {
+                "description": "Ex: Rent",
+                "amount": "0.00"
+            },
+            "payment_method": {
+                "CreditCard": "Credit Card",
+                "DebitCard": "Debit Card",
+                "Cash": "Cash",
+                "BankTransfer": "Bank Transfer",
+                "Pix": "Pix"
+            },
+            "status": {
+                "paid": "Paid",
+                "pending": "Pending",
+                "Completed": "Completed",
+                "Pending": "Pending"
+            },
+            "type": {
+                "debit": "Debit",
+                "credit": "Credit"
+            }
+        },
+        "transfer": {
+            "title": "Transfer Balance",
+            "from": "From",
+            "to": "To",
+            "target": "To Envelope",
+            "amount_label": "Transfer Amount",
+            "select_envelope": "Select envelope",
+            "select_envelope_placeholder": "Select the envelope"
+        },
+        "validation": {
+            "description_required": "Description is required",
+            "amount_required": "Amount is required",
+            "amount_numeric": "Amount must be numeric",
+            "amount_positive": "Amount must be greater than zero",
+            "insufficient_funds": "Insufficient funds",
+            "select_target": "Select a target envelope",
+            "enter_amount": "Enter amount"
+        }
+    },
+    "transaction": {
+        "status": {
+            "paid": "Paid",
+            "pending": "Pending",
+            "completed": "Completed"
+        },
+        "type": {
+            "debit": "Debit",
+            "credit": "Credit"
+        },
+        "empty": "No transactions found!",
+        "all_loaded": "All transactions loaded",
+        "headers": {
+            "description": "Description",
+            "type": "Type",
+            "amount": "Amount",
+            "payment_method": "Payment Method",
+            "date": "Date",
+            "status": "Status"
+        }
+    },
+    "income": {
+        "title": "Income",
+        "split": "Split between envelopes",
+        "yes": "Yes",
+        "no": "No",
+        "validation": {
+            "description_required": "Description is required",
+            "amount_required": "Amount is required",
+            "amount_numeric": "Amount must be numeric"
+        },
+        "table": {
+            "headers": {
+                "description": "Description",
+                "amount": "Amount",
+                "date": "Date",
+                "envelope": "Envelope"
+            },
+            "empty": "No income registered!",
+            "all": "All",
+            "one": "One"
+        }
+    },
+    "user": {
+        "title": "Users",
+        "new": "New user",
+        "search": "Search user...",
+        "table": {
+            "headers": {
+                "name": "Name",
+                "company": "Company",
+                "role": "Role",
+                "verified": "Verified",
+                "status": "Status"
+            },
+            "selected": "{{count}} selected",
+            "no_data": "Not found",
+            "no_results": "No results found for",
+            "typo_suggestion": "Try checking for typos or using complete words."
+        }
+    },
+    "settings": {
+        "credit_card": {
+            "title": "Credit Card",
+            "name": "Name",
+            "flag": "Brand",
+            "validation": {
+                "name_required": "Name is required",
+                "flag_required": "Brand is required"
+            },
+            "table": {
+                "headers": {
+                    "name": "Name",
+                    "flag": "Brand"
+                },
+                "no_data": "No credit cards registered!"
+            }
+        },
+        "debt": {
+            "title": "Debt",
+            "description": "Description",
+            "amount": "Installment Value",
+            "installments_paid": "Paid Installments",
+            "installments_total": "Total Installments",
+            "payment_day": "Payment Day",
+            "validation": {
+                "description_required": "Description is required",
+                "amount_required": "Amount is required",
+                "amount_numeric": "Amount must be numeric",
+                "installments_total_required": "Total installments is required",
+                "installments_total_numeric": "Total installments must be numeric",
+                "installments_paid_required": "Paid installments is required",
+                "installments_paid_numeric": "Paid installments must be numeric",
+                "payment_day_required": "Payment day is required",
+                "payment_day_range": "Payment day must be between 1 and 31"
+            },
+            "table": {
+                "headers": {
+                    "description": "Description",
+                    "amount": "Value",
+                    "installments_paid": "Paid Total",
+                    "installments_total": "Total Installments",
+                    "payment_day": "Payment Day"
+                },
+                "no_data": "No debts registered!"
+            }
+        },
+        "envelope": {
+            "title": "Envelope",
+            "name": "Name",
+            "color": "Color",
+            "percentage": "Percentage: {{count}}%",
+            "allocation_remaining": "{{count}}% remaining for allocation",
+            "allocation_exceeded": "Exceeded maximum by {{count}}%",
+            "save": "Save",
+            "validation": {
+                "name_required": "Name is required"
+            }
+        },
+        "fixed_expense": {
+            "title": "Fixed Expenses",
+            "envelope": "Envelope",
+            "description": "Description",
+            "amount": "Value",
+            "payment_day": "Payment Day",
+            "validation": {
+                "description_required": "Description is required",
+                "amount_required": "Value is required",
+                "amount_numeric": "Value must be numeric",
+                "payment_day_required": "Payment day is required",
+                "payment_day_range": "Payment day must be between 1 and 31"
+            },
+            "table": {
+                "headers": {
+                    "envelope": "Envelope",
+                    "description": "Description",
+                    "amount": "Value",
+                    "payment_day": "Payment Day"
+                },
+                "no_data": "No fixed expenses registered!"
+            }
+        },
+        "goals": {
+            "title": "New Goal",
+            "description": "What is your goal",
+            "amount_total": "How much do you need",
+            "amount_current": "How much do you have",
+            "deadline": "In how much time",
+            "save": "Save",
+            "validation": {
+                "description_required": "Description is required",
+                "amount_required": "Value is required",
+                "amount_numeric": "Value must be numeric",
+                "amount_total_numeric": "Total value must be numeric",
+                "deadline_required": "Deadline is required",
+                "deadline_numeric": "Deadline must be numeric"
+            },
+            "table": {
+                "headers": {
+                    "description": "Description",
+                    "amount": "Value",
+                    "percentage": "Percentage",
+                    "deadline": "Deadline"
+                },
+                "no_data": "No goals registered!"
+            },
+            "recommendation": {
+                "title": "Recommendation",
+                "unfeasible": "This goal is not feasible with your current income of {{income}}.",
+                "monthly_save": "You should save {{amount}} per month",
+                "envelope_percentage": "This represents {{percentage}}% of your envelope",
+                "ideal_income": "Your income should be {{amount}}"
+            },
+            "time": {
+                "month": "Month",
+                "months": "Months",
+                "year": "Year",
+                "years": "Years"
+            }
+        },
+        "income": {
+            "title": "Income",
+            "description": "Description",
+            "amount": "Salary",
+            "payment_day": "Payment Day",
+            "validation": {
+                "description_required": "Description is required",
+                "amount_required": "Value is required",
+                "amount_numeric": "Value must be numeric",
+                "payment_day_required": "Payment day is required",
+                "payment_day_range": "Payment day must be between 1 and 31"
+            },
+            "table": {
+                "headers": {
+                    "description": "Description",
+                    "amount": "Salary",
+                    "payment_day": "Payment Day"
+                },
+                "no_data": "No income registered!"
+            }
+        },
+        "tabs": {
+            "income": "My Income",
+            "envelopes": "My Limits",
+            "goals": "My Goals",
+            "fixed_expenses": "My Fixed Expenses",
+            "debts": "My Debts",
+            "credit_cards": "My Credit Cards"
+        }
+    }
+}

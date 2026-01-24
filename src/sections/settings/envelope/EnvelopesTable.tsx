@@ -7,6 +7,8 @@ import { Envelopes } from "src/types/Envelopes";
 import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
 import { EnvelopeCard } from "src/sections/settings/envelope/EnvelopeCard";
 import { EnvelopeForm } from "src/sections/settings/envelope/form";
+import { useTranslation } from "react-i18next";
+
 
 
 type EnvelopesProps = {
@@ -15,7 +17,7 @@ type EnvelopesProps = {
 
 export function EnvelopesTable({ envelopes }: EnvelopesProps) {
 
-
+    const { t } = useTranslation();
     const theme = useTheme();
 
 
@@ -43,8 +45,8 @@ export function EnvelopesTable({ envelopes }: EnvelopesProps) {
     return (
         <Card sx={{ width: "100%", borderTopRightRadius: 0, borderTopLeftRadius: 0 }}>
             <Box sx={{ display: "flex", alignItems: "center", p: 4, justifyContent: "flex-end", gap: 2 }}>
-                <EnvelopeForm data={envelopeActive} buttonLabel="Adicionar" open={open} handleOpen={handleOpen} handleClose={handleClose} />
-                <Badges text={envelopeAlocation <= 100 ? `Faltam ${100 - envelopeAlocation}% para alocação` : `Passou ${envelopeAlocation - 100}% do máximo`} bgColor={envelopeAlocation <= 100 ? theme.palette.success.main : theme.palette.error.main} />
+                <EnvelopeForm data={envelopeActive} buttonLabel={t('common.add')} open={open} handleOpen={handleOpen} handleClose={handleClose} />
+                <Badges text={envelopeAlocation <= 100 ? t('settings.envelope.allocation_remaining', { count: 100 - envelopeAlocation }) : t('settings.envelope.allocation_exceeded', { count: envelopeAlocation - 100 })} bgColor={envelopeAlocation <= 100 ? theme.palette.success.main : theme.palette.error.main} />
             </Box>
             <Box sx={{
                 display: 'grid',

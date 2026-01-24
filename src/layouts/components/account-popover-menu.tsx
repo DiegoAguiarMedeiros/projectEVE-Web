@@ -11,6 +11,7 @@ import MenuItem, { menuItemClasses } from "@mui/material/MenuItem";
 import { useRouter, usePathname } from "src/routes/hooks";
 import { useTheme } from "@mui/material";
 import { useLogout } from "src/hooks/mutations/auth/useLogout";
+import { useTranslation } from "react-i18next";
 
 // ----------------------------------------------------------------------
 
@@ -29,6 +30,8 @@ export function AccountPopoverMenu({ data = [], sx, ...other }: AccountPopoverMe
   const router = useRouter();
   const theme = useTheme();
   const pathname = usePathname();
+
+  const { t } = useTranslation();
 
   const { mutate: logout, isPending } = useLogout(() => {
     router.push("/entrar");
@@ -101,7 +104,7 @@ export function AccountPopoverMenu({ data = [], sx, ...other }: AccountPopoverMe
           onClick={handleLogout}
           disabled={isPending}
         >
-          {isPending ? 'Logging out...' : 'Logout'}
+          {isPending ? t('account.logging_out') : t('account.logout')}
         </Button>
       </Box>
     </Box>

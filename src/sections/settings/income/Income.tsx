@@ -13,12 +13,15 @@ import { useDeleteIncomes } from "src/hooks/mutations/incomes/useDeleteIncomes";
 import { Incomes } from "src/types/Incomes";
 import { Pagination } from "src/types/Pagination";
 import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
+import { useTranslation } from "react-i18next";
+
 
 type IncomeTableProps = {
     incomes: Pagination<Incomes> | undefined
 }
 
 export function IncomeTable({ incomes }: IncomeTableProps) {
+    const { t } = useTranslation();
     const table = useTable();
 
     useEffect(() => {
@@ -46,7 +49,7 @@ export function IncomeTable({ incomes }: IncomeTableProps) {
             form={<FormIncomes
                 data={row}
                 buttonIcon={<Iconify icon="solar:pen-bold" />}
-                buttonLabel="Editar" />}
+                buttonLabel={t('common.edit')} />}
             handleDelete={handleDeleteIncome} />)
 
     }
@@ -55,7 +58,7 @@ export function IncomeTable({ incomes }: IncomeTableProps) {
         <Card sx={{ width: "100%", borderTopRightRadius: 0, borderTopLeftRadius: 0 }}>
             <TableToolbar
                 numSelected={table.selected.length}
-                form={<FormIncomes buttonLabel="Adicionar" />}
+                form={<FormIncomes buttonLabel={t('common.add')} />}
             />
 
             <TableContainer sx={{ overflow: "unset" }}>
@@ -73,9 +76,9 @@ export function IncomeTable({ incomes }: IncomeTableProps) {
                             )
                         }
                         headLabel={[
-                            { id: "description", label: "Descrição" },
-                            { id: "amount", label: "Salário" },
-                            { id: "payment_day", label: "Dia de pagamento" },
+                            { id: "description", label: t('settings.income.table.headers.description') },
+                            { id: "amount", label: t('settings.income.table.headers.amount') },
+                            { id: "payment_day", label: t('settings.income.table.headers.payment_day') },
                             { id: "" },
                         ]}
                     /> : <></>}
@@ -89,7 +92,7 @@ export function IncomeTable({ incomes }: IncomeTableProps) {
                             </TableRow>
                         ) : incomes.data.length < 1
                             ?
-                            <TableNoData message="Nenhum salário cadastrado!" />
+                            <TableNoData message={t('settings.income.table.no_data')} />
                             :
                             incomes.data.map(item => (IncomeRow(item, DeleteIncomes)))
                         }

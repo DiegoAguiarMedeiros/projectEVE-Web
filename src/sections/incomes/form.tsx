@@ -10,6 +10,8 @@ import { ProcessedIncomes, ProcessedIncomesPlayload } from "src/types/ProcessedI
 import { Envelopes } from "src/types/Envelopes";
 import { useCreateProcessedIncomes } from "src/hooks/mutations/processed-incomes/useCreateProcessedIncomes";
 import { useUpdateProcessedIncomes } from "src/hooks/mutations/processed-incomes/useUpdateProcessedIncomes";
+import { useTranslation } from "react-i18next";
+
 
 type IncomeFormProps = {
     buttonIcon?: React.ReactNode;
@@ -117,28 +119,30 @@ export function IncomeForm({ buttonLabel, buttonIcon, data, envelopes }: IncomeF
         }
     };
 
+    const { t } = useTranslation();
+
     const validateDescription = useCallback(() => {
         if (!description.trim()) {
-            setErrorDescription("Descrição é obrigatória.");
+            setErrorDescription(t('income.validation.description_required'));
             return false;
         }
         setErrorDescription(null);
         return true;
-    }, [description]);
+    }, [description, t]);
 
     const validateTotalIncomeProcessed = useCallback(() => {
         if (!totalIncomeProcessed.trim()) {
-            setErrorTotalIncomeProcessed("Valor é obrigatório.");
+            setErrorTotalIncomeProcessed(t('income.validation.amount_required'));
             return false;
         }
 
         if (Number.isNaN(Number(totalIncomeProcessed))) {
-            setErrorTotalIncomeProcessed("Valor deve ser numérico.");
+            setErrorTotalIncomeProcessed(t('income.validation.amount_numeric'));
             return false;
         }
         setErrorTotalIncomeProcessed(null);
         return true;
-    }, [totalIncomeProcessed]);
+    }, [totalIncomeProcessed, t]);
 
     const handleSelectChange = (event: SelectChangeEvent<string>) => {
         setEnvelope(event.target.value);
@@ -159,11 +163,11 @@ export function IncomeForm({ buttonLabel, buttonIcon, data, envelopes }: IncomeF
                     style={{ display: "flex", gap: "16px", background: "none", border: "none", cursor: "pointer", margin: 0, padding: 0 }}
                     onClick={handleOpen}
                 >
-                    {buttonIcon}{buttonLabel}
+                    {buttonIcon}{buttonLabel === 'Adicionar' ? t('common.add') : buttonLabel === 'Editar' ? t('common.edit') : buttonLabel}
                 </Button>
             }
 
-            okButton={<Button type="submit" variant="outlined" color="primary" onClick={handleSubmit} disabled={isPending} >Adicionar</Button>
+            okButton={<Button type="submit" variant="outlined" color="primary" onClick={handleSubmit} disabled={isPending} >{t('common.add')}</Button>
             }>
             <Box
                 gap={1.5}
@@ -176,13 +180,13 @@ export function IncomeForm({ buttonLabel, buttonIcon, data, envelopes }: IncomeF
 
 
                 <Typography variant="h3" noWrap>
-                    Renda
+                    {t('income.title')}
                 </Typography>
                 {error && <p>{error.message}</p>}
                 <TextField
                     fullWidth
                     name="description"
-                    label="Descrição"
+                    label={t('income.table.headers.description')}
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     onBlur={validateDescription}
@@ -194,7 +198,7 @@ export function IncomeForm({ buttonLabel, buttonIcon, data, envelopes }: IncomeF
                     fullWidth
                     type="number"
                     name="amount"
-                    label="Valor"
+                    label={t('income.table.headers.amount')}
                     value={totalIncomeProcessed}
                     onChange={(e) => setTotalIncomeProcessed(e.target.value)}
                     onBlur={validateTotalIncomeProcessed}
@@ -211,25 +215,25 @@ export function IncomeForm({ buttonLabel, buttonIcon, data, envelopes }: IncomeF
                     <DatePicker
                         sx={{ width: "100%", mb: 3 }}
                         name="date"
-                        label="Data do Pagamento"
+                        label={t('envelope.transaction.date')}
                         value={dateValue}
                         onChange={handleChangeDate}
                         format="DD/MM/YYYY"
                     />
                 </LocalizationProvider>
                 <FormControl fullWidth sx={{ border: '1px solid', borderColor: (theme) => theme.palette.divider, borderRadius: '8px', p: 2, mb: 3 }}>
-                    <FormLabel>Dividir entre envelopes</FormLabel>
+                    <FormLabel>{t('income.split')}</FormLabel>
                     <Box sx={{ display: 'flex', width: '100%', gap: '8px', mt: 3 }}>
-                        <Button fullWidth variant={!isSplitted ? "outlined" : "contained"} color="primary" onClick={() => setIsSplitted(true)} >Sim</Button>
-                        <Button fullWidth variant={isSplitted ? "outlined" : "contained"} color="primary" onClick={() => setIsSplitted(false)} >Não</Button>
+                        <Button fullWidth variant={!isSplitted ? "outlined" : "contained"} color="primary" onClick={() => setIsSplitted(true)} >{t('income.yes')}</Button>
+                        <Button fullWidth variant={isSplitted ? "outlined" : "contained"} color="primary" onClick={() => setIsSplitted(false)} >{t('income.no')}</Button>
                     </Box>
                 </FormControl>
                 {!isSplitted && <FormControl fullWidth>
-                    <InputLabel id="envelopes-select-label">Envelope</InputLabel>
+                    <InputLabel id="envelopes-select-label">{t('income.table.headers.envelope')}</InputLabel>
                     <Select
                         labelId="envelopes-select-label"
                         id="envelope-select"
-                        label="Envelope"
+                        label={t('income.table.headers.envelope')}
                         sx={{ width: "100%", mb: 3 }}
                         name="envelope"
                         value={envelope}

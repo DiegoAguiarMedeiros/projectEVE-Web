@@ -18,17 +18,19 @@ import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 
 
 
-const months = [
-    "Janeiro", "Fevereiro", "Março", "Abril",
-    "Maio", "Junho", "Julho", "Agosto",
-    "Setembro", "Outubro", "Novembro", "Dezembro",
-];
-
+import { useTranslation } from "react-i18next";
 
 interface MonthYearPickerButtonProps {
     data: ProcessedIncomesMonthResponse;
 }
 export const MonthYearPickerButton: React.FC<MonthYearPickerButtonProps> = ({ data }) => {
+    const { t } = useTranslation();
+
+    const months = [
+        t('months.january'), t('months.february'), t('months.march'), t('months.april'),
+        t('months.may'), t('months.june'), t('months.july'), t('months.august'),
+        t('months.september'), t('months.october'), t('months.november'), t('months.december'),
+    ];
 
     const years = Object.keys(data).map(Number).sort((a, b) => a - b);
     const theme = useTheme();
@@ -42,7 +44,7 @@ export const MonthYearPickerButton: React.FC<MonthYearPickerButtonProps> = ({ da
     const maxYear = years[years.length - 1];
 
     const minMonth = years.length > 0 ? Math.min(...data[minYear]) : month;
-    const maxMonth =  years.length > 0 ? Math.max(...data[maxYear]) : year;
+    const maxMonth = years.length > 0 ? Math.max(...data[maxYear]) : year;
 
     const isNextButtonDisabled = useCallback((): boolean => {
         if (maxMonth === 12 && selectedYear === maxYear && selectedMonth === maxMonth) return false;

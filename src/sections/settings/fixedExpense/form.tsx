@@ -12,6 +12,8 @@ import { Envelopes } from "src/types/Envelopes";
 import { FixedExpenses, FixedExpensesPost } from "src/types/FixedExpenses";
 import { useCreateFixedExpenses } from "src/hooks/mutations/fixed-expenses/useCreateFixedExpenses";
 import { useUpdateFixedExpenses } from "src/hooks/mutations/fixed-expenses/useUpdateFixedExpenses";
+import { useTranslation } from "react-i18next";
+
 
 type FixedExpenseFormProps = {
     buttonIcon?: React.ReactNode;
@@ -21,6 +23,7 @@ type FixedExpenseFormProps = {
 }
 
 export function FixedExpenseForm({ buttonLabel, buttonIcon, data, envelopes }: FixedExpenseFormProps) {
+    const { t } = useTranslation();
     const { enqueueSnackbar } = useSnackbar();
 
     const [open, setOpen] = useState(false);
@@ -96,40 +99,40 @@ export function FixedExpenseForm({ buttonLabel, buttonIcon, data, envelopes }: F
 
     const validateDescription = useCallback(() => {
         if (!description.trim()) {
-            setErrorDescription("Descrição é obrigatória.");
+            setErrorDescription(t('settings.fixed_expense.validation.description_required'));
             return false;
         }
         setErrorDescription(null);
         return true;
-    }, [description]);
+    }, [description, t]);
 
     const validateAmount = useCallback(() => {
         if (!amount.trim()) {
-            setErrorAmount("Valor é obrigatório.");
+            setErrorAmount(t('settings.fixed_expense.validation.amount_required'));
             return false;
         }
 
         if (Number.isNaN(Number(amount))) {
-            setErrorAmount("Valor deve ser numérico.");
+            setErrorAmount(t('settings.fixed_expense.validation.amount_numeric'));
             return false;
         }
         setErrorAmount(null);
         return true;
-    }, [amount]);
+    }, [amount, t]);
 
     const validatePaymentDay = useCallback(() => {
         const day = Number(paymentDay);
         if (!paymentDay.trim()) {
-            setErrorPaymentDay("Dia do pagamento é obrigatório.");
+            setErrorPaymentDay(t('settings.fixed_expense.validation.payment_day_required'));
             return false;
         }
         if (Number.isNaN(day) || day < 1 || day > 31) {
-            setErrorPaymentDay("O dia do pagamento deve estar entre 1 e 31.");
+            setErrorPaymentDay(t('settings.fixed_expense.validation.payment_day_range'));
             return false;
         }
         setErrorPaymentDay(null);
         return true;
-    }, [paymentDay]);
+    }, [paymentDay, t]);
 
 
     const handleSelectChange = (event: SelectChangeEvent<string>) => {
@@ -151,11 +154,11 @@ export function FixedExpenseForm({ buttonLabel, buttonIcon, data, envelopes }: F
                     style={{ display: "flex", gap: "16px", background: "none", border: "none", cursor: "pointer", margin: 0, padding: 0 }}
                     onClick={handleOpen}
                 >
-                    {buttonIcon}{buttonLabel}
+                    {buttonIcon}{buttonLabel === 'Adicionar' ? t('common.add') : buttonLabel === 'Editar' ? t('common.edit') : buttonLabel}
                 </Button>
             }
 
-            okButton={<Button type="submit" variant="outlined" color="primary" onClick={handleSubmit} disabled={isPending} >Adicionar</Button>
+            okButton={<Button type="submit" variant="outlined" color="primary" onClick={handleSubmit} disabled={isPending} >{t('common.add')}</Button>
             }>
             <Box
                 gap={1.5}
@@ -168,23 +171,23 @@ export function FixedExpenseForm({ buttonLabel, buttonIcon, data, envelopes }: F
 
 
                 <Typography variant="h3" noWrap>
-                    Contas Fixas
+                    {t('settings.fixed_expense.title')}
                 </Typography>
                 {error && <p>{error.message}</p>}
 
                 <FormControl fullWidth>
-                    <InputLabel id="evenlope-id-select-label">Envelope</InputLabel>
+                    <InputLabel id="evenlope-id-select-label">{t('settings.fixed_expense.envelope')}</InputLabel>
                     <Select
                         labelId="evenlope-id-select-label"
                         id="evenlope-id-select"
-                        label="Envelope"
+                        label={t('settings.fixed_expense.envelope')}
                         sx={{ width: "100%", mb: 3 }}
                         name="envelope"
                         value={envelope}
                         onChange={handleSelectChange}
                     >
-                        {envelopes.filter((e) => e.name !== 'debts' && e.name !== 'goals').map((t, index) => (
-                            <MenuItem key={index} value={t.id}>{t.name}</MenuItem>
+                        {envelopes.filter((e) => e.name !== 'debts' && e.name !== 'goals').map((env, index) => (
+                            <MenuItem key={index} value={env.id}>{t(env.name)}</MenuItem>
                         ))}
                     </Select>
                 </FormControl>
@@ -193,7 +196,7 @@ export function FixedExpenseForm({ buttonLabel, buttonIcon, data, envelopes }: F
                 <TextField
                     fullWidth
                     name="description"
-                    label="Descrição"
+                    label={t('settings.fixed_expense.description')}
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     onBlur={validateDescription}
@@ -205,7 +208,7 @@ export function FixedExpenseForm({ buttonLabel, buttonIcon, data, envelopes }: F
                     fullWidth
                     type="number"
                     name="amount"
-                    label="Valor"
+                    label={t('settings.fixed_expense.amount')}
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     onBlur={validateAmount}
@@ -223,7 +226,7 @@ export function FixedExpenseForm({ buttonLabel, buttonIcon, data, envelopes }: F
                     fullWidth
                     type="number"
                     name="paymentDay"
-                    label="Dia do pagamento"
+                    label={t('settings.fixed_expense.payment_day')}
                     value={paymentDay}
                     onChange={(e) => setPaymentDay(e.target.value)}
                     onBlur={validatePaymentDay}

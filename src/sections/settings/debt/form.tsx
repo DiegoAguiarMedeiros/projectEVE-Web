@@ -5,6 +5,9 @@ import { Envelopes } from "src/types/Envelopes";
 import { useCreateDebts } from "src/hooks/mutations/debts/useCreateDebts";
 import { useUpdateDebts } from "src/hooks/mutations/debts/useUpdateDebts";
 import { Debts, DebtsPost } from "src/types/Debts";
+import { useTranslation } from "react-i18next";
+
+
 
 type DebtFormProps = {
     buttonIcon?: React.ReactNode;
@@ -14,6 +17,7 @@ type DebtFormProps = {
 }
 
 export function DebtForm({ buttonLabel, buttonIcon, data, envelopes }: DebtFormProps) {
+    const { t } = useTranslation();
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -75,7 +79,7 @@ export function DebtForm({ buttonLabel, buttonIcon, data, envelopes }: DebtFormP
                     status: debts.status,
                 });
             }
-            
+
             clearForm();
             handleClose();
         } catch (err: any) {
@@ -104,68 +108,68 @@ export function DebtForm({ buttonLabel, buttonIcon, data, envelopes }: DebtFormP
 
     const validateDescription = useCallback(() => {
         if (!description.trim()) {
-            setErrorDescription("Descrição é obrigatória.");
+            setErrorDescription(t('settings.debt.validation.description_required'));
             return false;
         }
         setErrorDescription(null);
         return true;
-    }, [description]);
+    }, [description, t]);
 
     const validateAmount = useCallback(() => {
         if (!amount.trim()) {
-            setErrorAmount("Valor é obrigatório.");
+            setErrorAmount(t('settings.debt.validation.amount_required'));
             return false;
         }
 
         if (Number.isNaN(Number(amount))) {
-            setErrorAmount("Valor deve ser numérico.");
+            setErrorAmount(t('settings.debt.validation.amount_numeric'));
             return false;
         }
         setErrorAmount(null);
         return true;
-    }, [amount]);
+    }, [amount, t]);
 
     const validateInstallmentsTotal = useCallback(() => {
         if (!installmentsTotal.trim()) {
-            setErrorInstallmentsTotal("Valor é obrigatório.");
+            setErrorInstallmentsTotal(t('settings.debt.validation.amount_required'));
             return false;
         }
 
         if (Number.isNaN(Number(installmentsTotal))) {
-            setErrorInstallmentsTotal("Valor deve ser numérico.");
+            setErrorInstallmentsTotal(t('settings.debt.validation.amount_numeric'));
             return false;
         }
         setErrorInstallmentsTotal(null);
         return true;
-    }, [installmentsTotal]);
+    }, [installmentsTotal, t]);
 
     const validateInstallmentsPaid = useCallback(() => {
         if (!installmentsPaid.trim()) {
-            setErrorInstallmentsPaid("Valor é obrigatório.");
+            setErrorInstallmentsPaid(t('settings.debt.validation.amount_required'));
             return false;
         }
 
         if (Number.isNaN(Number(installmentsPaid))) {
-            setErrorInstallmentsPaid("Valor deve ser numérico.");
+            setErrorInstallmentsPaid(t('settings.debt.validation.amount_numeric'));
             return false;
         }
         setErrorInstallmentsPaid(null);
         return true;
-    }, [installmentsPaid]);
+    }, [installmentsPaid, t]);
 
     const validatePaymentDay = useCallback(() => {
         const day = Number(paymentDay);
         if (!paymentDay.trim()) {
-            setErrorPaymentDay("Dia do pagamento é obrigatório.");
+            setErrorPaymentDay(t('settings.debt.validation.payment_day_required'));
             return false;
         }
         if (Number.isNaN(day) || day < 1 || day > 31) {
-            setErrorPaymentDay("O dia do pagamento deve estar entre 1 e 31.");
+            setErrorPaymentDay(t('settings.debt.validation.payment_day_range'));
             return false;
         }
         setErrorPaymentDay(null);
         return true;
-    }, [paymentDay]);
+    }, [paymentDay, t]);
 
 
     return (
@@ -182,11 +186,11 @@ export function DebtForm({ buttonLabel, buttonIcon, data, envelopes }: DebtFormP
                     style={{ display: "flex", gap: "16px", background: "none", border: "none", cursor: "pointer", margin: 0, padding: 0 }}
                     onClick={handleOpen}
                 >
-                    {buttonIcon}{buttonLabel}
+                    {buttonIcon}{buttonLabel === 'Adicionar' ? t('common.add') : buttonLabel === 'Editar' ? t('common.edit') : buttonLabel}
                 </Button>
             }
 
-            okButton={<Button type="submit" variant="outlined" color="primary" onClick={handleSubmit} disabled={isPending} >Adicionar</Button>
+            okButton={<Button type="submit" variant="outlined" color="primary" onClick={handleSubmit} disabled={isPending} >{t('common.add')}</Button>
             }>
             <Box
                 gap={1.5}
@@ -199,13 +203,13 @@ export function DebtForm({ buttonLabel, buttonIcon, data, envelopes }: DebtFormP
 
 
                 <Typography variant="h3" noWrap>
-                    Dívida
+                    {t('settings.debt.title')}
                 </Typography>
                 {error && <p>{error.message}</p>}
                 <TextField
                     fullWidth
                     name="description"
-                    label="Descrição"
+                    label={t('settings.debt.description')}
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     onBlur={validateDescription}
@@ -217,7 +221,7 @@ export function DebtForm({ buttonLabel, buttonIcon, data, envelopes }: DebtFormP
                     fullWidth
                     type="number"
                     name="amount"
-                    label="Valor da parcela"
+                    label={t('settings.debt.amount')}
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     onBlur={validateAmount}
@@ -235,7 +239,7 @@ export function DebtForm({ buttonLabel, buttonIcon, data, envelopes }: DebtFormP
                     fullWidth
                     type="number"
                     name="installmentsPaid"
-                    label="Parcelas pagas"
+                    label={t('settings.debt.installments_paid')}
                     value={installmentsPaid}
                     onChange={(e) => setInstallmentsPaid(e.target.value)}
                     onBlur={validateInstallmentsPaid}
@@ -252,7 +256,7 @@ export function DebtForm({ buttonLabel, buttonIcon, data, envelopes }: DebtFormP
                     fullWidth
                     type="number"
                     name="installmentsTotal"
-                    label="Total de parcelas"
+                    label={t('settings.debt.installments_total')}
                     value={installmentsTotal}
                     onChange={(e) => setInstallmentsTotal(e.target.value)}
                     onBlur={validateInstallmentsTotal}
@@ -272,7 +276,7 @@ export function DebtForm({ buttonLabel, buttonIcon, data, envelopes }: DebtFormP
                     fullWidth
                     type="number"
                     name="paymentDay"
-                    label="Dia do pagamento"
+                    label={t('settings.debt.payment_day')}
                     value={paymentDay}
                     onChange={(e) => setPaymentDay(e.target.value)}
                     onBlur={validatePaymentDay}

@@ -13,12 +13,15 @@ import { CreditCardForm } from "src/sections/settings/creditCards/form";
 import { Pagination } from "src/types/Pagination";
 import { CreditCards } from "src/types/CreditCards";
 import { useDeleteCreditCards } from "src/hooks/mutations/credit-cards/useDeleteCreditCards";
+import { useTranslation } from "react-i18next";
+
 
 type CreditCardsTableProps = {
     creditCards: Pagination<CreditCards> | undefined
 }
 
 export function CreditCardsTable({ creditCards }: CreditCardsTableProps) {
+    const { t } = useTranslation();
     const table = useTable();
 
     useEffect(() => {
@@ -47,7 +50,7 @@ export function CreditCardsTable({ creditCards }: CreditCardsTableProps) {
             form={<CreditCardForm
                 data={row}
                 buttonIcon={<Iconify icon="solar:pen-bold" />}
-                buttonLabel="Editar" />}
+                buttonLabel={t('common.edit')} />}
             handleDelete={handleDeleteCreditCards} />)
 
     }
@@ -56,7 +59,7 @@ export function CreditCardsTable({ creditCards }: CreditCardsTableProps) {
         <Card sx={{ width: "100%", borderTopRightRadius: 0, borderTopLeftRadius: 0 }}>
             <TableToolbar
                 numSelected={table.selected.length}
-                form={<CreditCardForm buttonLabel="Adicionar" />}
+                form={<CreditCardForm buttonLabel={t('common.add')} />}
             />
 
             <TableContainer sx={{ overflow: "unset" }}>
@@ -74,8 +77,8 @@ export function CreditCardsTable({ creditCards }: CreditCardsTableProps) {
                             )
                         }
                         headLabel={[
-                            { id: "name", label: "Nome" },
-                            { id: "flag", label: "Bandeira" },
+                            { id: "name", label: t('settings.credit_card.table.headers.name') },
+                            { id: "flag", label: t('settings.credit_card.table.headers.flag') },
                             { id: "" },
                         ]}
                     /> : <></>}
@@ -89,7 +92,7 @@ export function CreditCardsTable({ creditCards }: CreditCardsTableProps) {
                             </TableRow>
                         ) : creditCards.data.length < 1
                             ?
-                            <TableNoData message="Nenhum Cartão de crétido cadastrado!" />
+                            <TableNoData message={t('settings.credit_card.table.no_data')} />
                             :
                             creditCards.data.map(creditCard => (CreditCardsRow(creditCard, DeleteCreditCards)))
                         }

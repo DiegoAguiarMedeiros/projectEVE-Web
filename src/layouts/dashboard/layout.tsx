@@ -12,6 +12,7 @@ import { Iconify } from "src/components/iconify";
 import { ThemeToggleButton } from "src/components/themeSwitch/themeSwitch";
 import { MonthYearPickerButton } from "src/components/MonthYearPickerButton";
 import { useProcessedIncomesMonth } from "src/hooks/queries/processed-incomes/useProcessedIncomesMonth";
+import { useTranslation } from "react-i18next";
 
 import { Main } from "src/layouts/dashboard/main";
 import { layoutClasses } from "src/layouts/classes";
@@ -56,6 +57,7 @@ const getLastProcessed = (processed: ProcessedIncomesMonthResponse): { lastProce
 
 export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) {
   const theme = useTheme();
+  const { t } = useTranslation();
   const { setIncome } = IncomeStore();
   const { setHasMonthProcessed, setNextMonthToProcess, setNextYearToProcess } = SelectedMonthYearStore();
   const [navOpen, setNavOpen] = useState(false);
@@ -155,31 +157,31 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
                 <AccountPopover
                   data={[
                     {
-                      label: "Notificação",
+                      label: t('account.notification'),
                       href: "#",
                       icon: <NotificationsPopover data={_notifications} />,
                       isLink: false
                     },
                     {
-                      label: "Tema",
+                      label: t('account.theme'),
                       href: "#",
                       icon: <ThemeToggleButton />,
                       isLink: false
                     },
                     {
-                      label: "Idioma",
+                      label: t('account.language'),
                       href: "#",
                       icon: <LanguagePopover data={_langs} />,
                       isLink: false
                     },
                     {
-                      label: "Profile",
+                      label: t('account.profile'),
                       href: "/perfil",
                       icon: <Iconify width={22} icon="solar:shield-keyhole-bold-duotone" />,
                       isLink: true
                     },
                     {
-                      label: "Settings",
+                      label: t('account.settings'),
                       href: "#",
                       icon: <Iconify width={22} icon="solar:settings-bold-duotone" />,
                       isLink: true

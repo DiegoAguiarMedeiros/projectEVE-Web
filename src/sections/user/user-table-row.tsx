@@ -1,4 +1,6 @@
 import { useState, useCallback } from "react";
+import { useTranslation } from "react-i18next";
+
 
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
@@ -32,6 +34,7 @@ type UserTableRowProps = {
 };
 
 export function UserTableRow({ row, selected, onSelectRow }: UserTableRowProps) {
+  const { t } = useTranslation();
   const [openPopover, setOpenPopover] = useState<HTMLButtonElement | null>(null);
 
   const handleOpenPopover = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
@@ -104,12 +107,12 @@ export function UserTableRow({ row, selected, onSelectRow }: UserTableRowProps) 
         >
           <MenuItem onClick={handleClosePopover}>
             <Iconify icon="solar:pen-bold" />
-            Edit
+            {t('common.edit')}
           </MenuItem>
 
           <MenuItem onClick={handleClosePopover} sx={{ color: "error.main" }}>
             <Iconify icon="solar:trash-bin-trash-bold" />
-            Delete
+            {t('common.delete')}
           </MenuItem>
         </MenuList>
       </Popover>
