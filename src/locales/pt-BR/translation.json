@@ -47,7 +47,8 @@
             "debit_card": "Cartão de Débito",
             "cash": "Dinheiro",
             "bank_transfer": "Transferência Bancária",
-            "pix": "PIX"
+            "pix": "PIX",
+            "Reallocation": "Realocação"
         }
     },
     "errors": {
@@ -103,13 +104,15 @@
                 "DebitCard": "Cartão de Débito",
                 "Cash": "Dinheiro",
                 "BankTransfer": "Transferência Bancária",
-                "Pix": "Pix"
+                "Pix": "Pix",
+                "Reallocation": "Realocação"
             },
             "status": {
                 "paid": "Pago",
                 "pending": "Pendente",
-                "Completed": "Pago",
-                "Pending": "Pendente"
+                "completed": "Pago",
+                "overdue": "Atrasado",
+                "cancelled": "Cancelado"
             },
             "type": {
                 "debit": "Débito",
@@ -344,5 +347,17 @@
             "debts": "Minhas Dívidas",
             "credit_cards": "Meus Cartões"
         }
+    },
+    "table_toolbar": {
+        "all": "Todos",
+        "debit": "Débito",
+        "credit": "Crédito"
+    },
+    "transfer": {
+        "sent_to": "Enviado p/ {{name}}",
+        "received_from": "Recebido de {{name}}"
+    },
+    "deposit": {
+        "salary": "Depósito salário {{name}}"
     }
 }

@@ -35,7 +35,6 @@ export function EnvelopesTable({ envelopes }: EnvelopesProps) {
     useEffect(() => {
         if (envelopes) {
             const totalAllocation = envelopes.reduce((acc, item) => acc + item.percentage, 0);
-            console.log("totalAllocation", totalAllocation)
             setEnvelopeAllocation(totalAllocation);
         }
     }, [envelopes]);

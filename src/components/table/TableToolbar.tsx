@@ -1,4 +1,5 @@
 import Tooltip from "@mui/material/Tooltip";
+import { useTranslation } from "react-i18next";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
@@ -17,7 +18,7 @@ type TableToolbarProps = {
 
 
 export function TableToolbar({ numSelected, form, typeFilter, onTypeFilterChange }: TableToolbarProps) {
-
+  const { t } = useTranslation();
 
   return (
     <Toolbar
@@ -51,14 +52,14 @@ export function TableToolbar({ numSelected, form, typeFilter, onTypeFilterChange
               size="small"
               aria-label="tipo de transação"
             >
-              <ToggleButton value="both" aria-label="todos">
-                Todos
+              <ToggleButton value="both" aria-label={t('table_toolbar.all')}>
+                {t('table_toolbar.all')}
               </ToggleButton>
-              <ToggleButton value="Debit" aria-label="débito">
-                Débito
+              <ToggleButton value="Debit" aria-label={t('table_toolbar.debit')}>
+                {t('table_toolbar.debit')}
               </ToggleButton>
-              <ToggleButton value="Credit" aria-label="crédito">
-                Crédito
+              <ToggleButton value="Credit" aria-label={t('table_toolbar.credit')}>
+                {t('table_toolbar.credit')}
               </ToggleButton>
             </ToggleButtonGroup>
           )}

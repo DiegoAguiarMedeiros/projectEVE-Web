@@ -82,10 +82,6 @@ export const RealEnvelopesCard: React.FC<RealEnvelopesCardProps> = ({ envelope, 
                             {fNumberToCurrency(envelope.amount)}
                         </Typography>
                     </Box>
-                    <div style={{ display: "flex", gap: "8px" }}>
-                        <Typography variant="caption" sx={{ color: "text.secondary" }}>{fCurrency(envelope.amount)}</Typography>
-                        {activeCard && <Typography variant="caption" sx={{ color: "text.secondary" }}>{t('overview.envelopes.available', { amount: fCurrency(envelope.amount) })}</Typography>}
-                    </div>
 
                     {/* Custom Progress Bar with Dual Layer Text */}
                     <Box

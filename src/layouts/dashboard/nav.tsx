@@ -149,7 +149,7 @@ export function NavContent({ data, slots, sx }: NavContentProps) {
                 <ListItemButton
                   key={`ListItemButton${index}`}
                   disableGutters
-                  disabled={(item.title === 'Envelopes' && isBlockEnvelopeItemMenu())}
+                  disabled={(item.title === 'nav.envelopes' && isBlockEnvelopeItemMenu())}
                   component={RouterLink}
                   href={item.path}
                   onMouseEnter={() => setHoveredItem(item.path)}
@@ -171,7 +171,7 @@ export function NavContent({ data, slots, sx }: NavContentProps) {
                         bgcolor: "var(--layout-nav-item-hover-bg)",
                       },
                     }),
-                    ...((item.title === 'Envelopes' && isBlockEnvelopeItemMenu()) && {
+                    ...((item.title === 'nav.envelopes' && isBlockEnvelopeItemMenu()) && {
                       fontWeight: "fontWeightSemiBold",
                       bgcolor: "var(--layout-nav-item-block-bg)",
                       color: "var(--layout-nav-item-block-color)",
@@ -188,7 +188,7 @@ export function NavContent({ data, slots, sx }: NavContentProps) {
                     {t(item.title)}
                   </Box>
 
-                  {(item.title === 'Envelopes' && isBlockEnvelopeItemMenu()) && <LockIcon sx={{ color: theme => theme.palette.error.main }} />}
+                  {(item.title === 'nav.envelopes' && isBlockEnvelopeItemMenu()) && <LockIcon sx={{ color: theme => theme.palette.error.main }} />}
 
                   {item.info && item.info}
                 </ListItemButton>

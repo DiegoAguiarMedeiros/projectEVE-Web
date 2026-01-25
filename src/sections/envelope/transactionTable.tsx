@@ -55,7 +55,17 @@ export function TransactionTable({ envelopeId, transactions, table, activeBorder
         const handleDeleteTransaction = () => {
             deleteTransaction(id)
         }
-        const { description, amount, paymentMethod, date, status, type } = row;
+        const { description, amount, paymentMethod, date, status, type, isTranslatable } = row;
+
+        const getTranslatedDescription = (desc: string, descriptionIsTranslatable?: boolean) => {
+            if (!descriptionIsTranslatable) return desc;
+            const [key, arg] = desc.split('|');
+            if (arg) {
+                return t(key, { name: arg });
+            }
+            return t(key);
+        };
+
 
 
         const handleClick = (transactionsId: string, newStatus: TransactionsStatus) => {
@@ -69,16 +79,16 @@ export function TransactionTable({ envelopeId, transactions, table, activeBorder
             selected={table.selected.includes(id)}
             onSelectRow={() => table.onSelectRow(id)}
             rowKeys={[
-                description,
+                getTranslatedDescription(description, isTranslatable),
                 type === "Debit" ? t('envelope.transaction.type.debit') : t('envelope.transaction.type.credit'),
                 fCurrency(amount),
-                t(`envelope.transaction.payment_method.${paymentMethod}`),
+                t(paymentMethod),
                 dayjs(date).format("DD/MM/YYYY"),
                 <Chips
-                    label={t(`envelope.transaction.status.${status}`)}
+                    label={t(status)}
                     labels={[t('transaction.status.paid'), t('transaction.status.pending')]}
-                    fieldName="Completed"
-                    click={() => handleClick(id, status === 'Completed' ? 'Pending' : 'Completed')}
+                    fieldName="transaction.status.completed"
+                    click={() => handleClick(id, status === 'transaction.status.completed' ? 'transaction.status.pending' : 'transaction.status.completed')}
                 />]}
             form={<TransactionForm
                 data={row}

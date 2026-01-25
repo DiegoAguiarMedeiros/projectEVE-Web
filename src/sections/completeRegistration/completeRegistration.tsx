@@ -51,9 +51,7 @@ export function CompleteRegistrationView() {
   const { data: creditCards } = useListCreditCards(table);
 
   const handleNext = () => {
-    console.log("handleNext called", { activeStep, totalSteps: STEPS.length });
     if (activeStep === STEPS.length - 1) {
-      console.log("Calling completeRegistration mutation");
       completeRegistration();
     } else {
       setActiveStep((prev) => prev + 1);

@@ -7,13 +7,7 @@ export function useCompleteRegistration(onSuccess?: () => void) {
     const { enqueueSnackbar } = useSnackbar();
 
     return useMutation({
-        mutationFn: () => {
-            console.log("useCompleteRegistration mutationFn called");
-            return completeRegistration().then((res) => {
-                console.log("completeRegistration response", res);
-                return res.data;
-            });
-        },
+        mutationFn: () => (completeRegistration().then((res) => (res.data))),
         onSuccess: () => {
             queryClient.setQueryData(["user"], (oldData: any) => {
                 if (!oldData) return oldData;

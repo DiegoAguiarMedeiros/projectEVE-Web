@@ -29,6 +29,10 @@ export function AnalyticsEnvelopesByYearGraph({ title, subheader, chart, ...othe
     theme.palette.success.main,
   ];
 
+  const translatedChart = chart?.series.map((serie) => ({
+    name: t(serie.name),
+    data: serie.data,
+  }));
   const chartOptions = useChart({
     colors: chartColors,
     stroke: {
@@ -56,7 +60,7 @@ export function AnalyticsEnvelopesByYearGraph({ title, subheader, chart, ...othe
 
       <Chart
         type="bar"
-        series={chart.series}
+        series={translatedChart}
         options={chartOptions}
         height={435}
         sx={{ py: 2.5, pl: 1, pr: 2.5 }}

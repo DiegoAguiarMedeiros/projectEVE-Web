@@ -47,7 +47,8 @@
             "debit_card": "Debit Card",
             "cash": "Cash",
             "bank_transfer": "Bank Transfer",
-            "pix": "PIX"
+            "pix": "PIX",
+            "Reallocation": "Reallocation"
         }
     },
     "errors": {
@@ -102,13 +103,15 @@
                 "DebitCard": "Debit Card",
                 "Cash": "Cash",
                 "BankTransfer": "Bank Transfer",
-                "Pix": "Pix"
+                "Pix": "Pix",
+                "Reallocation": "Reallocation"
             },
             "status": {
                 "paid": "Paid",
                 "pending": "Pending",
-                "Completed": "Completed",
-                "Pending": "Pending"
+                "completed": "Completed",
+                "overdue": "Overdue",
+                "cancelled": "Cancelled"
             },
             "type": {
                 "debit": "Debit",
@@ -343,5 +346,17 @@
             "debts": "My Debts",
             "credit_cards": "My Credit Cards"
         }
+    },
+    "table_toolbar": {
+        "all": "All",
+        "debit": "Debit",
+        "credit": "Credit"
+    },
+    "transfer": {
+        "sent_to": "Sent to {{name}}",
+        "received_from": "Received from {{name}}"
+    },
+    "deposit": {
+        "salary": "Salary deposit {{name}}"
     }
 }

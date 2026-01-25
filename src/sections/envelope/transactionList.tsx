@@ -49,7 +49,6 @@ export function TransactionList({ envelopeId, transactions, table, allEnvelopes 
 
     // --- Reset quando troca de envelope ---
     useEffect(() => {
-        // console.log("🔄 Troca de envelope", envelopeId);
         // reset local
         windowRef.current = new SlidingWindow<Transactions>(MAX_BUFFER);
         processedPageRef.current = null;
@@ -208,10 +207,19 @@ export function TransactionList({ envelopeId, transactions, table, allEnvelopes 
             >
                 <Stack spacing={2} sx={{ p: 2 }}>
                     {items.map((row: any) => {
-                        const { id, description, amount, paymentMethod, date, status } = row;
+                        const { id, description, amount, paymentMethod, date, status, isTranslatable } = row;
+
+                        const getTranslatedDescription = (desc: string, descriptionIsTranslatable?: boolean) => {
+                            if (!descriptionIsTranslatable) return desc;
+                            const [key, arg] = desc.split('|');
+                            if (arg) {
+                                return t(key, { name: arg });
+                            }
+                            return t(key);
+                        };
 
                         const handleClickStatus = () => {
-                            UpdateStatusTransaction({ id, status: status === "Completed" ? "Pending" : "Completed" });
+                            UpdateStatusTransaction({ id, status: status === "transaction.status.completed" ? "transaction.status.pending" : "transaction.status.completed" });
                         };
 
                         return (
@@ -219,15 +227,15 @@ export function TransactionList({ envelopeId, transactions, table, allEnvelopes 
                                 <CardContent>
                                     <Stack spacing={1}>
                                         <Box display="flex" justifyContent="space-between" alignItems="center">
-                                            <Typography variant="subtitle1" fontWeight="bold">{description}</Typography>
+                                            <Typography variant="subtitle1" fontWeight="bold">{getTranslatedDescription(description, isTranslatable)}</Typography>
                                             <Typography variant="subtitle1" color="primary">{fCurrency(amount)}</Typography>
                                         </Box>
 
                                         <Typography variant="body2" color="text.secondary">
-                                            {t(`envelope.transaction.payment_method.${paymentMethod}`)} • {dayjs(date).format("DD/MM/YYYY")}
+                                            {t(paymentMethod)} • {dayjs(date).format("DD/MM/YYYY")}
                                         </Typography>
 
-                                        <Chips label={t(`envelope.transaction.status.${status}`)} labels={[t('transaction.status.paid'), t('transaction.status.pending')]} fieldName="Completed" click={handleClickStatus} />
+                                        <Chips label={t(status)} labels={[t('transaction.status.paid'), t('transaction.status.pending')]} fieldName="transaction.status.completed" click={handleClickStatus} />
 
                                         <Divider />
 

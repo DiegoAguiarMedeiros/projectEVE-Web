@@ -50,11 +50,13 @@ function TabPanel(props: TabPanelProps) {
 }
 
 const paymentMethodIcons: Record<PaymentMethod, React.ReactNode> = {
-    CreditCard: <Iconify icon="solar:card-outline" />,
-    DebitCard: <Iconify icon="solar:card-2-outline" />,
-    Cash: <Iconify icon="solar:wad-of-money-outline" />,
-    BankTransfer: <Iconify icon="solar:bank-note-outline" />,
-    Pix: <Iconify icon="solar:qr-code-outline" />,
+    'envelope.transaction.payment_method.CreditCard': <Iconify icon="solar:card-outline" />,
+    'envelope.transaction.payment_method.DebitCard': <Iconify icon="solar:card-2-outline" />,
+    'envelope.transaction.payment_method.Cash': <Iconify icon="solar:wad-of-money-outline" />,
+    'envelope.transaction.payment_method.BankTransfer': <Iconify icon="solar:bank-note-outline" />,
+    'envelope.transaction.payment_method.Pix': <Iconify icon="solar:qr-code-outline" />,
+    'envelope.transaction.payment_method.Reallocation': <Iconify icon="solar:transfer-outline" />,
+    "envelope.transaction.payment_method.Ticket": <Iconify icon="solar:ticket-outline" />,
 };
 
 export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, allEnvelopes = [] }: TransactionFormProps) {
@@ -76,7 +78,7 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
     // Transaction form state
     const [description, setDescription] = useState(data ? data.description : "");
     const [amount, setAmount] = useState(data ? data.amount : "");
-    const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(data ? data.paymentMethod : "DebitCard");
+    const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(data ? data.paymentMethod : "envelope.transaction.payment_method.DebitCard");
     const [date, setDate] = useState<Dayjs | null>(data ? dayjs(data.date) : null);
 
     const [errorDescription, setErrorDescription] = useState<string | null>(null);
@@ -162,7 +164,7 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
                     description,
                     amount,
                     paymentMethod,
-                    status: "Pending",
+                    status: "transaction.status.pending",
                     envelopeId,
                     date,
                     type: "Debit",
@@ -209,11 +211,13 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
     const { t } = useTranslation();
 
     const paymentMethodLabels: Record<PaymentMethod, string> = {
-        CreditCard: t('common.payment_method.credit_card'),
-        DebitCard: t('common.payment_method.debit_card'),
-        Cash: t('common.payment_method.cash'),
-        BankTransfer: t('common.payment_method.bank_transfer'),
-        Pix: t('common.payment_method.pix'),
+        "envelope.transaction.payment_method.CreditCard": t('common.payment_method.credit_card'),
+        "envelope.transaction.payment_method.DebitCard": t('common.payment_method.debit_card'),
+        "envelope.transaction.payment_method.Cash": t('common.payment_method.cash'),
+        "envelope.transaction.payment_method.BankTransfer": t('common.payment_method.bank_transfer'),
+        "envelope.transaction.payment_method.Pix": t('common.payment_method.pix'),
+        "envelope.transaction.payment_method.Reallocation": t('common.payment_method.reallocation'),
+        "envelope.transaction.payment_method.Ticket": t('common.payment_method.ticket')
     };
 
     const validateDescription = useCallback(() => {
