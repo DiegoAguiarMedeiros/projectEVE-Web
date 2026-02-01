@@ -8,11 +8,10 @@ export function ThemeToggleButton() {
   const isDark = mode === "dark";
 
   return (
-    <MenuItem
+    <IconButton
       onClick={toggleTheme}
     >
       {isDark ? <LightMode sx={{ width: '22px' }} /> : <DarkMode sx={{ width: '22px' }} />}
-      {isDark ? "Tema claro" : "Tema escuro"}
-    </MenuItem>
+    </IconButton>
   );
 }

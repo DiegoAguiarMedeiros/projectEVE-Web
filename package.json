@@ -6,8 +6,8 @@
   "private": false,
   "type": "module",
   "scripts": {
-    "dev": "vite --host 0.0.0.0 --port 3039",
-    "start": "vite preview --host 0.0.0.0 --port 3039",
+    "dev": "vite",
+    "start": "vite preview",
     "build": "tsc && vite build",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "eslint --fix \"src/**/*.{js,jsx,ts,tsx}\"",

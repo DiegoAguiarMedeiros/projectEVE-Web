@@ -8,6 +8,7 @@ import {
   ListItemText,
   ListItemIcon,
   Box,
+  IconButton,
 } from "@mui/material";
 
 export type LanguagePopoverProps = {
@@ -49,10 +50,19 @@ export function LanguagePopover({ data = [] }: LanguagePopoverProps) {
   return (
     <>
       {/* Botão no menu principal */}
-      <MenuItem onClick={handleOpen} sx={{ p: 1 }}>
+      <IconButton
+        onClick={handleOpen}
+        sx={{
+          padding: 0,
+          width: 44,
+          height: 44,
+          ...(anchorEl && {
+            bgcolor: (theme) => theme.palette.action.selected,
+          }),
+        }}
+      >
         {renderFlag(currentLang?.label, currentLang?.icon)}
-        <span style={{ marginLeft: 8, fontWeight: 600 }}>{currentLang?.label}</span>
-      </MenuItem>
+      </IconButton>
 
       {/* Popover com lista de idiomas */}
       <Popover

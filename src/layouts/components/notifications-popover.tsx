@@ -65,14 +65,16 @@ export function NotificationsPopover({ data = [], sx, ...other }: NotificationsP
 
   return (
     <>
-      <MenuItem
+      <IconButton
+        color={openPopover ? "primary" : "default"}
         onClick={handleOpenPopover}
+        sx={sx}
+        {...other}
       >
         <Badge badgeContent={totalUnRead} color="error">
           <Iconify width={24} icon="solar:bell-bing-bold-duotone" />
         </Badge>
-        Notificação
-      </MenuItem>
+      </IconButton>
 
       <Popover
         open={!!openPopover}

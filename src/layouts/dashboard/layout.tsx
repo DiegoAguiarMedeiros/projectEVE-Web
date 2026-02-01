@@ -152,40 +152,18 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
             ),
             rightArea: (
               <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-
+                <NotificationsPopover data={_notifications} />
+                <ThemeToggleButton />
+                <LanguagePopover data={_langs} />
 
                 <AccountPopover
                   data={[
-                    {
-                      label: t('account.notification'),
-                      href: "#",
-                      icon: <NotificationsPopover data={_notifications} />,
-                      isLink: false
-                    },
-                    {
-                      label: t('account.theme'),
-                      href: "#",
-                      icon: <ThemeToggleButton />,
-                      isLink: false
-                    },
-                    {
-                      label: t('account.language'),
-                      href: "#",
-                      icon: <LanguagePopover data={_langs} />,
-                      isLink: false
-                    },
                     {
                       label: t('account.profile'),
                       href: "/perfil",
                       icon: <Iconify width={22} icon="solar:shield-keyhole-bold-duotone" />,
                       isLink: true
-                    },
-                    {
-                      label: t('account.settings'),
-                      href: "#",
-                      icon: <Iconify width={22} icon="solar:settings-bold-duotone" />,
-                      isLink: true
-                    },
+                    }
                   ]}
                 />
               </Box>

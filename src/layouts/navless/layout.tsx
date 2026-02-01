@@ -50,26 +50,11 @@ export function NavlessLayout({ sx, children, header }: NavlessLayoutProps) {
                         ),
                         rightArea: (
                             <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+                                <NotificationsPopover data={_notifications} />
+                                <ThemeToggleButton />
+                                <LanguagePopover data={_langs} />
                                 <AccountPopover
                                     data={[
-                                        {
-                                            label: "Notificação",
-                                            href: "#",
-                                            icon: <NotificationsPopover data={_notifications} />,
-                                            isLink: false
-                                        },
-                                        {
-                                            label: "Tema",
-                                            href: "#",
-                                            icon: <ThemeToggleButton />,
-                                            isLink: false
-                                        },
-                                        {
-                                            label: "Idioma",
-                                            href: "#",
-                                            icon: <LanguagePopover data={_langs} />,
-                                            isLink: false
-                                        },
                                         {
                                             label: "Profile",
                                             href: "#",

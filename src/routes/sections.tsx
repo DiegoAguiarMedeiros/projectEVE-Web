@@ -22,6 +22,7 @@ export const SettingsPage = lazy(() => import("src/pages/settings"));
 export const ProfilePage = lazy(() => import("src/pages/profile"));
 export const CompleteRegistration = lazy(() => import("src/pages/completeRegistration"));
 export const Registration = lazy(() => import("src/pages/registration"));
+export const ReallocationPage = lazy(() => import("src/pages/reallocation"));
 export const Page404 = lazy(() => import("src/pages/page-not-found"));
 
 // ----------------------------------------------------------------------
@@ -60,6 +61,7 @@ export function Router() {
           children: [
             { element: <HomePage />, index: true },
             { path: "envelopes", element: <EnvelopePage /> },
+            { path: "transferencia", element: <ReallocationPage /> },
             { path: "renda", element: <IncomesPage /> },
             { path: "configuracoes", element: <SettingsPage /> },
             { path: "perfil", element: <ProfilePage /> },

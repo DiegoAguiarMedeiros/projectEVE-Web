@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { Card, TableContainer, Table, TableBody, TablePagination, Box, FormControl, Select, MenuItem, InputLabel } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { Card, TableContainer, Table, TableBody, TablePagination, Box, FormControl, Select, MenuItem, InputLabel, Button } from "@mui/material";
 import { useSnackbar } from "notistack";
 import dayjs from "dayjs";
 import { ITable, useTable } from "src/sections/shared/useTable";
@@ -31,6 +32,7 @@ type TransactionTableProps = {
 }
 export function TransactionTable({ envelopeId, transactions, table, activeBorderColor, allEnvelopes, typeFilter, onTypeFilterChange }: TransactionTableProps) {
     const { t } = useTranslation();
+    const navigate = useNavigate();
 
     const {
         month,
@@ -61,7 +63,9 @@ export function TransactionTable({ envelopeId, transactions, table, activeBorder
             if (!descriptionIsTranslatable) return desc;
             const [key, arg] = desc.split('|');
             if (arg) {
-                return t(key, { name: arg });
+                // Try to translate the argument (envelope name), fallback to the argument itself
+                const translatedArg = t(arg, { defaultValue: arg });
+                return t(key, { name: translatedArg });
             }
             return t(key);
         };
@@ -110,7 +114,19 @@ export function TransactionTable({ envelopeId, transactions, table, activeBorder
         }}>
             <TableToolbar
                 numSelected={table.selected.length}
-                form={<TransactionForm buttonLabel={t('common.add')} envelopeId={envelopeId} allEnvelopes={allEnvelopes} />}
+                form={
+                    <Box sx={{ display: 'flex', gap: 2 }}>
+                        <Button
+                            variant="outlined"
+                            color="primary"
+                            startIcon={<Iconify icon="solar:transfer-vertical-bold-duotone" />}
+                            onClick={() => navigate(`/transferencia`)}
+                        >
+                            {t('common.reallocate')}
+                        </Button>
+                        <TransactionForm buttonLabel={t('common.add')} envelopeId={envelopeId} allEnvelopes={allEnvelopes} />
+                    </Box>
+                }
                 typeFilter={typeFilter}
                 onTypeFilterChange={onTypeFilterChange}
             />
