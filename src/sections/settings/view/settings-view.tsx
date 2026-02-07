@@ -75,7 +75,7 @@ export function SettingsView({ incomes, envelopes, goals, fixedExpenses, debts, 
   };
 
   return (
-    <DashboardContent>
+    <DashboardContent  sx={{width: '99%', my: 1, mx: 'auto', p: 1 }}>
       <Box sx={{ width: "100%" }}>
         <Box sx={{ borderBottom: 1, borderColor: "divider", borderTopRightRadius: '16px', borderTopLeftRadius: '16px', backgroundColor: theme.palette.background.paper, boxShadow: '0 0 2px 0 rgba(145 158 171 / 0.2), 0 12px 24px -4px rgba(145 158 171 / 0.12)' }}>
           <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">

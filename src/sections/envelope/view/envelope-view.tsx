@@ -23,15 +23,7 @@ type EnvelopeViewProps = {
 }
 export function EnvelopeView({ envelopes, currentIndex, handleSlideClick, envelopeActived, transactions, table, activeBorderColor, typeFilter, onTypeFilterChange }: EnvelopeViewProps) {
   return (
-    <DashboardContent sx={{
-      flex: { xs: '1 1 0', md: '1 1 auto' },
-      overflow: { xs: 'hidden', md: 'visible' },
-      pb: { xs: '0px !important', md: undefined },
-    }}>
-      <Grid2 container spacing={3} sx={{
-        flex: { xs: 1, md: undefined },
-        overflow: { xs: 'hidden', md: undefined },
-      }}>
+<DashboardContent  sx={{width: '99%', my: 1, mx: 'auto', p: 1 }}>
         <SwiperEnvelop
           currentIndex={currentIndex}
           handleSlideClick={handleSlideClick}
@@ -43,7 +35,6 @@ export function EnvelopeView({ envelopes, currentIndex, handleSlideClick, envelo
           typeFilter={typeFilter}
           onTypeFilterChange={onTypeFilterChange}
         />
-      </Grid2>
     </DashboardContent>
   );
 }

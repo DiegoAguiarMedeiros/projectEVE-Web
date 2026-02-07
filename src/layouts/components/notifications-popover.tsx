@@ -21,7 +21,7 @@ import { fToNow } from "src/utils/format-time";
 
 import { Iconify } from "src/components/iconify";
 import { Scrollbar } from "src/components/scrollbar";
-import { MenuItem, useTheme } from "@mui/material";
+import { MenuItem, useMediaQuery, useTheme } from "@mui/material";
 
 // ----------------------------------------------------------------------
 
@@ -41,7 +41,7 @@ export type NotificationsPopoverProps = IconButtonProps & {
 
 export function NotificationsPopover({ data = [], sx, ...other }: NotificationsPopoverProps) {
   const [notifications, setNotifications] = useState(data);
-  const theme = useTheme()
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("md"));
   const totalUnRead = notifications.filter((item) => item.isUnRead === true).length;
 
   const [openPopover, setOpenPopover] = useState<HTMLButtonElement | null>(null);
@@ -64,7 +64,7 @@ export function NotificationsPopover({ data = [], sx, ...other }: NotificationsP
   }, [notifications]);
 
   return (
-    <>
+    !isMobile ?<>
       <IconButton
         color={openPopover ? "primary" : "default"}
         onClick={handleOpenPopover}
@@ -93,7 +93,7 @@ export function NotificationsPopover({ data = [], sx, ...other }: NotificationsP
           },
         }}
       >
-        <Box display="flex" alignItems="center" sx={{ py: 2, pl: 2.5, pr: 1.5, backgroundColor: theme.palette.background.neutral }}>
+        <Box display="flex" alignItems="center" sx={{ py: 2, pl: 2.5, pr: 1.5, backgroundColor:(theme) => theme.palette.background.neutral }}>
           <Box sx={{ flexGrow: 1 }}>
             <Typography variant="subtitle1">Notifications</Typography>
             <Typography variant="body2" sx={{ color: "text.secondary" }}>
@@ -112,7 +112,7 @@ export function NotificationsPopover({ data = [], sx, ...other }: NotificationsP
 
         <Divider sx={{ borderStyle: "dashed" }} />
 
-        <Scrollbar fillContent sx={{ minHeight: 240, maxHeight: { xs: 360, sm: "none" }, backgroundColor: theme.palette.background.neutral }}>
+        <Scrollbar fillContent sx={{ minHeight: 240, maxHeight: { xs: 360, sm: "none" }, backgroundColor:(theme) => theme.palette.background.neutral }}>
           <List
             disablePadding
             subheader={
@@ -142,13 +142,13 @@ export function NotificationsPopover({ data = [], sx, ...other }: NotificationsP
 
         <Divider sx={{ borderStyle: "dashed" }} />
 
-        <Box sx={{ p: 1, backgroundColor: theme.palette.background.neutral }}>
+        <Box sx={{ p: 1, backgroundColor:(theme) => theme.palette.background.neutral }}>
           <Button fullWidth disableRipple color="inherit">
             View all
           </Button>
         </Box>
       </Popover>
-    </>
+    </>:<></>
   );
 }
 

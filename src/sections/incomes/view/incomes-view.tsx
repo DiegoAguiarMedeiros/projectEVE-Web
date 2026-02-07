@@ -27,7 +27,7 @@ export function IncomesView({
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("md"));
 
   return (
-    <DashboardContent>
+    <DashboardContent  sx={{width: '99%', my: 1, mx: 'auto', p: 1 }}>
       <IncomeTable
         envelopes={envelopes}
         processedIncomes={processedIncomes}

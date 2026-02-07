@@ -27,7 +27,7 @@ export function OverviewAnalyticsView() {
   const { data: analyticsEnvelopesByYear, isLoading: analyticsEnvelopesByYearIsLoading, error: analyticsEnvelopesByYearError } = useListAnalyticsEnvelopesByYear(year);
 
   return (
-    <DashboardContent maxWidth="xl">
+    <DashboardContent  sx={{width: '99%', my: 1, mx: 'auto', p: 1 }}>
       <Grid2 container spacing={3}>
         <Box
           display="flex"

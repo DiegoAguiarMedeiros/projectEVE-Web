@@ -19,7 +19,6 @@ export function Main({ children, sx, ...other }: BoxProps) {
         display: "flex",
         flex: "1 1 auto",
         flexDirection: "column",
-        pt:4,
         ...sx,
       }}
       {...other}
@@ -53,9 +52,6 @@ export function DashboardContent({
         display: "flex",
         flex: "1 1 auto",
         flexDirection: "column",
-        pt: "var(--layout-dashboard-content-pt)",
-        pb: "var(--layout-dashboard-content-pb)",
-        px: "var(--layout-dashboard-content-px)",
         ...sx,
       }}
       {...other}

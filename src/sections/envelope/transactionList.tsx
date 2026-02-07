@@ -171,10 +171,10 @@ export function TransactionList({
                         {["both", "Debit", "Credit"].map((filterType) => {
                             const isActive = typeFilter === filterType;
                             const label = filterType === "both"
-                                ? t('common.all')
+                                ? t('table_toolbar.all')
                                 : filterType === "Debit"
-                                    ? t('envelope.transaction.type.debit')
-                                    : t('envelope.transaction.type.credit');
+                                    ? t('table_toolbar.debit')
+                                    : t('table_toolbar.credit');
                             return (
                                 <Chip
                                     key={filterType}
@@ -204,6 +204,10 @@ export function TransactionList({
                     border: (theme) => activeBorderColor
                         ? `2px solid ${activeBorderColor}`
                         : `1px solid ${theme.palette.divider}`,
+                    scrollbarWidth: "none", // Firefox
+                    "&::-webkit-scrollbar": {
+                        display: "none", // Chrome, Edge, Safari
+                    },
                 }}
             >
                 {isEmpty ? (

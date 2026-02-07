@@ -43,7 +43,7 @@ export function UserView() {
   const notFound = !dataFiltered.length && !!filterName;
 
   return (
-    <DashboardContent>
+    <DashboardContent  sx={{width: '99%', my: 1, mx: 'auto', p: 1 }}>
       <Box display="flex" alignItems="center" mb={5}>
         <Typography variant="h4" flexGrow={1}>
           {t('user.title')}
