@@ -1,6 +1,6 @@
 import { DashboardContent } from "src/layouts/dashboard";
 import { IncomeTable } from "src/sections/incomes/incomeTable";
-import { useMediaQuery, useTheme } from "@mui/material";
+import { useMediaQuery } from "@mui/material";
 import { ITable } from "src/sections/shared/useTable";
 import { Envelopes } from "src/types/Envelopes";
 import { Pagination } from "src/types/Pagination";
@@ -24,8 +24,8 @@ export function IncomesView({
   table
 }: IncomesViewProps) {
 
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("md"));
+
   return (
     <DashboardContent>
       <IncomeTable

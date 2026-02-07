@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, Box, Typography, IconButton, Switch, Tooltip } from '@mui/material';
 import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
+import { useTheme, alpha } from '@mui/material/styles';
 import { getContrastColor, adjustBrightness } from 'src/utils/colorUtils';
 import { useNavigate } from "react-router-dom";
 import { fCurrency, fNumberToCurrency } from 'src/utils/format-number';
@@ -10,75 +11,151 @@ import { Envelopes } from 'src/types/Envelopes';
 
 interface RealEnvelopesCardProps {
     envelope: Envelopes;
-    activeCard: boolean
+    activeCard: boolean;
+    fullWidth?: boolean;
 }
 
-export const RealEnvelopesCard: React.FC<RealEnvelopesCardProps> = ({ envelope, activeCard }) => {
+export const RealEnvelopesCard: React.FC<RealEnvelopesCardProps> = ({ envelope, activeCard, fullWidth }) => {
     const { t } = useTranslation();
+    const theme = useTheme();
     const textColor = getContrastColor(envelope.color);
-    const darkerColor = adjustBrightness(envelope.color, -15);
     const used = envelope?.used ?? 0;
 
-    return (
-        <Card
-            sx={{
-                boxSizing: 'border-box!important',
-                position: 'relative',
-                overflow: 'hidden',
-                borderRadius: '8px',
-                minHeight: 130,
-                maxHeight: 130,
-                p: '10px',
-                display: 'flex',
-                flexDirection: 'column',
-                backgroundColor: darkerColor,
-                color: textColor,
-                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                transform: activeCard ? 'scale(1.02)' : 'none',
-                boxShadow: activeCard ? `0 0 0 4px ${envelope.color}, 0 12px 24px rgba(0, 0, 0, 0.2)` : 3,
-                maxWidth: 240,
-                width: '100%',
-                mx: 'auto',
-                border: activeCard ? `2px solid ${textColor}` : 'none',
-                justifyContent: 'end'
-            }}
-            elevation={activeCard ? 8 : 3}
-        >
-            {/* Flap Effect */}
-            <Box
-                sx={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    height: '100%',
-                    background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.05) 100%)',
-                    pointerEvents: 'none',
-                    zIndex: 0
-                }}
-            />
-            <Box
-                className="envelope-flap"
-                sx={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    height: 60,
-                    backgroundColor: envelope.color,
-                    clipPath: 'polygon(0 0, 50% 100%, 100% 0)',
-                    zIndex: 1,
-                    filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.2))'
-                }}
-            />
+    const finalColor = alpha(envelope.color, 0.7);
+    const cardHeight = fullWidth ? 160 : 140;
+    const flapHeight = cardHeight * 0.5;
 
-            <Box sx={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'space-between' }}>
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+    return (
+        <Box
+            sx={{
+                position: 'relative',
+                width: '100%',
+                minHeight: cardHeight,
+                maxHeight: cardHeight,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: '8px',
+                transform: activeCard ? 'scale(1.02)' : 'none',
+                transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                px: fullWidth ? 1 : 0,
+            }}
+        >
+            <Card
+                sx={{
+                    width: '100%',
+                    ...(!fullWidth && { maxWidth: 240 }),
+                    minHeight: cardHeight,
+                    position: 'relative',
+                    overflow: 'visible',
+                    borderRadius: '8px',
+                    backgroundColor: 'transparent',
+                    boxShadow: 'none',
+                    mx: 'auto',
+                }}
+            >
+                {/* Envelope Base (Back/Inside) - Same Color */}
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        backgroundColor: finalColor,
+                        borderRadius: '8px',
+                        zIndex: 0,
+                    }}
+                />
+
+                {/* Envelope Flap (Triangle) - Same Color + Strong Shadow for the V */}
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        top: 2,
+                        left: 0,
+                        width: '100%',
+                        height: flapHeight,
+                        zIndex: 2,
+                        borderRadius: '8px',
+                        filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.25))',
+                    }}
+                >
+                    <Box
+                        sx={{
+                            width: '100%',
+                            height: '100%',
+                            backgroundColor: finalColor,
+                            clipPath: 'polygon(0 0, 50% 100%, 100% 0)',
+                            borderRadius: '4px',
+                        }}
+                    />
+                </Box>
+
+                {/* Envelope Body (Bottom Pockets visual) - Same Color */}
+                {/* Left Triangle */}
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        bottom: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        zIndex: 1,
+                        borderRadius: '8px',
+                        backgroundColor: finalColor,
+                        clipPath: 'polygon(0 0, 50% 50%, 0 100%)',
+                    }}
+                />
+                {/* Right Triangle */}
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        bottom: 0,
+                        right: 0,
+                        width: '100%',
+                        height: '100%',
+                        zIndex: 1,
+                        borderRadius: '8px',
+                        backgroundColor: finalColor,
+                        clipPath: 'polygon(100% 0, 50% 50%, 100% 100%)',
+                    }}
+                />
+                {/* Bottom Triangle (Main Face) */}
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        bottom: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        zIndex: 1,
+                        borderRadius: '8px',
+                        backgroundColor: finalColor,
+                        clipPath: 'polygon(0 100%, 50% 50%, 100% 100%)',
+                    }}
+                />
+
+                {/* Content Layer */}
+                <Box
+                    sx={{
+                        position: 'relative',
+                        zIndex: 10,
+                        p: 2,
+                        pt: `${flapHeight + 8}px`,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'flex-end',
+                        height: cardHeight,
+                        borderRadius: '8px',
+                        color: textColor
+                    }}
+                >
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', mb: 0.5 }}>
-                        <Typography variant="h6" sx={{ fontWeight: 700, lineHeight: 1.2, fontSize: '1.1rem' }}>
+                        <Typography variant="h6" sx={{ fontWeight: 800, lineHeight: 1.2, fontSize: '1rem', textShadow: '0 1px 2px rgba(0,0,0,0.1)' }}>
                             {t(envelope.name)}
                         </Typography>
-                        <Typography variant="body2" sx={{ fontWeight: 500, opacity: 0.9 }}>
+                        <Typography variant="body2" sx={{ fontWeight: 600, opacity: 0.9 }}>
                             {fNumberToCurrency(envelope.amount)}
                         </Typography>
                     </Box>
@@ -88,11 +165,11 @@ export const RealEnvelopesCard: React.FC<RealEnvelopesCardProps> = ({ envelope, 
                         sx={{
                             width: '100%',
                             height: 18,
-                            bgcolor: 'rgba(255,255,255,0.3)',
+                            bgcolor: 'rgba(255,255,255,0.4)',
                             borderRadius: 1,
                             overflow: 'hidden',
-                            backdropFilter: 'blur(4px)',
-                            position: 'relative'
+                            position: 'relative',
+                            boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.1)'
                         }}
                     >
                         {/* Background Text */}
@@ -102,12 +179,13 @@ export const RealEnvelopesCard: React.FC<RealEnvelopesCardProps> = ({ envelope, 
                                 top: '50%',
                                 left: '50%',
                                 transform: 'translate(-50%, -50%)',
-                                fontSize: '0.75rem',
-                                fontWeight: 700,
+                                fontSize: '0.70rem',
+                                fontWeight: 800,
                                 color: textColor,
                                 zIndex: 0,
                                 whiteSpace: 'nowrap',
-                                pointerEvents: 'none'
+                                pointerEvents: 'none',
+                                opacity: 0.8
                             }}
                         >
                             {envelope?.used}%
@@ -118,12 +196,12 @@ export const RealEnvelopesCard: React.FC<RealEnvelopesCardProps> = ({ envelope, 
                             sx={{
                                 height: '100%',
                                 width: `${envelope?.used}%`,
-                                bgcolor: textColor,
+                                bgcolor: textColor, // Use text color for high contrast bar
                                 borderRadius: 1,
                                 transition: 'width 0.5s ease-out',
                                 position: 'relative',
                                 overflow: 'hidden',
-                                zIndex: 1
+                                zIndex: 1,
                             }}
                         >
                             {/* Foreground Text (Clipped) */}
@@ -141,9 +219,9 @@ export const RealEnvelopesCard: React.FC<RealEnvelopesCardProps> = ({ envelope, 
                             >
                                 <Typography
                                     sx={{
-                                        fontSize: '0.75rem',
-                                        fontWeight: 700,
-                                        color: darkerColor,
+                                        fontSize: '0.70rem',
+                                        fontWeight: 800,
+                                        color: envelope.color, // Inverse color
                                         whiteSpace: 'nowrap',
                                         pointerEvents: 'none'
                                     }}
@@ -154,7 +232,7 @@ export const RealEnvelopesCard: React.FC<RealEnvelopesCardProps> = ({ envelope, 
                         </Box>
                     </Box>
                 </Box>
-            </Box>
-        </Card>
+            </Card>
+        </Box>
     );
 };

@@ -1,6 +1,5 @@
-
-import { CardProps, Box, Button, Card, Stack, Typography, FormControl, Select, MenuItem, TextField, InputAdornment } from "@mui/material";
-import { useState } from "react";
+import { CardProps, Box, Button, Card, Stack, Typography, TextField, InputAdornment, IconButton } from "@mui/material";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Iconify } from "src/components/iconify";
@@ -22,27 +21,42 @@ export function Reallocation({ envelopes, envelopeSelected }: ReallocationProps)
     const { month, year } = SelectedMonthYearStore();
     const transferMutation = useTransferBalance();
 
-    console.log("envelopeSelected", envelopeSelected);
-    console.log("envelopes", envelopes);
+    // Initialize source index based on prop or default to 0
+    const [sourceIndex, setSourceIndex] = useState(() => {
+        if (envelopeSelected != null && envelopes[envelopeSelected]) {
+            return envelopeSelected;
+        }
+        return 0;
+    });
 
-    const [fromEnvelopeId, setFromEnvelopeId] = useState(envelopeSelected != null ? envelopes[envelopeSelected]?.id : "");
-    const [toEnvelopeId, setToEnvelopeId] = useState("");
+    const [destinationIndex, setDestinationIndex] = useState(0);
     const [amount, setAmount] = useState<number | string>("");
     const [error, setError] = useState<string | null>(null);
 
-    const sourceEnvelope = envelopes.find((e) => e.id === fromEnvelopeId);
+    const sourceEnvelope = envelopes[sourceIndex];
 
     // Filter out source envelope from destination options
     const destinationEnvelopes = envelopes.filter(
-        (e) => e.id !== fromEnvelopeId
+        (e) => e.id !== sourceEnvelope?.id
     );
 
+    // Update destination index if out of bounds (e.g. when list shrinks)
+    useEffect(() => {
+        if (destinationIndex >= destinationEnvelopes.length && destinationEnvelopes.length > 0) {
+            setDestinationIndex(0);
+        } else if (destinationEnvelopes.length === 0) {
+            setDestinationIndex(0);
+        }
+    }, [destinationEnvelopes.length, destinationIndex]);
+
+    const destinationEnvelope = destinationEnvelopes[destinationIndex];
+
     const handleTransferSubmit = () => {
-        if (!fromEnvelopeId) {
+        if (!sourceEnvelope) {
             setError("Selecione um envelope de origem");
             return;
         }
-        if (!toEnvelopeId) {
+        if (!destinationEnvelope) {
             setError(t("envelope.validation.select_target"));
             return;
         }
@@ -60,8 +74,8 @@ export function Reallocation({ envelopes, envelopeSelected }: ReallocationProps)
 
         transferMutation.mutate(
             {
-                fromEnvelopeId,
-                toEnvelopeId,
+                fromEnvelopeId: sourceEnvelope.id,
+                toEnvelopeId: destinationEnvelope.id,
                 amount: numAmount,
                 year,
                 month,
@@ -75,10 +89,29 @@ export function Reallocation({ envelopes, envelopeSelected }: ReallocationProps)
     };
 
     const isTransferValid =
-        fromEnvelopeId &&
-        toEnvelopeId &&
+        sourceEnvelope &&
+        destinationEnvelope &&
         Number(amount) > 0 &&
         (!sourceEnvelope || Number(amount) <= (sourceEnvelope.amount || 0));
+
+    // Carousel Handlers
+    const handlePrevSource = () => {
+        setSourceIndex((prev) => (prev === 0 ? envelopes.length - 1 : prev - 1));
+    };
+
+    const handleNextSource = () => {
+        setSourceIndex((prev) => (prev === envelopes.length - 1 ? 0 : prev + 1));
+    };
+
+    const handlePrevDest = () => {
+        if (destinationEnvelopes.length === 0) return;
+        setDestinationIndex((prev) => (prev === 0 ? destinationEnvelopes.length - 1 : prev - 1));
+    };
+
+    const handleNextDest = () => {
+        if (destinationEnvelopes.length === 0) return;
+        setDestinationIndex((prev) => (prev === destinationEnvelopes.length - 1 ? 0 : prev + 1));
+    };
 
     return (
         <DashboardContent>
@@ -111,7 +144,7 @@ export function Reallocation({ envelopes, envelopeSelected }: ReallocationProps)
                             }}
                         >
                             {/* Source Envelope Selector */}
-                            <Box sx={{ flex: 1, width: "100%", maxWidth: 286 }}>
+                            <Box sx={{ flex: 1, width: "100%", maxWidth: 350 }}>
                                 <Typography
                                     variant="caption"
                                     color="text.secondary"
@@ -119,97 +152,30 @@ export function Reallocation({ envelopes, envelopeSelected }: ReallocationProps)
                                 >
                                     {t("envelope.transfer.from")}
                                 </Typography>
-                                <FormControl fullWidth>
-                                    <Select
-                                        value={fromEnvelopeId}
-                                        onChange={(e) => {
-                                            setFromEnvelopeId(e.target.value);
-                                            if (e.target.value === toEnvelopeId) {
-                                                setToEnvelopeId("");
-                                            }
-                                        }}
-                                        displayEmpty
-                                        renderValue={(selected) => {
-                                            if (!selected) {
-                                                return (
-                                                    <Typography color="text.disabled" align="center">
-                                                        Selecione o envelope
-                                                    </Typography>
-                                                );
-                                            }
-                                            const env = envelopes.find((e) => e.id === selected);
-                                            return env ? (
-                                                <Box
-                                                    sx={{
-                                                        width: "100%",
-                                                        pointerEvents: "none",
-                                                        minHeight: 110,
-                                                    }}
-                                                >
-                                                    <RealEnvelopesCard envelope={env} activeCard={false} />
-                                                </Box>
-                                            ) : (
-                                                selected
-                                            );
-                                        }}
-                                        sx={{
-                                            width: "100%",
-                                            "& .MuiSelect-select": {
-                                                padding: "0 !important",
-                                                minHeight: "auto",
-                                                display: "flex",
-                                                justifyContent: "center",
-                                                alignItems: "center",
-                                            },
-                                            "& fieldset": { border: "none" },
-                                            ...(!fromEnvelopeId && {
-                                                border: "1px dashed",
-                                                borderColor: "text.disabled",
-                                                borderRadius: 2,
-                                                minHeight: 130,
-                                                display: "flex",
-                                                alignItems: "center",
-                                                justifyContent: "center",
-                                            }),
-                                            ...(fromEnvelopeId && {
-                                                "& .MuiSelect-select": {
-                                                    overflow: "visible",
-                                                },
-                                            }),
-                                        }}
-                                        MenuProps={{
-                                            PaperProps: {
-                                                sx: {
-                                                    maxHeight: 400,
-                                                    bgcolor: "transparent",
-                                                    boxShadow: "none",
-                                                    "& .MuiList-root": {
-                                                        display: "flex",
-                                                        flexDirection: "column",
-                                                        gap: 1,
-                                                        p: 1,
-                                                    },
-                                                },
-                                            },
-                                        }}
-                                    >
-                                        {envelopes.map((env) => (
-                                            <MenuItem
-                                                key={env.id}
-                                                value={env.id}
-                                                sx={{
-                                                    p: 0,
-                                                    bgcolor: "transparent !important",
-                                                    "&:hover": { transform: "scale(1.02)" },
-                                                    transition: "transform 0.2s",
-                                                    mb: 1,
-                                                }}
-                                            >
-                                                <RealEnvelopesCard envelope={env} activeCard={false} />
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
+
+                                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
+                                    <IconButton onClick={handlePrevSource}>
+                                        <Iconify icon="eva:arrow-ios-back-fill" />
+                                    </IconButton>
+
+                                    {sourceEnvelope ? (
+                                        <Box sx={{
+                                            width: 350, // Fixed width
+                                            display: 'flex',
+                                            justifyContent: 'center'
+                                        }}>
+                                            <RealEnvelopesCard envelope={sourceEnvelope} activeCard={false} />
+                                        </Box>
+                                    ) : (
+                                        <Box sx={{ height: 140, width: 240, display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px dashed grey', borderRadius: 2 }}>
+                                            <Typography variant="body2" color="text.secondary">Sem envelopes</Typography>
+                                        </Box>
+                                    )}
+
+                                    <IconButton onClick={handleNextSource}>
+                                        <Iconify icon="eva:arrow-ios-forward-fill" />
+                                    </IconButton>
+                                </Box>
                             </Box>
 
                             {/* Arrow Icon */}
@@ -223,7 +189,7 @@ export function Reallocation({ envelopes, envelopeSelected }: ReallocationProps)
                             />
 
                             {/* Destination Envelope Selector */}
-                            <Box sx={{ flex: 1, width: "100%", maxWidth: 286 }}>
+                            <Box sx={{ flex: 1, width: "100%", maxWidth: 350 }}>
                                 <Typography
                                     variant="caption"
                                     color="text.secondary"
@@ -231,93 +197,30 @@ export function Reallocation({ envelopes, envelopeSelected }: ReallocationProps)
                                 >
                                     {t("envelope.transfer.to")}
                                 </Typography>
-                                <FormControl fullWidth>
-                                    <Select
-                                        value={toEnvelopeId}
-                                        onChange={(e) => setToEnvelopeId(e.target.value)}
-                                        displayEmpty
-                                        disabled={!fromEnvelopeId}
-                                        renderValue={(selected) => {
-                                            if (!selected) {
-                                                return (
-                                                    <Typography color="text.disabled" align="center">
-                                                        Selecione o envelope
-                                                    </Typography>
-                                                );
-                                            }
-                                            const env = envelopes.find((e) => e.id === selected);
-                                            return env ? (
-                                                <Box
-                                                    sx={{
-                                                        width: "100%",
-                                                        pointerEvents: "none",
-                                                        minHeight: 110,
-                                                    }}
-                                                >
-                                                    <RealEnvelopesCard envelope={env} activeCard={false} />
-                                                </Box>
-                                            ) : (
-                                                selected
-                                            );
-                                        }}
-                                        sx={{
-                                            width: "100%",
-                                            "& .MuiSelect-select": {
-                                                padding: "0 !important",
-                                                minHeight: "auto",
-                                                display: "flex",
-                                                justifyContent: "center",
-                                                alignItems: "center",
-                                            },
-                                            "& fieldset": { border: "none" },
-                                            ...(!toEnvelopeId && {
-                                                border: "1px dashed",
-                                                borderColor: "text.disabled",
-                                                borderRadius: 2,
-                                                minHeight: 130,
-                                                display: "flex",
-                                                alignItems: "center",
-                                                justifyContent: "center",
-                                            }),
-                                            ...(toEnvelopeId && {
-                                                "& .MuiSelect-select": {
-                                                    overflow: "visible",
-                                                },
-                                            }),
-                                        }}
-                                        MenuProps={{
-                                            PaperProps: {
-                                                sx: {
-                                                    maxHeight: 400,
-                                                    bgcolor: "transparent",
-                                                    boxShadow: "none",
-                                                    "& .MuiList-root": {
-                                                        display: "flex",
-                                                        flexDirection: "column",
-                                                        gap: 1,
-                                                        p: 1,
-                                                    },
-                                                },
-                                            },
-                                        }}
-                                    >
-                                        {destinationEnvelopes.map((env) => (
-                                            <MenuItem
-                                                key={env.id}
-                                                value={env.id}
-                                                sx={{
-                                                    p: 0,
-                                                    bgcolor: "transparent !important",
-                                                    "&:hover": { transform: "scale(1.02)" },
-                                                    transition: "transform 0.2s",
-                                                    mb: 1,
-                                                }}
-                                            >
-                                                <RealEnvelopesCard envelope={env} activeCard={false} />
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
+
+                                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
+                                    <IconButton onClick={handlePrevDest} disabled={destinationEnvelopes.length === 0}>
+                                        <Iconify icon="eva:arrow-ios-back-fill" />
+                                    </IconButton>
+
+                                    {destinationEnvelope ? (
+                                        <Box sx={{
+                                            width: 350, // Fixed width
+                                            display: 'flex',
+                                            justifyContent: 'center'
+                                        }}>
+                                            <RealEnvelopesCard envelope={destinationEnvelope} activeCard={false} />
+                                        </Box>
+                                    ) : (
+                                        <Box sx={{ height: 140, width: 240, display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px dashed grey', borderRadius: 2 }}>
+                                            <Typography variant="body2" color="text.secondary">Selecione o envelope</Typography>
+                                        </Box>
+                                    )}
+
+                                    <IconButton onClick={handleNextDest} disabled={destinationEnvelopes.length === 0}>
+                                        <Iconify icon="eva:arrow-ios-forward-fill" />
+                                    </IconButton>
+                                </Box>
                             </Box>
                         </Box>
 

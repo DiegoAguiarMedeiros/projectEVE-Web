@@ -8,6 +8,7 @@ import CardHeader from "@mui/material/CardHeader";
 import { fNumber, fNumberToCurrency } from "src/utils/format-number";
 
 import { Chart, useChart, ChartLegends } from "src/components/chart";
+import { alpha } from "@mui/material/styles";
 
 import { AnalyticsCurrentEnvelopes } from 'src/types/Graph';
 import { useTranslation } from "react-i18next";
@@ -25,7 +26,7 @@ export function AnalyticsCurrentEnvelopesGraph({ title, subheader, analyticsCurr
 
   const chartOptions = useChart({
     chart: { sparkline: { enabled: true } },
-    colors: analyticsCurrentEnvelopes?.colors,
+    colors: analyticsCurrentEnvelopes?.colors.map(color => alpha(color, 0.7)),
     labels: analyticsCurrentEnvelopes?.labels.map((item) => t(item)),
     stroke: { width: 0 },
     dataLabels: { enabled: true, dropShadow: { enabled: false } },

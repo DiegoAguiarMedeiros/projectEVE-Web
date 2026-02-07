@@ -6,13 +6,13 @@ import Divider from "@mui/material/Divider";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import LoadingButton from "@mui/lab/LoadingButton";
 import InputAdornment from "@mui/material/InputAdornment";
 
 import { useRouter } from "src/routes/hooks";
 
 import { Iconify } from "src/components/iconify";
 import { useLogin } from "src/hooks/mutations/auth/useLogin";
+import { Button } from "@mui/material";
 // ----------------------------------------------------------------------
 
 export function SignInView() {
@@ -93,7 +93,7 @@ export function SignInView() {
         sx={{ mb: 3 }}
       />
 
-      <LoadingButton
+      <Button
         fullWidth
         size="large"
         type="submit"
@@ -102,7 +102,7 @@ export function SignInView() {
         onClick={handleSubmit}
       >
         Sign in
-      </LoadingButton>
+      </Button>
     </Box>
   );
 

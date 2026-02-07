@@ -5,15 +5,14 @@ import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
+import type { Swiper as SwiperType } from "swiper";
 
+import { useRef, useEffect } from "react";
 import {
   Grid2,
-  useTheme,
   Box,
   useMediaQuery,
 } from "@mui/material";
-
-import { _users } from "src/_mock";
 
 import { TransactionTable } from "src/sections/envelope/transactionTable";
 import { Pagination } from "src/types/Pagination";
@@ -46,32 +45,49 @@ export default function SwiperEnvelop({
   onTypeFilterChange = () => { },
 }: SwiperEnvelopProps) {
 
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("md"));
+  const swiperRef = useRef<SwiperType | null>(null);
+
+  // Move carousel to the correct slide when currentIndex changes (e.g. loaded from storage)
+  useEffect(() => {
+    if (swiperRef.current && swiperRef.current.activeIndex !== currentIndex) {
+      swiperRef.current.slideTo(currentIndex, 0);
+    }
+  }, [currentIndex]);
 
   return (
-    <>
-      <Box style={{ overflowX: "hidden", width: '100%', padding: '0  0 20px 0' }}>
+    <Box sx={{
+      width: '100%',
+      ...(isMobile && {
+        display: 'flex',
+        flexDirection: 'column',
+        flex: 1,
+        minHeight: 0,
+        overflow: 'hidden',
+      }),
+    }}>
+      <Box sx={{ overflowX: "hidden", width: '100%', flexShrink: 0, pb: isMobile ? 0 : '20px' }}>
         <Swiper
           style={{
             width: '100%',
             height: '100%',
             padding: '15px 10px',
-            marginLeft: 'auto',
-            marginRight: 'auto',
+            marginLeft: 'auto'
           }}
           spaceBetween={10}
           slidesPerView={1}
           breakpoints={{
+            400: { slidesPerView: 1 },
             600: { slidesPerView: 2 },
             900: { slidesPerView: 3 },
-            1200: { slidesPerView: 5 },
+            1200: { slidesPerView: 4 },
+            1600: { slidesPerView: 5 },
           }}
           modules={[FreeMode, Navigation, Thumbs]}
           initialSlide={currentIndex}
+          onSwiper={(swiper) => { swiperRef.current = swiper; }}
           onSlideChange={(swiper) => {
-            // quando for mobile (apenas 1 slide visível)
-            if (window.innerWidth < 600) {
+            if (window.innerWidth < 900) {
               handleSlideClick(swiper.activeIndex);
             }
           }}
@@ -82,6 +98,7 @@ export default function SwiperEnvelop({
                 <RealEnvelopesCard
                   envelope={envelope}
                   activeCard={envelopeActived === envelope.id}
+                  fullWidth={isMobile}
                 />
               </Grid2>
             </SwiperSlide>
@@ -94,6 +111,9 @@ export default function SwiperEnvelop({
           envelopeId={envelopeActived}
           table={table}
           allEnvelopes={envelopes}
+          activeBorderColor={activeBorderColor}
+          typeFilter={typeFilter}
+          onTypeFilterChange={onTypeFilterChange}
         />
       ) : (
         <TransactionTable
@@ -106,7 +126,6 @@ export default function SwiperEnvelop({
           onTypeFilterChange={onTypeFilterChange}
         />
       )}
-
-    </>
+    </Box>
   );
 }

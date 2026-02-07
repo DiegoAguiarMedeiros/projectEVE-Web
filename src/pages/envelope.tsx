@@ -16,7 +16,10 @@ export default function Page() {
   const queryClient = useQueryClient();
   const table = useTable();
   const [envelopeActived, setEnvelopeActive] = useState<string>("");
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(() => {
+    const saved = localStorage.getItem("lastSlideIndex");
+    return saved ? parseInt(saved, 10) : 0;
+  });
   const [activeBorderColor, setActiveBorderColor] = useState<string>("");
   const [typeFilter, setTypeFilter] = useState<string>("both");
   const { month, year } = SelectedMonthYearStore();
@@ -40,9 +43,11 @@ export default function Page() {
   useEffect(() => {
     if (envelopes && envelopes.length > 0) {
       const saved = localStorage.getItem("lastSlideIndex");
-      const index = saved ? parseInt(saved, 10) : 0;
+      const raw = saved ? parseInt(saved, 10) : 0;
+      const index = Math.min(raw, envelopes.length - 1);
       const envelope = envelopes[index];
       if (envelope) {
+        setCurrentIndex(index);
         setEnvelopeActive(envelope.id);
         setActiveBorderColor(envelope.color);
       }
@@ -51,6 +56,7 @@ export default function Page() {
 
   const handleSlideClick = (index: number) => {
     localStorage.setItem("lastSlideIndex", index.toString());
+    setCurrentIndex(index);
 
     const selected = envelopes?.[index];
     if (selected) {

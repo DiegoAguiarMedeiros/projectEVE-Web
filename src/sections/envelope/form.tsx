@@ -23,6 +23,8 @@ type TransactionFormProps = {
     data?: Transactions;
     envelopeId: string;
     allEnvelopes?: Envelopes[];
+    externalOpen?: boolean;
+    onExternalClose?: () => void;
 }
 
 
@@ -37,14 +39,19 @@ const paymentMethodIcons: Record<PaymentMethod, React.ReactNode> = {
     "envelope.transaction.payment_method.Ticket": <Iconify icon="solar:ticket-outline" />,
 };
 
-export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, allEnvelopes = [] }: TransactionFormProps) {
+export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, allEnvelopes = [], externalOpen, onExternalClose }: TransactionFormProps) {
     const { month, year } = SelectedMonthYearStore();
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => {
         setOpen(false);
+        onExternalClose?.();
     };
+
+    useEffect(() => {
+        if (externalOpen) setOpen(true);
+    }, [externalOpen]);
 
     // Transaction form state
     const [description, setDescription] = useState(data ? data.description : "");
@@ -174,16 +181,16 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
             open={open}
             handleClose={handleClose}
             handleOpen={handleOpen}
-            openButton={!buttonIcon
-                ?
-                <Button variant="contained" color="primary" onClick={handleOpen}>{buttonLabel}</Button>
-                :
-                <Button
-                    style={{ display: "flex", gap: "16px", background: "none", border: "none", cursor: "pointer", margin: 0, padding: 0 }}
-                    onClick={handleOpen}
-                >
-                    {buttonIcon}{buttonLabel === 'Adicionar' ? t('common.add') : buttonLabel}
-                </Button>
+            openButton={externalOpen !== undefined
+                ? <></>
+                : !buttonIcon
+                    ? <Button variant="contained" color="primary" onClick={handleOpen}>{buttonLabel}</Button>
+                    : <Button
+                        style={{ display: "flex", gap: "16px", background: "none", border: "none", cursor: "pointer", margin: 0, padding: 0 }}
+                        onClick={handleOpen}
+                    >
+                        {buttonIcon}{buttonLabel === 'Adicionar' ? t('common.add') : buttonLabel}
+                    </Button>
             }
 
             okButton={

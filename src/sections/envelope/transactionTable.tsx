@@ -107,7 +107,8 @@ export function TransactionTable({ envelopeId, transactions, table, activeBorder
 
     return (
         <Card sx={{
-            width: "100%",
+            width: "95%",
+            margin: "0 auto",
             display: "flex",
             flexDirection: "column",
             boxShadow: `0 0 0 4px ${activeBorderColor}, 0 12px 24px rgba(0,0,0,0.2)`,

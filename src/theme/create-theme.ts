@@ -13,7 +13,10 @@ export function createCustomTheme({ mode }: CreateCustomThemeProps): Theme {
   const palette = mode === "light" ? colorSchemes.light?.palette : colorSchemes.dark?.palette;
 
   const initialTheme = {
-    palette,
+    palette: {
+      ...palette,
+      mode,
+    },
     shadows: mode === "light" ? shadows() : Array(25).fill('none') as any,
     customShadows: mode === "light" ? customShadows() : {},
     shape: { borderRadius: 8 },

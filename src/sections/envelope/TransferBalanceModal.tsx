@@ -9,7 +9,6 @@ import {
     Stack,
     InputAdornment
 } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
 import TransitionsModal from "src/sections/shared/transitionsModal";
 import { Envelopes } from "src/types/Envelopes";
 import { useTransferBalance } from "src/hooks/mutations/envelopes/useTransferBalance";
@@ -98,14 +97,14 @@ export function TransferBalanceModal({
             handleOpen={() => { }} // Managed by parent
             handleClose={handleClose}
             okButton={
-                <LoadingButton
+                <Button
                     variant="contained"
                     onClick={handleSubmit}
                     loading={isPending}
                     disabled={!isValid}
                 >
                     {t('common.transfer')}
-                </LoadingButton>
+                </Button>
             }
             openButton={<></>}
         >

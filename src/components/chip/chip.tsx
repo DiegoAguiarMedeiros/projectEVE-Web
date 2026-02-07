@@ -17,7 +17,6 @@ export default function Chips({ label, labels, fieldName, click }: ChipProps) {
     const handleClick = () => {
         click();
     };
-    console.log(label, t(fieldName));
     return (
         <Stack direction="row" spacing={1}>
             <Chip

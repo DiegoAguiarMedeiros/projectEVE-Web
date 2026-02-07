@@ -5,7 +5,7 @@ import { Box, CircularProgress } from "@mui/material";
 export const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
   const { data: user, isLoading, error } = useUser();
   const location = useLocation();
-
+  
   if (isLoading || isLoading === null) {
     return (
       <Box sx={{ width: '100%', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>

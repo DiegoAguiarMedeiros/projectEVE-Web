@@ -2,7 +2,7 @@ import type { CardProps } from "@mui/material/Card";
 import type { ChartOptions } from "src/components/chart";
 
 import Card from "@mui/material/Card";
-import { useTheme } from "@mui/material/styles";
+import { useTheme, alpha } from "@mui/material/styles";
 import CardHeader from "@mui/material/CardHeader";
 
 import { Chart, useChart } from "src/components/chart";
@@ -23,10 +23,10 @@ export function AnalyticsEnvelopesByYearGraph({ title, subheader, chart, ...othe
   const theme = useTheme();
 
   const chartColors = [
-    theme.palette.primary.main,
-    theme.palette.info.main,
-    theme.palette.error.main,
-    theme.palette.success.main,
+    alpha(theme.palette.primary.main, 0.7),
+    alpha(theme.palette.info.main, 0.7),
+    alpha(theme.palette.error.main, 0.7),
+    alpha(theme.palette.success.main, 0.7),
   ];
 
   const translatedChart = chart?.series.map((serie) => ({

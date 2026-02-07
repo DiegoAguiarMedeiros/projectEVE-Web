@@ -2,8 +2,7 @@
 import * as React from "react";
 import { useCallback, useState, useEffect } from "react";
 import Box from "@mui/material/Box";
-import { TextField, Card, CardHeader, CardContent, Divider, Stack } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
+import { TextField, Card, CardHeader, CardContent, Divider, Stack, Button } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { useUpdateUser } from "src/hooks/mutations/user/useUpdateUser";
 import { User } from "src/types/User";
@@ -71,7 +70,7 @@ export function ProfileInfoForm() {
                     />
 
                     <Stack direction="row" justifyContent="flex-end">
-                        <LoadingButton
+                        <Button
                             size="large"
                             type="submit"
                             variant="contained"
@@ -79,7 +78,7 @@ export function ProfileInfoForm() {
                             onClick={handleSubmit}
                         >
                             Salvar Alterações
-                        </LoadingButton>
+                        </Button>
                     </Stack>
                 </Stack>
             </CardContent>

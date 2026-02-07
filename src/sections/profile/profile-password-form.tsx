@@ -2,8 +2,7 @@
 import * as React from "react";
 import { useCallback, useState } from "react";
 import Box from "@mui/material/Box";
-import { TextField, Card, CardHeader, CardContent, Divider, Stack, InputAdornment, IconButton } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
+import { TextField, Card, CardHeader, CardContent, Divider, Stack, InputAdornment, IconButton, Button } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { Iconify } from "src/components/iconify";
 import { useChangePassword } from "src/hooks/mutations/user/useChangePassword";
@@ -146,7 +145,7 @@ export function ProfilePasswordForm() {
                     />
 
                     <Stack direction="row" justifyContent="flex-end">
-                        <LoadingButton
+                        <Button
                             size="large"
                             type="submit"
                             variant="contained"
@@ -154,7 +153,7 @@ export function ProfilePasswordForm() {
                             onClick={handleSubmit}
                         >
                             Salvar Nova Senha
-                        </LoadingButton>
+                        </Button>
                     </Stack>
                 </Stack>
             </CardContent>

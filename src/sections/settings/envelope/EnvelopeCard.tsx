@@ -1,6 +1,7 @@
 import React from 'react';
 import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { Box, Card, Typography, IconButton } from '@mui/material';
+import { alpha } from "@mui/material/styles";
 import { Envelopes } from 'src/types/Envelopes';
 import { fNumberToCurrency } from 'src/utils/format-number';
 import { useTranslation } from "react-i18next";
@@ -13,13 +14,14 @@ interface EnvelopeCardProps {
 
 export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({ envelope, handleActiveEnvelope }) => {
     const { t } = useTranslation();
+    const softenedColor = alpha(envelope.color, 0.7);
 
     return (<Card
         key={envelope.id}
         sx={{
             backgroundColor: (theme) => theme.palette.background.neutral,
             borderTop: 4,
-            borderColor: envelope.color,
+            borderColor: softenedColor,
             p: 1.5,
             display: 'flex',
             flexDirection: 'column',
@@ -68,7 +70,7 @@ export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({ envelope, handleActi
                     sx={{
                         height: '100%',
                         width: `${envelope.percentage}%`,
-                        bgcolor: envelope.color,
+                        bgcolor: softenedColor,
                         borderRadius: 1,
                         transition: 'width 0.5s ease-out'
                     }}

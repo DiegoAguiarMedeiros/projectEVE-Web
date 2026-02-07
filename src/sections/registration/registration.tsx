@@ -2,8 +2,7 @@ import * as React from "react";
 
 import Box from "@mui/material/Box";
 import { useCallback, useState } from "react";
-import { IconButton, InputAdornment, TextField } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
+import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
 import { Iconify } from "src/components/iconify";
 import { useRouter } from "src/routes/hooks";
 import { Logo } from "src/components/logo";
@@ -190,7 +189,7 @@ export function RegistrationView() {
         helperText={errorConfirmPassword ?? ""}
       />
 
-      <LoadingButton
+      <Button
         fullWidth
         size="large"
         type="submit"
@@ -200,7 +199,7 @@ export function RegistrationView() {
         loading={loading}
       >
         Cadastrar
-      </LoadingButton>
+      </Button>
     </Box>
   );
 }
