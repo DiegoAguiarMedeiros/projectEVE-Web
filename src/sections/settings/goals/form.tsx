@@ -1,6 +1,5 @@
-import { Box, Button, Divider, FormControl, Grid2, IconButton, InputLabel, MenuItem, Paper, Select, SelectChangeEvent, Stack, styled, Switch, TextField, Typography, useTheme } from "@mui/material";
-import { startTransition, useActionState, useCallback, useEffect, useImperativeHandle, useRef, useState, useTransition } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { Box, Button, Divider, Grid2, Paper, Stack, TextField, Typography, useTheme } from "@mui/material";
+import { startTransition, useCallback, useEffect, useState } from "react";
 import TransitionsModal from "src/sections/shared/transitionsModal";
 import { AntSwitch } from "src/sections/settings/goals/AntSwitch";
 import { useCreateGoals } from "src/hooks/mutations/goals/useCreateGoals";
@@ -15,10 +14,12 @@ type GoalsFormProps = {
     buttonIcon?: React.ReactNode;
     buttonLabel: string;
     data?: Goals;
-    envelope: Envelopes
+    envelope: Envelopes;
+    externalOpen?: boolean;
+    onExternalClose?: () => void;
 }
 
-export function GoalsForm({ buttonLabel, buttonIcon, data, envelope }: GoalsFormProps) {
+export function GoalsForm({ buttonLabel, buttonIcon, data, envelope, externalOpen, onExternalClose }: GoalsFormProps) {
     const { t } = useTranslation();
     const theme = useTheme();
 
@@ -27,7 +28,14 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope }: GoalsForm
     const [monthYear, setMonthYear] = useState(false);
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleClose = () => {
+        setOpen(false);
+        onExternalClose?.();
+    };
+
+    useEffect(() => {
+        if (externalOpen) setOpen(true);
+    }, [externalOpen]);
 
     const [description, setDescription] = useState(data ? data.description : "");
     const [amount, setAmount] = useState(data ? data.amount : "");
@@ -45,7 +53,6 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope }: GoalsForm
     const [errorDeadline, setErrorDeadline] = useState<string | null>(null);
     const [errorPercentage, setErrorPercentage] = useState<string | null>(null);
 
-    const queryClient = useQueryClient();
     const clearForm = () => {
         setDescription("")
         setAmount("")
@@ -198,11 +205,12 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope }: GoalsForm
     return (
 
         <TransitionsModal
-            width={60}
             open={open}
             handleClose={handleClose}
             handleOpen={handleOpen}
-            openButton={!buttonIcon
+            openButton={externalOpen !== undefined
+                ? <></>
+                : !buttonIcon
                 ?
                 <Button variant="contained" color="primary" onClick={handleOpen}  >{buttonLabel}</Button>
                 :
@@ -221,33 +229,16 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope }: GoalsForm
                 display="flex"
                 flexDirection="column"
                 alignItems="center"
-                justifySelf="center"
-                sx={{ width: "100%", my: 2, mx: 0 }}
+                sx={{ width: "100%", my: 2 }}
             >
+                {error && <Typography color="error">{error.message}</Typography>}
 
-
-
-
-                {error && <p>{error.message}</p>}
-
-                <Typography variant="h3" noWrap >
+                <Typography variant="h5" noWrap>
                     {t('settings.goals.title')}
                 </Typography>
-                <Box
-                    gap={1.5}
-                    display="flex"
-                    flexDirection="column"
-                    alignItems="stretch"
-                    justifyContent="space-between"
-                    justifySelf="center"
-                    sx={{ width: "100%" }}
-                >
-                    <Box
-                        gap={1.5}
-                        display="flex"
-                        flexDirection="row"
-                        sx={{ m: 2 }}
-                    >
+
+                <Grid2 container spacing={2} sx={{ width: "100%" }}>
+                    <Grid2 size={{ xs: 12 }}>
                         <TextField
                             fullWidth
                             name="description"
@@ -255,9 +246,12 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope }: GoalsForm
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                             onBlur={validateDescription}
-                            sx={{ mb: 3 }}
                             error={!!errorDescription}
-                            helperText={errorDescription ?? ""} /><TextField
+                            helperText={errorDescription ?? ""}
+                        />
+                    </Grid2>
+                    <Grid2 size={{ xs: 12, sm: 6 }}>
+                        <TextField
                             fullWidth
                             type="number"
                             name="amountTotal"
@@ -265,15 +259,12 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope }: GoalsForm
                             value={amountTotal}
                             onChange={(e) => setAmountTotal(e.target.value)}
                             onBlur={validateAmountTotal}
-                            sx={{ mb: 3 }}
                             error={!!errorAmountTotal}
                             helperText={errorAmountTotal ?? ""}
-                            slotProps={{
-                                input: {
-                                    inputMode: "numeric",
-                                }
-                            }} />
-
+                            slotProps={{ input: { inputMode: "numeric" } }}
+                        />
+                    </Grid2>
+                    <Grid2 size={{ xs: 12, sm: 6 }}>
                         <TextField
                             fullWidth
                             type="number"
@@ -282,14 +273,12 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope }: GoalsForm
                             value={amount}
                             onChange={(e) => setAmount(e.target.value)}
                             onBlur={validateAmount}
-                            sx={{ mb: 3 }}
                             error={!!errorAmount}
                             helperText={errorAmount ?? ""}
-                            slotProps={{
-                                input: {
-                                    inputMode: "numeric",
-                                }
-                            }} />
+                            slotProps={{ input: { inputMode: "numeric" } }}
+                        />
+                    </Grid2>
+                    <Grid2 size={{ xs: 12 }}>
                         <TextField
                             fullWidth
                             type="number"
@@ -298,99 +287,94 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope }: GoalsForm
                             value={deadline}
                             onChange={(e) => setDeadline(e.target.value)}
                             onBlur={validateDeadline}
-                            sx={{ mb: 3 }}
                             error={!!errorDeadline}
                             helperText={errorDeadline ?? ""}
                             slotProps={{
                                 input: {
                                     inputMode: "numeric",
-                                    endAdornment: (
-                                        deadline ?
-                                            <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
-                                                <AntSwitch checked={monthYear} inputProps={{ "aria-label": "ant design" }} onChange={() => { setMonthYear(!monthYear); calculatePercentage(deadline, monthYear, amountTotal, amount) }} />
-                                                <Typography>{getMonthYearLabel()}</Typography>
-                                            </Stack>
-                                            :
-                                            <></>
-                                    )
-                                }
+                                    endAdornment: deadline ? (
+                                        <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
+                                            <AntSwitch
+                                                checked={monthYear}
+                                                inputProps={{ "aria-label": "ant design" }}
+                                                onChange={() => { setMonthYear(!monthYear); calculatePercentage(deadline, monthYear, amountTotal, amount); }}
+                                            />
+                                            <Typography noWrap>{getMonthYearLabel()}</Typography>
+                                        </Stack>
+                                    ) : null,
+                                },
                             }}
                         />
+                    </Grid2>
+                </Grid2>
 
-                    </Box>
-                    <Box
-                        display="flex"
-                        flexDirection="column"
-                        alignItems="center"
-                        sx={{
-                            width: "100%",
-                            height: "100%"
+                <Divider sx={{ width: "100%", my: 1 }} />
 
-                        }}
-                    >
+                <Typography variant="subtitle1">
+                    {t('settings.goals.recommendation.title')}
+                </Typography>
 
-                        <Typography variant="body1" noWrap >
-                            {t('settings.goals.recommendation.title')}
-                        </Typography>
-                        {salaryIdeal > income ? <Typography variant="body1" color={theme.palette.error.main}>{t('settings.goals.recommendation.unfeasible', { income })}</Typography> : <></>}
-                        <Box sx={{ width: "100%", p: 2 }}
-                            display="flex"
-                            flexDirection="row">
-                            <Box sx={{ flex: 1, m: 1 }} >
-                                <Paper
-                                    elevation={2}
-                                    sx={{
-                                        p: 2,
-                                        height: "100%",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        color: theme.palette.getContrastText(theme.palette.primary.main),
-                                        background: theme.palette.primary.main
-                                    }}
-                                >
-                                    <Typography>{t('settings.goals.recommendation.monthly_save', { amount: save.toFixed(2) })}</Typography>
-                                </Paper>
-                            </Box>
-                            <Box sx={{ flex: 1, m: 1 }} >
+                {salaryIdeal > income && (
+                    <Typography variant="body2" color="error" sx={{ textAlign: "center" }}>
+                        {t('settings.goals.recommendation.unfeasible', { income })}
+                    </Typography>
+                )}
 
-                                <Paper
-                                    elevation={2}
-                                    sx={{
-                                        p: 2,
-                                        height: "100%",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        background: theme.palette.background.paper
-                                    }}
-                                >
-                                    <Typography>{t('settings.goals.recommendation.envelope_percentage', { percentage: savePercentagem.toFixed(2) })}</Typography>
-                                </Paper>
-
-                            </Box>
-                            <Box sx={{ flex: 1, m: 1 }} >
-                                <Paper
-                                    elevation={2}
-                                    sx={{
-                                        p: 2,
-                                        height: "100%",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        background: theme.palette.background.paper
-                                    }}
-                                >
-                                    <Typography>{t('settings.goals.recommendation.ideal_income', { amount: salaryIdeal.toFixed(2) })}</Typography>
-                                </Paper>
-                            </Box>
-                        </Box>
-
-
-
-                    </Box >
-                </Box >
-            </Box >
+                <Grid2 container spacing={1.5} sx={{ width: "100%" }}>
+                    <Grid2 size={{ xs: 12, sm: 4 }}>
+                        <Paper
+                            elevation={2}
+                            sx={{
+                                p: 2,
+                                height: "100%",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                textAlign: "center",
+                                color: theme.palette.getContrastText(theme.palette.primary.main),
+                                bgcolor: 'primary.main',
+                                borderRadius: 2,
+                            }}
+                        >
+                            <Typography variant="body2">{t('settings.goals.recommendation.monthly_save', { amount: save.toFixed(2) })}</Typography>
+                        </Paper>
+                    </Grid2>
+                    <Grid2 size={{ xs: 6, sm: 4 }}>
+                        <Paper
+                            elevation={2}
+                            sx={{
+                                p: 2,
+                                height: "100%",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                textAlign: "center",
+                                bgcolor: 'background.paper',
+                                borderRadius: 2,
+                            }}
+                        >
+                            <Typography variant="body2">{t('settings.goals.recommendation.envelope_percentage', { percentage: savePercentagem.toFixed(2) })}</Typography>
+                        </Paper>
+                    </Grid2>
+                    <Grid2 size={{ xs: 6, sm: 4 }}>
+                        <Paper
+                            elevation={2}
+                            sx={{
+                                p: 2,
+                                height: "100%",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                textAlign: "center",
+                                bgcolor: 'background.paper',
+                                borderRadius: 2,
+                            }}
+                        >
+                            <Typography variant="body2">{t('settings.goals.recommendation.ideal_income', { amount: salaryIdeal.toFixed(2) })}</Typography>
+                        </Paper>
+                    </Grid2>
+                </Grid2>
+            </Box>
         </TransitionsModal >
     );
 }

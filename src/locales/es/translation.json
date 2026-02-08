@@ -41,15 +41,7 @@
         "expenses": "Gastos",
         "no_data": "Sin datos",
         "transfer": "Transferir",
-        "add": "Añadir",
-        "payment_method": {
-            "credit_card": "Tarjeta de Crédito",
-            "debit_card": "Tarjeta de Débito",
-            "cash": "Efectivo",
-            "bank_transfer": "Transferencia Bancaria",
-            "pix": "PIX",
-            "Reallocation": "Reasignación"
-        }
+        "add": "Añadir"
     },
     "errors": {
         "unexpected": "Ocurrió un error inesperado",
@@ -76,6 +68,13 @@
         "logout": "Cerrar sesión",
         "logging_out": "Cerrando sesión..."
     },
+    "home": {
+        "no_envelopes_title": "No tienes sobres creados",
+        "no_envelopes_not_processed": "Aún no has procesado ningún mes.",
+        "no_envelopes_month_not_processed": "Aún no has procesado el mes",
+        "process_button": "Procesar {{month}} / {{year}}",
+        "income_description": "Ingreso del mes {{month}}/{{year}}"
+    },
     "overview": {
         "budget": "Presupuesto",
         "envelopes_title": "Sobres",
@@ -83,6 +82,12 @@
         "envelopes": {
             "no_funds": "Sin fondos",
             "available": "Disponible: {{amount}}"
+        },
+        "upcoming_payments": {
+            "title": "Próximos pagos",
+            "envelope": "Sobre",
+            "empty": "No hay pagos pendientes cerca del vencimiento.",
+            "all_loaded": "Todos los pagos pendientes cargados"
         }
     },
     "envelope": {
@@ -105,6 +110,7 @@
                 "Cash": "Efectivo",
                 "BankTransfer": "Transferencia Bancaria",
                 "Pix": "Pix",
+                "Ticket": "Boleto",
                 "Reallocation": "Reasignación"
             },
             "status": {
@@ -178,7 +184,8 @@
             },
             "empty": "¡No hay ingresos registrados!",
             "all": "Todos",
-            "one": "Uno"
+            "one": "Uno",
+            "all_loaded": "Todos los ingresos cargados"
         }
     },
     "user": {
@@ -213,7 +220,8 @@
                     "name": "Nombre",
                     "flag": "Marca"
                 },
-                "no_data": "¡No hay tarjetas de crédito registradas!"
+                "no_data": "¡No hay tarjetas de crédito registradas!",
+                "all_loaded": "Todas las tarjetas cargadas"
             }
         },
         "debt": {
@@ -242,7 +250,8 @@
                     "installments_total": "Total cuotas",
                     "payment_day": "Día de pago"
                 },
-                "no_data": "¡No hay deudas registradas!"
+                "no_data": "¡No hay deudas registradas!",
+                "all_loaded": "Todas las deudas cargadas"
             }
         },
         "envelope": {
@@ -277,7 +286,8 @@
                     "amount": "Valor",
                     "payment_day": "Día de Pago"
                 },
-                "no_data": "¡No hay gastos fijos registrados!"
+                "no_data": "¡No hay gastos fijos registrados!",
+                "all_loaded": "Todos los gastos fijos cargados"
             }
         },
         "goals": {
@@ -302,7 +312,8 @@
                     "percentage": "Porcentaje",
                     "deadline": "Plazo"
                 },
-                "no_data": "¡No hay metas registradas!"
+                "no_data": "¡No hay metas registradas!",
+                "all_loaded": "Todas las metas cargadas"
             },
             "recommendation": {
                 "title": "Recomendación",
@@ -336,7 +347,8 @@
                     "amount": "Salario",
                     "payment_day": "Día de Pago"
                 },
-                "no_data": "¡No hay ingresos registrados!"
+                "no_data": "¡No hay ingresos registrados!",
+                "all_loaded": "Todos los ingresos cargados"
             }
         },
         "tabs": {
@@ -359,5 +371,31 @@
     },
     "deposit": {
         "salary": "Depósito de salario {{name}}"
+    },
+    "profile": {
+        "title": "Mi Perfil",
+        "personal_info": "Información Personal",
+        "change_password": "Cambiar Contraseña",
+        "preferences": "Preferencias",
+        "layout": {
+            "title": "Apariencia",
+            "theme": "Tema",
+            "light": "Claro",
+            "dark": "Oscuro"
+        },
+        "language": {
+            "title": "Idioma",
+            "select": "Seleccione el idioma"
+        },
+        "currency": {
+            "title": "Moneda",
+            "select": "Seleccione la moneda"
+        },
+        "notifications": {
+            "title": "Notificaciones",
+            "enable": "Activar notificaciones",
+            "email": "Notificaciones por correo",
+            "push": "Notificaciones push"
+        }
     }
 }

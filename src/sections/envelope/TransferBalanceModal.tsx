@@ -14,6 +14,7 @@ import { Envelopes } from "src/types/Envelopes";
 import { useTransferBalance } from "src/hooks/mutations/envelopes/useTransferBalance";
 import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 import { fCurrency } from "src/utils/format-number";
+import { useCurrency } from "src/hooks/useCurrency";
 
 interface TransferBalanceModalProps {
     open: boolean;
@@ -31,6 +32,7 @@ export function TransferBalanceModal({
     const { month, year } = SelectedMonthYearStore();
     const { mutate, isPending } = useTransferBalance();
     const { t } = useTranslation();
+    const { symbol } = useCurrency();
 
     const [toEnvelopeId, setToEnvelopeId] = useState("");
     const [amount, setAmount] = useState<number | string>("");
@@ -156,7 +158,7 @@ export function TransferBalanceModal({
                             setError(null);
                         }}
                         InputProps={{
-                            startAdornment: <InputAdornment position="start">R$</InputAdornment>,
+                            startAdornment: <InputAdornment position="start">{symbol}</InputAdornment>,
                         }}
                         error={!!error}
                         helperText={error}

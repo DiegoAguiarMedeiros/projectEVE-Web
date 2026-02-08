@@ -31,7 +31,6 @@ export type AccountPopoverProps = IconButtonProps & {
 };
 
 export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps) {
-  const router = useRouter();
   const [openPopover, setOpenPopover] = useState<HTMLButtonElement | null>(null);
   const { data: user } = useUser();
 
@@ -87,7 +86,7 @@ export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps)
 
         <Divider sx={{ borderStyle: "dashed" }} />
 
-        <AccountPopoverMenu data={data} />
+        <AccountPopoverMenu handleClosePopover={handleClosePopover} data={data} />
       </Popover >
     </>
   );

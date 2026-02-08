@@ -8,6 +8,7 @@ import { DashboardContent } from "src/layouts/dashboard";
 import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 import { RealEnvelopesCard } from "src/sections/envelope/RealEnvelopeCard";
 import { Envelopes } from "src/types/Envelopes";
+import { useCurrency } from "src/hooks/useCurrency";
 
 type ReallocationProps = {
     envelopes: Envelopes[];
@@ -16,6 +17,7 @@ type ReallocationProps = {
 
 export function Reallocation({ envelopes, envelopeSelected }: ReallocationProps) {
     const { t } = useTranslation();
+    const { symbol } = useCurrency();
     const navigate = useNavigate();
 
     const { month, year } = SelectedMonthYearStore();
@@ -250,7 +252,7 @@ export function Reallocation({ envelopes, envelopeSelected }: ReallocationProps)
                                 input: {
                                     inputMode: "numeric",
                                     startAdornment: (
-                                        <InputAdornment position="start">R$</InputAdornment>
+                                        <InputAdornment position="start">{symbol}</InputAdornment>
                                     ),
                                     sx: {
                                         textAlign: "right",

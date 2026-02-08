@@ -16,6 +16,7 @@ import { Debts } from "src/types/Debts";
 import { useDeleteDebts } from "src/hooks/mutations/debts/useDeleteDebts";
 import { Envelopes } from "src/types/Envelopes";
 import { useTranslation } from "react-i18next";
+import { useCurrency } from "src/hooks/useCurrency";
 
 
 
@@ -26,6 +27,7 @@ type DebtsTableProps = {
 
 export function DebtTable({ debts, envelopes }: DebtsTableProps) {
     const { t } = useTranslation();
+    const { symbol } = useCurrency();
     const table = useTable();
 
     useEffect(() => {
@@ -51,7 +53,7 @@ export function DebtTable({ debts, envelopes }: DebtsTableProps) {
             key={id}
             selected={table.selected.includes(id)}
             onSelectRow={() => table.onSelectRow(id)}
-            rowKeys={[description, `R$ ${amount}`, installmentsPaid, installmentsTotal, paymentDay]}
+            rowKeys={[description, `${symbol} ${amount}`, installmentsPaid, installmentsTotal, paymentDay]}
             form={<DebtForm
                 data={row}
                 envelopes={envelopes ?? []}

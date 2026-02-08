@@ -1,6 +1,5 @@
 import { DashboardContent } from "src/layouts/dashboard";
-import { IncomeTable } from "src/sections/incomes/incomeTable";
-import { useMediaQuery } from "@mui/material";
+import { IncomesDisplay } from "src/sections/incomes/IncomesDisplay";
 import { ITable } from "src/sections/shared/useTable";
 import { Envelopes } from "src/types/Envelopes";
 import { Pagination } from "src/types/Pagination";
@@ -10,25 +9,18 @@ import { ProcessedIncomes } from "src/types/ProcessedIncomes";
 
 type IncomesViewProps = {
   envelopes: Envelopes[]
-  currentIndex: number
-  handleSlideClick: (index: number) => void
   processedIncomes: Pagination<ProcessedIncomes> | undefined
   table: ITable
 }
 
 export function IncomesView({
   envelopes,
-  currentIndex,
-  handleSlideClick,
   processedIncomes,
   table
 }: IncomesViewProps) {
-
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("md"));
-
   return (
     <DashboardContent  sx={{width: '99%', my: 1, mx: 'auto', p: 1 }}>
-      <IncomeTable
+      <IncomesDisplay
         envelopes={envelopes}
         processedIncomes={processedIncomes}
         table={table}

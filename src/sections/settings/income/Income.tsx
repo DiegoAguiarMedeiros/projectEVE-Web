@@ -14,6 +14,7 @@ import { Incomes } from "src/types/Incomes";
 import { Pagination } from "src/types/Pagination";
 import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
 import { useTranslation } from "react-i18next";
+import { useCurrency } from "src/hooks/useCurrency";
 
 
 type IncomeTableProps = {
@@ -22,6 +23,7 @@ type IncomeTableProps = {
 
 export function IncomeTable({ incomes }: IncomeTableProps) {
     const { t } = useTranslation();
+    const { symbol } = useCurrency();
     const table = useTable();
 
     useEffect(() => {
@@ -45,7 +47,7 @@ export function IncomeTable({ incomes }: IncomeTableProps) {
             key={id}
             selected={table.selected.includes(id)}
             onSelectRow={() => table.onSelectRow(id)}
-            rowKeys={[description, `R$ ${amount}`, paymentDay]}
+            rowKeys={[description, `${symbol} ${amount}`, paymentDay]}
             form={<FormIncomes
                 data={row}
                 buttonIcon={<Iconify icon="solar:pen-bold" />}

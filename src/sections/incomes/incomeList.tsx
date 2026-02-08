@@ -1,240 +1,185 @@
-// import React, { useCallback, useEffect, useRef, useState } from "react";
-// import { Card, CardContent, Typography, IconButton, Stack, Divider, Box } from "@mui/material";
-// import { Delete, Edit } from "@mui/icons-material";
-// import dayjs from "dayjs";
-// import InfiniteScroll from "react-infinite-scroll-component";
-// import { IncomesForm } from "./form";
-// import { Incomes, IncomesUpdateStatus } from "src/types/Incomes";
-// import { useDeleteIncomes } from "src/hooks/mutations/transactions/useDeleteIncomes";
-// import { useUpdateStatusIncomes } from "src/hooks/mutations/transactions/useUpdateStatusIncomes";
-// import Chips from "src/components/chip/chip";
-// import { Pagination } from "src/types/Pagination";
-// import { SlidingWindow, MAX_BUFFER } from "../shared/useSlidingWindow";
-// import { ITable } from "../shared/useTable";
+import { useCallback, useEffect, useRef, useState } from "react";
+import {
+    Typography,
+    Stack,
+    Box,
+    Fab,
+    Portal,
+} from "@mui/material";
+import { Add } from "@mui/icons-material";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { IncomeForm } from "src/sections/incomes/form";
+import { IncomeItem } from "src/sections/incomes/incomeItem";
+import { ProcessedIncomes } from "src/types/ProcessedIncomes";
+import { Pagination } from "src/types/Pagination";
+import { ITable } from "src/sections/shared/useTable";
+import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
+import { Envelopes } from "src/types/Envelopes";
+import { useTranslation } from "react-i18next";
 
-// type IncomesListProps = {
-//     envelopeId: string;
-//     transactions: Pagination<Incomes> | undefined;
-//     table: ITable;
-// };
+type IncomeListProps = {
+    processedIncomes: Pagination<ProcessedIncomes> | undefined;
+    table: ITable;
+    envelopes: Envelopes[];
+};
 
-// export function IncomesList({ envelopeId, transactions, table }: IncomesListProps) {
-//     const deleteIncomesMutation = useDeleteIncomes();
-//     const updateStatusIncomesMutation = useUpdateStatusIncomes();
+export function IncomeList({
+    processedIncomes,
+    table,
+    envelopes,
+}: IncomeListProps) {
+    const { t } = useTranslation();
 
-//     const windowRef = useRef(new SlidingWindow<Incomes>(MAX_BUFFER));
-//     const processedPageRef = useRef<number | null>(null);
-//     const loadingUpRef = useRef(false);
-//     const loadingDownRef = useRef(false);
+    const [addFormOpen, setAddFormOpen] = useState(false);
 
-//     const [items, setItems] = useState<Incomes[]>([]);
-//     const [awaitingFirstLoad, setAwaitingFirstLoad] = useState(false);
+    const [allItems, setAllItems] = useState<ProcessedIncomes[]>([]);
+    const [hasMore, setHasMore] = useState(true);
+    const [isResetting, setIsResetting] = useState(false);
 
-//     const containerRef = useRef<HTMLDivElement | null>(null);
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    const lastProcessedPage = useRef<number>(-1);
 
-//     const DeleteIncomes = useCallback(
-//         (id: string) => deleteIncomesMutation.mutate(id),
-//         [deleteIncomesMutation]
-//     );
+    const deleteIncomeMutation = useCallback((id: string) => console.log(id), []);
 
-//     const UpdateStatusIncomes = useCallback(
-//         (data: IncomesUpdateStatus) => updateStatusIncomesMutation.mutate(data),
-//         [updateStatusIncomesMutation]
-//     );
+    const DeleteIncome = useCallback(
+        (id: string) => deleteIncomeMutation(id),
+        [deleteIncomeMutation]
+    );
 
-//     // --- Reset quando troca de envelope ---
-//     useEffect(() => {
-//         // console.log("🔄 Troca de envelope", envelopeId);
-//         // reset local
-//         windowRef.current = new SlidingWindow<Incomes>(MAX_BUFFER);
-//         processedPageRef.current = null;
-//         setItems([]);
-//         setAwaitingFirstLoad(true);
+    // Process incoming data
+    useEffect(() => {
+        if (!processedIncomes) return;
 
-//         // scroll to top to avoid showing "old" visible items
-//         if (containerRef.current) {
-//             try {
-//                 containerRef.current.scrollTop = 0;
-//             } catch (e) {
-//                 console.warn("Falha ao resetar scroll:", e);
-//             }
-//         }
+        const page = table.page;
 
-//         // garantir que o pai solicite a página inicial para o novo envelope
-//         if (table.page !== 0) {
-//             table.onChangePage(null, 0);
-//         } else {
-//             // se já está em page 0, então pode ser que o parent já vá fornecer os dados;
-//             // aguardamos transactions para page 0 (veja effect abaixo)
-//         }
-//         // eslint-disable-next-line react-hooks/exhaustive-deps
-//     }, [envelopeId]);
+        if (isResetting) {
+            if (page !== 0) return;
+            setIsResetting(false);
+        }
 
-//     // --- Processa incoming `transactions` (com proteção contra dados atrasados) ---
-//     useEffect(() => {
-//         if (!transactions) return;
+        const pageItems = processedIncomes.data || [];
+        const totalPages = processedIncomes.totalPages ?? 1;
 
-//         const page = table.page;
-//         const rowsPerPage = table.rowsPerPage ?? 10;
-//         const pageStartIndex = page * rowsPerPage;
-//         const pageItems = transactions.data || [];
+        if (page === 0) {
+            setAllItems(pageItems);
+            lastProcessedPage.current = 0;
+        } else if (page > lastProcessedPage.current) {
+            setAllItems(prev => {
+                const existingIds = new Set(prev.map(item => item.id));
+                const newItems = pageItems.filter(item => !existingIds.has(item.id));
+                return [...prev, ...newItems];
+            });
+            lastProcessedPage.current = page;
+        } else {
+            setAllItems(prev => {
+                const rowsPerPage = table.rowsPerPage ?? 10;
+                const keepCount = page * rowsPerPage;
+                const kept = prev.slice(0, keepCount);
+                const existingIds = new Set(kept.map(item => item.id));
+                const newItems = pageItems.filter(item => !existingIds.has(item.id));
+                return [...kept, ...newItems];
+            });
+        }
 
-//         // 1) Se estamos aguardando o primeiro carregamento do novo envelope,
-//         //    somente processamos quando recebermos a página 0 do novo envelope.
-//         if (awaitingFirstLoad) {
-//             if (page !== 0) {
-//                 // ignora qualquer dado que não seja a página inicial do novo envelope
-//                 return;
-//             }
-//             windowRef.current = new SlidingWindow<Incomes>(MAX_BUFFER);
-//             windowRef.current.setBuffer(pageItems, pageStartIndex);
-//             setItems(windowRef.current.getItems());
-//             processedPageRef.current = page;
-//             setAwaitingFirstLoad(false);
-//             loadingUpRef.current = false;
-//             loadingDownRef.current = false;
-//             return;
-//         }
+        setHasMore(page + 1 < totalPages);
+    }, [processedIncomes, table.page, table.rowsPerPage, isResetting]);
 
-//         // 2) se ainda não processamos nenhuma página (inicialização normal)
-//         if (processedPageRef.current === null) {
-//             windowRef.current = new SlidingWindow<Incomes>(MAX_BUFFER);
-//             windowRef.current.setBuffer(pageItems, pageStartIndex);
-//             setItems(windowRef.current.getItems());
-//             processedPageRef.current = page;
-//             loadingUpRef.current = false;
-//             loadingDownRef.current = false;
-//             return;
-//         }
+    const fetchMore = useCallback(() => {
+        if (hasMore) {
+            table.onChangePage(null, table.page + 1);
+        }
+    }, [hasMore, table]);
 
-//         // 3) carregamento para baixo (next page)
-//         if (page > (processedPageRef.current ?? -1)) {
-//             // dedupe por id para evitar duplicatas caso chegue algo repetido
-//             const existingIds = new Set(windowRef.current.getItems().map((i: any) => i.id));
-//             pageItems.filter((i: any) => !existingIds.has(i.id)).forEach(it => {
-//                 windowRef.current.push(it);
-//             });
-//             setItems(windowRef.current.getItems());
-//             processedPageRef.current = page;
-//             loadingDownRef.current = false;
-//             return;
-//         }
+    // Loading state
+    if (isResetting || (!processedIncomes && allItems.length === 0)) {
+        return (
+            <Box sx={{ p: 2, width: "100%" }}>
+                <SkeletonLoading count={3} height={100} spacing={2} />
+            </Box>
+        );
+    }
 
-//         // 4) carregamento para cima (previous page)
-//         if (page < (processedPageRef.current ?? Infinity)) {
-//             const existingIds = new Set(windowRef.current.getItems().map((i: any) => i.id));
-//             pageItems.filter((i: any) => !existingIds.has(i.id)).slice().reverse().forEach(item => {
-//                 windowRef.current.unshift(item);
-//             });
-//             setItems(windowRef.current.getItems());
-//             processedPageRef.current = page;
-//             loadingUpRef.current = false;
-//             return;
-//         }
+    const isEmpty = allItems.length === 0 && processedIncomes && processedIncomes.data.length === 0;
 
-//         // 5) atualização da mesma página -> re-sincroniza aquele bloco
-//         windowRef.current = new SlidingWindow<Incomes>(MAX_BUFFER);
-//         windowRef.current.setBuffer(pageItems, pageStartIndex);
-//         setItems(windowRef.current.getItems());
-//         processedPageRef.current = page;
-//         loadingUpRef.current = false;
-//         loadingDownRef.current = false;
-//     }, [transactions, table.page, table.rowsPerPage, awaitingFirstLoad, envelopeId]);
+    return (
+        <Box sx={{ width: "100%", display: "flex", flexDirection: "column", flex: 1, minHeight: 0 }}>
+            <Box
+                ref={containerRef}
+                id="incomeScrollableDiv"
+                sx={{
+                    flex: 1,
+                    minHeight: 0,
+                    maxHeight: "calc(100vh - 350px)",
+                    overflow: isEmpty ? "hidden" : "scroll",
+                    WebkitOverflowScrolling: "touch",
+                    borderRadius: 2,
+                    border: (theme) => `1px solid ${theme.palette.divider}`,
+                    scrollbarWidth: "none",
+                    "&::-webkit-scrollbar": {
+                        display: "none",
+                    },
+                }}
+            >
+                {isEmpty ? (
+                    <Typography align="center" color="text.secondary" sx={{ py: 4 }}>
+                        {t('income.table.empty')}
+                    </Typography>
+                ) : (
+                    <InfiniteScroll
+                        dataLength={allItems.length}
+                        next={fetchMore}
+                        hasMore={hasMore}
+                        loader={
+                            <Box sx={{ p: 2 }}>
+                                <SkeletonLoading count={1} height={80} />
+                            </Box>
+                        }
+                        endMessage={
+                            <Typography align="center" variant="body2" color="text.secondary" sx={{ py: 2 }}>
+                                {t('income.table.all_loaded')}
+                            </Typography>
+                        }
+                        scrollableTarget="incomeScrollableDiv"
+                        scrollThreshold={0.85}
+                    >
+                        <Stack spacing={1.5} sx={{ p: 1.5 }}>
+                            {allItems.map((row) => (
+                                <IncomeItem
+                                    key={row.id}
+                                    income={row}
+                                    envelopes={envelopes}
+                                    onDelete={DeleteIncome}
+                                />
+                            ))}
+                        </Stack>
+                    </InfiniteScroll>
+                )}
+            </Box>
 
-//     // helpers
-//     const windowRange = windowRef.current.getRange();
-//     const hasMoreDown = transactions ? windowRange.end + 1 < (transactions.totalItems ?? 0) : false;
-//     const hasMoreUp = windowRange.start > 0;
+            <Portal>
+                <Fab
+                    aria-label={t('common.add')}
+                    sx={{
+                        position: "fixed",
+                        bottom: 24,
+                        right: 24,
+                        zIndex: 1300,
+                        bgcolor: 'background.neutral',
+                        color: 'text.primary',
+                        '&:hover': { bgcolor: 'action.hover' },
+                    }}
+                    onClick={() => setAddFormOpen(true)}
+                >
+                    <Add />
+                </Fab>
+            </Portal>
 
-//     const fetchMoreDown = () => {
-//         if (loadingDownRef.current || !hasMoreDown) return;
-//         loadingDownRef.current = true;
-//         table.onChangePage(null, table.page + 1);
-//     };
-
-//     const onContainerScroll = (e: React.UIEvent<HTMLDivElement>) => {
-//         const el = e.currentTarget;
-//         const threshold = 60;
-//         if (el.scrollTop <= threshold && !loadingUpRef.current && hasMoreUp) {
-//             loadingUpRef.current = true;
-//             table.onChangePage(null, Math.max(0, table.page - 1));
-//         }
-//     };
-
-//     // se estamos aguardando primeiro load, mostra mensagem loading (evita renderar itens antigos)
-//     if (awaitingFirstLoad) {
-//         return (
-//             <Typography align="center" sx={{ p: 2 }}>
-//                 Carregando transações...
-//             </Typography>
-//         );
-//     }
-
-//     if (!transactions || (items.length === 0 && (!transactions.data || transactions.data.length === 0))) {
-//         return (
-//             <Typography align="center" sx={{ p: 2 }}>
-//                 Nenhuma transação cadastrada!
-//             </Typography>
-//         );
-//     }
-
-//     return (
-//         <Box
-//             ref={containerRef}
-//             id="scrollableDiv"
-//             onScroll={onContainerScroll}
-//             style={{
-//                 height: "70vh",
-//                 overflow: "auto",
-//                 WebkitOverflowScrolling: "touch",
-//             }}
-//         >
-//             <InfiniteScroll
-//                 key={`${envelopeId}-${processedPageRef ?? "init"}`}
-//                 dataLength={items.length}
-//                 next={fetchMoreDown}
-//                 hasMore={hasMoreDown}
-//                 loader={<Typography align="center" sx={{ p: 2 }}>Carregando...</Typography>}
-//                 endMessage={<Typography align="center" sx={{ p: 2 }}>Todas as transações foram carregadas</Typography>}
-//                 scrollableTarget="scrollableDiv"
-//                 scrollThreshold={0.9}
-//             >
-//                 <Stack spacing={2} sx={{ p: 2 }}>
-//                     {items.map((row: any) => {
-//                         const { id, description, amount, paymentMethod, date, status } = row;
-
-//                         const handleClickStatus = () => {
-//                             UpdateStatusIncomes({ id, status: status === "Completed" ? "Pending" : "Completed" });
-//                         };
-
-//                         return (
-//                             <Card key={id} sx={{ borderRadius: 2, boxShadow: 2 }}>
-//                                 <CardContent>
-//                                     <Stack spacing={1}>
-//                                         <Box display="flex" justifyContent="space-between" alignItems="center">
-//                                             <Typography variant="subtitle1" fontWeight="bold">{description}</Typography>
-//                                             <Typography variant="subtitle1" color="primary">R$ {amount}</Typography>
-//                                         </Box>
-
-//                                         <Typography variant="body2" color="text.secondary">
-//                                             {paymentMethod} • {dayjs(date).format("DD/MM/YYYY")}
-//                                         </Typography>
-
-//                                         <Chips label={status} labels={["Pago", "Pendente"]} fieldName="Completed" click={handleClickStatus} />
-
-//                                         <Divider />
-
-//                                         <Box display="flex" justifyContent="flex-end" gap={1}>
-//                                             <IncomesForm data={row} buttonIcon={<Edit />} buttonLabel="Editar" envelopeId={envelopeId} />
-//                                             <IconButton color="error" onClick={() => DeleteIncomes(id)}><Delete /></IconButton>
-//                                         </Box>
-//                                     </Stack>
-//                                 </CardContent>
-//                             </Card>
-//                         );
-//                     })}
-//                 </Stack>
-//             </InfiniteScroll>
-//         </Box>
-//     );
-// }
+            <IncomeForm
+                buttonLabel=""
+                envelopes={envelopes}
+                externalOpen={addFormOpen}
+                onExternalClose={() => setAddFormOpen(false)}
+            />
+        </Box>
+    );
+}

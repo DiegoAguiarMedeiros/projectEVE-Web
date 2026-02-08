@@ -3,11 +3,11 @@
  * https://gist.github.com/raushankrjha/d1c7e35cf87e69aa8b4208a8171a8416
  */
 
+import { getCurrencyConfig } from "./currency";
+
 export type InputNumberValue = string | number | null | undefined;
 
 type Options = Intl.NumberFormatOptions | undefined;
-
-const DEFAULT_LOCALE = { code: "en-US", currency: "USD" };
 
 function processInput(inputValue: InputNumberValue): number | null {
   if (inputValue == null || Number.isNaN(inputValue)) return null;
@@ -17,12 +17,12 @@ function processInput(inputValue: InputNumberValue): number | null {
 // ----------------------------------------------------------------------
 
 export function fNumber(inputValue: InputNumberValue, options?: Options) {
-  const locale = DEFAULT_LOCALE;
+  const currencyConfig = getCurrencyConfig();
 
   const number = processInput(inputValue);
   if (number === null) return "";
 
-  const fm = new Intl.NumberFormat(locale.code, {
+  const fm = new Intl.NumberFormat(currencyConfig.locale, {
     minimumFractionDigits: 0,
     maximumFractionDigits: 2,
     ...options,
@@ -34,14 +34,14 @@ export function fNumber(inputValue: InputNumberValue, options?: Options) {
 // ----------------------------------------------------------------------
 
 export function fCurrency(inputValue: InputNumberValue, options?: Options) {
-  const locale = DEFAULT_LOCALE;
+  const currencyConfig = getCurrencyConfig();
 
   const number = processInput(inputValue);
   if (number === null) return "";
 
-  const fm = new Intl.NumberFormat(locale.code, {
+  const fm = new Intl.NumberFormat(currencyConfig.locale, {
     style: "currency",
-    currency: locale.currency,
+    currency: currencyConfig.code,
     minimumFractionDigits: 0,
     maximumFractionDigits: 2,
     ...options,
@@ -53,12 +53,12 @@ export function fCurrency(inputValue: InputNumberValue, options?: Options) {
 // ----------------------------------------------------------------------
 
 export function fPercent(inputValue: InputNumberValue, options?: Options) {
-  const locale = DEFAULT_LOCALE;
+  const currencyConfig = getCurrencyConfig();
 
   const number = processInput(inputValue);
   if (number === null) return "";
 
-  const fm = new Intl.NumberFormat(locale.code, {
+  const fm = new Intl.NumberFormat(currencyConfig.locale, {
     style: "percent",
     minimumFractionDigits: 0,
     maximumFractionDigits: 1,
@@ -71,12 +71,12 @@ export function fPercent(inputValue: InputNumberValue, options?: Options) {
 // ----------------------------------------------------------------------
 
 export function fShortenNumber(inputValue: InputNumberValue, options?: Options) {
-  const locale = DEFAULT_LOCALE;
+  const currencyConfig = getCurrencyConfig();
 
   const number = processInput(inputValue);
   if (number === null) return "";
 
-  const fm = new Intl.NumberFormat(locale.code, {
+  const fm = new Intl.NumberFormat(currencyConfig.locale, {
     notation: "compact",
     maximumFractionDigits: 2,
     ...options,
@@ -93,17 +93,17 @@ export function fNumberToPercentage(inputValue: number) {
 // ----------------------------------------------------------------------
 
 export function fNumberToCurrency(inputValue: InputNumberValue, options?: Options) {
-  const locale = DEFAULT_LOCALE;
+  const currencyConfig = getCurrencyConfig();
 
   const number = processInput(inputValue);
   if (number === null) return "";
 
-  const fm = new Intl.NumberFormat("pt-BR", {
+  const fm = new Intl.NumberFormat(currencyConfig.locale, {
     style: "currency",
-    currency: "BRL",
+    currency: currencyConfig.code,
   }).format(number);
 
-  return fm.replace(/[A-Z]/g, (match) => match.toUpperCase());
+  return fm;
 }
 // ----------------------------------------------------------------------
 

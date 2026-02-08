@@ -12,8 +12,9 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 800,
-  bgcolor: "background.paper",
+  maxWidth: '800px',
+  width: '95%',
+  bgcolor: "background.neutral",
   boxShadow: 24,
   p: 4,
 };
@@ -48,7 +49,7 @@ export default function TransitionsModal({ openButton, okButton, children, open,
         }}
       >
         <Fade in={open} >
-          <Card sx={{ ...style, width: width !== undefined ? `${width}%` : `${style.width}px` }}>
+          <Card sx={{ ...style }}>
             {children as React.ReactElement}
             <Box
               display="flex"

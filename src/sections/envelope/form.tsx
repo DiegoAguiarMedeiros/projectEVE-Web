@@ -16,6 +16,8 @@ import { Envelopes } from "src/types/Envelopes";
 import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 import { fCurrency } from "src/utils/format-number";
 import { useTranslation } from "react-i18next";
+import { useCurrency } from "src/hooks/useCurrency";
+import { iconsMap } from "src/components/icon/iconsMap";
 
 type TransactionFormProps = {
     buttonIcon?: React.ReactNode;
@@ -26,18 +28,6 @@ type TransactionFormProps = {
     externalOpen?: boolean;
     onExternalClose?: () => void;
 }
-
-
-
-const paymentMethodIcons: Record<PaymentMethod, React.ReactNode> = {
-    'envelope.transaction.payment_method.CreditCard': <Iconify icon="solar:card-outline" />,
-    'envelope.transaction.payment_method.DebitCard': <Iconify icon="solar:card-2-outline" />,
-    'envelope.transaction.payment_method.Cash': <Iconify icon="solar:wad-of-money-outline" />,
-    'envelope.transaction.payment_method.BankTransfer': <Iconify icon="solar:bank-note-outline" />,
-    'envelope.transaction.payment_method.Pix': <Iconify icon="solar:qr-code-outline" />,
-    'envelope.transaction.payment_method.Reallocation': <Iconify icon="solar:transfer-outline" />,
-    "envelope.transaction.payment_method.Ticket": <Iconify icon="solar:ticket-outline" />,
-};
 
 export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, allEnvelopes = [], externalOpen, onExternalClose }: TransactionFormProps) {
     const { month, year } = SelectedMonthYearStore();
@@ -135,6 +125,7 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
 
 
     const { t } = useTranslation();
+    const { symbol } = useCurrency();
 
     const paymentMethodLabels: Record<PaymentMethod, string> = {
         "envelope.transaction.payment_method.CreditCard": t('common.payment_method.credit_card'),
@@ -215,71 +206,73 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
             >
 
 
-                    <Typography variant="h3" noWrap>
-                        {t('envelope.transaction.tabs.transaction')}
-                    </Typography>
-                    {error && <p>{error.message}</p>}
-                    <TextField
-                        fullWidth
-                        name="description"
-                        label={t('envelope.transaction.description')}
-                        placeholder={t('envelope.transaction.placeholder.description')}
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        onBlur={validateDescription}
-                        error={!!errorDescription}
-                        helperText={errorDescription ?? ""}
+                <Typography variant="h3" noWrap>
+                    {t('envelope.transaction.tabs.transaction')}
+                </Typography>
+                {error && <p>{error.message}</p>}
+                <TextField
+                    fullWidth
+                    name="description"
+                    label={t('envelope.transaction.description')}
+                    placeholder={t('envelope.transaction.placeholder.description')}
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    onBlur={validateDescription}
+                    error={!!errorDescription}
+                    helperText={errorDescription ?? ""}
+                />
+                <TextField
+                    fullWidth
+                    type="number"
+                    name="amount"
+                    label={t('envelope.transaction.amount')}
+                    placeholder={t('envelope.transaction.placeholder.amount')}
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    onBlur={validateAmount}
+                    error={!!errorAmount}
+                    helperText={errorAmount ?? ""}
+                    slotProps={{
+                        input: {
+                            inputMode: "numeric",
+                            startAdornment: <InputAdornment position="start">{symbol}</InputAdornment>,
+                            sx: { textAlign: 'right' },
+                        }
+                    }}
+                />
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                        sx={{ width: "100%" }}
+                        name="date"
+                        label={t('envelope.transaction.date')}
+                        value={date}
+                        onChange={(newValue) => setDate(newValue)}
+                        format="DD/MM/YYYY"
                     />
-                    <TextField
-                        fullWidth
-                        type="number"
-                        name="amount"
-                        label={t('envelope.transaction.amount')}
-                        placeholder={t('envelope.transaction.placeholder.amount')}
-                        value={amount}
-                        onChange={(e) => setAmount(e.target.value)}
-                        onBlur={validateAmount}
-                        error={!!errorAmount}
-                        helperText={errorAmount ?? ""}
-                        slotProps={{
-                            input: {
-                                inputMode: "numeric",
-                                startAdornment: <InputAdornment position="start">R$</InputAdornment>,
-                                sx: { textAlign: 'right' },
+                </LocalizationProvider>
+                <FormControl fullWidth>
+                    <InputLabel id="payment-method-select-label">{t('envelope.transaction.payment_method_label')}</InputLabel>
+                    <Select
+                        labelId="payment-method-select-label"
+                        id="payment-method-select"
+                        label={t('envelope.transaction.payment_method_label')}
+                        sx={{ width: "100%" }}
+                        name="paymentMethod"
+                        value={paymentMethod}
+                        onChange={handleSelectChange}
+                    >
+                        {allPaymentMethod.map((f, index) => {
+                            if (f === "envelope.transaction.payment_method.Reallocation") {
+                                return null; // Skip rendering this option if there are no destination envelopes
                             }
-                        }}
-                    />
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                            sx={{ width: "100%" }}
-                            name="date"
-                            label={t('envelope.transaction.date')}
-                            value={date}
-                            onChange={(newValue) => setDate(newValue)}
-                            format="DD/MM/YYYY"
-                        />
-                    </LocalizationProvider>
-                    <FormControl fullWidth>
-                        <InputLabel id="payment-method-select-label">{t('envelope.transaction.payment_method_label')}</InputLabel>
-                        <Select
-                            labelId="payment-method-select-label"
-                            id="payment-method-select"
-                            label={t('envelope.transaction.payment_method_label')}
-                            sx={{ width: "100%" }}
-                            name="paymentMethod"
-                            value={paymentMethod}
-                            onChange={handleSelectChange}
-                        >
-                            {allPaymentMethod.map((f, index) => (
-                                <MenuItem key={index} value={f}>
-                                    <Stack direction="row" spacing={1} alignItems="center">
-                                        {paymentMethodIcons[f]}
-                                        <span>{paymentMethodLabels[f]}</span>
-                                    </Stack>
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
+                            return (<MenuItem key={index} value={f}>
+                                <Stack direction="row" spacing={1} alignItems="center">
+                                    <span>{t(f)}</span>
+                                </Stack>
+                            </MenuItem>)
+                        })}
+                    </Select>
+                </FormControl>
             </Box >
         </TransitionsModal>
     );

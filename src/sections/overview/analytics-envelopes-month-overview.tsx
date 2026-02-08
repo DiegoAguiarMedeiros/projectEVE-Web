@@ -38,7 +38,7 @@ export function AnalyticsEnvelopesMonthOverviewCards({
         return (
           <Grid2
             key={`envelope_${index}`}
-            size={{ xs: 12, sm: 6, md: 3 }}
+            size={{ xs: 6, sm: 6, md: 3 }}
           >
             <Card
               sx={{
@@ -56,7 +56,7 @@ export function AnalyticsEnvelopesMonthOverviewCards({
                   justifyContent: "flex-start",
                 }}
               >
-                <Box sx={{ width: 48, height: 48, mb: 3 }}>
+                <Box sx={{ width: 48, height: 24, mb: 3 }}>
                   <Typography color={envelope.color} variant="h5">
                     {IconComponent && <IconComponent style={{ color: envelope.color, marginRight: 8 }} />}
                   </Typography>

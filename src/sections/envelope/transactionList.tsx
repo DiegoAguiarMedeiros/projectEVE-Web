@@ -1,9 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
-    Card,
-    CardContent,
     Typography,
-    IconButton,
     Stack,
     Box,
     Chip,
@@ -12,21 +9,18 @@ import {
     SpeedDialIcon,
     Portal,
 } from "@mui/material";
-import { Delete, Edit, Add } from "@mui/icons-material";
-import { useTheme, alpha } from "@mui/material/styles";
-import dayjs from "dayjs";
+import { Add } from "@mui/icons-material";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { TransactionForm } from "src/sections/envelope/form";
+import { TransactionItem } from "src/sections/envelope/transactionItem";
 import { Transactions, TransactionsUpdateStatus } from "src/types/Transactions";
 import { useDeleteTransactions } from "src/hooks/mutations/transactions/useDeleteTransactions";
 import { useUpdateStatusTransactions } from "src/hooks/mutations/transactions/useUpdateStatusTransactions";
-import Chips from "src/components/chip/chip";
 import { Pagination } from "src/types/Pagination";
 import { ITable } from "src/sections/shared/useTable";
 import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
 import { Envelopes } from "src/types/Envelopes";
 import { useTranslation } from "react-i18next";
-import { fCurrency } from "src/utils/format-number";
 import { useNavigate } from "react-router-dom";
 import { Iconify } from "src/components/iconify";
 
@@ -234,101 +228,17 @@ export function TransactionList({
                         scrollThreshold={0.85}
                     >
                         <Stack spacing={1.5} sx={{ p: 1.5 }}>
-                            {allItems.map((row) => {
-                                const { id, description, amount, paymentMethod, date, status, type, isTranslatable } = row;
-                                const isDebit = type === "Debit";
-
-                                return (
-                                    <Card
-                                        key={id}
-                                        sx={{
-                                            borderRadius: 2,
-                                            boxShadow: 1,
-                                            border: (theme) => `1px solid ${theme.palette.divider}`,
-                                            "&:active": (theme) => ({
-                                                bgcolor: alpha(theme.palette.primary.main, 0.04),
-                                            }),
-                                        }}
-                                    >
-                                        <CardContent sx={{ p: 1.5, "&:last-child": { pb: 1.5 } }}>
-                                            {/* Row 1: Description + Amount */}
-                                            <Box display="flex" justifyContent="space-between" alignItems="flex-start" gap={1}>
-                                                <Typography
-                                                    variant="subtitle2"
-                                                    fontWeight={600}
-                                                    sx={{
-                                                        flex: 1,
-                                                        overflow: "hidden",
-                                                        textOverflow: "ellipsis",
-                                                        whiteSpace: "nowrap",
-                                                    }}
-                                                >
-                                                    {getTranslatedDescription(description, isTranslatable)}
-                                                </Typography>
-                                                <Typography
-                                                    variant="subtitle2"
-                                                    fontWeight={700}
-                                                    color={isDebit ? "error.main" : "success.main"}
-                                                    sx={{ flexShrink: 0 }}
-                                                >
-                                                    {isDebit ? "- " : "+ "}{fCurrency(amount)}
-                                                </Typography>
-                                            </Box>
-
-                                            {/* Row 2: Type + Payment + Date */}
-                                            <Box display="flex" alignItems="center" gap={0.5} sx={{ mt: 0.5 }}>
-                                                <Chip
-                                                    label={isDebit ? t('envelope.transaction.type.debit') : t('envelope.transaction.type.credit')}
-                                                    size="small"
-                                                    color={isDebit ? "error" : "success"}
-                                                    variant="outlined"
-                                                    sx={{ height: 20, fontSize: "0.675rem" }}
-                                                />
-                                                <Typography variant="caption" color="text.secondary">
-                                                    {t(paymentMethod)}
-                                                </Typography>
-                                                <Typography variant="caption" color="text.secondary">
-                                                    &bull; {dayjs(date).format("DD/MM/YYYY")}
-                                                </Typography>
-                                            </Box>
-
-                                            {/* Row 3: Status + Actions */}
-                                            <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ mt: 1 }}>
-                                                <Chips
-                                                    label={t(status)}
-                                                    labels={[t('transaction.status.paid'), t('transaction.status.pending')]}
-                                                    fieldName="transaction.status.completed"
-                                                    click={() => {
-                                                        UpdateStatusTransaction({
-                                                            id,
-                                                            status: status === "transaction.status.completed"
-                                                                ? "transaction.status.pending"
-                                                                : "transaction.status.completed",
-                                                        });
-                                                    }}
-                                                />
-
-                                                <Stack direction="row" spacing={0}>
-                                                    <TransactionForm
-                                                        data={row}
-                                                        buttonIcon={<Edit fontSize="small" />}
-                                                        buttonLabel={t('common.edit')}
-                                                        envelopeId={envelopeId}
-                                                        allEnvelopes={allEnvelopes}
-                                                    />
-                                                    <IconButton
-                                                        size="small"
-                                                        color="error"
-                                                        onClick={() => DeleteTransaction(id)}
-                                                    >
-                                                        <Delete fontSize="small" />
-                                                    </IconButton>
-                                                </Stack>
-                                            </Box>
-                                        </CardContent>
-                                    </Card>
-                                );
-                            })}
+                            {allItems.map((row) => (
+                                <TransactionItem
+                                    key={row.id}
+                                    transaction={row}
+                                    envelopeId={envelopeId}
+                                    allEnvelopes={allEnvelopes}
+                                    onDelete={DeleteTransaction}
+                                    onUpdateStatus={UpdateStatusTransaction}
+                                    getTranslatedDescription={getTranslatedDescription}
+                                />
+                            ))}
                         </Stack>
                     </InfiniteScroll>
                 )}
@@ -346,12 +256,38 @@ export function TransactionList({
                         tooltipTitle={t('common.add')}
                         tooltipOpen
                         onClick={() => setAddFormOpen(true)}
+                        sx={{
+                            '& .MuiSpeedDialAction-staticTooltipLabel': {
+                                bgcolor: 'background.neutral',
+                                color: 'text.primary',
+                            },
+                        }}
+                        FabProps={{
+                            sx: {
+                                bgcolor: 'background.neutral',
+                                color: 'text.primary',
+                                '&:hover': { bgcolor: 'action.hover' },
+                            },
+                        }}
                     />
                     <SpeedDialAction
                         icon={<Iconify icon="solar:transfer-vertical-bold-duotone" />}
                         tooltipTitle={t('common.reallocate')}
                         tooltipOpen
                         onClick={() => navigate("/transferencia")}
+                        sx={{
+                            '& .MuiSpeedDialAction-staticTooltipLabel': {
+                                bgcolor: 'background.neutral',
+                                color: 'text.primary',
+                            },
+                        }}
+                        FabProps={{
+                            sx: {
+                                bgcolor: 'background.neutral',
+                                color: 'text.primary',
+                                '&:hover': { bgcolor: 'action.hover' },
+                            },
+                        }}
                     />
                 </SpeedDial>
             </Portal>

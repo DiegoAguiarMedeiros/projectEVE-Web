@@ -15,19 +15,28 @@ import { useListAnalyticsCurrentEnvelopes } from "src/hooks/queries/graph/useLis
 import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 import { useListAnalyticsEnvelopesByYear } from "src/hooks/queries/graph/useListAnalyticsEnvelopesByYear";
 import { useListAnalyticsEnvelopesMonthOverview } from "src/hooks/queries/graph/useListAnalyticsEnvelopesMonthOverview";
+import { useGetUpcomingPendingPayments } from "src/hooks/queries/transactions/useGetUpcomingPendingPayments";
+import { useTable } from "src/sections/shared/useTable";
 
 import { useTranslation } from "react-i18next";
+import { Envelopes } from "src/types/Envelopes";
+import { UpcomingPendingTransactionsDisplay } from "../UpcomingPendingTransactionsDisplay";
 
-export function OverviewAnalyticsView() {
+type OverviewAnalyticsViewProps = {
+  envelopes: Envelopes[];
+}
+
+export function OverviewAnalyticsView({ envelopes }: OverviewAnalyticsViewProps) {
   const { t } = useTranslation();
 
   const { month, year } = SelectedMonthYearStore();
+  const table = useTable();
   const { data: analyticsCurrentEnvelopes, isLoading: analyticsCurrentEnvelopesIsLoading, error: analyticsCurrentEnvelopesError } = useListAnalyticsCurrentEnvelopes(year, month);
   const { data: analyticsEnvelopesMonthOverview, isLoading: analyticsEnvelopesMonthOverviewIsLoading, error: analyticsEnvelopesMonthOverviewError } = useListAnalyticsEnvelopesMonthOverview(year, month);
   const { data: analyticsEnvelopesByYear, isLoading: analyticsEnvelopesByYearIsLoading, error: analyticsEnvelopesByYearError } = useListAnalyticsEnvelopesByYear(year);
-
+  const { data: upcomingPendingTransactions, isLoading: upcomingPendingTransactionsIsLoading, error: upcomingPendingTransactionsError } = useGetUpcomingPendingPayments(table);
   return (
-    <DashboardContent  sx={{width: '99%', my: 1, mx: 'auto', p: 1 }}>
+    <DashboardContent sx={{ width: '99%', my: 1, mx: 'auto', p: 1 }}>
       <Grid2 container spacing={3}>
         <Box
           display="flex"
@@ -47,6 +56,12 @@ export function OverviewAnalyticsView() {
             subheader={`(+43%) ${t('overview.than_last_year')}`}
             chart={analyticsEnvelopesByYear}
           />
+          <UpcomingPendingTransactionsDisplay
+            title={t('overview.upcoming_payments.title')}
+            envelopes={envelopes}
+            transactions={upcomingPendingTransactions}
+            table={table}
+            />
         </Grid2>
         <Grid2 size={{ xs: 12, sm: 6, md: 4 }}
           order={{ xs: 1, sm: 2 }}>
@@ -55,9 +70,6 @@ export function OverviewAnalyticsView() {
             analyticsCurrentEnvelopes={analyticsCurrentEnvelopes}
           />
         </Grid2>
-        {/* <Grid2 size={{ xs: 12, sm: 6, md: 4 }}>
-          <AnalyticsOrderTimeline title="Envelopes" list={_timeline} />
-        </Grid2> */}
 
         {/* <Grid2 sx={{
           gridColumn: {
@@ -139,6 +151,6 @@ export function OverviewAnalyticsView() {
           <AnalyticsTasks title="Tasks" list={_tasks} />
         </Grid2> */}
       </Grid2>
-    </DashboardContent>
+    </DashboardContent >
   );
 }

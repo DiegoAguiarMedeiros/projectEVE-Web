@@ -16,6 +16,7 @@ import { useTranslation } from "react-i18next";
 // ----------------------------------------------------------------------
 
 export type AccountPopoverMenuProps = IconButtonProps & {
+  handleClosePopover?: VoidFunction
   data?: {
     label: string;
     href: string;
@@ -26,7 +27,7 @@ export type AccountPopoverMenuProps = IconButtonProps & {
   }[];
 };
 
-export function AccountPopoverMenu({ data = [], sx, ...other }: AccountPopoverMenuProps) {
+export function AccountPopoverMenu({ data = [], handleClosePopover, sx, ...other }: AccountPopoverMenuProps) {
   const router = useRouter();
   const theme = useTheme();
   const pathname = usePathname();
@@ -37,13 +38,11 @@ export function AccountPopoverMenu({ data = [], sx, ...other }: AccountPopoverMe
     router.push("/entrar");
   });
 
-  const handleClosePopover = useCallback(() => {
-    // setOpenPopover(null);
-  }, []);
+
 
   const handleClickItem = useCallback(
     (path: string) => {
-      handleClosePopover();
+      handleClosePopover?.();
       router.push(path);
     },
     [handleClosePopover, router]

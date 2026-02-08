@@ -16,6 +16,7 @@ import { Goals } from "src/types/Goals";
 import { useDeleteGoals } from "src/hooks/mutations/goals/useDeleteGoals";
 import { Envelopes } from "src/types/Envelopes";
 import { useTranslation } from "react-i18next";
+import { useCurrency } from "src/hooks/useCurrency";
 
 
 type GoalsTableProps = {
@@ -24,6 +25,7 @@ type GoalsTableProps = {
 }
 export function GoalsTable({ goals, envelope }: GoalsTableProps) {
     const { t } = useTranslation();
+    const { symbol } = useCurrency();
     const table = useTable();
 
     useEffect(() => {
@@ -54,7 +56,7 @@ export function GoalsTable({ goals, envelope }: GoalsTableProps) {
             key={id}
             selected={table.selected.includes(id)}
             onSelectRow={() => table.onSelectRow(id)}
-            rowKeys={[description, `R$ ${amountTotal}`, `${percentage} %`, dayjs(deadline).format("DD/MM/YYYY")]}
+            rowKeys={[description, `${symbol} ${amountTotal}`, `${percentage} %`, dayjs(deadline).format("DD/MM/YYYY")]}
             form={<GoalsForm
                 envelope={envelope}
                 key={id}

@@ -14,14 +14,23 @@ type DebtFormProps = {
     buttonLabel: string;
     data?: Debts;
     envelopes: Envelopes[];
+    externalOpen?: boolean;
+    onExternalClose?: () => void;
 }
 
-export function DebtForm({ buttonLabel, buttonIcon, data, envelopes }: DebtFormProps) {
+export function DebtForm({ buttonLabel, buttonIcon, data, envelopes, externalOpen, onExternalClose }: DebtFormProps) {
     const { t } = useTranslation();
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleClose = () => {
+        setOpen(false);
+        onExternalClose?.();
+    };
+
+    useEffect(() => {
+        if (externalOpen) setOpen(true);
+    }, [externalOpen]);
 
     const envelopeId = envelopes.filter(envelope => envelope.name === "debts")[0]
     const [description, setDescription] = useState(data ? data.description : "");
@@ -178,7 +187,9 @@ export function DebtForm({ buttonLabel, buttonIcon, data, envelopes }: DebtFormP
             open={open}
             handleClose={handleClose}
             handleOpen={handleOpen}
-            openButton={!buttonIcon
+            openButton={externalOpen !== undefined
+                ? <></>
+                : !buttonIcon
                 ?
                 <Button variant="contained" color="primary" onClick={handleOpen}  >{buttonLabel}</Button>
                 :

@@ -12,16 +12,25 @@ import { useTranslation } from "react-i18next";
 type CreditCardFormProps = {
     buttonIcon?: React.ReactNode;
     buttonLabel: string;
-    data?: CreditCards
+    data?: CreditCards;
+    externalOpen?: boolean;
+    onExternalClose?: () => void;
 }
 
-export function CreditCardForm({ buttonLabel, buttonIcon, data }: CreditCardFormProps) {
+export function CreditCardForm({ buttonLabel, buttonIcon, data, externalOpen, onExternalClose }: CreditCardFormProps) {
     const { enqueueSnackbar } = useSnackbar();
     const { t } = useTranslation();
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleClose = () => {
+        setOpen(false);
+        onExternalClose?.();
+    };
+
+    useEffect(() => {
+        if (externalOpen) setOpen(true);
+    }, [externalOpen]);
 
     const [name, setName] = useState(data ? data.name : "");
     const [flag, setFlag] = useState<Flags>(data ? data.flag : "Visa");
@@ -114,7 +123,9 @@ export function CreditCardForm({ buttonLabel, buttonIcon, data }: CreditCardForm
             open={open}
             handleClose={handleClose}
             handleOpen={handleOpen}
-            openButton={!buttonIcon
+            openButton={externalOpen !== undefined
+                ? <></>
+                : !buttonIcon
                 ?
                 <Button variant="contained" color="primary" onClick={handleOpen}  >{buttonLabel}</Button>
                 :

@@ -9,6 +9,7 @@ import { Chart, useChart } from "src/components/chart";
 import { AnalyticsEnvelopesByYear } from "src/types/Graph";
 
 import { useTranslation } from "react-i18next";
+import { useCurrency } from "src/hooks/useCurrency";
 
 // ----------------------------------------------------------------------
 
@@ -21,6 +22,7 @@ type Props = CardProps & {
 export function AnalyticsEnvelopesByYearGraph({ title, subheader, chart, ...other }: Props) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { symbol } = useCurrency();
 
   const chartColors = [
     alpha(theme.palette.primary.main, 0.7),
@@ -47,7 +49,7 @@ export function AnalyticsEnvelopesByYearGraph({ title, subheader, chart, ...othe
     },
     tooltip: {
       y: {
-        formatter: (value: number) => `R$ ${value}`,
+        formatter: (value: number) => `${symbol} ${value}`,
       },
     },
   });

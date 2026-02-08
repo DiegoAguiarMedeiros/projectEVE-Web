@@ -18,13 +18,25 @@ type IncomeFormProps = {
     buttonLabel: string;
     data?: ProcessedIncomes;
     envelopes: Envelopes[]
+    externalOpen?: boolean;
+    onExternalClose?: () => void;
+    fixedMonth?: number;
+    fixedYear?: number;
 }
 
-export function IncomeForm({ buttonLabel, buttonIcon, data, envelopes }: IncomeFormProps) {
+export function IncomeForm({ buttonLabel, buttonIcon, data, envelopes, externalOpen, onExternalClose, fixedMonth, fixedYear }: IncomeFormProps) {
+    const isDayOnly = fixedMonth !== undefined && fixedYear !== undefined;
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleClose = () => {
+        setOpen(false);
+        onExternalClose?.();
+    };
+
+    useEffect(() => {
+        if (externalOpen) setOpen(true);
+    }, [externalOpen]);
     const [envelope, setEnvelope] = useState(data ? data.envelope : "");
     const [description, setDescription] = useState(data ? data.description : "");
     const [isSplitted, setIsSplitted] = useState(data ? data.isSplitted : "");
@@ -98,8 +110,8 @@ export function IncomeForm({ buttonLabel, buttonIcon, data, envelopes }: IncomeF
                     description,
                     totalIncomeProcessed,
                     day,
-                    month,
-                    year,
+                    month: isDayOnly ? String(fixedMonth) : month,
+                    year: isDayOnly ? String(fixedYear) : year,
                     isSplitted: true
                 });
             });
@@ -155,7 +167,9 @@ export function IncomeForm({ buttonLabel, buttonIcon, data, envelopes }: IncomeF
             open={open}
             handleClose={handleClose}
             handleOpen={handleOpen}
-            openButton={!buttonIcon
+            openButton={externalOpen !== undefined
+                ? <></>
+                : !buttonIcon
                 ?
                 <Button variant="contained" color="primary" onClick={handleOpen}  >{buttonLabel}</Button>
                 :
@@ -211,39 +225,60 @@ export function IncomeForm({ buttonLabel, buttonIcon, data, envelopes }: IncomeF
                         }
                     }}
                 />
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                        sx={{ width: "100%", mb: 3 }}
-                        name="date"
-                        label={t('envelope.transaction.date')}
-                        value={dateValue}
-                        onChange={handleChangeDate}
-                        format="DD/MM/YYYY"
+                {isDayOnly ? (
+                    <TextField
+                        fullWidth
+                        type="number"
+                        name="paymentDay"
+                        label={t('settings.income.payment_day')}
+                        value={day}
+                        onChange={(e) => setDay(e.target.value)}
+                        sx={{ mb: 3 }}
+                        slotProps={{
+                            input: {
+                                inputMode: "numeric",
+                                "aria-valuemin": 1,
+                                "aria-valuemax": 31,
+                            }
+                        }}
                     />
-                </LocalizationProvider>
-                <FormControl fullWidth sx={{ border: '1px solid', borderColor: (theme) => theme.palette.divider, borderRadius: '8px', p: 2, mb: 3 }}>
-                    <FormLabel>{t('income.split')}</FormLabel>
-                    <Box sx={{ display: 'flex', width: '100%', gap: '8px', mt: 3 }}>
-                        <Button fullWidth variant={!isSplitted ? "outlined" : "contained"} color="primary" onClick={() => setIsSplitted(true)} >{t('income.yes')}</Button>
-                        <Button fullWidth variant={isSplitted ? "outlined" : "contained"} color="primary" onClick={() => setIsSplitted(false)} >{t('income.no')}</Button>
-                    </Box>
-                </FormControl>
-                {!isSplitted && <FormControl fullWidth>
-                    <InputLabel id="envelopes-select-label">{t('income.table.headers.envelope')}</InputLabel>
-                    <Select
-                        labelId="envelopes-select-label"
-                        id="envelope-select"
-                        label={t('income.table.headers.envelope')}
-                        sx={{ width: "100%", mb: 3 }}
-                        name="envelope"
-                        value={envelope}
-                        onChange={handleSelectChange}
-                    >
-                        {envelopes.map((f, index) => (
-                            <MenuItem key={index} value={f.id}>{f.name}</MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>}
+                ) : (
+                    <>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DatePicker
+                                sx={{ width: "100%", mb: 3 }}
+                                name="date"
+                                label={t('envelope.transaction.date')}
+                                value={dateValue}
+                                onChange={handleChangeDate}
+                                format="DD/MM/YYYY"
+                            />
+                        </LocalizationProvider>
+                        <FormControl fullWidth sx={{ border: '1px solid', borderColor: (theme) => theme.palette.divider, borderRadius: '8px', p: 2, mb: 3 }}>
+                            <FormLabel>{t('income.split')}</FormLabel>
+                            <Box sx={{ display: 'flex', width: '100%', gap: '8px', mt: 3 }}>
+                                <Button fullWidth variant={!isSplitted ? "outlined" : "contained"} color="primary" onClick={() => setIsSplitted(true)} >{t('income.yes')}</Button>
+                                <Button fullWidth variant={isSplitted ? "outlined" : "contained"} color="primary" onClick={() => setIsSplitted(false)} >{t('income.no')}</Button>
+                            </Box>
+                        </FormControl>
+                        {!isSplitted && <FormControl fullWidth>
+                            <InputLabel id="envelopes-select-label">{t('income.table.headers.envelope')}</InputLabel>
+                            <Select
+                                labelId="envelopes-select-label"
+                                id="envelope-select"
+                                label={t('income.table.headers.envelope')}
+                                sx={{ width: "100%", mb: 3 }}
+                                name="envelope"
+                                value={envelope}
+                                onChange={handleSelectChange}
+                            >
+                                {envelopes.map((f, index) => (
+                                    <MenuItem key={index} value={f.id}>{f.name}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>}
+                    </>
+                )}
 
             </Box >
         </TransitionsModal>

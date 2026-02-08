@@ -39,7 +39,7 @@ export default function Page() {
     <>
       <title> {`Configurações - ${CONFIG.appName}`}</title>
 
-      <SettingsView envelopes={envelopes || []} incomes={incomes} goals={goals} debts={debts} fixedExpenses={fixedExpenses} creditCards={creditCards} />
+      <SettingsView envelopes={envelopes || []} incomes={incomes} goals={goals} debts={debts} fixedExpenses={fixedExpenses} creditCards={creditCards} table={table} />
     </>
   );
 }

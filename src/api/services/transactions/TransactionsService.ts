@@ -28,3 +28,7 @@ export const updateStatusTransactions = (data: TransactionsUpdateStatus) =>
 
 export const deleteTransactions = (id: string) =>
   api.delete<void>(`/transactions/${id}`);
+
+
+export const getUpcomingPendingPayments = (params?: GetAllParams) =>
+  api.get<Pagination<Transactions>>(`/transactions/upcoming-pending`, { params });

@@ -1,5 +1,5 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { startTransition, useCallback, useState } from "react";
+import { startTransition, useCallback, useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import TransitionsModal from "src/sections/shared/transitionsModal";
 import { useSnackbar, VariantType } from "notistack";
@@ -12,15 +12,24 @@ import { useTranslation } from "react-i18next";
 type FormIncomesProps = {
     buttonIcon?: React.ReactNode;
     buttonLabel: string;
-    data?: Incomes
+    data?: Incomes;
+    externalOpen?: boolean;
+    onExternalClose?: () => void;
 }
 
-export function FormIncomes({ buttonLabel, buttonIcon, data }: FormIncomesProps) {
+export function FormIncomes({ buttonLabel, buttonIcon, data, externalOpen, onExternalClose }: FormIncomesProps) {
     const { t } = useTranslation();
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleClose = () => {
+        setOpen(false);
+        onExternalClose?.();
+    };
+
+    useEffect(() => {
+        if (externalOpen) setOpen(true);
+    }, [externalOpen]);
 
     const [description, setDescription] = useState(data ? data.description : "");
     const [amount, setAmount] = useState(data ? data.amount : "");
@@ -122,7 +131,9 @@ export function FormIncomes({ buttonLabel, buttonIcon, data }: FormIncomesProps)
             open={open}
             handleClose={handleClose}
             handleOpen={handleOpen}
-            openButton={!buttonIcon
+            openButton={externalOpen !== undefined
+                ? <></>
+                : !buttonIcon
                 ?
                 <Button variant="contained" color="primary" onClick={handleOpen}  >{buttonLabel}</Button>
                 :

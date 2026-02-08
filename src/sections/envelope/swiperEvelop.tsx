@@ -14,12 +14,11 @@ import {
   useMediaQuery,
 } from "@mui/material";
 
-import { TransactionTable } from "src/sections/envelope/transactionTable";
 import { Pagination } from "src/types/Pagination";
 import { Envelopes } from "src/types/Envelopes";
 import { Transactions } from "src/types/Transactions";
 import { ITable } from "src/sections/shared/useTable";
-import { TransactionList } from "src/sections/envelope/transactionList";
+import { TransactionDisplay } from "src/sections/envelope/TransactionDisplay";
 import { RealEnvelopesCard } from "src/sections/envelope/RealEnvelopeCard";
 
 type SwiperEnvelopProps = {
@@ -105,27 +104,15 @@ export default function SwiperEnvelop({
           ))}
         </Swiper>
       </Box>
-      {isMobile ? (
-        <TransactionList
-          transactions={transactions}
-          envelopeId={envelopeActived}
-          table={table}
-          allEnvelopes={envelopes}
-          activeBorderColor={activeBorderColor}
-          typeFilter={typeFilter}
-          onTypeFilterChange={onTypeFilterChange}
-        />
-      ) : (
-        <TransactionTable
-          transactions={transactions}
-          envelopeId={envelopeActived}
-          table={table}
-          activeBorderColor={activeBorderColor}
-          allEnvelopes={envelopes}
-          typeFilter={typeFilter}
-          onTypeFilterChange={onTypeFilterChange}
-        />
-      )}
+      <TransactionDisplay
+        transactions={transactions}
+        envelopeId={envelopeActived}
+        table={table}
+        activeBorderColor={activeBorderColor}
+        allEnvelopes={envelopes}
+        typeFilter={typeFilter}
+        onTypeFilterChange={onTypeFilterChange}
+      />
     </Box>
   );
 }

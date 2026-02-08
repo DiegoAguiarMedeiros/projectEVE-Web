@@ -20,15 +20,24 @@ type FixedExpenseFormProps = {
     buttonLabel: string;
     data?: FixedExpenses;
     envelopes: Envelopes[]
+    externalOpen?: boolean;
+    onExternalClose?: () => void;
 }
 
-export function FixedExpenseForm({ buttonLabel, buttonIcon, data, envelopes }: FixedExpenseFormProps) {
+export function FixedExpenseForm({ buttonLabel, buttonIcon, data, envelopes, externalOpen, onExternalClose }: FixedExpenseFormProps) {
     const { t } = useTranslation();
     const { enqueueSnackbar } = useSnackbar();
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleClose = () => {
+        setOpen(false);
+        onExternalClose?.();
+    };
+
+    useEffect(() => {
+        if (externalOpen) setOpen(true);
+    }, [externalOpen]);
 
     const [description, setDescription] = useState(data ? data.description : "");
     const [amount, setAmount] = useState(data ? data.amount : "");
@@ -146,7 +155,9 @@ export function FixedExpenseForm({ buttonLabel, buttonIcon, data, envelopes }: F
             open={open}
             handleClose={handleClose}
             handleOpen={handleOpen}
-            openButton={!buttonIcon
+            openButton={externalOpen !== undefined
+                ? <></>
+                : !buttonIcon
                 ?
                 <Button variant="contained" color="primary" onClick={handleOpen}  >{buttonLabel}</Button>
                 :

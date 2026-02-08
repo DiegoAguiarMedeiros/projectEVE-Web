@@ -42,14 +42,6 @@
         "no_data": "Sem dados",
         "transfer": "Transferir",
         "add": "Adicionar",
-        "payment_method": {
-            "credit_card": "Cartão de Crédito",
-            "debit_card": "Cartão de Débito",
-            "cash": "Dinheiro",
-            "bank_transfer": "Transferência Bancária",
-            "pix": "PIX",
-            "Reallocation": "Realocação"
-        },
         "back": "Voltar",
         "reallocate": "Realocar"
     },
@@ -78,6 +70,13 @@
         "logout": "Sair",
         "logging_out": "Saindo..."
     },
+    "home": {
+        "no_envelopes_title": "Você não possui envelopes criados",
+        "no_envelopes_not_processed": "Você ainda não processou nenhum mês.",
+        "no_envelopes_month_not_processed": "Você ainda não processou o mês",
+        "process_button": "Processar {{month}} / {{year}}",
+        "income_description": "Renda do mês {{month}}/{{year}}"
+    },
     "overview": {
         "budget": "Orçamento",
         "envelopes_title": "Envelopes",
@@ -85,6 +84,12 @@
         "envelopes": {
             "no_funds": "Sem fundos",
             "available": "Disponível: {{amount}}"
+        },
+        "upcoming_payments": {
+            "title": "Próximos Pagamentos",
+            "envelope": "Envelope",
+            "empty": "Nenhum pagamento pendente próximo ao vencimento.",
+            "all_loaded": "Todos os pagamentos pendentes foram carregados"
         }
     },
     "envelope": {
@@ -107,6 +112,7 @@
                 "Cash": "Dinheiro",
                 "BankTransfer": "Transferência Bancária",
                 "Pix": "Pix",
+                "Ticket": "Boleto",
                 "Reallocation": "Realocação"
             },
             "status": {
@@ -180,7 +186,8 @@
             },
             "empty": "Nenhuma renda cadastrada!",
             "all": "Todos",
-            "one": "Um"
+            "one": "Um",
+            "all_loaded": "Todas as rendas foram carregadas"
         }
     },
     "user": {
@@ -215,7 +222,8 @@
                     "name": "Nome",
                     "flag": "Bandeira"
                 },
-                "no_data": "Nenhum cartão de crédito cadastrado!"
+                "no_data": "Nenhum cartão de crédito cadastrado!",
+                "all_loaded": "Todos os cartões foram carregados"
             }
         },
         "debt": {
@@ -244,7 +252,8 @@
                     "installments_total": "Total parcelas",
                     "payment_day": "Dia do pagamento"
                 },
-                "no_data": "Nenhuma dívida cadastrada!"
+                "no_data": "Nenhuma dívida cadastrada!",
+                "all_loaded": "Todas as dívidas foram carregadas"
             }
         },
         "envelope": {
@@ -279,7 +288,8 @@
                     "amount": "Valor",
                     "payment_day": "Dia do Pagamento"
                 },
-                "no_data": "Nenhuma conta fixa cadastrada!"
+                "no_data": "Nenhuma conta fixa cadastrada!",
+                "all_loaded": "Todas as contas fixas foram carregadas"
             }
         },
         "goals": {
@@ -304,7 +314,8 @@
                     "percentage": "Porcentagem",
                     "deadline": "Prazo"
                 },
-                "no_data": "Nenhuma meta cadastrada!"
+                "no_data": "Nenhuma meta cadastrada!",
+                "all_loaded": "Todas as metas foram carregadas"
             },
             "recommendation": {
                 "title": "Recomendação",
@@ -338,7 +349,8 @@
                     "amount": "Salário",
                     "payment_day": "Dia do Pagamento"
                 },
-                "no_data": "Nenhum salário cadastrado!"
+                "no_data": "Nenhum salário cadastrado!",
+                "all_loaded": "Todos os salários foram carregados"
             }
         },
         "tabs": {
@@ -361,5 +373,31 @@
     },
     "deposit": {
         "salary": "Depósito salário {{name}}"
+    },
+    "profile": {
+        "title": "Meu Perfil",
+        "personal_info": "Informações Pessoais",
+        "change_password": "Alterar Senha",
+        "preferences": "Preferências",
+        "layout": {
+            "title": "Aparência",
+            "theme": "Tema",
+            "light": "Claro",
+            "dark": "Escuro"
+        },
+        "language": {
+            "title": "Idioma",
+            "select": "Selecione o idioma"
+        },
+        "currency": {
+            "title": "Moeda",
+            "select": "Selecione a moeda"
+        },
+        "notifications": {
+            "title": "Notificações",
+            "enable": "Ativar notificações",
+            "email": "Notificações por e-mail",
+            "push": "Notificações push"
+        }
     }
 }

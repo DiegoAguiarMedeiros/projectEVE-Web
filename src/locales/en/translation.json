@@ -41,15 +41,7 @@
         "expenses": "Expenses",
         "no_data": "No data",
         "transfer": "Transfer",
-        "add": "Add",
-        "payment_method": {
-            "credit_card": "Credit Card",
-            "debit_card": "Debit Card",
-            "cash": "Cash",
-            "bank_transfer": "Bank Transfer",
-            "pix": "PIX",
-            "Reallocation": "Reallocation"
-        }
+        "add": "Add"
     },
     "errors": {
         "unexpected": "An unexpected error occurred",
@@ -76,6 +68,13 @@
         "logout": "Logout",
         "logging_out": "Logging out..."
     },
+    "home": {
+        "no_envelopes_title": "You don't have any envelopes created",
+        "no_envelopes_not_processed": "You haven't processed any month yet.",
+        "no_envelopes_month_not_processed": "You haven't processed this month yet",
+        "process_button": "Process {{month}} / {{year}}",
+        "income_description": "Income for month {{month}}/{{year}}"
+    },
     "overview": {
         "budget": "Budget",
         "envelopes_title": "Envelopes",
@@ -83,6 +82,12 @@
         "envelopes": {
             "no_funds": "No funds",
             "available": "Available: {{amount}}"
+        },
+        "upcoming_payments": {
+            "title": "Upcoming Payments",
+            "envelope": "Envelope",
+            "empty": "No pending payments near due date.",
+            "all_loaded": "All upcoming payments loaded"
         }
     },
     "envelope": {
@@ -177,7 +182,8 @@
             },
             "empty": "No income registered!",
             "all": "All",
-            "one": "One"
+            "one": "One",
+            "all_loaded": "All incomes loaded"
         }
     },
     "user": {
@@ -212,7 +218,8 @@
                     "name": "Name",
                     "flag": "Brand"
                 },
-                "no_data": "No credit cards registered!"
+                "no_data": "No credit cards registered!",
+                "all_loaded": "All credit cards loaded"
             }
         },
         "debt": {
@@ -241,7 +248,8 @@
                     "installments_total": "Total Installments",
                     "payment_day": "Payment Day"
                 },
-                "no_data": "No debts registered!"
+                "no_data": "No debts registered!",
+                "all_loaded": "All debts loaded"
             }
         },
         "envelope": {
@@ -276,7 +284,8 @@
                     "amount": "Value",
                     "payment_day": "Payment Day"
                 },
-                "no_data": "No fixed expenses registered!"
+                "no_data": "No fixed expenses registered!",
+                "all_loaded": "All fixed expenses loaded"
             }
         },
         "goals": {
@@ -301,7 +310,8 @@
                     "percentage": "Percentage",
                     "deadline": "Deadline"
                 },
-                "no_data": "No goals registered!"
+                "no_data": "No goals registered!",
+                "all_loaded": "All goals loaded"
             },
             "recommendation": {
                 "title": "Recommendation",
@@ -335,7 +345,8 @@
                     "amount": "Salary",
                     "payment_day": "Payment Day"
                 },
-                "no_data": "No income registered!"
+                "no_data": "No income registered!",
+                "all_loaded": "All incomes loaded"
             }
         },
         "tabs": {
@@ -358,5 +369,31 @@
     },
     "deposit": {
         "salary": "Salary deposit {{name}}"
+    },
+    "profile": {
+        "title": "My Profile",
+        "personal_info": "Personal Information",
+        "change_password": "Change Password",
+        "preferences": "Preferences",
+        "layout": {
+            "title": "Appearance",
+            "theme": "Theme",
+            "light": "Light",
+            "dark": "Dark"
+        },
+        "language": {
+            "title": "Language",
+            "select": "Select language"
+        },
+        "currency": {
+            "title": "Currency",
+            "select": "Select currency"
+        },
+        "notifications": {
+            "title": "Notifications",
+            "enable": "Enable notifications",
+            "email": "Email notifications",
+            "push": "Push notifications"
+        }
     }
 }
