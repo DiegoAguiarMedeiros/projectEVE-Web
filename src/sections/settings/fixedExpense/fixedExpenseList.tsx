@@ -17,6 +17,7 @@ import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
 import { Envelopes } from "src/types/Envelopes";
 import { useTranslation } from "react-i18next";
 import { useDeleteFixedExpenses } from "src/hooks/mutations/fixed-expenses/useDeleteFixedExpenses";
+import AddButton from "src/components/addButton/addButton";
 
 type FixedExpenseListProps = {
     fixedExpenses: Pagination<FixedExpenses> | undefined;
@@ -157,23 +158,7 @@ export function FixedExpenseList({
                 )}
             </Box>
 
-            <Portal>
-                <Fab
-                    aria-label={t('common.add')}
-                    sx={{
-                        position: "fixed",
-                        bottom: 24,
-                        right: 24,
-                        zIndex: 1300,
-                        bgcolor: 'background.neutral',
-                        color: 'text.primary',
-                        '&:hover': { bgcolor: 'action.hover' },
-                    }}
-                    onClick={() => setAddFormOpen(true)}
-                >
-                    <Add />
-                </Fab>
-            </Portal>
+            <AddButton onClick={() => setAddFormOpen(true)} />
 
             <FixedExpenseForm
                 buttonLabel=""

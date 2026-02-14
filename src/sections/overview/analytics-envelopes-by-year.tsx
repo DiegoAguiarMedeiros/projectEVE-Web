@@ -10,6 +10,7 @@ import { AnalyticsEnvelopesByYear } from "src/types/Graph";
 
 import { useTranslation } from "react-i18next";
 import { useCurrency } from "src/hooks/useCurrency";
+import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
 
 // ----------------------------------------------------------------------
 
@@ -54,7 +55,7 @@ export function AnalyticsEnvelopesByYearGraph({ title, subheader, chart, ...othe
     },
   });
 
-  if (!chart) return <>{t('common.no_data')}</>
+  if (!chart) return <SkeletonLoading count={1} height={200} />
 
   return (
     <Card {...other}>

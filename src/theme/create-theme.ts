@@ -27,6 +27,10 @@ export function createCustomTheme({ mode }: CreateCustomThemeProps): Theme {
   };
 
   const theme = createTheme(initialTheme);
+
+  // MUI forces common.white to #fff internally — override it
+  theme.palette.common.white = "#F5F5F5";
+
   return theme;
 }
 

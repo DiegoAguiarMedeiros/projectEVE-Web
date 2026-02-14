@@ -16,6 +16,7 @@ import { ITable } from "src/sections/shared/useTable";
 import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
 import { useTranslation } from "react-i18next";
 import { useDeleteCreditCards } from "src/hooks/mutations/credit-cards/useDeleteCreditCards";
+import AddButton from "src/components/addButton/addButton";
 
 type CreditCardListProps = {
     creditCards: Pagination<CreditCards> | undefined;
@@ -153,23 +154,7 @@ export function CreditCardList({
                 )}
             </Box>
 
-            <Portal>
-                <Fab
-                    aria-label={t('common.add')}
-                    sx={{
-                        position: "fixed",
-                        bottom: 24,
-                        right: 24,
-                        zIndex: 1300,
-                        bgcolor: 'background.neutral',
-                        color: 'text.primary',
-                        '&:hover': { bgcolor: 'action.hover' },
-                    }}
-                    onClick={() => setAddFormOpen(true)}
-                >
-                    <Add />
-                </Fab>
-            </Portal>
+            <AddButton onClick={() => setAddFormOpen(true)} />
 
             <CreditCardForm
                 buttonLabel=""

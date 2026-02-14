@@ -9,13 +9,16 @@ import Stepper from "@mui/material/Stepper";
 import StepLabel from "@mui/material/StepLabel";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import { useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import { ChipTabs } from "src/components/chip-tabs";
 
-import { IncomeTable } from "src/sections/settings/income";
+import { IncomeTable, IncomesDisplay } from "src/sections/settings/income";
 import { EnvelopesTable } from "src/sections/settings/envelope";
-import { GoalsTable } from "src/sections/settings/goals";
-import { FixedExpenseTable } from "src/sections/settings/fixedExpense";
-import { DebtTable } from "src/sections/settings/debt";
-import { CreditCardsTable } from "src/sections/settings/creditCards";
+import { GoalsTable, GoalsDisplay } from "src/sections/settings/goals";
+import { FixedExpenseTable, FixedExpensesDisplay } from "src/sections/settings/fixedExpense";
+import { DebtTable, DebtsDisplay } from "src/sections/settings/debt";
+import { CreditCardsTable, CreditCardsDisplay } from "src/sections/settings/creditCards";
 
 import { useListIncomes } from "src/hooks/queries/incomes/useListIncomes";
 import { useListEnvelopes } from "src/hooks/queries/envelopes/useListEnvelopes";
@@ -27,10 +30,10 @@ import { useTable } from "src/sections/shared/useTable";
 
 const STEPS = [
   "Sua Renda",
+  "Suas Dívidas",
   "Seus Limites",
   "Suas Metas",
   "Suas Contas Fixas",
-  "Suas Dívidas",
   "Seus Cartões",
 ];
 
@@ -38,6 +41,8 @@ export function CompleteRegistrationView() {
   const router = useRouter();
   const table = useTable();
   const [activeStep, setActiveStep] = React.useState(0);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const { mutate: completeRegistration, isPending } = useCompleteRegistration(() => {
     router.push("/");
@@ -61,17 +66,36 @@ export function CompleteRegistrationView() {
   const handleBack = () => setActiveStep((prev) => prev - 1);
 
   const renderContent = () => {
+    if (isMobile) {
+      switch (activeStep) {
+        case 0:
+          return <IncomesDisplay incomes={incomes} table={table} />;
+        case 1:
+          return <DebtsDisplay debts={debts} envelopes={envelopes || []} table={table} />;
+        case 2:
+          return <EnvelopesTable envelopes={envelopes || []} />;
+        case 3:
+          return <GoalsDisplay goals={goals} envelope={(envelopes || []).filter(e => e.name === 'goals')[0]} table={table} />;
+        case 4:
+          return <FixedExpensesDisplay fixedExpenses={fixedExpenses} envelopes={envelopes || []} table={table} />;
+        case 5:
+          return <CreditCardsDisplay creditCards={creditCards} table={table} />;
+        default:
+          return null;
+      }
+    }
+
     switch (activeStep) {
       case 0:
         return <IncomeTable incomes={incomes} />;
       case 1:
-        return <EnvelopesTable envelopes={envelopes || []} />;
-      case 2:
-        return <GoalsTable goals={goals} envelope={(envelopes || []).filter(e => e.name === 'goals')[0]} />;
-      case 3:
-        return <FixedExpenseTable fixedExpenses={fixedExpenses} envelopes={envelopes || []} />;
-      case 4:
         return <DebtTable debts={debts} envelopes={envelopes || []} />;
+      case 2:
+        return <EnvelopesTable envelopes={envelopes || []} />;
+      case 3:
+        return <GoalsTable goals={goals} envelope={(envelopes || []).filter(e => e.name === 'goals')[0]} />;
+      case 4:
+        return <FixedExpenseTable fixedExpenses={fixedExpenses} envelopes={envelopes || []} />;
       case 5:
         return <CreditCardsTable creditCards={creditCards} />;
       default:
@@ -80,8 +104,8 @@ export function CompleteRegistrationView() {
   };
 
   return (
-    <Container sx={{ py: 5 }}>
-      <Box display="flex" flexDirection="column" alignItems="center" sx={{ width: "100%" }}>
+    <Container sx={{ py: isMobile ? 2 : 5, px: isMobile ? 1 : 3 }}>
+      <Box display="flex" flexDirection="column" alignItems="center" sx={{ width: "100%", minWidth: 0 }}>
         <Typography variant="h4" sx={{ mb: 1 }}>
           Completar cadastro
         </Typography>
@@ -89,13 +113,23 @@ export function CompleteRegistrationView() {
           Conte-nos um pouco mais para personalizarmos sua experiência. Tudo aqui pode ser editado depois!
         </Typography>
 
-        <Stepper activeStep={activeStep} sx={{ width: "100%", mb: 5 }}>
-          {STEPS.map((label) => (
-            <Step key={label}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
+        {isMobile ? (
+          <Box sx={{ width: "100%", mb: 2 }}>
+            <ChipTabs
+              tabs={STEPS.map((label, index) => ({ label, index }))}
+              activeIndex={activeStep}
+              onChange={setActiveStep}
+            />
+          </Box>
+        ) : (
+          <Stepper activeStep={activeStep} sx={{ width: "100%", mb: 5 }}>
+            {STEPS.map((label) => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+        )}
 
         <Box sx={{ width: "100%", minHeight: 400 }}>
           {renderContent()}

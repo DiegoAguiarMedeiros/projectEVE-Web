@@ -16,6 +16,7 @@ import { ITable } from "src/sections/shared/useTable";
 import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
 import { Envelopes } from "src/types/Envelopes";
 import { useTranslation } from "react-i18next";
+import AddButton from "src/components/addButton/addButton";
 
 type IncomeListProps = {
     processedIncomes: Pagination<ProcessedIncomes> | undefined;
@@ -156,23 +157,7 @@ export function IncomeList({
                 )}
             </Box>
 
-            <Portal>
-                <Fab
-                    aria-label={t('common.add')}
-                    sx={{
-                        position: "fixed",
-                        bottom: 24,
-                        right: 24,
-                        zIndex: 1300,
-                        bgcolor: 'background.neutral',
-                        color: 'text.primary',
-                        '&:hover': { bgcolor: 'action.hover' },
-                    }}
-                    onClick={() => setAddFormOpen(true)}
-                >
-                    <Add />
-                </Fab>
-            </Portal>
+            <AddButton onClick={() => setAddFormOpen(true)} />
 
             <IncomeForm
                 buttonLabel=""

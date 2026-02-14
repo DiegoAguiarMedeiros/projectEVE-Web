@@ -3,9 +3,10 @@ import { useState } from "react";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
-import { Chip, Stack, Typography, useMediaQuery } from "@mui/material";
+import { Typography, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
+import { ChipTabs } from "src/components/chip-tabs";
 
 
 import { DashboardContent } from "src/layouts/dashboard";
@@ -88,27 +89,11 @@ export function SettingsView({ incomes, envelopes, goals, fixedExpenses, debts, 
     <DashboardContent  sx={{width: '99%', my: 1, mx: 'auto', p: 1 }}>
       <Box sx={{ width: "100%" }}>
         {isMobile ? (
-          <Box
-            sx={{
-              pb: 1.5,
-              overflowX: "auto",
-              scrollbarWidth: "none",
-              "&::-webkit-scrollbar": { display: "none" },
-            }}
-          >
-            <Stack direction="row" spacing={1} sx={{ px: 0.5, minWidth: "max-content" }}>
-              {tabs.map((tab) => (
-                <Chip
-                  key={tab.index}
-                  label={tab.label}
-                  size="medium"
-                  variant={value === tab.index ? "filled" : "outlined"}
-                  color={value === tab.index ? "primary" : "default"}
-                  onClick={() => setValue(tab.index)}
-                />
-              ))}
-            </Stack>
-          </Box>
+          <ChipTabs
+            tabs={tabs}
+            activeIndex={value}
+            onChange={setValue}
+          />
         ) : (
           <Box sx={{ borderBottom: 1, borderColor: "divider", borderTopRightRadius: '16px', borderTopLeftRadius: '16px', backgroundColor: theme.palette.background.paper, boxShadow: '0 0 2px 0 rgba(145 158 171 / 0.2), 0 12px 24px -4px rgba(145 158 171 / 0.12)' }}>
             <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">

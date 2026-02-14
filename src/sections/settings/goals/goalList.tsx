@@ -17,6 +17,7 @@ import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
 import { Envelopes } from "src/types/Envelopes";
 import { useTranslation } from "react-i18next";
 import { useDeleteGoals } from "src/hooks/mutations/goals/useDeleteGoals";
+import AddButton from "src/components/addButton/addButton";
 
 type GoalListProps = {
     goals: Pagination<Goals> | undefined;
@@ -157,23 +158,7 @@ export function GoalList({
                 )}
             </Box>
 
-            <Portal>
-                <Fab
-                    aria-label={t('common.add')}
-                    sx={{
-                        position: "fixed",
-                        bottom: 24,
-                        right: 24,
-                        zIndex: 1300,
-                        bgcolor: 'background.neutral',
-                        color: 'text.primary',
-                        '&:hover': { bgcolor: 'action.hover' },
-                    }}
-                    onClick={() => setAddFormOpen(true)}
-                >
-                    <Add />
-                </Fab>
-            </Portal>
+            <AddButton onClick={() => setAddFormOpen(true)} />
 
             <GoalsForm
                 buttonLabel=""

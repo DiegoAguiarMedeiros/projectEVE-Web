@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Card, Typography, useTheme } from "@mui/material";
+import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { _timeline } from "src/_mock/_data";
 import { useQuery } from "@tanstack/react-query";
 import Badges from "src/components/badge/badge";
@@ -19,6 +19,7 @@ export function EnvelopesTable({ envelopes }: EnvelopesProps) {
 
     const { t } = useTranslation();
     const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
 
     const [open, setOpen] = useState(false);
@@ -42,17 +43,30 @@ export function EnvelopesTable({ envelopes }: EnvelopesProps) {
 
 
     return (
-        <Card sx={{ width: "100%", borderTopRightRadius: 0, borderTopLeftRadius: 0 }}>
-            <Box sx={{ display: "flex", alignItems: "center", p: 4, justifyContent: "flex-end", gap: 2 }}>
+        <Box sx={{
+            width: "100%",
+            ...(isMobile
+                ? {
+                    borderRadius: 2,
+                    border: `1px solid ${theme.palette.divider}`,
+                }
+                : {
+                    borderTopRightRadius: 0,
+                    borderTopLeftRadius: 0,
+                    backgroundColor: theme.palette.background.paper,
+                    boxShadow: '0 0 2px 0 rgba(145 158 171 / 0.2), 0 12px 24px -4px rgba(145 158 171 / 0.12)',
+                }),
+        }}>
+            <Box sx={{ display: "flex", alignItems: "center", p: isMobile ? 2 : 4, justifyContent: "flex-end", gap: 2 }}>
                 <EnvelopeForm data={envelopeActive} buttonLabel={t('common.add')} open={open} handleOpen={handleOpen} handleClose={handleClose} />
                 <Badges text={envelopeAlocation <= 100 ? t('settings.envelope.allocation_remaining', { count: 100 - envelopeAlocation }) : t('settings.envelope.allocation_exceeded', { count: envelopeAlocation - 100 })} bgColor={envelopeAlocation <= 100 ? theme.palette.success.main : theme.palette.error.main} />
             </Box>
             <Box sx={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
-                gap: 3,
+                gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fill, minmax(240px, 1fr))',
+                gap: isMobile ? 1.5 : 3,
                 width: '100%',
-                padding: 3,
+                padding: isMobile ? 1.5 : 3,
                 paddingTop: 0
             }}>
                 {!envelopes ? (
@@ -67,10 +81,7 @@ export function EnvelopesTable({ envelopes }: EnvelopesProps) {
                     />
                 ))}
             </Box>
-
-
-
-        </Card>
+        </Box>
     );
 
 }

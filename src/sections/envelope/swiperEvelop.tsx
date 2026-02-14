@@ -73,14 +73,16 @@ export default function SwiperEnvelop({
             padding: '15px 10px',
             marginLeft: 'auto'
           }}
-          spaceBetween={10}
-          slidesPerView={1}
+          spaceBetween={4}
+          slidesPerView={1.2}
+          centeredSlides
           breakpoints={{
-            400: { slidesPerView: 1 },
-            600: { slidesPerView: 2 },
-            900: { slidesPerView: 3 },
-            1200: { slidesPerView: 4 },
-            1600: { slidesPerView: 5 },
+            440: { slidesPerView: 1.4, centeredSlides: true, spaceBetween: 4 },
+            520: { slidesPerView: 1.6, centeredSlides: true, spaceBetween: 6 },
+            600: { slidesPerView: 2.2, centeredSlides: false, spaceBetween: 10 },
+            900: { slidesPerView: 3.2, centeredSlides: false, spaceBetween: 10 },
+            1200: { slidesPerView: 4.2, centeredSlides: false, spaceBetween: 10 },
+            1600: { slidesPerView: 5.2, centeredSlides: false, spaceBetween: 10 },
           }}
           modules={[FreeMode, Navigation, Thumbs]}
           initialSlide={currentIndex}

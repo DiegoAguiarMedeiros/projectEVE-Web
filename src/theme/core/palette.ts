@@ -106,6 +106,7 @@ export const common = createPaletteChannel(COLORS.common);
 export const text = {
   light: createPaletteChannel({
     primary: grey[800],
+    white: '#FFFFFF',
     secondary: grey[600],
     disabled: grey[500],
   }),
@@ -115,7 +116,7 @@ export const text = {
 export const background = {
   light: createPaletteChannel({
     paper: "#F5F5F5",
-    default: grey[100],
+    default: "#EBEBEB",
     neutral: grey[200],
   }),
 };

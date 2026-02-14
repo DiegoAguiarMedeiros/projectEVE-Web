@@ -12,6 +12,7 @@ import { alpha } from "@mui/material/styles";
 
 import { AnalyticsCurrentEnvelopes } from 'src/types/Graph';
 import { useTranslation } from "react-i18next";
+import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
 
 // ----------------------------------------------------------------------
 
@@ -40,7 +41,7 @@ export function AnalyticsCurrentEnvelopesGraph({ title, subheader, analyticsCurr
   });
 
   if (!analyticsCurrentEnvelopes) {
-    return (<>{t('common.no_data')}</>)
+    return <SkeletonLoading count={1} height={200} />
   }
 
   return (

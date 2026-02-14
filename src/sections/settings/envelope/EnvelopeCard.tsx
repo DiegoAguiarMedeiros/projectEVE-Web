@@ -31,6 +31,7 @@ export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({ envelope, handleActi
                 opacity: 1
             }
         }}
+        onClick={() => handleActiveEnvelope(envelope)}
     >
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
 
@@ -46,10 +47,11 @@ export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({ envelope, handleActi
                     transition: 'opacity 0.2s'
                 }}
             >
+                {/*
                 <IconButton onClick={() => handleActiveEnvelope(envelope)} size="small">
                     <EditIcon fontSize="small" />
                 </IconButton>
-                {/* <IconButton onClick={() => console.log(envelope.id)} size="small" color="error">
+                 <IconButton onClick={() => console.log(envelope.id)} size="small" color="error">
                     <DeleteIcon fontSize="small" />
                 </IconButton> */}
             </Box>

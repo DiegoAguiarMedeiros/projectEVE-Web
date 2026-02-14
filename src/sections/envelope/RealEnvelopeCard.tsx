@@ -22,7 +22,7 @@ export const RealEnvelopesCard: React.FC<RealEnvelopesCardProps> = ({ envelope, 
     const used = envelope?.used ?? 0;
 
     const finalColor = alpha(envelope.color, 0.7);
-    const cardHeight = fullWidth ? 160 : 140;
+    const cardHeight = fullWidth ? 130 : 140;
     const flapHeight = cardHeight * 0.5;
 
     return (
@@ -44,7 +44,7 @@ export const RealEnvelopesCard: React.FC<RealEnvelopesCardProps> = ({ envelope, 
             <Card
                 sx={{
                     width: '100%',
-                    ...(!fullWidth && { maxWidth: 240 }),
+                    maxWidth: fullWidth ? 300 : 240,
                     minHeight: cardHeight,
                     position: 'relative',
                     overflow: 'visible',
