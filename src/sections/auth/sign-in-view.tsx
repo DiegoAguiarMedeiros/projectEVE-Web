@@ -20,8 +20,8 @@ export function SignInView() {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const [email, setEmail] = useState("teste@teste.com");
-  const [password, setPassword] = useState("r1234567");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const { mutate: login, isPending, error } = useLogin(() => {
