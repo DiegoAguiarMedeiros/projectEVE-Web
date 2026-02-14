@@ -109,7 +109,7 @@ export function DebtForm({ buttonLabel, buttonIcon, data, envelopes, externalOpe
                     installmentsTotal,
                     installmentsPaid,
                     paymentDay,
-                    status: "Pending"
+                    status: "debt.status.pending"
                 });
             });
         }
