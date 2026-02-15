@@ -1,14 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     Card,
     CardContent,
     Typography,
     IconButton,
-    Stack,
     Box,
     Chip,
 } from "@mui/material";
-import { Delete, Edit } from "@mui/icons-material";
+import { Delete } from "@mui/icons-material";
 import { alpha } from "@mui/material/styles";
 import dayjs from "dayjs";
 import { TransactionForm } from "src/sections/envelope/form";
@@ -38,94 +37,91 @@ export function TransactionItem({
     const { t } = useTranslation();
     const { id, description, amount, paymentMethod, date, status, type, isTranslatable } = transaction;
     const isDebit = type === "Debit";
+    const [editOpen, setEditOpen] = useState(false);
 
     return (
-        <Card
-            sx={{
-                borderRadius: 2,
-                boxShadow: 1,
-                border: (theme) => `1px solid ${theme.palette.divider}`,
-                "&:active": (theme) => ({
-                    bgcolor: alpha(theme.palette.primary.main, 0.04),
-                }),
-            }}
-        >
-            <CardContent sx={{ p: 1.5, "&:last-child": { pb: 1.5 } }}>
-                {/* Row 1: Description + Amount */}
-                <Box display="flex" justifyContent="space-between" alignItems="flex-start" gap={1}>
-                    <Typography
-                        variant="subtitle2"
-                        fontWeight={600}
-                        sx={{
-                            flex: 1,
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
-                        }}
-                    >
-                        {getTranslatedDescription(description, isTranslatable)}
-                    </Typography>
-                    <Typography
-                        variant="subtitle2"
-                        fontWeight={700}
-                        color={isDebit ? "error.main" : "success.main"}
-                        sx={{ flexShrink: 0 }}
-                    >
-                        {isDebit ? "- " : "+ "}{fCurrency(amount)}
-                    </Typography>
-                </Box>
+        <>
+            <Card
+                onClick={() => setEditOpen(true)}
+                sx={{
+                    borderRadius: 2,
+                    boxShadow: 1,
+                    cursor: "pointer",
+                    border: (theme) => `1px solid ${theme.palette.divider}`,
+                    "&:active": (theme) => ({
+                        bgcolor: alpha(theme.palette.primary.main, 0.04),
+                    }),
+                }}
+            >
+                <CardContent sx={{ p: 1.5, "&:last-child": { pb: 1.5 } }}>
+                    {/* Row 1: Description + Amount */}
+                    <Box display="flex" justifyContent="space-between" alignItems="flex-start" gap={1}>
+                        <Typography
+                            variant="subtitle2"
+                            fontWeight={600}
+                            sx={{
+                                flex: 1,
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                whiteSpace: "nowrap",
+                            }}
+                        >
+                            {getTranslatedDescription(description, isTranslatable)}
+                        </Typography>
+                        <Typography
+                            variant="subtitle2"
+                            fontWeight={700}
+                            color={isDebit ? "error.main" : "success.main"}
+                            sx={{ flexShrink: 0 }}
+                        >
+                            {isDebit ? "- " : "+ "}{fCurrency(amount)}
+                        </Typography>
+                    </Box>
 
-                {/* Row 2: Type + Payment + Date */}
-                <Box display="flex" alignItems="center" gap={0.5} sx={{ mt: 0.5 }}>
-                    <Chip
-                        label={isDebit ? t('envelope.transaction.type.debit') : t('envelope.transaction.type.credit')}
-                        size="small"
-                        color={isDebit ? "error" : "success"}
-                        variant="outlined"
-                        sx={{ height: 20, fontSize: "0.675rem" }}
-                    />
-                    <Typography variant="caption" color="text.secondary">
-                        {t(paymentMethod)}
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary">
-                        &bull; {dayjs(date).format("DD/MM/YYYY")}
-                    </Typography>
-                </Box>
-
-                {/* Row 3: Status + Actions */}
-                <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ mt: 1 }}>
-                    <Chips
-                        label={t(status)}
-                        labels={[t('transaction.status.paid'), t('transaction.status.pending')]}
-                        fieldName="transaction.status.completed"
-                        click={() => {
-                            onUpdateStatus({
-                                id,
-                                status: status === "transaction.status.completed"
-                                    ? "transaction.status.pending"
-                                    : "transaction.status.completed",
-                            });
-                        }}
-                    />
-
-                    <Stack direction="row" spacing={0}>
-                        <TransactionForm
-                            data={transaction}
-                            buttonIcon={<Edit fontSize="small" />}
-                            buttonLabel={t('common.edit')}
-                            envelopeId={envelopeId}
-                            allEnvelopes={allEnvelopes}
-                        />
+                    {/* Row 2: Status + Payment + Date + Delete */}
+                    <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ mt: 0.5 }}>
+                        <Box display="flex" alignItems="center" gap={0.5}>
+                            <Box onClick={(e) => e.stopPropagation()}>
+                                <Chips
+                                    label={t(status)}
+                                    labels={[t('transaction.status.paid'), t('transaction.status.pending')]}
+                                    fieldName="transaction.status.completed"
+                                    click={() => {
+                                        onUpdateStatus({
+                                            id,
+                                            status: status === "transaction.status.completed"
+                                                ? "transaction.status.pending"
+                                                : "transaction.status.completed",
+                                        });
+                                    }}
+                                />
+                            </Box>
+                            <Typography variant="caption" color="text.secondary">
+                                {t(paymentMethod)}
+                            </Typography>
+                            <Typography variant="caption" color="text.secondary">
+                                &bull; {dayjs(date).format("DD/MM/YYYY")}
+                            </Typography>
+                        </Box>
                         <IconButton
                             size="small"
                             color="error"
-                            onClick={() => onDelete(id)}
+                            onClick={(e) => { e.stopPropagation(); onDelete(id); }}
                         >
                             <Delete fontSize="small" />
                         </IconButton>
-                    </Stack>
-                </Box>
-            </CardContent>
-        </Card>
+                    </Box>
+                </CardContent>
+            </Card>
+
+            <TransactionForm
+                data={transaction}
+                buttonLabel={t('common.edit')}
+                envelopeId={envelopeId}
+                allEnvelopes={allEnvelopes}
+                externalOpen={editOpen}
+                onExternalClose={() => setEditOpen(false)}
+            />
+        </>
     );
 }

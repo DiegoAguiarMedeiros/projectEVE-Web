@@ -23,7 +23,7 @@ export const RealEnvelopesCard: React.FC<RealEnvelopesCardProps> = ({ envelope, 
 
     const finalColor = alpha(envelope.color, 0.7);
     const cardHeight = fullWidth ? 130 : 140;
-    const flapHeight = cardHeight * 0.5;
+    const flapHeight = (cardHeight * 0.5) - 2;
 
     return (
         <Box
@@ -72,9 +72,9 @@ export const RealEnvelopesCard: React.FC<RealEnvelopesCardProps> = ({ envelope, 
                 <Box
                     sx={{
                         position: 'absolute',
-                        top: 2,
-                        left: 0,
-                        width: '100%',
+                        top: 0,
+                        left: '2%',
+                        width: '96%',
                         height: flapHeight,
                         zIndex: 2,
                         borderRadius: '8px',

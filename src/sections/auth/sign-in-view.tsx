@@ -36,7 +36,13 @@ export function SignInView() {
   }, [login, email, password]);
 
   const renderForm = (
-    <Box display="flex" flexDirection="column" alignItems="flex-end">
+    <Box
+      component="form"
+      onSubmit={(e: React.FormEvent) => { e.preventDefault(); handleSubmit(); }}
+      display="flex"
+      flexDirection="column"
+      alignItems="flex-end"
+    >
       <TextField
         fullWidth
         name="email"
@@ -77,7 +83,7 @@ export function SignInView() {
         fullWidth
         size="large"
         type="submit"
-        color="inherit"
+        color="primary"
         variant="contained"
         onClick={handleSubmit}
       >

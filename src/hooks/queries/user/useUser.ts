@@ -5,5 +5,6 @@ export function useUser() {
   return useQuery({
     queryKey: ["user"],
     queryFn: () => getUser().then(res => res.data),
+    retry: false,
   });
 }
