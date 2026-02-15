@@ -295,9 +295,9 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope, externalOpe
                                     endAdornment: deadline ? (
                                         <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
                                             <AntSwitch
-                                                checked={monthYear}
+                                                checked={!monthYear}
                                                 inputProps={{ "aria-label": "ant design" }}
-                                                onChange={() => { setMonthYear(!monthYear); calculatePercentage(deadline, monthYear, amountTotal, amount); }}
+                                                onChange={() => { setMonthYear(!monthYear); calculatePercentage(deadline, !monthYear, amountTotal, amount); }}
                                             />
                                             <Typography noWrap>{getMonthYearLabel()}</Typography>
                                         </Stack>

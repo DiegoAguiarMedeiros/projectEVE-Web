@@ -5,6 +5,7 @@
     "available": "Disponible: {{amount}}",
     "language": "Idioma",
     "goals": "Metas",
+    "debts": "Deudas",
     "housing": "Vivienda",
     "groceries": "Mercado",
     "health": "Salud",
@@ -371,6 +372,46 @@
     },
     "deposit": {
         "salary": "Depósito de salario {{name}}"
+    },
+    "auth": {
+        "sign_in": "Iniciar sesión",
+        "sign_in_title": "Inicia sesión en tu cuenta",
+        "sign_up": "Registrarse",
+        "sign_up_title": "Crea tu cuenta",
+        "email": "Correo electrónico",
+        "password": "Contraseña",
+        "confirm_password": "Confirmar Contraseña",
+        "name": "Nombre",
+        "forgot_password": "¿Olvidaste tu contraseña?",
+        "no_account": "¿No tienes una cuenta?",
+        "has_account": "¿Ya tienes una cuenta?",
+        "get_started": "Comienza ahora",
+        "login_error": "Correo o contraseña incorrectos",
+        "validation": {
+            "name_required": "El nombre es obligatorio",
+            "email_required": "El correo es obligatorio",
+            "email_invalid": "Ingrese un correo válido",
+            "password_required": "La contraseña es obligatoria",
+            "password_min_length": "La contraseña debe tener al menos 8 caracteres",
+            "passwords_mismatch": "Las contraseñas no coinciden"
+        }
+    },
+    "complete_registration": {
+        "title": "Completar registro",
+        "subtitle": "Cuéntanos un poco más para personalizar tu experiencia. ¡Todo aquí se puede editar después!",
+        "steps": {
+            "income": "Tus Ingresos",
+            "debts": "Tus Deudas",
+            "envelopes": "Tus Límites",
+            "goals": "Tus Metas",
+            "fixed_expenses": "Tus Gastos Fijos",
+            "credit_cards": "Tus Tarjetas"
+        },
+        "back": "Volver",
+        "continue": "Continuar",
+        "finish": "Finalizar",
+        "allocation_error": "La asignación de los sobres debe ser exactamente 100% para completar el registro.",
+        "finish_tooltip": "Para finalizar, configure sus Mis Límites (sobres) para que la asignación sea exactamente 100%."
     },
     "profile": {
         "title": "Mi Perfil",

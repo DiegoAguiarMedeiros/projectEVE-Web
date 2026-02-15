@@ -11,6 +11,9 @@ export function useCreateDebts() {
       enqueueSnackbar("Dívida cadastrada com sucesso!", { autoHideDuration: 3000, variant: "success", anchorOrigin: { horizontal: "right", vertical: "bottom" } });
       queryClient.invalidateQueries({ queryKey: ["debts"] });
       queryClient.invalidateQueries({ queryKey: ["envelopes"] });
+      setTimeout(() => {
+        queryClient.invalidateQueries({ queryKey: ["envelopes"] });
+      }, 1000);
     },
   });
 }

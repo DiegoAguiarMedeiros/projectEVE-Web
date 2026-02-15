@@ -2,7 +2,6 @@ import { useState, useCallback } from "react";
 
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
-import Divider from "@mui/material/Divider";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
@@ -13,16 +12,17 @@ import { useRouter } from "src/routes/hooks";
 import { Iconify } from "src/components/iconify";
 import { useLogin } from "src/hooks/mutations/auth/useLogin";
 import { Button } from "@mui/material";
+import { useTranslation } from "react-i18next";
 // ----------------------------------------------------------------------
 
 export function SignInView() {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const [showPassword, setShowPassword] = useState(false);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
 
   const { mutate: login, isPending, error } = useLogin(() => {
     router.push("/");
@@ -35,47 +35,27 @@ export function SignInView() {
     });
   }, [login, email, password]);
 
-  // const handleSignIn = useCallback(async () => {
-  //   try {
-  //     setLoading(true);
-  //     setError(null);
-
-  //     await AuthService.login(email, password);
-  //     const isAuthenticated = await AuthService.checkAuth();
-  //     if (isAuthenticated) {
-  //       router.push("/");
-  //     } else {
-  //       setError("Credenciais inválidas");
-  //     }
-  //   } catch (err) {
-  //     setError(err?.response?.data?.message);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // }, [email, password, router]);
-
   const renderForm = (
     <Box display="flex" flexDirection="column" alignItems="flex-end">
       <TextField
         fullWidth
         name="email"
-        label="Email address"
+        label={t('auth.email')}
         defaultValue={email}
         onChange={(e) => setEmail(e.target.value)}
         sx={{ mb: 3 }}
-        error={!!error} // Adiciona borda vermelha se houver erro
-        helperText={error ? "Login ou senha incorreto" : ""} // Exibe mensagem de erro específica
-
+        error={!!error}
+        helperText={error ? t('auth.login_error') : ""}
       />
 
       <Link variant="body2" color="inherit" sx={{ mb: 1.5 }}>
-        Forgot password?
+        {t('auth.forgot_password')}
       </Link>
 
       <TextField
         fullWidth
         name="password"
-        label="Password"
+        label={t('auth.password')}
         defaultValue={password}
         onChange={(e) => setPassword(e.target.value)}
         type={showPassword ? "text" : "password"}
@@ -101,7 +81,7 @@ export function SignInView() {
         variant="contained"
         onClick={handleSubmit}
       >
-        Sign in
+        {t('auth.sign_in')}
       </Button>
     </Box>
   );
@@ -109,11 +89,11 @@ export function SignInView() {
   return (
     <>
       <Box gap={1.5} display="flex" flexDirection="column" alignItems="center" sx={{ mb: 5 }}>
-        <Typography variant="h5">Entrar na sua conta</Typography>
+        <Typography variant="h5">{t('auth.sign_in_title')}</Typography>
         <Typography variant="body2" color="text.secondary">
-          Dont have an account?
+          {t('auth.no_account')}
           <Link variant="subtitle2" href="/cadastro" sx={{ ml: 0.5 }}>
-            Get started
+            {t('auth.get_started')}
           </Link>
         </Typography>
       </Box>

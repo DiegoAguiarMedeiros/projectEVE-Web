@@ -8,11 +8,10 @@ import {
   ListItemIcon,
   Box,
   IconButton,
-  useTheme,
-  useMediaQuery,
 } from "@mui/material";
 
 export type LanguagePopoverProps = {
+  showComponent?: boolean;
   data?: {
     value: string;
     label: string;
@@ -20,12 +19,9 @@ export type LanguagePopoverProps = {
   }[];
 };
 
-export function LanguagePopover({ data = [] }: LanguagePopoverProps) {
+export function LanguagePopover({ showComponent = true, data = [] }: LanguagePopoverProps) {
   const { i18n } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-
-
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("md"));
   const currentLang = data.find((lang) => lang.value === i18n.language) || data[0];
 
   const renderFlag = (label?: string, icon?: string) => (
@@ -51,9 +47,8 @@ export function LanguagePopover({ data = [] }: LanguagePopoverProps) {
   };
 
   return (
-    !isMobile ?
+    showComponent ? (
       <>
-        {/* Botão no menu principal */}
         <IconButton
           onClick={handleOpen}
           sx={{
@@ -68,7 +63,6 @@ export function LanguagePopover({ data = [] }: LanguagePopoverProps) {
           {renderFlag(currentLang?.label, currentLang?.icon)}
         </IconButton>
 
-        {/* Popover com lista de idiomas */}
         <Popover
           open={Boolean(anchorEl)}
           anchorEl={anchorEl}
@@ -89,6 +83,6 @@ export function LanguagePopover({ data = [] }: LanguagePopoverProps) {
             ))}
           </List>
         </Popover>
-      </> : <></>
+      </>) : (<></>)
   );
 }

@@ -1,9 +1,7 @@
 import type { Theme, SxProps, Breakpoint } from "@mui/material/styles";
 
-import Link from "@mui/material/Link";
+import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
-
-import { RouterLink } from "src/routes/components";
 
 import { stylesMode } from "src/theme/styles";
 
@@ -11,6 +9,8 @@ import { Logo } from "src/components/logo";
 
 import { HeaderSection } from "src/layouts/core/header-section";
 import { LayoutSection } from "src/layouts/core/layout-section";
+import { LanguagePopover } from "src/layouts/components/language-popover";
+import { _langs } from "src/_mock";
 import { Main } from "./main";
 
 // ----------------------------------------------------------------------
@@ -51,14 +51,9 @@ export function AuthLayout({ sx, children, header }: AuthLayoutProps) {
             ),
             leftArea: <Logo />,
             rightArea: (
-              <Link
-                component={RouterLink}
-                href="#"
-                color="inherit"
-                sx={{ typography: "subtitle2" }}
-              >
-                Need help?
-              </Link>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <LanguagePopover data={_langs} />
+              </Box>
             ),
           }}
         />

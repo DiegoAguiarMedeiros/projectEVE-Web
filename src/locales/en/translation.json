@@ -5,6 +5,7 @@
     "available": "Available: {{amount}}",
     "language": "Language",
     "goals": "Goals",
+    "debts": "Debts",
     "housing": "Housing",
     "groceries": "Groceries",
     "health": "Health",
@@ -369,6 +370,46 @@
     },
     "deposit": {
         "salary": "Salary deposit {{name}}"
+    },
+    "auth": {
+        "sign_in": "Sign in",
+        "sign_in_title": "Sign in to your account",
+        "sign_up": "Sign up",
+        "sign_up_title": "Create your account",
+        "email": "Email",
+        "password": "Password",
+        "confirm_password": "Confirm Password",
+        "name": "Name",
+        "forgot_password": "Forgot password?",
+        "no_account": "Don't have an account?",
+        "has_account": "Already have an account?",
+        "get_started": "Get started",
+        "login_error": "Incorrect email or password",
+        "validation": {
+            "name_required": "Name is required",
+            "email_required": "Email is required",
+            "email_invalid": "Enter a valid email",
+            "password_required": "Password is required",
+            "password_min_length": "Password must be at least 8 characters",
+            "passwords_mismatch": "Passwords do not match"
+        }
+    },
+    "complete_registration": {
+        "title": "Complete registration",
+        "subtitle": "Tell us a little more so we can personalize your experience. Everything here can be edited later!",
+        "steps": {
+            "income": "Your Income",
+            "debts": "Your Debts",
+            "envelopes": "Your Limits",
+            "goals": "Your Goals",
+            "fixed_expenses": "Your Fixed Expenses",
+            "credit_cards": "Your Credit Cards"
+        },
+        "back": "Back",
+        "continue": "Continue",
+        "finish": "Finish",
+        "allocation_error": "Envelope allocation must be exactly 100% to complete registration.",
+        "finish_tooltip": "To finish, configure your My Limits (envelopes) so that the allocation is exactly 100%."
     },
     "profile": {
         "title": "My Profile",

@@ -26,6 +26,7 @@ export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({ envelope, handleActi
             display: 'flex',
             flexDirection: 'column',
             gap: 1,
+            cursor: 'pointer',
             position: 'relative',
             '&:hover .actions': {
                 opacity: 1

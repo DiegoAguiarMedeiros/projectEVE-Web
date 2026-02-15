@@ -28,7 +28,7 @@ import { IncomeStore } from "src/store/useIncomeStore";
 import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 import { useTotalIncomes } from "src/hooks/queries/incomes/useTotalIncomes";
 import { Month, ProcessedIncomesMonthResponse } from "src/types/ProcessedIncomes";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, useMediaQuery } from "@mui/material";
 import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
 
 // ----------------------------------------------------------------------
@@ -67,7 +67,7 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
     error: errorMonths,
   } = useProcessedIncomesMonth();
 
-
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const {
     data: totalIncomes,
     isLoading: isLoadingTotal,
@@ -154,7 +154,7 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
               <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
                 <NotificationsPopover data={_notifications} />
                 <ThemeToggleButton />
-                <LanguagePopover data={_langs} />
+                <LanguagePopover showComponent={!isMobile} data={_langs} />
 
                 <AccountPopover
                   data={[

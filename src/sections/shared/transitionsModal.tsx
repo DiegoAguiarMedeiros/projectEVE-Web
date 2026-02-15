@@ -54,7 +54,7 @@ export default function TransitionsModal({ openButton, okButton, children, open,
             <Box
               display="flex"
               alignSelf="flex-end"
-              justifyContent="flex-end"
+              justifyContent="space-between"
               gap={2}
               sx={{ width: "100%", mt: 3 }}
             >

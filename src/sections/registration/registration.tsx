@@ -2,15 +2,17 @@ import * as React from "react";
 
 import Box from "@mui/material/Box";
 import { useCallback, useState } from "react";
-import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
+import { Button, IconButton, InputAdornment, Link, TextField, Typography } from "@mui/material";
 import { Iconify } from "src/components/iconify";
 import { useRouter } from "src/routes/hooks";
 import { Logo } from "src/components/logo";
 import { useRegister } from "src/hooks/mutations/auth/useRegister";
+import { useTranslation } from "react-i18next";
 
 export function RegistrationView() {
-
   const router = useRouter();
+  const { t } = useTranslation();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,7 +26,6 @@ export function RegistrationView() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-
   const { mutate: register, isPending, error } = useRegister(() => {
     router.push("/entrar");
   });
@@ -35,75 +36,70 @@ export function RegistrationView() {
       email,
       password
     });
-  }, [register,name, email,password]);
-
+  }, [register, name, email, password]);
 
   const validateName = useCallback(() => {
     if (!name.trim()) {
-      setErrorName("O nome é obrigatório.");
+      setErrorName(t('auth.validation.name_required'));
       return false;
     }
     setErrorName(null);
     return true;
-  }, [name]);
+  }, [name, t]);
 
   const validateEmail = useCallback(() => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email.trim()) {
-      setErrorEmail("O e-mail é obrigatório.");
+      setErrorEmail(t('auth.validation.email_required'));
       return false;
     }
     if (!emailRegex.test(email)) {
-      setErrorEmail("Digite um e-mail válido.");
+      setErrorEmail(t('auth.validation.email_invalid'));
       return false;
     }
     setErrorEmail(null);
     return true;
-  }, [email]);
+  }, [email, t]);
 
   const validatePassword = useCallback(() => {
     if (!password.trim()) {
-      setErrorPassword("A senha é obrigatória.");
+      setErrorPassword(t('auth.validation.password_required'));
       return false;
     }
     if (password.length < 8) {
-      setErrorPassword("A senha deve ter pelo menos 8 caracteres.");
+      setErrorPassword(t('auth.validation.password_min_length'));
       return false;
     }
     setErrorPassword(null);
     return true;
-  }, [password]);
+  }, [password, t]);
 
   const validateConfirmPassword = useCallback(() => {
     if (confirmPassword !== password) {
-      setErrorConfirmPassword("As senhas não coincidem.");
+      setErrorConfirmPassword(t('auth.validation.passwords_mismatch'));
       return false;
     }
     setErrorConfirmPassword(null);
     return true;
-  }, [password, confirmPassword]);
+  }, [password, confirmPassword, t]);
 
   const handleRegistration = useCallback(async () => {
     const isNameValid = validateName();
     const isEmailValid = validateEmail();
     const isPasswordValid = validatePassword();
     const isConfirmPasswordValid = validateConfirmPassword();
-    if (confirmPassword !== password) {
-      setErrorConfirmPassword("As senhas não coincidem.");
-      return;
-    }
     if (!isNameValid || !isEmailValid || !isPasswordValid || !isConfirmPasswordValid) {
       return;
     }
 
     try {
-      handleSubmit()
+      handleSubmit();
     } catch (err) {
       console.error(err);
     } finally {
       setLoading(false);
     }
-  }, [handleSubmit, password, confirmPassword, validateName, validateEmail, validatePassword, validateConfirmPassword]);
+  }, [handleSubmit, validateName, validateEmail, validatePassword, validateConfirmPassword]);
 
   return (
     <Box
@@ -116,10 +112,12 @@ export function RegistrationView() {
     >
       <Logo isSingle={false} disableLink sx={{ margin: "20px" }} />
 
+      <Typography variant="h5" sx={{ mb: 2 }}>{t('auth.sign_up_title')}</Typography>
+
       <TextField
         fullWidth
         name="name"
-        label="Nome"
+        label={t('auth.name')}
         value={name}
         onChange={(e) => setName(e.target.value)}
         onBlur={validateName}
@@ -132,7 +130,7 @@ export function RegistrationView() {
         fullWidth
         type="email"
         name="email"
-        label="E-mail"
+        label={t('auth.email')}
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         onBlur={validateEmail}
@@ -144,7 +142,7 @@ export function RegistrationView() {
       <TextField
         fullWidth
         name="password"
-        label="Senha"
+        label={t('auth.password')}
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         onBlur={validatePassword}
@@ -168,7 +166,7 @@ export function RegistrationView() {
       <TextField
         fullWidth
         name="confirmPassword"
-        label="Confirmar Senha"
+        label={t('auth.confirm_password')}
         value={confirmPassword}
         onChange={(e) => setConfirmPassword(e.target.value)}
         onBlur={validateConfirmPassword}
@@ -198,8 +196,15 @@ export function RegistrationView() {
         onClick={handleRegistration}
         loading={loading}
       >
-        Cadastrar
+        {t('auth.sign_up')}
       </Button>
+
+      <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
+        {t('auth.has_account')}
+        <Link variant="subtitle2" href="/entrar" sx={{ ml: 0.5 }}>
+          {t('auth.sign_in')}
+        </Link>
+      </Typography>
     </Box>
   );
 }

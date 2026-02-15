@@ -16,6 +16,9 @@ export function useCreateIncomes() {
       queryClient.invalidateQueries({ queryKey: ["incomes"]});
       queryClient.invalidateQueries({ queryKey: ["incomes-total"]});
       queryClient.invalidateQueries({ queryKey: ["envelopes"] });
+      setTimeout(() => {
+        queryClient.invalidateQueries({ queryKey: ["envelopes"] });
+      }, 1000);
     },
   });
 }

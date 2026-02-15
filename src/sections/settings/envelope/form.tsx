@@ -30,6 +30,7 @@ export function EnvelopeForm({ buttonLabel, buttonIcon, data, open, handleOpen, 
         if (data) {
             setColor(data.color);
             setPercentage(data.percentage);
+            setName(data.name);
         }
     }, [data]);
 

@@ -9,7 +9,7 @@ import Stepper from "@mui/material/Stepper";
 import StepLabel from "@mui/material/StepLabel";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { useMediaQuery } from "@mui/material";
+import { Alert, Tooltip, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { ChipTabs } from "src/components/chip-tabs";
 
@@ -27,26 +27,40 @@ import { useListFixedExpenses } from "src/hooks/queries/fixed-expenses/useListFi
 import { useListDebts } from "src/hooks/queries/debts/useListDebts";
 import { useListCreditCards } from "src/hooks/queries/credit-cards/useListCreditCards";
 import { useTable } from "src/sections/shared/useTable";
+import { useTranslation } from "react-i18next";
+import { useTotalIncomes } from "src/hooks/queries/incomes/useTotalIncomes";
+import { IncomeStore } from "src/store/useIncomeStore";
 
-const STEPS = [
-  "Sua Renda",
-  "Suas Dívidas",
-  "Seus Limites",
-  "Suas Metas",
-  "Suas Contas Fixas",
-  "Seus Cartões",
+const STEP_KEYS = [
+  "complete_registration.steps.income",
+  "complete_registration.steps.debts",
+  "complete_registration.steps.envelopes",
+  "complete_registration.steps.goals",
+  "complete_registration.steps.fixed_expenses",
+  "complete_registration.steps.credit_cards",
 ];
 
 export function CompleteRegistrationView() {
   const router = useRouter();
   const table = useTable();
+  const { t } = useTranslation();
   const [activeStep, setActiveStep] = React.useState(0);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const steps = STEP_KEYS.map((key) => t(key));
 
   const { mutate: completeRegistration, isPending } = useCompleteRegistration(() => {
     router.push("/");
   });
+
+  const { setIncome } = IncomeStore();
+  const { data: totalIncomes } = useTotalIncomes();
+
+  React.useEffect(() => {
+    if (totalIncomes?.total != null) {
+      setIncome(totalIncomes.total);
+    }
+  }, [totalIncomes, setIncome]);
 
   const { data: incomes } = useListIncomes(table);
   const { data: envelopes } = useListEnvelopes();
@@ -55,9 +69,27 @@ export function CompleteRegistrationView() {
   const { data: debts } = useListDebts(table);
   const { data: creditCards } = useListCreditCards(table);
 
+  const [allocationError, setAllocationError] = React.useState(false);
+
+  const envelopeAllocation = React.useMemo(() => {
+    if (!envelopes) return 0;
+    return envelopes.reduce((acc, item) => acc + item.percentage, 0);
+  }, [envelopes]);
+
+  const canFinish = envelopeAllocation === 100;
+
+  const handleFinish = () => {
+    if (!canFinish) {
+      setAllocationError(true);
+      return;
+    }
+    setAllocationError(false);
+    completeRegistration();
+  };
+
   const handleNext = () => {
-    if (activeStep === STEPS.length - 1) {
-      completeRegistration();
+    if (activeStep === steps.length - 1) {
+      handleFinish();
     } else {
       setActiveStep((prev) => prev + 1);
     }
@@ -107,23 +139,23 @@ export function CompleteRegistrationView() {
     <Container sx={{ py: isMobile ? 2 : 5, px: isMobile ? 1 : 3 }}>
       <Box display="flex" flexDirection="column" alignItems="center" sx={{ width: "100%", minWidth: 0 }}>
         <Typography variant="h4" sx={{ mb: 1 }}>
-          Completar cadastro
+          {t('complete_registration.title')}
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 4 }}>
-          Conte-nos um pouco mais para personalizarmos sua experiência. Tudo aqui pode ser editado depois!
+          {t('complete_registration.subtitle')}
         </Typography>
 
         {isMobile ? (
           <Box sx={{ width: "100%", mb: 2 }}>
             <ChipTabs
-              tabs={STEPS.map((label, index) => ({ label, index }))}
+              tabs={steps.map((label, index) => ({ label, index }))}
               activeIndex={activeStep}
               onChange={setActiveStep}
             />
           </Box>
         ) : (
           <Stepper activeStep={activeStep} sx={{ width: "100%", mb: 5 }}>
-            {STEPS.map((label) => (
+            {steps.map((label) => (
               <Step key={label}>
                 <StepLabel>{label}</StepLabel>
               </Step>
@@ -134,6 +166,12 @@ export function CompleteRegistrationView() {
         <Box sx={{ width: "100%", minHeight: 400 }}>
           {renderContent()}
 
+          {allocationError && (
+            <Alert severity="error" sx={{ mt: 2, width: "100%" }} onClose={() => setAllocationError(false)}>
+              {t('complete_registration.allocation_error')}
+            </Alert>
+          )}
+
           <Box sx={{ display: "flex", justifyContent: "space-between", mt: 4 }}>
             <Button
               disabled={activeStep === 0}
@@ -141,11 +179,30 @@ export function CompleteRegistrationView() {
               variant="outlined"
               color="inherit"
             >
-              Voltar
+              {t('complete_registration.back')}
             </Button>
-            <Button variant="contained" onClick={handleNext}>
-              {activeStep === STEPS.length - 1 ? "Finalizar" : "Continuar"}
-            </Button>
+
+            <Box sx={{ display: "flex", gap: 1 }}>
+              {activeStep < steps.length - 1 && (
+                <Button variant="outlined" onClick={handleNext}>
+                  {t('complete_registration.continue')}
+                </Button>
+              )}
+              <Tooltip
+                title={!canFinish ? t('complete_registration.finish_tooltip') : ''}
+                arrow
+              >
+                <span>
+                  <Button
+                    variant="contained"
+                    onClick={handleFinish}
+                    disabled={!canFinish}
+                  >
+                    {t('complete_registration.finish')}
+                  </Button>
+                </span>
+              </Tooltip>
+            </Box>
           </Box>
         </Box>
       </Box>

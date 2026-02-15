@@ -17,7 +17,7 @@ export default function AddButton({ onClick }: AddButtonProps) {
                 right: 24,
                 zIndex: 1300,
                 bgcolor: 'primary.main',
-                color: 'text.white',
+                color: 'white',
                 '&:hover': { bgcolor: 'primary.dark' },
             }}
             onClick={() => onClick(true)}

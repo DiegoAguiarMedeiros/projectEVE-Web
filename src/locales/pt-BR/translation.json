@@ -3,6 +3,7 @@
     "welcome": "Bem-vindo de volta",
     "language": "Idioma",
     "goals": "Metas",
+    "debts": "Dívidas",
     "housing": "Habitação",
     "groceries": "Mercado",
     "health": "Saúde",
@@ -373,6 +374,46 @@
     },
     "deposit": {
         "salary": "Depósito salário {{name}}"
+    },
+    "auth": {
+        "sign_in": "Entrar",
+        "sign_in_title": "Entrar na sua conta",
+        "sign_up": "Cadastrar",
+        "sign_up_title": "Criar sua conta",
+        "email": "E-mail",
+        "password": "Senha",
+        "confirm_password": "Confirmar Senha",
+        "name": "Nome",
+        "forgot_password": "Esqueceu a senha?",
+        "no_account": "Não tem uma conta?",
+        "has_account": "Já tem uma conta?",
+        "get_started": "Comece agora",
+        "login_error": "Login ou senha incorretos",
+        "validation": {
+            "name_required": "O nome é obrigatório",
+            "email_required": "O e-mail é obrigatório",
+            "email_invalid": "Digite um e-mail válido",
+            "password_required": "A senha é obrigatória",
+            "password_min_length": "A senha deve ter pelo menos 8 caracteres",
+            "passwords_mismatch": "As senhas não coincidem"
+        }
+    },
+    "complete_registration": {
+        "title": "Completar cadastro",
+        "subtitle": "Conte-nos um pouco mais para personalizarmos sua experiência. Tudo aqui pode ser editado depois!",
+        "steps": {
+            "income": "Sua Renda",
+            "debts": "Suas Dívidas",
+            "envelopes": "Seus Limites",
+            "goals": "Suas Metas",
+            "fixed_expenses": "Suas Contas Fixas",
+            "credit_cards": "Seus Cartões"
+        },
+        "back": "Voltar",
+        "continue": "Continuar",
+        "finish": "Finalizar",
+        "allocation_error": "A alocação dos envelopes deve ser exatamente 100% para finalizar o cadastro.",
+        "finish_tooltip": "Para finalizar, configure seus Meus Limites (envelopes) para que a alocação seja exatamente 100%."
     },
     "profile": {
         "title": "Meu Perfil",
