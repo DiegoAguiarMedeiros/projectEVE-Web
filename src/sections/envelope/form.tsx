@@ -18,6 +18,7 @@ import { fCurrency } from "src/utils/format-number";
 import { useTranslation } from "react-i18next";
 import { useCurrency } from "src/hooks/useCurrency";
 import { iconsMap } from "src/components/icon/iconsMap";
+import { useAllCreditCards } from "src/hooks/queries/credit-cards/useAllCreditCards";
 
 type TransactionFormProps = {
     buttonIcon?: React.ReactNode;
@@ -47,7 +48,11 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
     const [description, setDescription] = useState(data ? data.description : "");
     const [amount, setAmount] = useState(data ? data.amount : "");
     const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(data ? data.paymentMethod : "envelope.transaction.payment_method.DebitCard");
+    const [creditCardId, setCreditCardId] = useState<string>(data?.creditCardId ?? "");
     const [date, setDate] = useState<Dayjs | null>(data ? dayjs(data.date) : null);
+
+    const { data: creditCardsData } = useAllCreditCards();
+    const creditCards = creditCardsData?.data ?? [];
 
     const [errorDescription, setErrorDescription] = useState<string | null>(null);
     const [errorAmount, setErrorAmount] = useState<string | null>(null);
@@ -57,6 +62,7 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
     const clearTransactionForm = () => {
         setDescription("")
         setAmount("")
+        setCreditCardId("")
     };
 
     const [isPending, setIsPending] = useState(false);
@@ -73,6 +79,7 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
         setIsPending(true);
         setError(null);
 
+        const isCreditCard = transactions.paymentMethod === "envelope.transaction.payment_method.CreditCard";
         try {
             if (data) {
                 await updateMutation.mutateAsync({
@@ -82,6 +89,7 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
                     status: data.status,
                     envelopeId,
                     paymentMethod: transactions.paymentMethod,
+                    creditCardId: isCreditCard ? transactions.creditCardId : undefined,
                     date: transactions.date,
                     type: "Debit"
                 });
@@ -92,6 +100,7 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
                     status: transactions.status,
                     envelopeId,
                     paymentMethod: transactions.paymentMethod,
+                    creditCardId: isCreditCard ? transactions.creditCardId : undefined,
                     date: transactions.date,
                     type: "Debit"
                 });
@@ -113,6 +122,7 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
                     description,
                     amount,
                     paymentMethod,
+                    creditCardId: creditCardId || undefined,
                     status: "transaction.status.pending",
                     envelopeId,
                     date,
@@ -126,16 +136,6 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
 
     const { t } = useTranslation();
     const { symbol } = useCurrency();
-
-    const paymentMethodLabels: Record<PaymentMethod, string> = {
-        "envelope.transaction.payment_method.CreditCard": t('common.payment_method.credit_card'),
-        "envelope.transaction.payment_method.DebitCard": t('common.payment_method.debit_card'),
-        "envelope.transaction.payment_method.Cash": t('common.payment_method.cash'),
-        "envelope.transaction.payment_method.BankTransfer": t('common.payment_method.bank_transfer'),
-        "envelope.transaction.payment_method.Pix": t('common.payment_method.pix'),
-        "envelope.transaction.payment_method.Reallocation": t('common.payment_method.reallocation'),
-        "envelope.transaction.payment_method.Ticket": t('common.payment_method.ticket')
-    };
 
     const validateDescription = useCallback(() => {
         if (!description.trim()) {
@@ -161,7 +161,11 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
     }, [amount, t]);
 
     const handleSelectChange = (event: SelectChangeEvent<PaymentMethod>) => {
-        setPaymentMethod(event.target.value as PaymentMethod);
+        const value = event.target.value as PaymentMethod;
+        setPaymentMethod(value);
+        if (value !== "envelope.transaction.payment_method.CreditCard") {
+            setCreditCardId("");
+        }
     };
 
 
@@ -263,7 +267,10 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
                     >
                         {allPaymentMethod.map((f, index) => {
                             if (f === "envelope.transaction.payment_method.Reallocation") {
-                                return null; // Skip rendering this option if there are no destination envelopes
+                                return null;
+                            }
+                            if (f === "envelope.transaction.payment_method.CreditCard" && creditCards.length === 0) {
+                                return null;
                             }
                             return (<MenuItem key={index} value={f}>
                                 <Stack direction="row" spacing={1} alignItems="center">
@@ -273,6 +280,25 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
                         })}
                     </Select>
                 </FormControl>
+                {paymentMethod === "envelope.transaction.payment_method.CreditCard" && creditCards.length > 0 && (
+                    <FormControl fullWidth>
+                        <InputLabel id="credit-card-select-label">{t('envelope.transaction.payment_method.CreditCard')}</InputLabel>
+                        <Select
+                            labelId="credit-card-select-label"
+                            id="credit-card-select"
+                            label={t('envelope.transaction.payment_method.CreditCard')}
+                            sx={{ width: "100%" }}
+                            value={creditCardId}
+                            onChange={(e) => setCreditCardId(e.target.value)}
+                        >
+                            {creditCards.map((card) => (
+                                <MenuItem key={card.id} value={card.id}>
+                                    {card.name} ({card.flag})
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                )}
             </Box >
         </TransitionsModal>
     );

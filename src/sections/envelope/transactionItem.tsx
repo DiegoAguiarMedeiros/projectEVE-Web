@@ -97,7 +97,7 @@ export function TransactionItem({
                                 />
                             </Box>
                             <Typography variant="caption" color="text.secondary">
-                                {t(paymentMethod)}
+                                {transaction.creditCardName ?? t(paymentMethod)}
                             </Typography>
                             <Typography variant="caption" color="text.secondary">
                                 &bull; {dayjs(date).format("DD/MM/YYYY")}

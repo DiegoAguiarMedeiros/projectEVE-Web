@@ -67,7 +67,7 @@ export function UpcomingPendingTransactionItem({
                         {t(envelopeName)}
                     </Typography>
                     <Typography variant="caption" color="text.secondary">
-                        &bull; {t(paymentMethod)}
+                        &bull; {transaction.creditCardName ?? t(paymentMethod)}
                     </Typography>
                     <Typography variant="caption" color="text.secondary">
                         &bull; {fDate(date)}

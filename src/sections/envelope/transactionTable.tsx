@@ -51,7 +51,7 @@ export function TransactionTable({ envelopeId, transactions, table, activeBorder
     }, [updateStatusTransactionMutation]);
 
     const TransactionRow = (row: Transactions, deleteTransaction: (id: string) => void) => {
-        const { id } = row;
+        const { id, creditCardName } = row;
 
 
         const handleDeleteTransaction = () => {
@@ -86,7 +86,7 @@ export function TransactionTable({ envelopeId, transactions, table, activeBorder
                 getTranslatedDescription(description, isTranslatable),
                 type === "Debit" ? t('envelope.transaction.type.debit') : t('envelope.transaction.type.credit'),
                 fCurrency(amount),
-                t(paymentMethod),
+                creditCardName ?? t(paymentMethod),
                 dayjs(date).format("DD/MM/YYYY"),
                 <Chips
                     label={t(status)}

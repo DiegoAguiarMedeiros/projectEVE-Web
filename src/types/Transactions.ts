@@ -42,6 +42,7 @@ export const allTransactionsType: TransactionsType[] = ["Credit", "Debit"]
 export interface Transactions {
     id: string;
     creditCardId?: string;
+    creditCardName?: string;
     envelopeId: string;
     description: string;
     amount: string;
