@@ -1,8 +1,6 @@
 import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
-import { startTransition, useActionState, useCallback, useEffect, useImperativeHandle, useRef, useState, useTransition } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useCallback, useEffect, useState } from "react";
 import TransitionsModal from "src/sections/shared/transitionsModal";
-import { useSnackbar, VariantType } from "notistack";
 import { useCreateCreditCards } from "src/hooks/mutations/credit-cards/useCreateCreditCards";
 import { useUpdateCreditCards } from "src/hooks/mutations/credit-cards/useUpdateCreditCards";
 import { allFlags, CreditCards, CreditCardsPost, Flags } from "src/types/CreditCards";
@@ -18,12 +16,11 @@ type CreditCardFormProps = {
 }
 
 export function CreditCardForm({ buttonLabel, buttonIcon, data, externalOpen, onExternalClose }: CreditCardFormProps) {
-    const { enqueueSnackbar } = useSnackbar();
     const { t } = useTranslation();
-
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => {
+        clearForm();
         setOpen(false);
         onExternalClose?.();
     };
@@ -37,14 +34,12 @@ export function CreditCardForm({ buttonLabel, buttonIcon, data, externalOpen, on
     const [errorName, setErrorName] = useState<string | null>(null);
     const [erroFlag, setErroFlag] = useState<string | null>(null);
 
-    const queryClient = useQueryClient();
-
-    const refresh = () => {
-        queryClient.invalidateQueries({ queryKey: ["credit-cards"] });
-    };
     const clearForm = () => {
         setName("")
         setFlag("Visa")
+        setErrorName(null)
+        setErroFlag(null)
+        setError(null)
     };
 
 
@@ -88,9 +83,7 @@ export function CreditCardForm({ buttonLabel, buttonIcon, data, externalOpen, on
 
     const handleSubmit = async () => {
         if (validateName() && validateFlag()) {
-            startTransition(() => {
-                submitAction({ name, flag });
-            });
+            await submitAction({ name, flag });
         }
     };
 
@@ -133,7 +126,7 @@ export function CreditCardForm({ buttonLabel, buttonIcon, data, externalOpen, on
                     style={{ display: "flex", gap: "16px", background: "none", border: "none", cursor: "pointer", margin: 0, padding: 0 }}
                     onClick={handleOpen}
                 >
-                    {buttonIcon}{buttonLabel === 'Adicionar' ? t('common.add') : buttonLabel === 'Editar' ? t('common.edit') : buttonLabel}
+                    {buttonIcon}{buttonLabel === 'common.add' ? t('common.add') : buttonLabel === 'common.edit' ? t('common.edit') : buttonLabel}
                 </Button>
             }
 

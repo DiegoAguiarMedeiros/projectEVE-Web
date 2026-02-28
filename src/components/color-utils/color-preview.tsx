@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 
 import { varAlpha } from "src/theme/styles";
 
-import type { ColorPreviewProps } from "./types";
+import type { ColorPreviewProps } from "src/components/color-utils/types";
 
 // ----------------------------------------------------------------------
 

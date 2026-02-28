@@ -24,6 +24,7 @@ export const CompleteRegistration = lazy(() => import("src/pages/completeRegistr
 export const Registration = lazy(() => import("src/pages/registration"));
 export const ReallocationPage = lazy(() => import("src/pages/reallocation"));
 export const Page404 = lazy(() => import("src/pages/page-not-found"));
+export const VerifyEmailPage = lazy(() => import("src/pages/verify-email"));
 
 // ----------------------------------------------------------------------
 
@@ -91,6 +92,14 @@ export function Router() {
         <SimpleLayout>
           <Registration />
         </SimpleLayout>
+      ),
+    },
+    {
+      path: "verificar-email",
+      element: (
+        <Suspense fallback={renderFallback}>
+          <VerifyEmailPage />
+        </Suspense>
       ),
     },
     {

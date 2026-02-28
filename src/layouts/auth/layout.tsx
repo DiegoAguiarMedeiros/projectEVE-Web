@@ -11,7 +11,8 @@ import { HeaderSection } from "src/layouts/core/header-section";
 import { LayoutSection } from "src/layouts/core/layout-section";
 import { LanguagePopover } from "src/layouts/components/language-popover";
 import { _langs } from "src/_mock";
-import { Main } from "./main";
+import { Main } from "src/layouts/auth/main";
+import { ThemeToggleButton } from "src/components/themeSwitch/themeSwitch";
 
 // ----------------------------------------------------------------------
 
@@ -52,6 +53,7 @@ export function AuthLayout({ sx, children, header }: AuthLayoutProps) {
             leftArea: <Logo />,
             rightArea: (
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <ThemeToggleButton />
                 <LanguagePopover data={_langs} />
               </Box>
             ),

@@ -9,3 +9,6 @@ export const register = (data: RegisterPayload) =>
 
 export const logout = () =>
   api.post("/auth/logout");
+
+export const verifyEmail = (token: string) =>
+  api.get("/auth/verify-email", { params: { token } });

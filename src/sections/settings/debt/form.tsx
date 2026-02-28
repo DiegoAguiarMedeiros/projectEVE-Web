@@ -1,11 +1,12 @@
 import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
-import { startTransition, useActionState, useCallback, useEffect, useImperativeHandle, useRef, useState, useTransition } from "react";
+import { useCallback, useEffect, useState } from "react";
 import TransitionsModal from "src/sections/shared/transitionsModal";
 import { Envelopes } from "src/types/Envelopes";
 import { useCreateDebts } from "src/hooks/mutations/debts/useCreateDebts";
 import { useUpdateDebts } from "src/hooks/mutations/debts/useUpdateDebts";
 import { Debts, DebtsPost } from "src/types/Debts";
 import { useTranslation } from "react-i18next";
+import { CurrencyInput } from "src/components/CurrencyInput";
 
 
 
@@ -24,6 +25,7 @@ export function DebtForm({ buttonLabel, buttonIcon, data, envelopes, externalOpe
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => {
+        clearForm();
         setOpen(false);
         onExternalClose?.();
     };
@@ -51,6 +53,12 @@ export function DebtForm({ buttonLabel, buttonIcon, data, envelopes, externalOpe
         setInstallmentsTotal("")
         setInstallmentsPaid("")
         setPaymentDay("")
+        setErrorDescription(null)
+        setErrorAmount(null)
+        setErrorInstallmentsTotal(null)
+        setErrorInstallmentsPaid(null)
+        setErrorPaymentDay(null)
+        setError(null)
     };
 
 
@@ -101,16 +109,14 @@ export function DebtForm({ buttonLabel, buttonIcon, data, envelopes, externalOpe
 
     const handleSubmit = async () => {
         if (validateDescription() && validateAmount()) {
-            startTransition(async () => {
-                submitAction({
-                    envelopeId: envelopeId.id,
-                    description,
-                    amount,
-                    installmentsTotal,
-                    installmentsPaid,
-                    paymentDay,
-                    status: "debt.status.pending"
-                });
+            await submitAction({
+                envelopeId: envelopeId.id,
+                description,
+                amount,
+                installmentsTotal,
+                installmentsPaid,
+                paymentDay,
+                status: "debt.status.pending"
             });
         }
     };
@@ -197,7 +203,7 @@ export function DebtForm({ buttonLabel, buttonIcon, data, envelopes, externalOpe
                     style={{ display: "flex", gap: "16px", background: "none", border: "none", cursor: "pointer", margin: 0, padding: 0 }}
                     onClick={handleOpen}
                 >
-                    {buttonIcon}{buttonLabel === 'Adicionar' ? t('common.add') : buttonLabel === 'Editar' ? t('common.edit') : buttonLabel}
+                    {buttonIcon}{buttonLabel === 'common.add' ? t('common.add') : buttonLabel === 'common.edit' ? t('common.edit') : buttonLabel}
                 </Button>
             }
 
@@ -228,22 +234,16 @@ export function DebtForm({ buttonLabel, buttonIcon, data, envelopes, externalOpe
                     error={!!errorDescription}
                     helperText={errorDescription ?? ""}
                 />
-                <TextField
+                <CurrencyInput
                     fullWidth
-                    type="number"
                     name="amount"
                     label={t('settings.debt.amount')}
                     value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
+                    onChange={setAmount}
                     onBlur={validateAmount}
                     sx={{ mb: 3 }}
                     error={!!errorAmount}
                     helperText={errorAmount ?? ""}
-                    slotProps={{
-                        input: {
-                            inputMode: "numeric",
-                        }
-                    }}
                 />
 
                 <TextField

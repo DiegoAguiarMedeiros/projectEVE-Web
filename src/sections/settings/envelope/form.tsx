@@ -1,13 +1,13 @@
-import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, Slider, TextField, Typography } from "@mui/material";
-import { startTransition, useActionState, useCallback, useEffect, useImperativeHandle, useRef, useState, useTransition } from "react";
+import { Box, Button, InputAdornment, Slider, Typography } from "@mui/material";
+import { CurrencyInput } from "src/components/CurrencyInput";
+import { useEffect, useState } from "react";
 import TransitionsModal from "src/sections/shared/transitionsModal";
 import { Envelopes } from "src/types/Envelopes";
-import { useCreateDebts } from "src/hooks/mutations/debts/useCreateDebts";
-import { useUpdateDebts } from "src/hooks/mutations/debts/useUpdateDebts";
-import { Debts, DebtsPost } from "src/types/Debts";
 import { useUpdateEnvelopes } from "src/hooks/mutations/envelopes/useUpdateEnvelopes";
 import SaveIcon from '@mui/icons-material/Save';
 import { useTranslation } from "react-i18next";
+import { IncomeStore } from "src/store/useIncomeStore";
+import { fCurrency } from "src/utils/format-number";
 
 
 
@@ -25,27 +25,53 @@ export function EnvelopeForm({ buttonLabel, buttonIcon, data, open, handleOpen, 
 
     const [color, setColor] = useState('#4ECDC4');
     const [percentage, setPercentage] = useState(0);
+    const [valueInput, setValueInput] = useState('');
+
+    const isDebts = data?.name === 'debts';
+
+    const income = IncomeStore((state) => state.income);
+
+    const computedValue = (percentage / 100) * income;
 
     useEffect(() => {
         if (data) {
             setColor(data.color);
             setPercentage(data.percentage);
-            setName(data.name);
+            if (income > 0) {
+                setValueInput(((data.percentage / 100) * income).toFixed(2));
+            }
         }
-    }, [data]);
+    }, [data, income]);
 
+    useEffect(() => {
+        if (!open && data) {
+            setColor(data.color);
+            setPercentage(data.percentage);
+            setValueInput(income > 0 ? ((data.percentage / 100) * income).toFixed(2) : '');
+            setError(null);
+        }
+    }, [data, open, income]);
 
+    const handleSliderChange = (_: Event, value: number | number[]) => {
+        const newPercentage = value as number;
+        setPercentage(newPercentage);
+        if (income > 0) {
+            setValueInput(((newPercentage / 100) * income).toFixed(2));
+        }
+    };
 
+    const handleValueInputChange = (rawValue: string) => {
+        setValueInput(rawValue);
+        const parsed = parseFloat(rawValue);
+        if (!Number.isNaN(parsed) && income > 0) {
+            const newPercentage = Math.min(100, Math.max(0, Math.round((parsed / income) * 100)));
+            setPercentage(newPercentage);
+        }
+    };
 
-
-
-    const [name, setName] = useState(data ? data.name : "");
-    const [errorName, setErrorName] = useState<string | null>(null);
     const [isPending, setIsPending] = useState(false);
     const [error, setError] = useState<Error | null>(null);
     const updateMutation = useUpdateEnvelopes();
-
-    const [selectedIcon, setSelectedIcon] = useState<string>("");
 
     const submitAction = async (envelopes: Envelopes) => {
         setIsPending(true);
@@ -55,41 +81,27 @@ export function EnvelopeForm({ buttonLabel, buttonIcon, data, open, handleOpen, 
             if (data) {
                 await updateMutation.mutateAsync({
                     id: data.id,
-                    name: envelopes.name,
+                    name: data.name,
                     color: envelopes.color,
                     percentage: envelopes.percentage,
                 });
             }
+            handleClose();
         } catch (err: any) {
             setError(err);
         } finally {
-            handleClose()
             setIsPending(false);
         }
     };
 
-    const handleSubmit = () => {
-        startTransition(async () => {
-            submitAction({
-                id: data?.id,
-                name: data?.name,
-                color,
-                percentage,
-            })
+    const handleSubmit = async () => {
+        await submitAction({
+            id: data?.id,
+            name: data?.name,
+            color,
+            percentage,
         });
     }
-
-
-    const validateName = useCallback(() => {
-        if (!name.trim()) {
-            setErrorName(t('settings.envelope.validation.name_required'));
-            return false;
-        }
-        setErrorName(null);
-        return true;
-    }, [name, t]);
-
-
 
     return (
 
@@ -110,26 +122,12 @@ export function EnvelopeForm({ buttonLabel, buttonIcon, data, open, handleOpen, 
                 sx={{ width: "100%" }}
             >
 
-
                 <Typography variant="h3" noWrap>
-                    {t('settings.envelope.title')}
+                    {t(data?.name)}
                 </Typography>
-
-
 
                 {error && <p>{error.message}</p>}
 
-                <TextField
-                    fullWidth
-                    name="name"
-                    label={t('settings.envelope.name')}
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    onBlur={validateName}
-                    sx={{ mb: 3 }}
-                    error={!!errorName}
-                    helperText={errorName ?? ""}
-                />
                 <Box sx={{ width: '100%', display: 'flex', px: 2, pb: 4, gap: 4 }}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                         <Typography variant="subtitle2" sx={{ mb: 2 }}>{t('settings.envelope.color')}</Typography>
@@ -152,14 +150,39 @@ export function EnvelopeForm({ buttonLabel, buttonIcon, data, open, handleOpen, 
                         </Box>
                     </Box>
 
-                    <Box sx={{ flex: '1 0 0', flexDirection: 'column', gap: 2 }}>
-                        <Typography variant="subtitle2" sx={{ mb: 2 }}>{t('settings.envelope.percentage', { count: percentage })}</Typography>
+                    <Box sx={{ flex: '1 0 0', display: 'flex', flexDirection: 'column', gap: 2 }}>
+                        <Typography variant="subtitle2">{t('settings.envelope.percentage', { count: percentage })}</Typography>
+                        {income > 0 && !isDebts && (
+                            <CurrencyInput
+                                size="small"
+                                value={valueInput}
+                                onChange={handleValueInputChange}
+                                label={t('settings.envelope.value_input')}
+                                slotProps={{
+                                    input: {
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <Typography variant="caption" color="text.secondary">
+                                                    {t('settings.envelope.salary_value', { value: fCurrency(income) })}
+                                                </Typography>
+                                            </InputAdornment>
+                                        ),
+                                    },
+                                }}
+                            />
+                        )}
+                        {income > 0 && isDebts && (
+                            <Typography variant="caption" color="text.secondary">
+                                {t('settings.envelope.salary_value', { value: fCurrency(computedValue) })}
+                            </Typography>
+                        )}
                         <Slider
                             value={percentage}
-                            onChange={(_, value) => setPercentage(value as number)}
+                            onChange={handleSliderChange}
                             min={0}
                             max={100}
                             step={1}
+                            disabled={isDebts}
                             marks={[
                                 { value: 0, label: '0%' },
                                 { value: 25, label: '25%' },
@@ -182,8 +205,6 @@ export function EnvelopeForm({ buttonLabel, buttonIcon, data, open, handleOpen, 
                         />
                     </Box>
                 </Box>
-
-
 
 
             </Box >

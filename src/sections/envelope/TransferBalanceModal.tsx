@@ -9,6 +9,7 @@ import {
     Stack,
     InputAdornment
 } from "@mui/material";
+import { CurrencyInput } from "src/components/CurrencyInput";
 import TransitionsModal from "src/sections/shared/transitionsModal";
 import { Envelopes } from "src/types/Envelopes";
 import { useTransferBalance } from "src/hooks/mutations/envelopes/useTransferBalance";
@@ -35,7 +36,7 @@ export function TransferBalanceModal({
     const { symbol } = useCurrency();
 
     const [toEnvelopeId, setToEnvelopeId] = useState("");
-    const [amount, setAmount] = useState<number | string>("");
+    const [amount, setAmount] = useState("");
     const [error, setError] = useState<string | null>(null);
 
     // Filter envelopes to exclude the source envelope
@@ -148,20 +149,21 @@ export function TransferBalanceModal({
                         ))}
                     </TextField>
 
-                    <TextField
+                    <CurrencyInput
                         label={t('envelope.transfer.amount_label')}
-                        type="number"
                         fullWidth
                         value={amount}
-                        onChange={(e) => {
-                            setAmount(e.target.value);
+                        onChange={(raw) => {
+                            setAmount(raw);
                             setError(null);
                         }}
-                        InputProps={{
-                            startAdornment: <InputAdornment position="start">{symbol}</InputAdornment>,
+                        slotProps={{
+                            input: {
+                                startAdornment: <InputAdornment position="start">{symbol}</InputAdornment>,
+                            }
                         }}
                         error={!!error}
-                        helperText={error}
+                        helperText={error ?? undefined}
                     />
                 </Stack>
             </Box>

@@ -19,7 +19,7 @@ import { Envelopes } from "src/types/Envelopes";
 import { Transactions } from "src/types/Transactions";
 import { ITable } from "src/sections/shared/useTable";
 import { TransactionDisplay } from "src/sections/envelope/TransactionDisplay";
-import { RealEnvelopesCard } from "src/sections/envelope/RealEnvelopeCard";
+import { RealEnvelopesCard } from "src/components/realEnvelopeCard";
 
 type SwiperEnvelopProps = {
   envelopes: Envelopes[]

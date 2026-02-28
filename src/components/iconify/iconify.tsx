@@ -3,9 +3,9 @@ import { Icon, disableCache } from "@iconify/react";
 
 import Box from "@mui/material/Box";
 
-import { iconifyClasses } from "./classes";
+import { iconifyClasses } from "src/components/iconify/classes";
 
-import type { IconifyProps } from "./types";
+import type { IconifyProps } from "src/components/iconify/types";
 
 // ----------------------------------------------------------------------
 

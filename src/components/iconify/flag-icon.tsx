@@ -5,7 +5,7 @@ import { forwardRef } from "react";
 
 import Box from "@mui/material/Box";
 
-import { iconifyClasses } from "./classes";
+import { iconifyClasses } from "src/components/iconify/classes";
 
 // ----------------------------------------------------------------------
 

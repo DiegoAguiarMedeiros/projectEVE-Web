@@ -3,7 +3,7 @@ import { listWithAmount } from "src/api/services/envelopes/EnvelopesService";
 
 export function useListEnvelopesWithAmount(year: number, month: number) {
   return useQuery({
-    queryKey: ["envelopes"],
+    queryKey: ["envelopes-sith-amount", year, month],
     queryFn: () => listWithAmount(year, month).then(res => res.data),
     staleTime: 5000,
     gcTime: 60000,

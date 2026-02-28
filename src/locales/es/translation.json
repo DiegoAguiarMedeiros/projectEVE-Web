@@ -260,6 +260,8 @@
             "name": "Nombre",
             "color": "Color",
             "percentage": "Porcentaje: {{count}}%",
+            "salary_value": "de {{value}}",
+            "value_input": "Valor",
             "allocation_remaining": "Faltan {{count}}% para la asignación",
             "allocation_exceeded": "Excedió {{count}}% del máximo",
             "save": "Guardar",
@@ -381,6 +383,7 @@
         "email": "Correo electrónico",
         "password": "Contraseña",
         "confirm_password": "Confirmar Contraseña",
+        "confirm_email": "Confirmar Correo electrónico",
         "name": "Nombre",
         "forgot_password": "¿Olvidaste tu contraseña?",
         "no_account": "¿No tienes una cuenta?",
@@ -391,10 +394,26 @@
             "name_required": "El nombre es obligatorio",
             "email_required": "El correo es obligatorio",
             "email_invalid": "Ingrese un correo válido",
+            "emails_mismatch": "Los correos no coinciden",
             "password_required": "La contraseña es obligatoria",
             "password_min_length": "La contraseña debe tener al menos 8 caracteres",
             "passwords_mismatch": "Las contraseñas no coinciden"
-        }
+        },
+        "errors": {
+            "email_already_exists": "Este correo electrónico ya está registrado",
+            "invalid_or_expired_token": "El enlace de verificación es inválido o ha expirado.",
+            "email_not_verified": "Tu correo electrónico aún no ha sido confirmado. Se ha enviado un nuevo enlace de verificación a tu correo."
+        },
+        "verify_email": {
+            "verifying": "Verificando tu correo electrónico...",
+            "success_title": "¡Correo verificado!",
+            "success_message": "Tu cuenta ha sido activada con éxito. Inicia sesión para continuar.",
+            "error_title": "Enlace inválido o expirado",
+            "go_to_login": "Ir al inicio de sesión"
+        },
+        "registration_success_title": "¡Registro completado!",
+        "registration_success_message": "Tu cuenta ha sido creada con éxito.",
+        "registration_success_email": "Se ha enviado un correo de confirmación a {{email}}. Haz clic en el enlace para activar tu cuenta."
     },
     "complete_registration": {
         "title": "Completar registro",
@@ -431,6 +450,11 @@
         "currency": {
             "title": "Moneda",
             "select": "Seleccione la moneda"
+        },
+        "number_format": {
+            "title": "Formato de Número",
+            "dot_comma": "Punto y coma",
+            "comma_dot": "Coma y punto"
         },
         "notifications": {
             "title": "Notificaciones",

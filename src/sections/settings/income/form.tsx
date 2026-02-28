@@ -1,5 +1,6 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { startTransition, useCallback, useEffect, useState } from "react";
+import { CurrencyInput } from "src/components/CurrencyInput";
+import { useCallback, useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import TransitionsModal from "src/sections/shared/transitionsModal";
 import { useSnackbar, VariantType } from "notistack";
@@ -23,6 +24,7 @@ export function FormIncomes({ buttonLabel, buttonIcon, data, externalOpen, onExt
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => {
+        clearForm();
         setOpen(false);
         onExternalClose?.();
     };
@@ -42,6 +44,10 @@ export function FormIncomes({ buttonLabel, buttonIcon, data, externalOpen, onExt
         setDescription("")
         setAmount("")
         setPaymentDay("")
+        setErrorDescription(null)
+        setErrorAmount(null)
+        setErrorPaymentDay(null)
+        setError(null)
     };
 
     const [isPending, setIsPending] = useState(false);
@@ -81,9 +87,7 @@ export function FormIncomes({ buttonLabel, buttonIcon, data, externalOpen, onExt
 
     const handleSubmit = async () => {
         if (validateDescription() && validateAmount() && validatePaymentDay()) {
-            startTransition(async () => {
-                await submitAction({ description, amount, paymentDay });
-            });
+            await submitAction({ description, amount, paymentDay });
         }
     };
 
@@ -141,7 +145,7 @@ export function FormIncomes({ buttonLabel, buttonIcon, data, externalOpen, onExt
                     style={{ display: "flex", gap: "16px", background: "none", border: "none", cursor: "pointer", margin: 0, padding: 0 }}
                     onClick={handleOpen}
                 >
-                    {buttonIcon}{buttonLabel === 'Adicionar' ? t('common.add') : buttonLabel === 'Editar' ? t('common.edit') : buttonLabel}
+                    {buttonIcon}{buttonLabel === 'common.add' ? t('common.add') : buttonLabel === 'common.edit' ? t('common.edit') : buttonLabel}
                 </Button>
             }
 
@@ -170,22 +174,16 @@ export function FormIncomes({ buttonLabel, buttonIcon, data, externalOpen, onExt
                     error={!!errorDescription}
                     helperText={errorDescription ?? ""}
                 />
-                <TextField
+                <CurrencyInput
                     fullWidth
-                    type="number"
                     name="amount"
                     label={t('settings.income.amount')}
                     value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
+                    onChange={setAmount}
                     onBlur={validateAmount}
                     sx={{ mb: 3 }}
                     error={!!errorAmount}
                     helperText={errorAmount ?? ""}
-                    slotProps={{
-                        input: {
-                            inputMode: "numeric",
-                        }
-                    }}
                 />
                 <TextField
                     fullWidth

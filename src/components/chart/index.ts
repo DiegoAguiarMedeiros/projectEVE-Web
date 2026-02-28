@@ -1,7 +1,7 @@
-export * from "./chart";
+export * from "src/components/chart/chart";
 
-export * from "./use-chart";
+export * from "src/components/chart/use-chart";
 
-export type * from "./types";
+export type * from "src/components/chart/types";
 
-export * from "./chart-legends";
+export * from "src/components/chart/chart-legends";

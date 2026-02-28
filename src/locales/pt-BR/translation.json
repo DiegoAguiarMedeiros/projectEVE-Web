@@ -262,6 +262,8 @@
             "name": "Nome",
             "color": "Cor",
             "percentage": "Porcentagem: {{count}}%",
+            "salary_value": "de {{value}}",
+            "value_input": "Valor",
             "allocation_remaining": "Faltam {{count}}% para alocação",
             "allocation_exceeded": "Passou {{count}}% do máximo",
             "save": "Salvar",
@@ -383,6 +385,7 @@
         "email": "E-mail",
         "password": "Senha",
         "confirm_password": "Confirmar Senha",
+        "confirm_email": "Confirmar E-mail",
         "name": "Nome",
         "forgot_password": "Esqueceu a senha?",
         "no_account": "Não tem uma conta?",
@@ -393,10 +396,26 @@
             "name_required": "O nome é obrigatório",
             "email_required": "O e-mail é obrigatório",
             "email_invalid": "Digite um e-mail válido",
+            "emails_mismatch": "Os e-mails não coincidem",
             "password_required": "A senha é obrigatória",
             "password_min_length": "A senha deve ter pelo menos 8 caracteres",
             "passwords_mismatch": "As senhas não coincidem"
-        }
+        },
+        "errors": {
+            "email_already_exists": "Este e-mail já está cadastrado",
+            "invalid_or_expired_token": "O link de verificação é inválido ou expirou.",
+            "email_not_verified": "Seu e-mail ainda não foi confirmado. Um novo link de verificação foi enviado para o seu e-mail."
+        },
+        "verify_email": {
+            "verifying": "Verificando seu e-mail...",
+            "success_title": "E-mail verificado!",
+            "success_message": "Sua conta foi ativada com sucesso. Faça login para continuar.",
+            "error_title": "Link inválido ou expirado",
+            "go_to_login": "Ir para o login"
+        },
+        "registration_success_title": "Cadastro realizado!",
+        "registration_success_message": "Sua conta foi criada com sucesso.",
+        "registration_success_email": "Um e-mail de confirmação foi enviado para {{email}}. Acesse o link para ativar sua conta."
     },
     "complete_registration": {
         "title": "Completar cadastro",
@@ -433,6 +452,11 @@
         "currency": {
             "title": "Moeda",
             "select": "Selecione a moeda"
+        },
+        "number_format": {
+            "title": "Formato de Número",
+            "dot_comma": "Ponto e vírgula",
+            "comma_dot": "Vírgula e ponto"
         },
         "notifications": {
             "title": "Notificações",

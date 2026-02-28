@@ -1,7 +1,5 @@
 import React, { useState, useCallback } from "react";
 
-import Box from "@mui/material/Box";
-import Avatar from "@mui/material/Avatar";
 import Popover from "@mui/material/Popover";
 import TableRow from "@mui/material/TableRow";
 import Checkbox from "@mui/material/Checkbox";
@@ -10,19 +8,27 @@ import TableCell from "@mui/material/TableCell";
 import IconButton from "@mui/material/IconButton";
 import MenuItem, { menuItemClasses } from "@mui/material/MenuItem";
 import { Iconify } from "src/components/iconify";
+import { useTranslation } from "react-i18next";
 // ----------------------------------------------------------------------
+
+interface FormExternalControlProps {
+  externalOpen?: boolean;
+  onExternalClose?: () => void;
+}
 
 type IncomesTableRowProps = {
   selected: boolean;
   onSelectRow: () => void;
-  form: React.ReactElement;
+  form: React.ReactElement<FormExternalControlProps>;
   handleDelete: VoidFunction;
   rowKeys: string[] | React.ReactNode[];
 };
 
 export function CustomTableRow({ selected, onSelectRow, form, handleDelete, rowKeys }: IncomesTableRowProps) {
+  const { t } = useTranslation();
 
   const [openPopover, setOpenPopover] = useState<HTMLButtonElement | null>(null);
+  const [formOpen, setFormOpen] = useState(false);
 
   const handleOpenPopover = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
     setOpenPopover(event.currentTarget);
@@ -32,8 +38,24 @@ export function CustomTableRow({ selected, onSelectRow, form, handleDelete, rowK
     setOpenPopover(null);
   }, []);
 
+  const handleOpenForm = useCallback(() => {
+    handleClosePopover();
+    setFormOpen(true);
+  }, [handleClosePopover]);
+
+  const handleCloseForm = useCallback(() => {
+    setFormOpen(false);
+  }, []);
+
+  const controlledForm = React.cloneElement(form, {
+    externalOpen: formOpen,
+    onExternalClose: handleCloseForm,
+  });
+
   return (
     <>
+      {controlledForm}
+
       <TableRow hover tabIndex={-1} role="checkbox" selected={selected}>
         <TableCell padding="checkbox">
           <Checkbox disableRipple checked={selected} onChange={onSelectRow} />
@@ -72,13 +94,14 @@ export function CustomTableRow({ selected, onSelectRow, form, handleDelete, rowK
             },
           }}
         >
-          <MenuItem >
-            {form}
+          <MenuItem onClick={handleOpenForm}>
+            <Iconify icon="solar:pen-bold" />
+            {t('common.edit')}
           </MenuItem>
 
-          <MenuItem onClick={handleDelete} sx={{ color: "error.main" }}>
+          <MenuItem onClick={() => { handleClosePopover(); handleDelete(); }} sx={{ color: "error.main" }}>
             <Iconify icon="solar:trash-bin-trash-bold" />
-            Deletar
+            {t('common.delete')}
           </MenuItem>
         </MenuList>
       </Popover>

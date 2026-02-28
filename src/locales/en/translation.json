@@ -258,6 +258,8 @@
             "name": "Name",
             "color": "Color",
             "percentage": "Percentage: {{count}}%",
+            "salary_value": "of {{value}}",
+            "value_input": "Amount",
             "allocation_remaining": "{{count}}% remaining for allocation",
             "allocation_exceeded": "Exceeded maximum by {{count}}%",
             "save": "Save",
@@ -379,6 +381,7 @@
         "email": "Email",
         "password": "Password",
         "confirm_password": "Confirm Password",
+        "confirm_email": "Confirm Email",
         "name": "Name",
         "forgot_password": "Forgot password?",
         "no_account": "Don't have an account?",
@@ -389,10 +392,26 @@
             "name_required": "Name is required",
             "email_required": "Email is required",
             "email_invalid": "Enter a valid email",
+            "emails_mismatch": "Emails do not match",
             "password_required": "Password is required",
             "password_min_length": "Password must be at least 8 characters",
             "passwords_mismatch": "Passwords do not match"
-        }
+        },
+        "errors": {
+            "email_already_exists": "This email is already registered",
+            "invalid_or_expired_token": "The verification link is invalid or has expired.",
+            "email_not_verified": "Your email has not been confirmed yet. A new verification link has been sent to your email."
+        },
+        "verify_email": {
+            "verifying": "Verifying your email...",
+            "success_title": "Email verified!",
+            "success_message": "Your account has been successfully activated. Sign in to continue.",
+            "error_title": "Invalid or expired link",
+            "go_to_login": "Go to login"
+        },
+        "registration_success_title": "Registration complete!",
+        "registration_success_message": "Your account has been created successfully.",
+        "registration_success_email": "A confirmation email has been sent to {{email}}. Click the link to activate your account."
     },
     "complete_registration": {
         "title": "Complete registration",
@@ -429,6 +448,11 @@
         "currency": {
             "title": "Currency",
             "select": "Select currency"
+        },
+        "number_format": {
+            "title": "Number Format",
+            "dot_comma": "Dot and comma",
+            "comma_dot": "Comma and dot"
         },
         "notifications": {
             "title": "Notifications",

@@ -1,4 +1,5 @@
 import { Box, Button, FormControl, FormControlLabel, FormLabel, IconButton, InputLabel, MenuItem, Radio, RadioGroup, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
+import { CurrencyInput } from "src/components/CurrencyInput";
 import { startTransition, useActionState, useCallback, useEffect, useImperativeHandle, useRef, useState, useTransition } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import TransitionsModal from "src/sections/shared/transitionsModal";
@@ -55,6 +56,9 @@ export function IncomeForm({ buttonLabel, buttonIcon, data, envelopes, externalO
 
     const clearForm = () => {
         setTotalIncomeProcessed("")
+        setErrorDescription(null)
+        setErrorTotalIncomeProcessed(null)
+        setError(null)
     };
 
 
@@ -177,7 +181,7 @@ export function IncomeForm({ buttonLabel, buttonIcon, data, envelopes, externalO
                     style={{ display: "flex", gap: "16px", background: "none", border: "none", cursor: "pointer", margin: 0, padding: 0 }}
                     onClick={handleOpen}
                 >
-                    {buttonIcon}{buttonLabel === 'Adicionar' ? t('common.add') : buttonLabel === 'Editar' ? t('common.edit') : buttonLabel}
+                    {buttonIcon}{buttonLabel === 'common.add' ? t('common.add') : buttonLabel === 'common.edit' ? t('common.edit') : buttonLabel}
                 </Button>
             }
 
@@ -208,22 +212,16 @@ export function IncomeForm({ buttonLabel, buttonIcon, data, envelopes, externalO
                     error={!!errorDescription}
                     helperText={errorDescription ?? ""}
                 />
-                <TextField
+                <CurrencyInput
                     fullWidth
-                    type="number"
                     name="amount"
                     label={t('income.table.headers.amount')}
                     value={totalIncomeProcessed}
-                    onChange={(e) => setTotalIncomeProcessed(e.target.value)}
+                    onChange={setTotalIncomeProcessed}
                     onBlur={validateTotalIncomeProcessed}
                     sx={{ mb: 3 }}
                     error={!!errorTotalIncomeProcessed}
                     helperText={errorTotalIncomeProcessed ?? ""}
-                    slotProps={{
-                        input: {
-                            inputMode: "numeric",
-                        }
-                    }}
                 />
                 {isDayOnly ? (
                     <TextField

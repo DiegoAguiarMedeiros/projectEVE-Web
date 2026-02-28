@@ -1,5 +1,6 @@
 import { Box, Button, Divider, Grid2, Paper, Stack, TextField, Typography, useTheme } from "@mui/material";
-import { startTransition, useCallback, useEffect, useState } from "react";
+import { CurrencyInput } from "src/components/CurrencyInput";
+import { useCallback, useEffect, useState } from "react";
 import TransitionsModal from "src/sections/shared/transitionsModal";
 import { AntSwitch } from "src/sections/settings/goals/AntSwitch";
 import { useCreateGoals } from "src/hooks/mutations/goals/useCreateGoals";
@@ -29,6 +30,7 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope, externalOpe
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => {
+        clearForm();
         setOpen(false);
         onExternalClose?.();
     };
@@ -58,6 +60,12 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope, externalOpe
         setAmount("")
         setAmountTotal("")
         setPercentage("")
+        setErrorDescription(null)
+        setErrorAmount(null)
+        setErrorAmountTotal(null)
+        setErrorDeadline(null)
+        setErrorPercentage(null)
+        setError(null)
     };
 
 
@@ -104,15 +112,13 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope, externalOpe
 
     const handleSubmit = async () => {
         if (validateDescription() && validateAmount()) {
-            startTransition(async () => {
-                await submitAction({
-                    description,
-                    amount,
-                    amountTotal,
-                    percentage: savePercentagem.toFixed(),
-                    deadline,
-                    monthYear
-                });
+            await submitAction({
+                description,
+                amount,
+                amountTotal,
+                percentage: savePercentagem.toFixed(),
+                deadline,
+                monthYear
             });
         }
     };
@@ -218,7 +224,7 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope, externalOpe
                     style={{ display: "flex", gap: "16px", background: "none", border: "none", cursor: "pointer", margin: 0, padding: 0 }}
                     onClick={handleOpen}
                 >
-                    {buttonIcon}{buttonLabel === 'Adicionar' ? t('common.add') : buttonLabel === 'Editar' ? t('common.edit') : buttonLabel}
+                    {buttonIcon}{buttonLabel === 'common.add' ? t('common.add') : buttonLabel === 'common.edit' ? t('common.edit') : buttonLabel}
                 </Button>
             }
 
@@ -251,31 +257,27 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope, externalOpe
                         />
                     </Grid2>
                     <Grid2 size={{ xs: 12, sm: 6 }}>
-                        <TextField
+                        <CurrencyInput
                             fullWidth
-                            type="number"
                             name="amountTotal"
                             label={t('settings.goals.amount_total')}
                             value={amountTotal}
-                            onChange={(e) => setAmountTotal(e.target.value)}
+                            onChange={setAmountTotal}
                             onBlur={validateAmountTotal}
                             error={!!errorAmountTotal}
                             helperText={errorAmountTotal ?? ""}
-                            slotProps={{ input: { inputMode: "numeric" } }}
                         />
                     </Grid2>
                     <Grid2 size={{ xs: 12, sm: 6 }}>
-                        <TextField
+                        <CurrencyInput
                             fullWidth
-                            type="number"
                             name="amount"
                             label={t('settings.goals.amount_current')}
                             value={amount}
-                            onChange={(e) => setAmount(e.target.value)}
+                            onChange={setAmount}
                             onBlur={validateAmount}
                             error={!!errorAmount}
                             helperText={errorAmount ?? ""}
-                            slotProps={{ input: { inputMode: "numeric" } }}
                         />
                     </Grid2>
                     <Grid2 size={{ xs: 12 }}>

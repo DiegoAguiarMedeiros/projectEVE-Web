@@ -1,1 +1,1 @@
-export * from "./ChipTabs";
+export * from "src/components/chip-tabs/ChipTabs";

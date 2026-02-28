@@ -174,7 +174,7 @@ export function CompleteRegistrationView() {
 
           <Box sx={{ display: "flex", justifyContent: "space-between", mt: 4 }}>
             <Button
-              disabled={activeStep === 0}
+              disabled={activeStep === 0 || isPending}
               onClick={handleBack}
               variant="outlined"
               color="inherit"
@@ -184,7 +184,7 @@ export function CompleteRegistrationView() {
 
             <Box sx={{ display: "flex", gap: 1 }}>
               {activeStep < steps.length - 1 && (
-                <Button variant="outlined" onClick={handleNext}>
+                <Button variant="outlined" onClick={handleNext} disabled={isPending}>
                   {t('complete_registration.continue')}
                 </Button>
               )}
@@ -196,7 +196,8 @@ export function CompleteRegistrationView() {
                   <Button
                     variant="contained"
                     onClick={handleFinish}
-                    disabled={!canFinish}
+                    disabled={!canFinish || isPending}
+                    loading={isPending}
                   >
                     {t('complete_registration.finish')}
                   </Button>

@@ -1,11 +1,13 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
+import Alert from "@mui/material/Alert";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import InputAdornment from "@mui/material/InputAdornment";
+import type { AxiosError } from "axios";
 
 import { useRouter } from "src/routes/hooks";
 
@@ -17,7 +19,7 @@ import { useTranslation } from "react-i18next";
 
 export function SignInView() {
   const router = useRouter();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -31,9 +33,18 @@ export function SignInView() {
   const handleSubmit = useCallback(() => {
     login({
       email,
-      password
+      password,
+      locale: i18n.language,
     });
-  }, [login, email, password]);
+  }, [login, email, password, i18n]);
+
+  const errorKey = useMemo(() => {
+    if (!error) return null;
+    const axiosError = error as AxiosError<{ message: string }>;
+    return axiosError?.response?.data?.message ?? 'auth.login_error';
+  }, [error]);
+
+  const isEmailNotVerified = errorKey === 'auth.errors.email_not_verified';
 
   const renderForm = (
     <Box
@@ -43,6 +54,12 @@ export function SignInView() {
       flexDirection="column"
       alignItems="flex-end"
     >
+      {isEmailNotVerified && (
+        <Alert severity="warning" sx={{ width: '100%', mb: 2 }}>
+          {t('auth.errors.email_not_verified')}
+        </Alert>
+      )}
+
       <TextField
         fullWidth
         name="email"
@@ -50,8 +67,8 @@ export function SignInView() {
         defaultValue={email}
         onChange={(e) => setEmail(e.target.value)}
         sx={{ mb: 3 }}
-        error={!!error}
-        helperText={error ? t('auth.login_error') : ""}
+        error={!!error && !isEmailNotVerified}
+        helperText={error && !isEmailNotVerified ? t(errorKey ?? 'auth.login_error') : ""}
       />
 
       <Link variant="body2" color="inherit" sx={{ mb: 1.5 }}>
@@ -85,7 +102,7 @@ export function SignInView() {
         type="submit"
         color="primary"
         variant="contained"
-        onClick={handleSubmit}
+        loading={isPending}
       >
         {t('auth.sign_in')}
       </Button>

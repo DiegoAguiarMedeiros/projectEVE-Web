@@ -2,7 +2,7 @@ import { useTheme } from "@mui/material/styles";
 
 import { varAlpha } from "src/theme/styles";
 
-import type { ChartOptions } from "./types";
+import type { ChartOptions } from "src/components/chart/types";
 
 // ----------------------------------------------------------------------
 

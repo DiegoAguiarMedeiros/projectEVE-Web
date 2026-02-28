@@ -4,4 +4,4 @@ export * from "./iconify";
 
 export * from "./flag-icon";
 
-export type * from "./types";
+export type * from "src/components/color-utils/types";

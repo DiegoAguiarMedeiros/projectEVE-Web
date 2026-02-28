@@ -153,7 +153,7 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
             rightArea: (
               <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
                 <NotificationsPopover data={_notifications} />
-                <ThemeToggleButton />
+                <ThemeToggleButton showComponent={!isMobile}/>
                 <LanguagePopover showComponent={!isMobile} data={_langs} />
 
                 <AccountPopover

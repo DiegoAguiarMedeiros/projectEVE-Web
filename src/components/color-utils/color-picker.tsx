@@ -11,7 +11,7 @@ import { varAlpha } from "src/theme/styles";
 
 import { Iconify } from "src/components/iconify/iconify";
 
-import type { ColorPickerProps } from "./types";
+import type { ColorPickerProps } from "src/components/color-utils/types";
 
 // ----------------------------------------------------------------------
 

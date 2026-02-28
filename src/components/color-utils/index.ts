@@ -1,5 +1,5 @@
-export type * from "./types";
+export type * from "src/components/color-utils/types";
 
-export * from "./color-picker";
+export * from "src/components/color-utils/color-picker";
 
-export * from "./color-preview";
+export * from "src/components/color-utils/color-preview";

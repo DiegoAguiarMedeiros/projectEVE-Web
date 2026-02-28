@@ -1,18 +1,12 @@
 import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
-import { startTransition, useActionState, useCallback, useEffect, useImperativeHandle, useRef, useState, useTransition } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useCallback, useEffect, useState } from "react";
 import TransitionsModal from "src/sections/shared/transitionsModal";
-import { useSnackbar, VariantType } from "notistack";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import dayjs, { Dayjs } from "dayjs";
-import { type } from "os";
 import { Envelopes } from "src/types/Envelopes";
 import { FixedExpenses, FixedExpensesPost } from "src/types/FixedExpenses";
 import { useCreateFixedExpenses } from "src/hooks/mutations/fixed-expenses/useCreateFixedExpenses";
 import { useUpdateFixedExpenses } from "src/hooks/mutations/fixed-expenses/useUpdateFixedExpenses";
 import { useTranslation } from "react-i18next";
+import { CurrencyInput } from "src/components/CurrencyInput";
 
 
 type FixedExpenseFormProps = {
@@ -26,11 +20,11 @@ type FixedExpenseFormProps = {
 
 export function FixedExpenseForm({ buttonLabel, buttonIcon, data, envelopes, externalOpen, onExternalClose }: FixedExpenseFormProps) {
     const { t } = useTranslation();
-    const { enqueueSnackbar } = useSnackbar();
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => {
+        clearForm();
         setOpen(false);
         onExternalClose?.();
     };
@@ -48,13 +42,15 @@ export function FixedExpenseForm({ buttonLabel, buttonIcon, data, envelopes, ext
     const [errorAmount, setErrorAmount] = useState<string | null>(null);
     const [errorPaymentDay, setErrorPaymentDay] = useState<string | null>(null);
 
-    const queryClient = useQueryClient();
-
     const clearForm = () => {
         setDescription("")
         setAmount("")
         setPaymentDay("")
         setEnvelope("")
+        setErrorDescription(null)
+        setErrorAmount(null)
+        setErrorPaymentDay(null)
+        setError(null)
     };
 
     const [isPending, setIsPending] = useState(false);
@@ -96,12 +92,10 @@ export function FixedExpenseForm({ buttonLabel, buttonIcon, data, envelopes, ext
 
     const handleSubmit = async () => {
         if (validateDescription() && validateAmount()) {
-            startTransition(async () => {
-                await submitAction({
-                    description, amount,
-                    paymentDay,
-                    envelopeId: envelope,
-                });
+            await submitAction({
+                description, amount,
+                paymentDay,
+                envelopeId: envelope,
             });
         }
     };
@@ -165,7 +159,7 @@ export function FixedExpenseForm({ buttonLabel, buttonIcon, data, envelopes, ext
                     style={{ display: "flex", gap: "16px", background: "none", border: "none", cursor: "pointer", margin: 0, padding: 0 }}
                     onClick={handleOpen}
                 >
-                    {buttonIcon}{buttonLabel === 'Adicionar' ? t('common.add') : buttonLabel === 'Editar' ? t('common.edit') : buttonLabel}
+                    {buttonIcon}{buttonLabel === 'common.add' ? t('common.add') : buttonLabel === 'common.edit' ? t('common.edit') : buttonLabel}
                 </Button>
             }
 
@@ -215,22 +209,16 @@ export function FixedExpenseForm({ buttonLabel, buttonIcon, data, envelopes, ext
                     error={!!errorDescription}
                     helperText={errorDescription ?? ""}
                 />
-                <TextField
+                <CurrencyInput
                     fullWidth
-                    type="number"
                     name="amount"
                     label={t('settings.fixed_expense.amount')}
                     value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
+                    onChange={setAmount}
                     onBlur={validateAmount}
                     sx={{ mb: 3 }}
                     error={!!errorAmount}
                     helperText={errorAmount ?? ""}
-                    slotProps={{
-                        input: {
-                            inputMode: "numeric",
-                        }
-                    }}
                 />
 
                 <TextField

@@ -15,7 +15,7 @@ import { HeaderSection } from "src/layouts/core/header-section";
 import { AccountPopover } from "src/layouts/components/account-popover";
 import { LanguagePopover } from "src/layouts/components/language-popover";
 import { NotificationsPopover } from "src/layouts/components/notifications-popover";
-import { Main } from "./main";
+import { Main } from "src/layouts/navless/main";
 
 // ----------------------------------------------------------------------
 

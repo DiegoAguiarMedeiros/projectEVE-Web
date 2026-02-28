@@ -4,6 +4,7 @@
  */
 
 import { getCurrencyConfig } from "./currency";
+import { getNumberFormatLocale } from "./numberFormat";
 
 export type InputNumberValue = string | number | null | undefined;
 
@@ -22,7 +23,7 @@ export function fNumber(inputValue: InputNumberValue, options?: Options) {
   const number = processInput(inputValue);
   if (number === null) return "";
 
-  const fm = new Intl.NumberFormat(currencyConfig.locale, {
+  const fm = new Intl.NumberFormat(getNumberFormatLocale(), {
     minimumFractionDigits: 0,
     maximumFractionDigits: 2,
     ...options,
@@ -39,7 +40,7 @@ export function fCurrency(inputValue: InputNumberValue, options?: Options) {
   const number = processInput(inputValue);
   if (number === null) return "";
 
-  const fm = new Intl.NumberFormat(currencyConfig.locale, {
+  const fm = new Intl.NumberFormat(getNumberFormatLocale(), {
     style: "currency",
     currency: currencyConfig.code,
     minimumFractionDigits: 0,
@@ -58,7 +59,7 @@ export function fPercent(inputValue: InputNumberValue, options?: Options) {
   const number = processInput(inputValue);
   if (number === null) return "";
 
-  const fm = new Intl.NumberFormat(currencyConfig.locale, {
+  const fm = new Intl.NumberFormat(getNumberFormatLocale(), {
     style: "percent",
     minimumFractionDigits: 0,
     maximumFractionDigits: 1,
@@ -76,7 +77,7 @@ export function fShortenNumber(inputValue: InputNumberValue, options?: Options) 
   const number = processInput(inputValue);
   if (number === null) return "";
 
-  const fm = new Intl.NumberFormat(currencyConfig.locale, {
+  const fm = new Intl.NumberFormat(getNumberFormatLocale(), {
     notation: "compact",
     maximumFractionDigits: 2,
     ...options,
@@ -98,7 +99,7 @@ export function fNumberToCurrency(inputValue: InputNumberValue, options?: Option
   const number = processInput(inputValue);
   if (number === null) return "";
 
-  const fm = new Intl.NumberFormat(currencyConfig.locale, {
+  const fm = new Intl.NumberFormat(getNumberFormatLocale(), {
     style: "currency",
     currency: currencyConfig.code,
   }).format(number);

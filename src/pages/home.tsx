@@ -14,15 +14,17 @@ export default function Page() {
   const { t } = useTranslation();
   const { month, year, hasMonthProcessed, nextMonthToProcess, nextYearToProcess } = SelectedMonthYearStore();
   const { data: envelopes, isLoading: envelopesIsLoading, error: envelopesError } = useListEnvelopesWithAmount(year, month);
+
   const currentMonth = (new Date().getMonth() + 1) as Month;
   if (!hasMonthProcessed) {
     return (<NoEnvelopeView title={t('home.no_envelopes_title')} description={t('home.no_envelopes_not_processed')} />)
   }
-
+  
   if ((currentMonth === nextMonthToProcess || month === nextMonthToProcess) && year === nextYearToProcess) {
     return (<NoEnvelopeView title={t('home.no_envelopes_title')} description={t('home.no_envelopes_month_not_processed')} />)
   }
-
+  
+  console.log(`Dashboard - ${CONFIG.appName} envelopes`, envelopes);
   return (
     <>
       <title> {`Dashboard - ${CONFIG.appName}`}</title>

@@ -4,32 +4,22 @@ import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SnackbarProvider } from "notistack";
 
-import App from "./app";
+import App from "src/app";
 import "./i18n";
-// import { AuthProvider } from "./context/AuthProvider";
 
 // ----------------------------------------------------------------------
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 const queryClient = new QueryClient();
-
-console.info("Project EVE: Access the app via:");
-console.info(" - http://192.168.15.6:3039 (Network)");
-console.info(" - http://localhost:3039 (Local)");
-console.info("API connected to: http://192.168.15.6:3000/api");
-
-
 root.render(
   <StrictMode>
     <BrowserRouter>
       <Suspense>
-        {/* <AuthProvider> */}
         <SnackbarProvider>
           <QueryClientProvider client={queryClient}>
             <App />
           </QueryClientProvider>
         </SnackbarProvider>
-        {/* </AuthProvider> */}
       </Suspense>
     </BrowserRouter>
   </StrictMode>

@@ -67,7 +67,7 @@ export function TableToolbar({ numSelected, form, typeFilter, onTypeFilterChange
       )}
 
       {numSelected > 0 ? (
-        <Tooltip title="Deletar">
+        <Tooltip title={t('common.delete')}>
           <IconButton>
             <Iconify icon="solar:trash-bin-trash-bold" />
           </IconButton>

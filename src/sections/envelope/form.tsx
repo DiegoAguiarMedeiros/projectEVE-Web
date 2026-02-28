@@ -1,10 +1,8 @@
 import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Stack, InputAdornment, Typography } from "@mui/material";
+import { CurrencyInput } from "src/components/CurrencyInput";
 import { Iconify } from "src/components/iconify";
-import { RealEnvelopesCard } from "src/sections/envelope/RealEnvelopeCard";
-import { startTransition, useActionState, useCallback, useEffect, useImperativeHandle, useRef, useState, useTransition } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useCallback, useEffect, useState } from "react";
 import TransitionsModal from "src/sections/shared/transitionsModal";
-import { useSnackbar, VariantType } from "notistack";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
@@ -36,6 +34,7 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => {
+        clearTransactionForm();
         setOpen(false);
         onExternalClose?.();
     };
@@ -57,12 +56,15 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
     const [errorDescription, setErrorDescription] = useState<string | null>(null);
     const [errorAmount, setErrorAmount] = useState<string | null>(null);
 
-    const queryClient = useQueryClient();
-
     const clearTransactionForm = () => {
-        setDescription("")
-        setAmount("")
-        setCreditCardId("")
+        setDescription("");
+        setAmount("");
+        setCreditCardId("");
+        setDate(null);
+        setPaymentMethod("envelope.transaction.payment_method.DebitCard");
+        setError(null);
+        setErrorDescription(null);
+        setErrorAmount(null);
     };
 
     const [isPending, setIsPending] = useState(false);
@@ -117,17 +119,15 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
 
     const handleTransactionSubmit = async () => {
         if (validateDescription() && validateAmount()) {
-            startTransition(async () => {
-                submitTransactionAction({
-                    description,
-                    amount,
-                    paymentMethod,
-                    creditCardId: creditCardId || undefined,
-                    status: "transaction.status.pending",
-                    envelopeId,
-                    date,
-                    type: "Debit",
-                });
+            await submitTransactionAction({
+                description,
+                amount,
+                paymentMethod,
+                creditCardId: creditCardId || undefined,
+                status: "transaction.status.pending",
+                envelopeId,
+                date,
+                type: "Debit",
             });
         }
     };
@@ -225,24 +225,16 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
                     error={!!errorDescription}
                     helperText={errorDescription ?? ""}
                 />
-                <TextField
+                <CurrencyInput
                     fullWidth
-                    type="number"
                     name="amount"
                     label={t('envelope.transaction.amount')}
                     placeholder={t('envelope.transaction.placeholder.amount')}
                     value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
+                    onChange={setAmount}
                     onBlur={validateAmount}
                     error={!!errorAmount}
                     helperText={errorAmount ?? ""}
-                    slotProps={{
-                        input: {
-                            inputMode: "numeric",
-                            startAdornment: <InputAdornment position="start">{symbol}</InputAdornment>,
-                            sx: { textAlign: 'right' },
-                        }
-                    }}
                 />
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker

@@ -6,7 +6,7 @@ import { Iconify } from "src/components/iconify";
 import { useTransferBalance } from "src/hooks/mutations/envelopes/useTransferBalance";
 import { DashboardContent } from "src/layouts/dashboard";
 import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
-import { RealEnvelopesCard } from "src/sections/envelope/RealEnvelopeCard";
+import { RealEnvelopesCard } from "src/components/realEnvelopeCard";
 import { Envelopes } from "src/types/Envelopes";
 import { useCurrency } from "src/hooks/useCurrency";
 

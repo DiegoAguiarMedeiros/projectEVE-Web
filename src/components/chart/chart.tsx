@@ -4,9 +4,9 @@ import ApexChart from "react-apexcharts";
 
 import Box from "@mui/material/Box";
 
-import { chartClasses } from "./classes";
+import { chartClasses } from "src/components/chart/classes";
 
-import type { ChartProps } from "./types";
+import type { ChartProps } from "src/components/chart/types";
 
 // ----------------------------------------------------------------------
 
