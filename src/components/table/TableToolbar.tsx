@@ -14,10 +14,11 @@ type TableToolbarProps = {
   form: React.ReactElement;
   typeFilter?: string;
   onTypeFilterChange?: (type: string) => void;
+  onDeleteSelected?: () => void;
 };
 
 
-export function TableToolbar({ numSelected, form, typeFilter, onTypeFilterChange }: TableToolbarProps) {
+export function TableToolbar({ numSelected, form, typeFilter, onTypeFilterChange, onDeleteSelected }: TableToolbarProps) {
   const { t } = useTranslation();
 
   return (
@@ -30,7 +31,7 @@ export function TableToolbar({ numSelected, form, typeFilter, onTypeFilterChange
         p: (theme) => theme.spacing(0, 1, 0, 3),
         ...(numSelected > 0 && {
           color: "primary.main",
-          bgcolor: "primary.lighter",
+          bgcolor: "action.selected",
         }),
       }}
     >
@@ -68,7 +69,7 @@ export function TableToolbar({ numSelected, form, typeFilter, onTypeFilterChange
 
       {numSelected > 0 ? (
         <Tooltip title={t('common.delete')}>
-          <IconButton>
+          <IconButton color="error" onClick={onDeleteSelected}>
             <Iconify icon="solar:trash-bin-trash-bold" />
           </IconButton>
         </Tooltip>

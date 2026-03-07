@@ -28,7 +28,7 @@ export function UserTableToolbar({ numSelected, filterName, onFilterName }: User
         p: (theme) => theme.spacing(0, 1, 0, 3),
         ...(numSelected > 0 && {
           color: "primary.main",
-          bgcolor: "primary.lighter",
+          bgcolor: "action.selected",
         }),
       }}
     >
@@ -53,7 +53,7 @@ export function UserTableToolbar({ numSelected, filterName, onFilterName }: User
 
       {numSelected > 0 ? (
         <Tooltip title={t('common.delete')}>
-          <IconButton>
+          <IconButton color="error">
             <Iconify icon="solar:trash-bin-trash-bold" />
           </IconButton>
         </Tooltip>

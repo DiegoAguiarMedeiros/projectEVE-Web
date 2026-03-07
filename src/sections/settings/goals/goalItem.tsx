@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { alpha } from "@mui/material/styles";
-import dayjs from "dayjs";
+import { useDateFormat } from "src/hooks/useDateFormat";
 import { GoalsForm } from "src/sections/settings/goals/form";
 import { Goals } from "src/types/Goals";
 import { Envelopes } from "src/types/Envelopes";
@@ -29,6 +29,7 @@ export function GoalItem({
 }: GoalItemProps) {
     const { t } = useTranslation();
     const { symbol } = useCurrency();
+    const { formatDate } = useDateFormat();
     const { id, description, amountTotal, percentage, deadline } = goal;
     const [editOpen, setEditOpen] = useState(false);
 
@@ -82,7 +83,7 @@ export function GoalItem({
                                 sx={{ height: 20, fontSize: "0.675rem" }}
                             />
                             <Typography variant="caption" color="text.secondary">
-                                &bull; {dayjs(deadline).format("DD/MM/YYYY")}
+                                &bull; {formatDate(deadline)}
                             </Typography>
                         </Box>
                         <IconButton

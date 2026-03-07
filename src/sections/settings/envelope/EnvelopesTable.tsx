@@ -59,7 +59,7 @@ export function EnvelopesTable({ envelopes }: EnvelopesProps) {
                 }),
         }}>
             <Box sx={{ display: "flex", alignItems: "center", p: isMobile ? 2 : 4, justifyContent: "flex-end", gap: 2 }}>
-                <EnvelopeForm data={envelopeActive} buttonLabel={t('common.add')} open={open} handleOpen={handleOpen} handleClose={handleClose} />
+                <EnvelopeForm data={envelopeActive} buttonLabel={t('common.add')} open={open} handleOpen={handleOpen} handleClose={handleClose} allEnvelopes={envelopes} />
                 <Badges text={envelopeAlocation <= 100 ? t('settings.envelope.allocation_remaining', { count: 100 - envelopeAlocation }) : t('settings.envelope.allocation_exceeded', { count: envelopeAlocation - 100 })} bgColor={envelopeAlocation <= 100 ? theme.palette.success.main : theme.palette.error.main} />
             </Box>
             <Box sx={{

@@ -1,8 +1,7 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
-import Alert from "@mui/material/Alert";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
@@ -46,6 +45,12 @@ export function SignInView() {
 
   const isEmailNotVerified = errorKey === 'auth.errors.email_not_verified';
 
+  useEffect(() => {
+    if (isEmailNotVerified) {
+      router.push('/verificar-email?pending=true');
+    }
+  }, [isEmailNotVerified, router]);
+
   const renderForm = (
     <Box
       component="form"
@@ -54,12 +59,6 @@ export function SignInView() {
       flexDirection="column"
       alignItems="flex-end"
     >
-      {isEmailNotVerified && (
-        <Alert severity="warning" sx={{ width: '100%', mb: 2 }}>
-          {t('auth.errors.email_not_verified')}
-        </Alert>
-      )}
-
       <TextField
         fullWidth
         name="email"

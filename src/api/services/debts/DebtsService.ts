@@ -20,3 +20,6 @@ export const updateDebts = (data: Debts) =>
 
 export const deleteDebts = (id: string) =>
   api.delete<void>(`/debts/${id}`);
+
+export const deleteAllDebts = (ids: string[]) =>
+  api.delete<void>(`/debts/delete-all`, { data: { ids } });

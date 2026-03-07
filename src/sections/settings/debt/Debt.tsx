@@ -1,9 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { Card, TableContainer, Table, TableBody, TablePagination, TableRow, TableCell } from "@mui/material";
 import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useSnackbar } from "notistack";
-import dayjs from "dayjs";
 import { useTable } from "src/sections/shared/useTable";
 import { TableNoData } from "src/components/table/TableNoData";
 import { CustomTableRow } from "src/components/table/TableRow";
@@ -14,6 +11,7 @@ import { DebtForm } from "src/sections/settings/debt/form";
 import { Pagination } from "src/types/Pagination";
 import { Debts } from "src/types/Debts";
 import { useDeleteDebts } from "src/hooks/mutations/debts/useDeleteDebts";
+import { useDeleteAllDebts } from "src/hooks/mutations/debts/useDeleteAllDebts";
 import { Envelopes } from "src/types/Envelopes";
 import { useTranslation } from "react-i18next";
 import { useCurrency } from "src/hooks/useCurrency";
@@ -35,10 +33,19 @@ export function DebtTable({ debts, envelopes }: DebtsTableProps) {
         console.info("table.rowsPerPage", table.rowsPerPage)
     }, [table.page, table.rowsPerPage])
 
-    const deleteDebtMutation = useDeleteDebts()
+    const deleteDebtMutation = useDeleteDebts();
+    const deleteAllDebtsMutation = useDeleteAllDebts();
+
     const DeleteDebt = useCallback((id: string) => {
         deleteDebtMutation.mutate(id)
     }, [deleteDebtMutation]);
+
+    const DeleteSelectedDebts = useCallback(() => {
+        if (table.selected.length === 0) return;
+        deleteAllDebtsMutation.mutate(table.selected, {
+            onSuccess: () => table.onSelectAllRows(false, []),
+        });
+    }, [deleteAllDebtsMutation, table]);
 
     const DebtRow = (row: Debts, deleteDebt: (id: string) => void) => {
         const { id } = row;
@@ -68,6 +75,7 @@ export function DebtTable({ debts, envelopes }: DebtsTableProps) {
             <TableToolbar
                 numSelected={table.selected.length}
                 form={<DebtForm envelopes={envelopes ?? []} buttonLabel={t('common.add')} />}
+                onDeleteSelected={DeleteSelectedDebts}
             />
 
             <TableContainer sx={{ overflow: "unset" }}>

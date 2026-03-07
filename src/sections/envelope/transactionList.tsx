@@ -15,6 +15,7 @@ import { TransactionForm } from "src/sections/envelope/form";
 import { TransactionItem } from "src/sections/envelope/transactionItem";
 import { Transactions, TransactionsUpdateStatus } from "src/types/Transactions";
 import { useDeleteTransactions } from "src/hooks/mutations/transactions/useDeleteTransactions";
+import { useDeleteAllTransactions } from "src/hooks/mutations/transactions/useDeleteAllTransactions";
 import { useUpdateStatusTransactions } from "src/hooks/mutations/transactions/useUpdateStatusTransactions";
 import { Pagination } from "src/types/Pagination";
 import { ITable } from "src/sections/shared/useTable";
@@ -22,6 +23,7 @@ import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
 import { Envelopes } from "src/types/Envelopes";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 import { Iconify } from "src/components/iconify";
 
 type TransactionListProps = {
@@ -45,8 +47,10 @@ export function TransactionList({
 }: TransactionListProps) {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const { month, year } = SelectedMonthYearStore();
 
     const deleteTransactionMutation = useDeleteTransactions();
+    const deleteAllTransactionsMutation = useDeleteAllTransactions();
     const updateStatusTransactionMutation = useUpdateStatusTransactions();
 
     const [addFormOpen, setAddFormOpen] = useState(false);
@@ -286,6 +290,25 @@ export function TransactionList({
                                 bgcolor: 'background.neutral',
                                 color: 'text.primary',
                                 '&:hover': { bgcolor: 'action.hover' },
+                            },
+                        }}
+                    />
+                    <SpeedDialAction
+                        icon={<Iconify icon="solar:trash-bin-trash-bold" />}
+                        tooltipTitle={t('common.delete_all')}
+                        tooltipOpen
+                        onClick={() => deleteAllTransactionsMutation.mutate({ envelopeId, year, month })}
+                        sx={{
+                            '& .MuiSpeedDialAction-staticTooltipLabel': {
+                                bgcolor: 'background.neutral',
+                                color: 'text.primary',
+                            },
+                        }}
+                        FabProps={{
+                            sx: {
+                                bgcolor: 'error.main',
+                                color: 'common.white',
+                                '&:hover': { bgcolor: 'error.dark' },
                             },
                         }}
                     />

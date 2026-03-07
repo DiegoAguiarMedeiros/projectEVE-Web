@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { alpha } from "@mui/material/styles";
-import dayjs from "dayjs";
+import { useDateFormat } from "src/hooks/useDateFormat";
 import { TransactionForm } from "src/sections/envelope/form";
 import { Transactions, TransactionsUpdateStatus } from "src/types/Transactions";
 import Chips from "src/components/chip/chip";
@@ -35,6 +35,7 @@ export function TransactionItem({
     getTranslatedDescription,
 }: TransactionItemProps) {
     const { t } = useTranslation();
+    const { formatDate } = useDateFormat();
     const { id, description, amount, paymentMethod, date, status, type, isTranslatable } = transaction;
     const isDebit = type === "Debit";
     const [editOpen, setEditOpen] = useState(false);
@@ -100,7 +101,7 @@ export function TransactionItem({
                                 {transaction.creditCardName ?? t(paymentMethod)}
                             </Typography>
                             <Typography variant="caption" color="text.secondary">
-                                &bull; {dayjs(date).format("DD/MM/YYYY")}
+                                &bull; {formatDate(date)}
                             </Typography>
                         </Box>
                         <IconButton

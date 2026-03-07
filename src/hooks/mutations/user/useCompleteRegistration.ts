@@ -1,8 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { completeRegistration } from "src/api/services/user/UserService";
 import { useSnackbar } from "notistack";
+import { useTranslation } from "react-i18next";
+import { completeRegistration } from "src/api/services/user/UserService";
 
 export function useCompleteRegistration(onSuccess?: () => void) {
+    const { t } = useTranslation();
     const queryClient = useQueryClient();
     const { enqueueSnackbar } = useSnackbar();
 
@@ -23,7 +25,7 @@ export function useCompleteRegistration(onSuccess?: () => void) {
         },
         onError: (error) => {
             console.error("Erro ao completar cadastro:", error);
-            enqueueSnackbar("Erro ao completar cadastro. Tente novamente.", {
+            enqueueSnackbar(t("notifications.registration.error_complete"), {
                 variant: "error",
             });
         },

@@ -1,7 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { Card, TableContainer, Table, TableBody, TablePagination, TableRow, TableCell, Box } from "@mui/material";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useSnackbar } from "notistack";
 import { useTable } from "src/sections/shared/useTable";
 import { TableNoData } from "src/components/table/TableNoData";
 import { CustomTableRow } from "src/components/table/TableRow";
@@ -10,6 +8,7 @@ import { CustomTableHead } from "src/components/table/TableHead";
 import { TableToolbar } from "src/components/table/TableToolbar";
 import { FormIncomes } from "src/sections/settings/income/form";
 import { useDeleteIncomes } from "src/hooks/mutations/incomes/useDeleteIncomes";
+import { useDeleteAllIncomes } from "src/hooks/mutations/incomes/useDeleteAllIncomes";
 import { Incomes } from "src/types/Incomes";
 import { Pagination } from "src/types/Pagination";
 import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
@@ -32,10 +31,18 @@ export function IncomeTable({ incomes }: IncomeTableProps) {
     }, [table.page, table.rowsPerPage])
 
     const deleteIncomesMutation = useDeleteIncomes();
+    const deleteAllIncomesMutation = useDeleteAllIncomes();
 
     const DeleteIncomes = useCallback((id: string) => {
         deleteIncomesMutation.mutate(id)
     }, [deleteIncomesMutation]);
+
+    const DeleteSelectedIncomes = useCallback(() => {
+        if (table.selected.length === 0) return;
+        deleteAllIncomesMutation.mutate(table.selected, {
+            onSuccess: () => table.onSelectAllRows(false, []),
+        });
+    }, [deleteAllIncomesMutation, table]);
 
     const IncomeRow = (row: Incomes, deleteIncome: (id: string) => void) => {
         const { id } = row;
@@ -61,6 +68,7 @@ export function IncomeTable({ incomes }: IncomeTableProps) {
             <TableToolbar
                 numSelected={table.selected.length}
                 form={<FormIncomes buttonLabel={t('common.add')} />}
+                onDeleteSelected={DeleteSelectedIncomes}
             />
 
             <TableContainer sx={{ overflow: "unset" }}>

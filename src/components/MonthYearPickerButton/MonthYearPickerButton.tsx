@@ -2,6 +2,12 @@ import React, { useCallback, useEffect, useState } from "react";
 import {
     Box,
     Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Divider,
     Menu,
     MenuItem,
     IconButton,
@@ -15,8 +21,7 @@ import {
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import { Month, ProcessedIncomesMonthResponse } from "src/types/ProcessedIncomes";
 import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
-
-
+import { useDeleteProcessedIncomesByMonth } from "src/hooks/mutations/processed-incomes/useDeleteProcessedIncomesByMonth";
 
 import { useTranslation } from "react-i18next";
 
@@ -39,6 +44,8 @@ export const MonthYearPickerButton: React.FC<MonthYearPickerButtonProps> = ({ da
     const [selectedMonth, setSelectedMonth] = useState(month);
     const [selectedYear, setSelectedYear] = useState(year);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [confirmOpen, setConfirmOpen] = useState(false);
+    const deleteByMonthMutation = useDeleteProcessedIncomesByMonth();
 
     const minYear = years[0] ? years[0] : year;
     const maxYear = years[years.length - 1];
@@ -55,7 +62,7 @@ export const MonthYearPickerButton: React.FC<MonthYearPickerButtonProps> = ({ da
     }, [selectedMonth, selectedYear, maxMonth, maxYear]);
 
     if (years.length === 0) {
-        return (<Button variant="contained" color="primary" disabled>{month}/{year}</Button>)
+        return (<Button variant="contained" color="primary" disabled>{months[month-1]}/{year}</Button>)
     }
 
 
@@ -205,8 +212,48 @@ export const MonthYearPickerButton: React.FC<MonthYearPickerButtonProps> = ({ da
                             })}
                         </Box>
                     </Box>
+
+                    <Divider />
+                    <Box p={2}>
+                        <Button
+                            fullWidth
+                            variant="outlined"
+                            color="error"
+                            size="small"
+                            onClick={() => setConfirmOpen(true)}
+                        >
+                            {t('overview.delete_month.button')} {months[selectedMonth - 1]}/{selectedYear}
+                        </Button>
+                    </Box>
                 </Box>
             </Menu>
+
+            <Dialog open={confirmOpen} onClose={() => setConfirmOpen(false)}>
+                <DialogTitle>{t('overview.delete_month.confirm_title')}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        {t('overview.delete_month.confirm_message', { month: selectedMonth, year: selectedYear })}
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setConfirmOpen(false)}>
+                        {t('overview.delete_month.cancel')}
+                    </Button>
+                    <Button
+                        color="error"
+                        variant="contained"
+                        disabled={deleteByMonthMutation.isPending}
+                        onClick={() => {
+                            deleteByMonthMutation.mutate(
+                                { year: selectedYear, month: selectedMonth },
+                                { onSuccess: () => { setConfirmOpen(false); handleClose(); } }
+                            );
+                        }}
+                    >
+                        {t('overview.delete_month.confirm')}
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 };

@@ -26,3 +26,6 @@ export const updateIncomes = (data: Incomes) =>
 
 export const deleteIncomes = (id: string) =>
   api.delete<void>(`/incomes/${id}`);
+
+export const deleteAllIncomes = (ids: string[]) =>
+  api.delete<void>(`/incomes/delete-all`, { data: { ids } });

@@ -10,6 +10,7 @@ import { ProfileLanguageSettings } from "../profile-language-settings";
 import { ProfileCurrencySettings } from "../profile-currency-settings";
 import { ProfileNotificationSettings } from "../profile-notification-settings";
 import { ProfileNumberFormatSettings } from "../profile-numberformat-settings";
+import { ProfileDateFormatSettings } from "../profile-dateformat-settings";
 
 export function ProfileView() {
     return (
@@ -42,6 +43,10 @@ export function ProfileView() {
 
                     <Grid size={{ xs: 12, md: 6 }}>
                         <ProfileNumberFormatSettings />
+                    </Grid>
+
+                    <Grid size={{ xs: 12, md: 6 }}>
+                        <ProfileDateFormatSettings />
                     </Grid>
                 </Grid>
             </Container>

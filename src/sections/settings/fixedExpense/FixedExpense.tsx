@@ -1,9 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { Card, TableContainer, Table, TableBody, TablePagination, TableRow, TableCell } from "@mui/material";
 import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useSnackbar } from "notistack";
-import dayjs from "dayjs";
 import { useTable } from "src/sections/shared/useTable";
 import { TableNoData } from "src/components/table/TableNoData";
 import { CustomTableRow } from "src/components/table/TableRow";
@@ -15,6 +12,7 @@ import { Envelopes } from "src/types/Envelopes";
 import { FixedExpenses } from "src/types/FixedExpenses";
 import { Pagination } from "src/types/Pagination";
 import { useDeleteFixedExpenses } from "src/hooks/mutations/fixed-expenses/useDeleteFixedExpenses";
+import { useDeleteAllFixedExpenses } from "src/hooks/mutations/fixed-expenses/useDeleteAllFixedExpenses";
 import { useTranslation } from "react-i18next";
 import { fCurrency } from "src/utils/format-number";
 
@@ -33,14 +31,19 @@ export function FixedExpenseTable({ envelopes, fixedExpenses }: FixedExpenseTabl
         console.info("table.rowsPerPage", table.rowsPerPage)
     }, [table.page, table.rowsPerPage])
 
-    const queryClient = useQueryClient();
-    const { enqueueSnackbar } = useSnackbar();
-
     const deleteFixedExpenseMutation = useDeleteFixedExpenses();
+    const deleteAllFixedExpensesMutation = useDeleteAllFixedExpenses();
 
     const DeleteFixedExpense = useCallback((id: string) => {
         deleteFixedExpenseMutation.mutate(id)
     }, [deleteFixedExpenseMutation]);
+
+    const DeleteSelectedFixedExpenses = useCallback(() => {
+        if (table.selected.length === 0) return;
+        deleteAllFixedExpensesMutation.mutate(table.selected, {
+            onSuccess: () => table.onSelectAllRows(false, []),
+        });
+    }, [deleteAllFixedExpensesMutation, table]);
 
     const FixedExpenseRow = (row: FixedExpenses, deleteFixedExpense: (id: string) => void) => {
         const { id } = row;
@@ -75,6 +78,7 @@ export function FixedExpenseTable({ envelopes, fixedExpenses }: FixedExpenseTabl
             <TableToolbar
                 numSelected={table.selected.length}
                 form={<FixedExpenseForm envelopes={envelopes ?? []} buttonLabel={t('common.add')} />}
+                onDeleteSelected={DeleteSelectedFixedExpenses}
             />
 
             <TableContainer sx={{ overflow: "unset" }}>

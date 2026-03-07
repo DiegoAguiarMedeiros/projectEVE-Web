@@ -17,15 +17,19 @@ import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
 import { Envelopes } from "src/types/Envelopes";
 import { useTranslation } from "react-i18next";
 import AddButton from "src/components/addButton/addButton";
+import { useDeleteProcessedIncomes } from "src/hooks/mutations/processed-incomes/useDeleteProcessedIncomes";
+import { fCurrency } from "src/utils/format-number";
 
 type IncomeListProps = {
     processedIncomes: Pagination<ProcessedIncomes> | undefined;
+    totalProcessedIncomes: number | undefined;
     table: ITable;
     envelopes: Envelopes[];
 };
 
 export function IncomeList({
     processedIncomes,
+    totalProcessedIncomes,
     table,
     envelopes,
 }: IncomeListProps) {
@@ -40,10 +44,10 @@ export function IncomeList({
     const containerRef = useRef<HTMLDivElement | null>(null);
     const lastProcessedPage = useRef<number>(-1);
 
-    const deleteIncomeMutation = useCallback((id: string) => console.log(id), []);
+    const deleteIncomeMutation = useDeleteProcessedIncomes();
 
     const DeleteIncome = useCallback(
-        (id: string) => deleteIncomeMutation(id),
+        (id: string) => deleteIncomeMutation.mutate(id),
         [deleteIncomeMutation]
     );
 
@@ -104,6 +108,16 @@ export function IncomeList({
 
     return (
         <Box sx={{ width: "100%", display: "flex", flexDirection: "column", flex: 1, minHeight: 0 }}>
+            {totalProcessedIncomes !== undefined && (
+                <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 0.5, mb: 1 }}>
+                    <Typography variant="subtitle2" color="text.secondary">
+                        {t('income.table.total')}:
+                    </Typography>
+                    <Typography variant="subtitle2" fontWeight="bold">
+                        {fCurrency(totalProcessedIncomes)}
+                    </Typography>
+                </Box>
+            )}
             <Box
                 ref={containerRef}
                 id="incomeScrollableDiv"

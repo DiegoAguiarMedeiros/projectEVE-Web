@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { alpha } from "@mui/material/styles";
-import dayjs from "dayjs";
+import { useDateFormat } from "src/hooks/useDateFormat";
 import { IncomeForm } from "src/sections/incomes/form";
 import { ProcessedIncomes } from "src/types/ProcessedIncomes";
 import { Envelopes } from "src/types/Envelopes";
@@ -28,6 +28,7 @@ export function IncomeItem({
     onDelete,
 }: IncomeItemProps) {
     const { t } = useTranslation();
+    const { formatDate } = useDateFormat();
     const { id, description, totalIncomeProcessed, day, month, year, isSplitted } = income;
     const [editOpen, setEditOpen] = useState(false);
 
@@ -74,7 +75,7 @@ export function IncomeItem({
                     <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ mt: 0.5 }}>
                         <Box display="flex" alignItems="center" gap={0.5}>
                             <Typography variant="caption" color="text.secondary">
-                                {dayjs(`${year}-${month}-${day}`).format("DD/MM/YYYY")}
+                                {formatDate(`${year}-${month}-${day}`)}
                             </Typography>
                             <Typography variant="caption" color="text.secondary">
                                 &bull;

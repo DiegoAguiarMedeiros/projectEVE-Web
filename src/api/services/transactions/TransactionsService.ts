@@ -29,6 +29,9 @@ export const updateStatusTransactions = (data: TransactionsUpdateStatus) =>
 export const deleteTransactions = (id: string) =>
   api.delete<void>(`/transactions/${id}`);
 
+export const deleteAllTransactionsByEnvelope = ({ envelopeId, year, month }: { envelopeId: string; year: number; month: number }) =>
+  api.delete<void>(`/transactions/envelope/${year}/${month}/${envelopeId}`);
+
 
 export const getUpcomingPendingPayments = (params?: GetAllParams) =>
   api.get<Pagination<Transactions>>(`/transactions/upcoming-pending`, { params });

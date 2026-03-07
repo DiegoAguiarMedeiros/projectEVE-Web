@@ -16,10 +16,6 @@ export default defineConfig(({ mode }) => {
       react(),
       checker({
         typescript: true,
-        eslint: {
-          lintCommand: "eslint './src/**/*.{js,jsx,ts,tsx}'",
-          dev: { logLevel: ["error"] },
-        },
         overlay: {
           position: "tl",
           initialIsOpen: false,
@@ -38,7 +34,8 @@ export default defineConfig(({ mode }) => {
         },
       ],
     },
-    server: { port: PORT, host: HOST },
+    server: { port: PORT, host: HOST, allowedHosts: "all" },
+    optimizeDeps: { force: true },
     preview: {
       port: PORT,
       host: HOST,

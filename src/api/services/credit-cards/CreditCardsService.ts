@@ -20,3 +20,6 @@ export const updateCreditCards = (data: CreditCards) =>
 
 export const deleteCreditCards = (id: string) =>
   api.delete<void>(`/credit-cards/${id}`);
+
+export const deleteAllCreditCards = (ids: string[]) =>
+  api.delete<void>(`/credit-cards/delete-all`, { data: { ids } });

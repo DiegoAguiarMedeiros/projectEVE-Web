@@ -42,7 +42,9 @@
         "expenses": "Expenses",
         "no_data": "No data",
         "transfer": "Transfer",
-        "add": "Add"
+        "add": "Add",
+        "reallocate": "Reallocate",
+        "delete_all": "Delete all"
     },
     "errors": {
         "unexpected": "An unexpected error occurred",
@@ -52,7 +54,10 @@
         "conflict": "Conflict",
         "too_many_requests": "Too many requests",
         "payment_required": "Payment required",
-        "validation": "Validation error"
+        "validation": "Validation error",
+        "transactions": {
+            "exceeds_budget": "Transaction amount exceeds the available envelope balance"
+        }
     },
     "nav": {
         "budget": "Budget",
@@ -89,6 +94,13 @@
             "envelope": "Envelope",
             "empty": "No pending payments near due date.",
             "all_loaded": "All upcoming payments loaded"
+        },
+        "delete_month": {
+            "button": "Delete month",
+            "confirm_title": "Delete processed month",
+            "confirm_message": "Are you sure you want to delete all entries for {{month}}/{{year}}? This action cannot be undone.",
+            "confirm": "Confirm",
+            "cancel": "Cancel"
         }
     },
     "envelope": {
@@ -120,8 +132,8 @@
                 "cancelled": "Cancelled"
             },
             "type": {
-                "debit": "Debit",
-                "credit": "Credit"
+                "debit": "Expense",
+                "credit": "Income"
             }
         },
         "transfer": {
@@ -150,8 +162,8 @@
             "completed": "Completed"
         },
         "type": {
-            "debit": "Debit",
-            "credit": "Credit"
+            "debit": "Income",
+            "credit": "Expense"
         },
         "empty": "No transactions found!",
         "all_loaded": "All transactions loaded",
@@ -184,7 +196,8 @@
             "empty": "No income registered!",
             "all": "All",
             "one": "One",
-            "all_loaded": "All incomes loaded"
+            "all_loaded": "All incomes loaded",
+            "total": "Total processed"
         }
     },
     "user": {
@@ -363,15 +376,15 @@
     },
     "table_toolbar": {
         "all": "All",
-        "debit": "Debit",
-        "credit": "Credit"
+        "debit": "Expense",
+        "credit": "Income"
     },
     "transfer": {
         "sent_to": "Sent to {{name}}",
         "received_from": "Received from {{name}}"
     },
     "deposit": {
-        "salary": "Salary deposit {{name}}"
+        "salary": "Salary allocation {{name}}"
     },
     "auth": {
         "sign_in": "Sign in",
@@ -407,7 +420,9 @@
             "success_title": "Email verified!",
             "success_message": "Your account has been successfully activated. Sign in to continue.",
             "error_title": "Invalid or expired link",
-            "go_to_login": "Go to login"
+            "go_to_login": "Go to login",
+            "pending_title": "Check your email",
+            "pending_message": "A verification link was sent to your email. Click the link to activate your account."
         },
         "registration_success_title": "Registration complete!",
         "registration_success_message": "Your account has been created successfully.",
@@ -429,6 +444,66 @@
         "finish": "Finish",
         "allocation_error": "Envelope allocation must be exactly 100% to complete registration.",
         "finish_tooltip": "To finish, configure your My Limits (envelopes) so that the allocation is exactly 100%."
+    },
+    "notifications": {
+        "goals": {
+            "created": "Goal created successfully!",
+            "updated": "Goal updated successfully!",
+            "deleted": "Goal deleted successfully!",
+            "deleted_all": "Goals deleted successfully!",
+            "error_delete_all": "Error deleting goals"
+        },
+        "fixed_expenses": {
+            "created": "Fixed expense created successfully!",
+            "updated": "Fixed expense updated successfully!",
+            "deleted": "Fixed expense deleted successfully!",
+            "deleted_all": "Fixed expenses deleted successfully!",
+            "error_delete_all": "Error deleting fixed expenses"
+        },
+        "credit_cards": {
+            "created": "Credit card created successfully!",
+            "updated": "Credit card updated successfully!",
+            "deleted": "Credit card deleted successfully!",
+            "deleted_all": "Credit cards deleted successfully!",
+            "error_delete_all": "Error deleting credit cards"
+        },
+        "transactions": {
+            "created": "Transaction created successfully!",
+            "updated": "Transaction updated successfully!",
+            "deleted": "Transaction deleted successfully!"
+        },
+        "processed_incomes": {
+            "created": "Envelopes processed successfully!",
+            "updated": "Income updated successfully!",
+            "deleted": "Income removed successfully!",
+            "deleted_all": "Incomes removed successfully!",
+            "deleted_month": "Month removed successfully!",
+            "error_delete_all": "Error removing incomes",
+            "error_delete_month": "Error removing month"
+        },
+        "envelopes": {
+            "updated": "Envelope updated successfully!",
+            "error_update": "Error updating envelope",
+            "transfer_success": "Transfer completed successfully!",
+            "error_transfer": "Error performing transfer"
+        },
+        "incomes": {
+            "created": "Income created successfully!",
+            "updated": "Income updated successfully!",
+            "deleted": "Income deleted successfully!",
+            "deleted_all": "Incomes deleted successfully!",
+            "error_delete_all": "Error deleting incomes"
+        },
+        "debts": {
+            "created": "Debt created successfully!",
+            "updated": "Debt updated successfully!",
+            "deleted": "Debt deleted successfully!",
+            "deleted_all": "Debts deleted successfully!",
+            "error_delete_all": "Error deleting debts"
+        },
+        "registration": {
+            "error_complete": "Error completing registration. Please try again."
+        }
     },
     "profile": {
         "title": "My Profile",
@@ -453,6 +528,11 @@
             "title": "Number Format",
             "dot_comma": "Dot and comma",
             "comma_dot": "Comma and dot"
+        },
+        "date_format": {
+            "title": "Date Format",
+            "dd_mm_yyyy": "Day / Month / Year",
+            "mm_dd_yyyy": "Month / Day / Year"
         },
         "notifications": {
             "title": "Notifications",

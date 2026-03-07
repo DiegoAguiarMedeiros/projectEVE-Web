@@ -42,7 +42,9 @@
         "expenses": "Gastos",
         "no_data": "Sin datos",
         "transfer": "Transferir",
-        "add": "Añadir"
+        "add": "Añadir",
+        "reallocate": "Reasignar",
+        "delete_all": "Eliminar todo"
     },
     "errors": {
         "unexpected": "Ocurrió un error inesperado",
@@ -52,7 +54,10 @@
         "conflict": "Conflicto",
         "too_many_requests": "Demasiadas solicitudes",
         "payment_required": "Pago requerido",
-        "validation": "Error de validación"
+        "validation": "Error de validación",
+        "transactions": {
+            "exceeds_budget": "El monto de la transacción supera el saldo disponible del sobre"
+        }
     },
     "nav": {
         "budget": "Presupuesto",
@@ -89,6 +94,13 @@
             "envelope": "Sobre",
             "empty": "No hay pagos pendientes cerca del vencimiento.",
             "all_loaded": "Todos los pagos pendientes cargados"
+        },
+        "delete_month": {
+            "button": "Eliminar mes",
+            "confirm_title": "Eliminar mes procesado",
+            "confirm_message": "¿Está seguro de que desea eliminar todos los registros del mes {{month}}/{{year}}? Esta acción no se puede deshacer.",
+            "confirm": "Confirmar",
+            "cancel": "Cancelar"
         }
     },
     "envelope": {
@@ -122,8 +134,8 @@
                 "cancelled": "Cancelado"
             },
             "type": {
-                "debit": "Débito",
-                "credit": "Crédito"
+                "debit": "Salida",
+                "credit": "Entrada"
             }
         },
         "transfer": {
@@ -152,8 +164,8 @@
             "completed": "Pagado"
         },
         "type": {
-            "debit": "Débito",
-            "credit": "Crédito"
+            "debit": "Entrada",
+            "credit": "Salida"
         },
         "empty": "¡No se encontraron transacciones!",
         "all_loaded": "Todas las transacciones cargadas",
@@ -186,7 +198,8 @@
             "empty": "¡No hay ingresos registrados!",
             "all": "Todos",
             "one": "Uno",
-            "all_loaded": "Todos los ingresos cargados"
+            "all_loaded": "Todos los ingresos cargados",
+            "total": "Total procesado"
         }
     },
     "user": {
@@ -365,15 +378,15 @@
     },
     "table_toolbar": {
         "all": "Todos",
-        "debit": "Débito",
-        "credit": "Crédito"
+        "debit": "Salida",
+        "credit": "Entrada"
     },
     "transfer": {
         "sent_to": "Enviado a {{name}}",
         "received_from": "Recibido de {{name}}"
     },
     "deposit": {
-        "salary": "Depósito de salario {{name}}"
+        "salary": "Asignación de salario {{name}}"
     },
     "auth": {
         "sign_in": "Iniciar sesión",
@@ -409,7 +422,9 @@
             "success_title": "¡Correo verificado!",
             "success_message": "Tu cuenta ha sido activada con éxito. Inicia sesión para continuar.",
             "error_title": "Enlace inválido o expirado",
-            "go_to_login": "Ir al inicio de sesión"
+            "go_to_login": "Ir al inicio de sesión",
+            "pending_title": "Revisa tu correo",
+            "pending_message": "Se ha enviado un enlace de verificación a tu correo. Haz clic en el enlace para activar tu cuenta."
         },
         "registration_success_title": "¡Registro completado!",
         "registration_success_message": "Tu cuenta ha sido creada con éxito.",
@@ -431,6 +446,66 @@
         "finish": "Finalizar",
         "allocation_error": "La asignación de los sobres debe ser exactamente 100% para completar el registro.",
         "finish_tooltip": "Para finalizar, configure sus Mis Límites (sobres) para que la asignación sea exactamente 100%."
+    },
+    "notifications": {
+        "goals": {
+            "created": "¡Meta registrada con éxito!",
+            "updated": "¡Meta editada con éxito!",
+            "deleted": "¡Meta eliminada con éxito!",
+            "deleted_all": "¡Metas eliminadas con éxito!",
+            "error_delete_all": "Error al eliminar metas"
+        },
+        "fixed_expenses": {
+            "created": "¡Gasto fijo registrado con éxito!",
+            "updated": "¡Gasto fijo editado con éxito!",
+            "deleted": "¡Gasto fijo eliminado con éxito!",
+            "deleted_all": "¡Gastos fijos eliminados con éxito!",
+            "error_delete_all": "Error al eliminar gastos fijos"
+        },
+        "credit_cards": {
+            "created": "¡Tarjeta de crédito registrada con éxito!",
+            "updated": "¡Tarjeta de crédito editada con éxito!",
+            "deleted": "¡Tarjeta de crédito eliminada con éxito!",
+            "deleted_all": "¡Tarjetas de crédito eliminadas con éxito!",
+            "error_delete_all": "Error al eliminar tarjetas de crédito"
+        },
+        "transactions": {
+            "created": "¡Transacción registrada con éxito!",
+            "updated": "¡Transacción editada con éxito!",
+            "deleted": "¡Transacción eliminada con éxito!"
+        },
+        "processed_incomes": {
+            "created": "¡Sobres procesados con éxito!",
+            "updated": "¡Ingreso editado con éxito!",
+            "deleted": "¡Ingreso eliminado con éxito!",
+            "deleted_all": "¡Ingresos eliminados con éxito!",
+            "deleted_month": "¡Mes eliminado con éxito!",
+            "error_delete_all": "Error al eliminar ingresos",
+            "error_delete_month": "Error al eliminar el mes"
+        },
+        "envelopes": {
+            "updated": "¡Sobre editado con éxito!",
+            "error_update": "Error al editar sobre",
+            "transfer_success": "¡Transferencia realizada con éxito!",
+            "error_transfer": "Error al realizar la transferencia"
+        },
+        "incomes": {
+            "created": "¡Salario registrado con éxito!",
+            "updated": "¡Salario editado con éxito!",
+            "deleted": "¡Salario eliminado con éxito!",
+            "deleted_all": "¡Salarios eliminados con éxito!",
+            "error_delete_all": "Error al eliminar salarios"
+        },
+        "debts": {
+            "created": "¡Deuda registrada con éxito!",
+            "updated": "¡Deuda editada con éxito!",
+            "deleted": "¡Deuda eliminada con éxito!",
+            "deleted_all": "¡Deudas eliminadas con éxito!",
+            "error_delete_all": "Error al eliminar deudas"
+        },
+        "registration": {
+            "error_complete": "Error al completar el registro. Inténtalo de nuevo."
+        }
     },
     "profile": {
         "title": "Mi Perfil",
@@ -455,6 +530,11 @@
             "title": "Formato de Número",
             "dot_comma": "Punto y coma",
             "comma_dot": "Coma y punto"
+        },
+        "date_format": {
+            "title": "Formato de Fecha",
+            "dd_mm_yyyy": "Día / Mes / Año",
+            "mm_dd_yyyy": "Mes / Día / Año"
         },
         "notifications": {
             "title": "Notificaciones",

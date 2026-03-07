@@ -12,6 +12,7 @@ export function VerifyEmailView() {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
+  const isPending = searchParams.get("pending") === "true";
 
   const { isLoading, isSuccess, error } = useVerifyEmail(token);
 
@@ -70,7 +71,22 @@ export function VerifyEmailView() {
         </>
       )}
 
-      {!isLoading && !error && !isSuccess && !token && (
+      {isPending && !token && (
+        <>
+          <Box sx={{ fontSize: "4rem", lineHeight: 1 }}>📧</Box>
+          <Typography variant="h5" fontWeight={700}>
+            {t("auth.verify_email.pending_title")}
+          </Typography>
+          <Typography variant="body1" color="text.secondary" textAlign="center">
+            {t("auth.verify_email.pending_message")}
+          </Typography>
+          <Button variant="outlined" size="large" href="/entrar">
+            {t("auth.verify_email.go_to_login")}
+          </Button>
+        </>
+      )}
+
+      {!isLoading && !error && !isSuccess && !token && !isPending && (
         <>
           <Box sx={{ fontSize: "4rem", lineHeight: 1 }}>⚠️</Box>
           <Typography variant="h5" fontWeight={700}>

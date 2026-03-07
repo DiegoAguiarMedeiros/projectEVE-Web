@@ -10,12 +10,14 @@ import { ProcessedIncomes } from "src/types/ProcessedIncomes";
 type IncomesViewProps = {
   envelopes: Envelopes[]
   processedIncomes: Pagination<ProcessedIncomes> | undefined
+  totalProcessedIncomes: number | undefined
   table: ITable
 }
 
 export function IncomesView({
   envelopes,
   processedIncomes,
+  totalProcessedIncomes,
   table
 }: IncomesViewProps) {
   return (
@@ -23,6 +25,7 @@ export function IncomesView({
       <IncomesDisplay
         envelopes={envelopes}
         processedIncomes={processedIncomes}
+        totalProcessedIncomes={totalProcessedIncomes}
         table={table}
       />
     </DashboardContent>

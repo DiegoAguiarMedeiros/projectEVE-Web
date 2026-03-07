@@ -1,9 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { Card, TableContainer, Table, TableBody, TablePagination, TableRow, TableCell } from "@mui/material";
 import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
-import { useQueryClient } from "@tanstack/react-query";
-import { useSnackbar } from "notistack";
-import dayjs from "dayjs";
+import { useDateFormat } from "src/hooks/useDateFormat";
 import { useTable } from "src/sections/shared/useTable";
 import { TableNoData } from "src/components/table/TableNoData";
 import { CustomTableRow } from "src/components/table/TableRow";
@@ -14,6 +12,7 @@ import { GoalsForm } from "src/sections/settings/goals/form";
 import { Pagination } from "src/types/Pagination";
 import { Goals } from "src/types/Goals";
 import { useDeleteGoals } from "src/hooks/mutations/goals/useDeleteGoals";
+import { useDeleteAllGoals } from "src/hooks/mutations/goals/useDeleteAllGoals";
 import { Envelopes } from "src/types/Envelopes";
 import { useTranslation } from "react-i18next";
 import { useCurrency } from "src/hooks/useCurrency";
@@ -26,6 +25,7 @@ type GoalsTableProps = {
 export function GoalsTable({ goals, envelope }: GoalsTableProps) {
     const { t } = useTranslation();
     const { symbol } = useCurrency();
+    const { formatDate } = useDateFormat();
     const table = useTable();
 
     useEffect(() => {
@@ -33,15 +33,19 @@ export function GoalsTable({ goals, envelope }: GoalsTableProps) {
         console.info("table.rowsPerPage", table.rowsPerPage)
     }, [table.page, table.rowsPerPage])
 
-    const queryClient = useQueryClient();
-    const { enqueueSnackbar } = useSnackbar();
-
     const deleteGoalsMutation = useDeleteGoals();
-
+    const deleteAllGoalsMutation = useDeleteAllGoals();
 
     const DeleteGoals = useCallback((id: string) => {
         deleteGoalsMutation.mutate(id)
     }, [deleteGoalsMutation]);
+
+    const DeleteSelectedGoals = useCallback(() => {
+        if (table.selected.length === 0) return;
+        deleteAllGoalsMutation.mutate(table.selected, {
+            onSuccess: () => table.onSelectAllRows(false, []),
+        });
+    }, [deleteAllGoalsMutation, table]);
 
     const GoalsRow = (row: Goals, deleteGoals: (id: string) => void) => {
         const { id } = row;
@@ -56,7 +60,7 @@ export function GoalsTable({ goals, envelope }: GoalsTableProps) {
             key={id}
             selected={table.selected.includes(id)}
             onSelectRow={() => table.onSelectRow(id)}
-            rowKeys={[description, `${symbol} ${amountTotal}`, `${percentage} %`, dayjs(deadline).format("DD/MM/YYYY")]}
+            rowKeys={[description, `${symbol} ${amountTotal}`, `${percentage} %`, formatDate(deadline)]}
             form={<GoalsForm
                 envelope={envelope}
                 key={id}
@@ -72,6 +76,7 @@ export function GoalsTable({ goals, envelope }: GoalsTableProps) {
             <TableToolbar
                 numSelected={table.selected.length}
                 form={<GoalsForm envelope={envelope} buttonLabel={t('common.add')} />}
+                onDeleteSelected={DeleteSelectedGoals}
             />
 
             <TableContainer sx={{ overflow: "unset" }}>

@@ -2,6 +2,7 @@ import ConfigSkeleton from "src/components/skeleton/ConfigSkeleton";
 import { CONFIG } from "src/config-global";
 import { useListEnvelopesWithAmount } from "src/hooks/queries/envelopes/useListEnvelopesWithAmount";
 import { useProcessedIncomes } from "src/hooks/queries/processed-incomes/useProcessedIncomes";
+import { useTotalProcessedIncomes } from "src/hooks/queries/processed-incomes/useTotalProcessedIncomes";
 
 import { IncomesView } from "src/sections/incomes/view";
 import { useTable } from "src/sections/shared/useTable";
@@ -16,6 +17,7 @@ export default function Page() {
   const { month, year } = SelectedMonthYearStore();
   const { data: envelopes, isLoading: envelopesIsLoading, error: envelopesError } = useListEnvelopesWithAmount(year, month);
   const { data: processedIncomes, isLoading: processedIncomesIsLoading, error: processedIncomesError } = useProcessedIncomes(year, month, table);
+  const { data: totalProcessedIncomes } = useTotalProcessedIncomes(year, month);
 
   if (envelopesIsLoading && processedIncomesIsLoading) {
     return (
@@ -34,6 +36,7 @@ export default function Page() {
       <IncomesView
         envelopes={envelopes || []}
         processedIncomes={processedIncomes}
+        totalProcessedIncomes={totalProcessedIncomes?.total}
         table={table}
       />
     </>

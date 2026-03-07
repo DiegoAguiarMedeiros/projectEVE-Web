@@ -8,6 +8,7 @@ import Grid2 from "@mui/material/Grid2"; // Para navegação (se necessário)
 import "swiper/css/pagination"; // Para paginação (se necessário)
 import { DashboardContent } from "src/layouts/dashboard";
 
+
 import { AnalyticsCurrentEnvelopesGraph } from "src/sections/overview/analytics-current-envelopes";
 import { AnalyticsEnvelopesByYearGraph } from "src/sections/overview/analytics-envelopes-by-year";
 import { AnalyticsEnvelopesMonthOverviewCards } from "src/sections/overview/analytics-envelopes-month-overview";
@@ -31,6 +32,7 @@ export function OverviewAnalyticsView({ envelopes }: OverviewAnalyticsViewProps)
 
   const { month, year } = SelectedMonthYearStore();
   const table = useTable();
+
   const { data: analyticsCurrentEnvelopes, isLoading: analyticsCurrentEnvelopesIsLoading, error: analyticsCurrentEnvelopesError } = useListAnalyticsCurrentEnvelopes(year, month);
   const { data: analyticsEnvelopesMonthOverview, isLoading: analyticsEnvelopesMonthOverviewIsLoading, error: analyticsEnvelopesMonthOverviewError } = useListAnalyticsEnvelopesMonthOverview(year, month);
   const { data: analyticsEnvelopesByYear, isLoading: analyticsEnvelopesByYearIsLoading, error: analyticsEnvelopesByYearError } = useListAnalyticsEnvelopesByYear(year);

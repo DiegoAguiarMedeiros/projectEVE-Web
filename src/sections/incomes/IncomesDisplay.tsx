@@ -9,12 +9,14 @@ import { ITable } from "src/sections/shared/useTable";
 
 type IncomesDisplayProps = {
     processedIncomes: Pagination<ProcessedIncomes> | undefined;
+    totalProcessedIncomes: number | undefined;
     table: ITable;
     envelopes: Envelopes[];
 };
 
 export function IncomesDisplay({
     processedIncomes,
+    totalProcessedIncomes,
     table,
     envelopes,
 }: IncomesDisplayProps) {
@@ -24,6 +26,7 @@ export function IncomesDisplay({
         return (
             <IncomeList
                 processedIncomes={processedIncomes}
+                totalProcessedIncomes={totalProcessedIncomes}
                 table={table}
                 envelopes={envelopes}
             />
@@ -33,6 +36,7 @@ export function IncomesDisplay({
     return (
         <IncomeTable
             processedIncomes={processedIncomes}
+            totalProcessedIncomes={totalProcessedIncomes}
             table={table}
             envelopes={envelopes}
         />

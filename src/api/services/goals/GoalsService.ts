@@ -20,3 +20,6 @@ export const updateGoals = (data: Goals) =>
 
 export const deleteGoals = (id: string) =>
   api.delete<void>(`/goals/${id}`);
+
+export const deleteAllGoals = (ids: string[]) =>
+  api.delete<void>(`/goals/delete-all`, { data: { ids } });

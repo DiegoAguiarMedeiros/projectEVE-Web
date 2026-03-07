@@ -3,11 +3,13 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useCreateProcessedIncomes } from "src/hooks/mutations/processed-incomes/useCreateProcessedIncomes";
+import { useAllIncomes } from "src/hooks/queries/incomes/useAllIncomes";
+import { useProcessAllIncomes } from "src/hooks/mutations/processed-incomes/useProcessAllIncomes";
 import { IncomeForm } from "src/sections/incomes/form";
 
-import { IncomeStore } from "src/store/useIncomeStore";
 import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
+import { IncomeStore } from "src/store/useIncomeStore";
+import { useCreateProcessedIncomes } from "src/hooks/mutations/processed-incomes/useCreateProcessedIncomes";
 
 // ----------------------------------------------------------------------
 
@@ -18,11 +20,15 @@ type NoEnvelopeViewProps = {
 
 export function NoEnvelopeView({ title, description }: NoEnvelopeViewProps) {
   const { t } = useTranslation();
+
   const { income } = IncomeStore();
   const { nextMonthToProcess, nextYearToProcess } = SelectedMonthYearStore();
-  const processMutation = useCreateProcessedIncomes();
+  const processAllMutation = useProcessAllIncomes();
 
+  const monthKey = new Date(nextYearToProcess, nextMonthToProcess - 1).toLocaleString('en', { month: 'long' }).toLowerCase();
+  const monthName = t(`months.${monthKey}`);
   const [incomeModalOpen, setIncomeModalOpen] = useState(false);
+
 
   const handleClickProcess = async () => {
     if (!income) {
@@ -30,13 +36,9 @@ export function NoEnvelopeView({ title, description }: NoEnvelopeViewProps) {
       return;
     }
 
-    await processMutation.mutateAsync({
-      description: t('home.income_description', { month: nextMonthToProcess, year: nextYearToProcess }),
-      totalIncomeProcessed: String(income),
-      month: String(nextMonthToProcess),
-      day: String(5),
-      year: String(nextYearToProcess),
-      isSplitted: true,
+    await processAllMutation.mutateAsync({
+      month: nextMonthToProcess,
+      year: nextYearToProcess,
     });
   }
 
@@ -51,7 +53,7 @@ export function NoEnvelopeView({ title, description }: NoEnvelopeViewProps) {
       </Typography>
 
       <Button variant="contained" color="primary" onClick={handleClickProcess}>
-        {t('home.process_button', { month: nextMonthToProcess, year: nextYearToProcess })}
+        {t('home.process_button', { month: monthName, year: nextYearToProcess })}
       </Button>
 
       <IncomeForm

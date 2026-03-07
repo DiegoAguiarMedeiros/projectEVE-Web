@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, TableContainer, Table, TableBody, TablePagination, Box, FormControl, Select, MenuItem, InputLabel, Button } from "@mui/material";
-import { useSnackbar } from "notistack";
-import dayjs from "dayjs";
+import { useDateFormat } from "src/hooks/useDateFormat";
 import { ITable, useTable } from "src/sections/shared/useTable";
 import { TableNoData } from "src/components/table/TableNoData";
 import { CustomTableRow } from "src/components/table/TableRow";
@@ -16,7 +15,7 @@ import { Pagination } from "src/types/Pagination";
 import { Transactions, TransactionsStatus, TransactionsUpdateStatus } from "src/types/Transactions";
 import { Envelopes } from "src/types/Envelopes";
 import { useDeleteTransactions } from "src/hooks/mutations/transactions/useDeleteTransactions";
-import { useUpdateTransactions } from "src/hooks/mutations/transactions/useUpdateTransactions";
+import { useDeleteAllTransactions } from "src/hooks/mutations/transactions/useDeleteAllTransactions";
 import { useUpdateStatusTransactions } from "src/hooks/mutations/transactions/useUpdateStatusTransactions";
 import { useTranslation } from "react-i18next";
 import { fCurrency } from "src/utils/format-number";
@@ -39,12 +38,19 @@ export function TransactionTable({ envelopeId, transactions, table, activeBorder
         year,
     } = SelectedMonthYearStore();
 
+    const { formatDate } = useDateFormat();
+
     const deleteTransactionMutation = useDeleteTransactions();
+    const deleteAllTransactionsMutation = useDeleteAllTransactions();
     const updateStatusTransactionMutation = useUpdateStatusTransactions();
 
     const DeleteTransaction = useCallback((id: string) => {
         deleteTransactionMutation.mutate(id)
     }, [deleteTransactionMutation]);
+
+    const DeleteAllTransactions = useCallback(() => {
+        deleteAllTransactionsMutation.mutate({ envelopeId, year, month });
+    }, [deleteAllTransactionsMutation, envelopeId, year, month]);
 
     const UpdateStatusTransaction = useCallback((data: TransactionsUpdateStatus) => {
         updateStatusTransactionMutation.mutate(data)
@@ -87,7 +93,7 @@ export function TransactionTable({ envelopeId, transactions, table, activeBorder
                 type === "Debit" ? t('envelope.transaction.type.debit') : t('envelope.transaction.type.credit'),
                 fCurrency(amount),
                 creditCardName ?? t(paymentMethod),
-                dayjs(date).format("DD/MM/YYYY"),
+                formatDate(date),
                 <Chips
                     label={t(status)}
                     labels={[t('transaction.status.paid'), t('transaction.status.pending')]}
@@ -130,6 +136,7 @@ export function TransactionTable({ envelopeId, transactions, table, activeBorder
                 }
                 typeFilter={typeFilter}
                 onTypeFilterChange={onTypeFilterChange}
+                onDeleteSelected={DeleteAllTransactions}
             />
 
             <TableContainer sx={{ overflow: "unset", flex: '1 0 0' }}>

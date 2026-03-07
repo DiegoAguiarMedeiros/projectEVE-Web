@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { enqueueSnackbar } from "notistack";
+import { useTranslation } from "react-i18next";
 import { api } from "src/api/client";
 
 interface TransferBalanceDTO {
@@ -11,6 +12,7 @@ interface TransferBalanceDTO {
 }
 
 export function useTransferBalance() {
+    const { t } = useTranslation();
     const queryClient = useQueryClient();
 
     const transferBalance = async (data: TransferBalanceDTO) => {
@@ -23,10 +25,10 @@ export function useTransferBalance() {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["envelopes"] });
             queryClient.invalidateQueries({ queryKey: ["processed-incomes"] });
-            enqueueSnackbar("Transferência realizada com sucesso!", { variant: "success" });
+            enqueueSnackbar(t("notifications.envelopes.transfer_success"), { variant: "success" });
         },
         onError: (error: any) => {
-            const message = error.response?.data?.message || "Erro ao realizar transferência";
+            const message = error.response?.data?.message || t("notifications.envelopes.error_transfer");
             enqueueSnackbar(message, { variant: "error" });
         },
     });

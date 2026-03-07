@@ -13,8 +13,8 @@ import TablePagination from "@mui/material/TablePagination";
 import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
 
-import { fDate } from "src/utils/format-time";
 import { fNumberToCurrency } from "src/utils/format-number";
+import { useDateFormat } from "src/hooks/useDateFormat";
 
 import { Transactions } from "src/types/Transactions";
 import { useTranslation } from "react-i18next";
@@ -35,6 +35,7 @@ type Props = CardProps & {
 
 export function UpcomingPendingTransactionsTable({ title, subheader, envelopes, transactions, table, ...other }: Props) {
   const { t } = useTranslation();
+  const { formatDate } = useDateFormat();
 
   if (!transactions || transactions.data.length === 0) {
     return (
@@ -60,10 +61,10 @@ export function UpcomingPendingTransactionsTable({ title, subheader, envelopes, 
               <TableRow>
                 <TableCell>{t("transaction.headers.description")}</TableCell>
                 <TableCell>{t("transaction.headers.amount")}</TableCell>
-                <TableCell>{t("transaction.headers.date")}</TableCell>
                 <TableCell>{t("overview.upcoming_payments.envelope")}</TableCell>
                 <TableCell>{t("transaction.headers.status")}</TableCell>
                 <TableCell>{t("transaction.headers.payment_method")}</TableCell>
+                <TableCell>{t("transaction.headers.date")}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -71,7 +72,6 @@ export function UpcomingPendingTransactionsTable({ title, subheader, envelopes, 
                 <TableRow key={row.id}>
                   <TableCell>{row.isTranslatable ? t(row.description) : row.description}</TableCell>
                   <TableCell>{fNumberToCurrency(row.amount)}</TableCell>
-                  <TableCell>{fDate(row.date)}</TableCell>
                   <TableCell>{t(envelopes.find(e => e.id === row.envelopeId)?.name || "overview.upcoming_payments.unknown_envelope")}</TableCell>
                   <TableCell>
                     <Chip
@@ -82,6 +82,7 @@ export function UpcomingPendingTransactionsTable({ title, subheader, envelopes, 
                     />
                   </TableCell>
                   <TableCell>{t(row.paymentMethod)}</TableCell>
+                  <TableCell>{formatDate(row.date)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

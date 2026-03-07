@@ -44,7 +44,8 @@
         "transfer": "Transferir",
         "add": "Adicionar",
         "back": "Voltar",
-        "reallocate": "Realocar"
+        "reallocate": "Realocar",
+        "delete_all": "Excluir tudo"
     },
     "errors": {
         "unexpected": "Ocorreu um erro inesperado",
@@ -54,7 +55,10 @@
         "conflict": "Conflito",
         "too_many_requests": "Muitas requisições",
         "payment_required": "Pagamento necessário",
-        "validation": "Erro de validação"
+        "validation": "Erro de validação",
+        "transactions": {
+            "exceeds_budget": "O valor da transação ultrapassa o saldo disponível do envelope"
+        }
     },
     "nav": {
         "budget": "Orçamento",
@@ -91,6 +95,13 @@
             "envelope": "Envelope",
             "empty": "Nenhum pagamento pendente próximo ao vencimento.",
             "all_loaded": "Todos os pagamentos pendentes foram carregados"
+        },
+        "delete_month": {
+            "button": "Deletar mês",
+            "confirm_title": "Deletar mês processado",
+            "confirm_message": "Tem certeza que deseja deletar todos os lançamentos do mês {{month}}/{{year}}? Esta ação não pode ser desfeita.",
+            "confirm": "Confirmar",
+            "cancel": "Cancelar"
         }
     },
     "envelope": {
@@ -124,8 +135,8 @@
                 "cancelled": "Cancelado"
             },
             "type": {
-                "debit": "Débito",
-                "credit": "Crédito"
+                "debit": "Saída",
+                "credit": "Entrada"
             }
         },
         "transfer": {
@@ -154,8 +165,8 @@
             "completed": "Pago"
         },
         "type": {
-            "debit": "Débito",
-            "credit": "Crédito"
+            "debit": "Entrada",
+            "credit": "Saída"
         },
         "empty": "Nenhuma transação cadastrada!",
         "all_loaded": "Todas as transações foram carregadas",
@@ -188,7 +199,8 @@
             "empty": "Nenhuma renda cadastrada!",
             "all": "Todos",
             "one": "Um",
-            "all_loaded": "Todas as rendas foram carregadas"
+            "all_loaded": "Todas as rendas foram carregadas",
+            "total": "Total processado"
         }
     },
     "user": {
@@ -367,15 +379,15 @@
     },
     "table_toolbar": {
         "all": "Todos",
-        "debit": "Débito",
-        "credit": "Crédito"
+        "debit": "Saída",
+        "credit": "Entrada"
     },
     "transfer": {
         "sent_to": "Enviado p/ {{name}}",
         "received_from": "Recebido de {{name}}"
     },
     "deposit": {
-        "salary": "Depósito salário {{name}}"
+        "salary": "Alocação de salário {{name}}"
     },
     "auth": {
         "sign_in": "Entrar",
@@ -411,7 +423,9 @@
             "success_title": "E-mail verificado!",
             "success_message": "Sua conta foi ativada com sucesso. Faça login para continuar.",
             "error_title": "Link inválido ou expirado",
-            "go_to_login": "Ir para o login"
+            "go_to_login": "Ir para o login",
+            "pending_title": "Verifique seu e-mail",
+            "pending_message": "Um link de verificação foi enviado para o seu e-mail. Acesse o link para ativar sua conta."
         },
         "registration_success_title": "Cadastro realizado!",
         "registration_success_message": "Sua conta foi criada com sucesso.",
@@ -433,6 +447,66 @@
         "finish": "Finalizar",
         "allocation_error": "A alocação dos envelopes deve ser exatamente 100% para finalizar o cadastro.",
         "finish_tooltip": "Para finalizar, configure seus Meus Limites (envelopes) para que a alocação seja exatamente 100%."
+    },
+    "notifications": {
+        "goals": {
+            "created": "Meta cadastrada com sucesso!",
+            "updated": "Meta editada com sucesso!",
+            "deleted": "Meta deletada com sucesso!",
+            "deleted_all": "Metas deletadas com sucesso!",
+            "error_delete_all": "Erro ao deletar metas"
+        },
+        "fixed_expenses": {
+            "created": "Conta fixa cadastrada com sucesso!",
+            "updated": "Conta fixa editada com sucesso!",
+            "deleted": "Conta fixa deletada com sucesso!",
+            "deleted_all": "Contas fixas deletadas com sucesso!",
+            "error_delete_all": "Erro ao deletar contas fixas"
+        },
+        "credit_cards": {
+            "created": "Cartão de crédito cadastrado com sucesso!",
+            "updated": "Cartão de crédito editado com sucesso!",
+            "deleted": "Cartão de crédito deletado com sucesso!",
+            "deleted_all": "Cartões de crédito deletados com sucesso!",
+            "error_delete_all": "Erro ao deletar cartões de crédito"
+        },
+        "transactions": {
+            "created": "Transação cadastrada com sucesso!",
+            "updated": "Transação editada com sucesso!",
+            "deleted": "Transação deletada com sucesso!"
+        },
+        "processed_incomes": {
+            "created": "Envelopes processados com sucesso!",
+            "updated": "Renda editada com sucesso!",
+            "deleted": "Lançamento removido com sucesso!",
+            "deleted_all": "Lançamentos removidos com sucesso!",
+            "deleted_month": "Mês removido com sucesso!",
+            "error_delete_all": "Erro ao remover lançamentos",
+            "error_delete_month": "Erro ao remover o mês"
+        },
+        "envelopes": {
+            "updated": "Envelope editado com sucesso!",
+            "error_update": "Erro ao editar envelope",
+            "transfer_success": "Transferência realizada com sucesso!",
+            "error_transfer": "Erro ao realizar transferência"
+        },
+        "incomes": {
+            "created": "Salário cadastrado com sucesso!",
+            "updated": "Salário editado com sucesso!",
+            "deleted": "Salário deletado com sucesso!",
+            "deleted_all": "Salários deletados com sucesso!",
+            "error_delete_all": "Erro ao deletar salários"
+        },
+        "debts": {
+            "created": "Dívida cadastrada com sucesso!",
+            "updated": "Dívida editada com sucesso!",
+            "deleted": "Dívida deletada com sucesso!",
+            "deleted_all": "Dívidas deletadas com sucesso!",
+            "error_delete_all": "Erro ao deletar dívidas"
+        },
+        "registration": {
+            "error_complete": "Erro ao completar cadastro. Tente novamente."
+        }
     },
     "profile": {
         "title": "Meu Perfil",
@@ -457,6 +531,11 @@
             "title": "Formato de Número",
             "dot_comma": "Ponto e vírgula",
             "comma_dot": "Vírgula e ponto"
+        },
+        "date_format": {
+            "title": "Formato de Data",
+            "dd_mm_yyyy": "Dia / Mês / Ano",
+            "mm_dd_yyyy": "Mês / Dia / Ano"
         },
         "notifications": {
             "title": "Notificações",

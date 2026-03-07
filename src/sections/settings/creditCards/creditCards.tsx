@@ -1,8 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { Card, TableContainer, Table, TableBody, TablePagination, TableRow, TableCell } from "@mui/material";
 import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useSnackbar } from "notistack";
 import { useTable } from "src/sections/shared/useTable";
 import { TableNoData } from "src/components/table/TableNoData";
 import { CustomTableRow } from "src/components/table/TableRow";
@@ -13,6 +11,7 @@ import { CreditCardForm } from "src/sections/settings/creditCards/form";
 import { Pagination } from "src/types/Pagination";
 import { CreditCards } from "src/types/CreditCards";
 import { useDeleteCreditCards } from "src/hooks/mutations/credit-cards/useDeleteCreditCards";
+import { useDeleteAllCreditCards } from "src/hooks/mutations/credit-cards/useDeleteAllCreditCards";
 import { useTranslation } from "react-i18next";
 
 
@@ -30,9 +29,18 @@ export function CreditCardsTable({ creditCards }: CreditCardsTableProps) {
     }, [table.page, table.rowsPerPage])
 
     const deleteCreditCardsMutation = useDeleteCreditCards();
+    const deleteAllCreditCardsMutation = useDeleteAllCreditCards();
+
     const DeleteCreditCards = useCallback((id: string) => {
         deleteCreditCardsMutation.mutate(id)
     }, [deleteCreditCardsMutation]);
+
+    const DeleteSelectedCreditCards = useCallback(() => {
+        if (table.selected.length === 0) return;
+        deleteAllCreditCardsMutation.mutate(table.selected, {
+            onSuccess: () => table.onSelectAllRows(false, []),
+        });
+    }, [deleteAllCreditCardsMutation, table]);
 
     const CreditCardsRow = (row: CreditCards, deleteCreditCards: (id: string) => void) => {
         const { id } = row;
@@ -60,6 +68,7 @@ export function CreditCardsTable({ creditCards }: CreditCardsTableProps) {
             <TableToolbar
                 numSelected={table.selected.length}
                 form={<CreditCardForm buttonLabel={t('common.add')} />}
+                onDeleteSelected={DeleteSelectedCreditCards}
             />
 
             <TableContainer sx={{ overflow: "unset" }}>

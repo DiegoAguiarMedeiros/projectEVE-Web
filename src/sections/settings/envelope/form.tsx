@@ -18,9 +18,10 @@ type EnvelopeFormProps = {
     open: boolean
     handleOpen: VoidFunction
     handleClose: VoidFunction
+    allEnvelopes?: Envelopes[];
 }
 
-export function EnvelopeForm({ buttonLabel, buttonIcon, data, open, handleOpen, handleClose }: EnvelopeFormProps) {
+export function EnvelopeForm({ buttonLabel, buttonIcon, data, open, handleOpen, handleClose, allEnvelopes }: EnvelopeFormProps) {
     const { t } = useTranslation();
 
     const [color, setColor] = useState('#4ECDC4');
@@ -30,6 +31,12 @@ export function EnvelopeForm({ buttonLabel, buttonIcon, data, open, handleOpen, 
     const isDebts = data?.name === 'debts';
 
     const income = IncomeStore((state) => state.income);
+
+    const usedByOthers = (allEnvelopes ?? [])
+        .filter(e => e.id !== data?.id && e.name !== 'debts')
+        .reduce((s, e) => s + e.percentage, 0);
+    const maxPercentage = Math.max(0, 100 - usedByOthers);
+    const availablePercentage = maxPercentage;
 
     const computedValue = (percentage / 100) * income;
 
@@ -64,7 +71,7 @@ export function EnvelopeForm({ buttonLabel, buttonIcon, data, open, handleOpen, 
         setValueInput(rawValue);
         const parsed = parseFloat(rawValue);
         if (!Number.isNaN(parsed) && income > 0) {
-            const newPercentage = Math.min(100, Math.max(0, Math.round((parsed / income) * 100)));
+            const newPercentage = Math.min(maxPercentage, Math.max(0, Math.round((parsed / income) * 100)));
             setPercentage(newPercentage);
         }
     };
@@ -109,7 +116,7 @@ export function EnvelopeForm({ buttonLabel, buttonIcon, data, open, handleOpen, 
             open={open}
             handleClose={handleClose}
             handleOpen={handleOpen}
-            okButton={<Button type="submit" variant="outlined" color="primary" onClick={handleSubmit} disabled={isPending} startIcon={<SaveIcon sx={{ fontSize: 20 }} />}>{t('settings.envelope.save')}</Button>
+            okButton={<Button type="submit" variant="outlined" color="primary" onClick={handleSubmit} disabled={isPending || (!isDebts && percentage + usedByOthers > 100)} startIcon={<SaveIcon sx={{ fontSize: 20 }} />}>{t('settings.envelope.save')}</Button>
             }>
 
 
@@ -151,7 +158,10 @@ export function EnvelopeForm({ buttonLabel, buttonIcon, data, open, handleOpen, 
                     </Box>
 
                     <Box sx={{ flex: '1 0 0', display: 'flex', flexDirection: 'column', gap: 2 }}>
-                        <Typography variant="subtitle2">{t('settings.envelope.percentage', { count: percentage })}</Typography>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <Typography variant="subtitle2">{t('settings.envelope.percentage', { count: percentage })}</Typography>
+                            {!isDebts && <Typography variant="caption" color="text.secondary">{availablePercentage}% disponível</Typography>}
+                        </Box>
                         {income > 0 && !isDebts && (
                             <CurrencyInput
                                 size="small"
@@ -180,15 +190,19 @@ export function EnvelopeForm({ buttonLabel, buttonIcon, data, open, handleOpen, 
                             value={percentage}
                             onChange={handleSliderChange}
                             min={0}
-                            max={100}
+                            max={isDebts ? 100 : maxPercentage}
                             step={1}
                             disabled={isDebts}
                             marks={[
                                 { value: 0, label: '0%' },
-                                { value: 25, label: '25%' },
-                                { value: 50, label: '50%' },
-                                { value: 75, label: '75%' },
-                                { value: 100, label: '100%' }
+                                ...(isDebts ? [
+                                    { value: 25, label: '25%' },
+                                    { value: 50, label: '50%' },
+                                    { value: 75, label: '75%' },
+                                    { value: 100, label: '100%' }
+                                ] : [
+                                    { value: maxPercentage, label: `${maxPercentage}%` }
+                                ])
                             ]}
                             valueLabelDisplay="auto"
                             sx={{

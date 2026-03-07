@@ -20,3 +20,6 @@ export const updateFixedExpenses = (data: FixedExpenses) =>
 
 export const deleteFixedExpenses = (id: string) =>
   api.delete<void>(`/fixed-expenses/${id}`);
+
+export const deleteAllFixedExpenses = (ids: string[]) =>
+  api.delete<void>(`/fixed-expenses/delete-all`, { data: { ids } });
