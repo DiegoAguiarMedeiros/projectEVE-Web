@@ -20,5 +20,14 @@ export function useCurrency() {
         setConfig(found);
     }, []);
 
-    return { ...config, setCurrency, currencies };
+    const format = useCallback(
+        (value: number) =>
+            new Intl.NumberFormat(config.locale, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+            }).format(value),
+        [config.locale]
+    );
+
+    return { ...config, format, setCurrency, currencies };
 }

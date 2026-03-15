@@ -1,0 +1,213 @@
+import { useCallback, useState } from "react";
+import { alpha } from "@mui/material/styles";
+import {
+    Card,
+    Grid2,
+    IconButton,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TablePagination,
+    TableRow,
+    Tooltip,
+    Typography,
+} from "@mui/material";
+import { Iconify } from "src/components/iconify";
+import { CustomTableHead } from "src/components/table/TableHead";
+import { CustomTableRow } from "src/components/table/TableRow";
+import { TableNoData } from "src/components/table/TableNoData";
+import { TableToolbar } from "src/components/table/TableToolbar";
+import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
+import { GoalsForm } from "src/sections/settings/goals/form";
+import { GoalEvolutionModal } from "src/sections/goals/GoalEvolutionModal";
+import { useDeleteGoals } from "src/hooks/mutations/goals/useDeleteGoals";
+import { useDeleteAllGoals } from "src/hooks/mutations/goals/useDeleteAllGoals";
+import { useTranslation } from "react-i18next";
+import { useCurrency } from "src/hooks/useCurrency";
+import { Goals } from "src/types/Goals";
+import { Envelopes } from "src/types/Envelopes";
+import { Pagination } from "src/types/Pagination";
+import { ITable } from "src/sections/shared/useTable";
+import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
+import { useGoalsCumulativeAmount } from "src/hooks/queries/goals/useGoalsCumulativeAmount";
+
+type GoalPageTableProps = {
+    goals: Pagination<Goals> | undefined;
+    goalsEnvelope: Envelopes;
+    table: ITable;
+};
+
+export function GoalPageTable({ goals, goalsEnvelope, table }: GoalPageTableProps) {
+    const { t } = useTranslation();
+    const { symbol } = useCurrency();
+    const { month, year } = SelectedMonthYearStore();
+    const { data: cumulativeTotal = 0 } = useGoalsCumulativeAmount(year, month);
+
+    const [evolutionGoal, setEvolutionGoal] = useState<Goals | null>(null);
+
+    const deleteGoalMutation = useDeleteGoals();
+    const deleteAllGoalsMutation = useDeleteAllGoals();
+
+    const handleDelete = useCallback(
+        (id: string) => deleteGoalMutation.mutate(id),
+        [deleteGoalMutation]
+    );
+
+    const handleDeleteSelected = useCallback(() => {
+        if (table.selected.length === 0) return;
+        deleteAllGoalsMutation.mutate(table.selected, {
+            onSuccess: () => table.onSelectAllRows(false, []),
+        });
+    }, [deleteAllGoalsMutation, table]);
+
+    const formatDeadline = (goal: Goals) => {
+        // deadline is stored as a DATE column: the numeric value is encoded as the month (e.g. 2001-02-01 → 2)
+        const raw = Number(goal.deadline);
+        const count = isNaN(raw) ? new Date(goal.deadline).getUTCMonth() + 1 : raw;
+        return goal.monthYear
+            ? t("goals_page.deadline.months", { count })
+            : t("goals_page.deadline.years", { count });
+    };
+
+    const renderRow = (row: Goals) => {
+        const { id, description, amountTotal, percentage } = row;
+        const saved = cumulativeTotal * (Number(percentage) / 100);
+
+        return (
+            <CustomTableRow
+                key={id}
+                selected={table.selected.includes(id)}
+                onSelectRow={() => table.onSelectRow(id)}
+                rowKeys={[
+                    description,
+                    `${symbol} ${saved.toFixed(2)}`,
+                    `${symbol} ${amountTotal}`,
+                    `${percentage}%`,
+                    formatDeadline(row),
+                ]}
+                extraActions={
+                    <Tooltip title={t("goals_page.actions.view_evolution")}>
+                        <IconButton size="small" onClick={(e) => { e.stopPropagation(); setEvolutionGoal(row); }}>
+                            <Iconify icon="solar:chart-2-bold" />
+                        </IconButton>
+                    </Tooltip>
+                }
+                form={
+                    <GoalsForm
+                        data={row}
+                        envelope={goalsEnvelope}
+                        buttonIcon={<Iconify icon="solar:pen-bold" />}
+                        buttonLabel={t("common.edit")}
+                    />
+                }
+                handleDelete={() => handleDelete(id)}
+            />
+        );
+    };
+
+    const allGoals = goals?.data ?? [];
+    const totalSaved = allGoals.reduce(
+        (sum, g) => sum + cumulativeTotal * (Number(g.percentage) / 100),
+        0
+    );
+    const totalAmountTotal = allGoals.reduce((sum, g) => sum + Number(g.amountTotal), 0);
+    const remaining = totalAmountTotal - totalSaved;
+
+    return (
+        <>
+            <Grid2 container spacing={2} sx={{ mb: 2 }}>
+                <Grid2 size={{ xs: 12, sm: 4 }}>
+                    <Paper sx={{ p: 2, textAlign: "center", bgcolor: "background.neutral", borderRadius: 2 }}>
+                        <Typography variant="body2" color="text.secondary">{t("goals_page.summary.envelope_balance")}</Typography>
+                        <Typography variant="h6">{symbol} {cumulativeTotal.toFixed(2)}</Typography>
+                    </Paper>
+                </Grid2>
+                <Grid2 size={{ xs: 6, sm: 4 }}>
+                    <Paper sx={{ p: 2, textAlign: "center", bgcolor: (theme) => alpha(theme.palette.info.main, 0.12), borderRadius: 2 }}>
+                        <Typography variant="body2" color="text.secondary">{t("goals_page.summary.total_goals")}</Typography>
+                        <Typography variant="h6" color="info.main">{symbol} {totalAmountTotal.toFixed(2)}</Typography>
+                    </Paper>
+                </Grid2>
+                <Grid2 size={{ xs: 6, sm: 4 }}>
+                    <Paper sx={{ p: 2, textAlign: "center", bgcolor: (theme) => alpha(theme.palette.warning.main, 0.12), borderRadius: 2 }}>
+                        <Typography variant="body2" color="text.secondary">{t("goals_page.summary.remaining")}</Typography>
+                        <Typography variant="h6" color="warning.main">{symbol} {remaining.toFixed(2)}</Typography>
+                    </Paper>
+                </Grid2>
+            </Grid2>
+
+            <Card sx={{ width: "100%" }}>
+                <TableToolbar
+                    numSelected={table.selected.length}
+                    form={<GoalsForm envelope={goalsEnvelope} buttonLabel={t("common.add")} />}
+                    onDeleteSelected={handleDeleteSelected}
+                />
+
+                <TableContainer sx={{ overflow: "unset" }}>
+                    <Table sx={{ minWidth: 800 }}>
+                        {goals && goals.data.length > 0 ? (
+                            <CustomTableHead
+                                order={table.order}
+                                orderBy={table.orderBy}
+                                rowCount={goals.data.length}
+                                numSelected={table.selected.length}
+                                onSort={table.onSort}
+                                onSelectAllRows={(checked) =>
+                                    table.onSelectAllRows(
+                                        checked,
+                                        goals.data.map((g) => g.id)
+                                    )
+                                }
+                                headLabel={[
+                                    { id: "description", label: t("goals_page.table.headers.description") },
+                                    { id: "amount", label: t("goals_page.table.headers.amount") },
+                                    { id: "amount_total", label: t("goals_page.table.headers.amount_total") },
+                                    { id: "percentage", label: t("goals_page.table.headers.percentage") },
+                                    { id: "deadline", label: t("goals_page.table.headers.deadline") },
+                                    { id: "" },
+                                ]}
+                            />
+                        ) : null}
+
+                        <TableBody>
+                            {!goals ? (
+                                <TableRow>
+                                    <TableCell colSpan={7}>
+                                        <SkeletonLoading count={5} height={60} />
+                                    </TableCell>
+                                </TableRow>
+                            ) : goals.data.length < 1 ? (
+                                <TableNoData message={t("goals_page.table.empty")} />
+                            ) : (
+                                goals.data.map(renderRow)
+                            )}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+
+                {goals && goals.data.length > 0 ? (
+                    <TablePagination
+                        component="div"
+                        page={table.page}
+                        count={goals.totalItems}
+                        rowsPerPage={table.rowsPerPage}
+                        onPageChange={table.onChangePage}
+                        rowsPerPageOptions={[5, 10, 25]}
+                        onRowsPerPageChange={table.onChangeRowsPerPage}
+                    />
+                ) : null}
+            </Card>
+
+            {evolutionGoal && (
+                <GoalEvolutionModal
+                    goal={evolutionGoal}
+                    goalsEnvelope={goalsEnvelope}
+                    open={!!evolutionGoal}
+                    onClose={() => setEvolutionGoal(null)}
+                />
+            )}
+        </>
+    );
+}

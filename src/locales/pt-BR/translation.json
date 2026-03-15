@@ -1,547 +1,653 @@
 {
-    "app_name": "Project EVE",
-    "welcome": "Bem-vindo de volta",
-    "language": "Idioma",
+  "app_name": "Project EVE",
+  "welcome": "Bem-vindo de volta",
+  "language": "Idioma",
+  "goals": "Metas",
+  "debts": "Dívidas",
+  "housing": "Habitação",
+  "groceries": "Mercado",
+  "health": "Saúde",
+  "leisure": "Lazer",
+  "education": "Educação",
+  "transport": "Transporte",
+  "others": "Outros",
+  "incomes": "Rendas",
+  "expenses": "Despesas",
+  "balance": "Saldo",
+  "months": {
+    "january": "Janeiro",
+    "february": "Fevereiro",
+    "march": "Março",
+    "april": "Abril",
+    "may": "Maio",
+    "june": "Junho",
+    "july": "Julho",
+    "august": "Agosto",
+    "september": "Setembro",
+    "october": "Outubro",
+    "november": "Novembro",
+    "december": "Dezembro"
+  },
+  "no_funds": "Sem fundos",
+  "available": "Disponível: {{amount}}",
+  "common": {
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "delete": "Excluir",
+    "edit": "Editar",
+    "create": "Criar",
+    "update": "Atualizar",
+    "search": "Buscar...",
+    "loading": "Carregando...",
+    "expenses": "Gastos",
+    "no_data": "Sem dados",
+    "transfer": "Transferir",
+    "add": "Adicionar",
+    "back": "Voltar",
+    "reallocate": "Realocar",
+    "delete_all": "Excluir tudo",
+    "actions": "Ações",
+    "pay": "Pagar"
+  },
+  "errors": {
+    "unexpected": "Ocorreu um erro inesperado",
+    "unauthorized": "Acesso não autorizado",
+    "forbidden": "Acesso proibido",
+    "not_found": "Recurso não encontrado",
+    "conflict": "Conflito",
+    "too_many_requests": "Muitas requisições",
+    "payment_required": "Pagamento necessário",
+    "validation": "Erro de validação",
+    "transactions": {
+      "exceeds_budget": "O valor da transação ultrapassa o saldo disponível do envelope"
+    },
+    "envelopes": {
+      "name_already_exists": "Já existe um envelope com esse nome",
+      "update_error": "Erro ao atualizar o envelope",
+      "not_found": "Envelope não encontrado",
+      "name_cannot_be_changed": "O nome do envelope não pode ser alterado",
+      "exceeds_percentage": "A soma dos percentuais dos envelopes ultrapassaria 100%"
+    }
+  },
+  "nav": {
+    "budget": "Orçamento",
+    "envelopes": "Envelopes",
+    "incomes": "Minha Renda",
     "goals": "Metas",
     "debts": "Dívidas",
-    "housing": "Habitação",
-    "groceries": "Mercado",
-    "health": "Saúde",
-    "leisure": "Lazer",
-    "education": "Educação",
-    "transport": "Transporte",
-    "others": "Outros",
-    "incomes": "Rendas",
-    "expenses": "Despesas",
-    "balance": "Saldo",
-    "months": {
-        "january": "Janeiro",
-        "february": "Fevereiro",
-        "march": "Março",
-        "april": "Abril",
-        "may": "Maio",
-        "june": "Junho",
-        "july": "Julho",
-        "august": "Agosto",
-        "september": "Setembro",
-        "october": "Outubro",
-        "november": "Novembro",
-        "december": "Dezembro"
+    "settings": "Configurações"
+  },
+  "account": {
+    "notification": "Notificação",
+    "theme": "Tema",
+    "language": "Idioma",
+    "profile": "Perfil",
+    "settings": "Configurações da Conta",
+    "logout": "Sair",
+    "logging_out": "Saindo..."
+  },
+  "home": {
+    "no_envelopes_title": "Você não possui envelopes criados",
+    "no_envelopes_not_processed": "Você ainda não processou nenhum mês.",
+    "no_envelopes_month_not_processed": "Você ainda não processou o mês",
+    "process_button": "Processar {{month}} / {{year}}",
+    "income_description": "Renda do mês {{month}}/{{year}}"
+  },
+  "overview": {
+    "budget": "Orçamento",
+    "envelopes_title": "Envelopes",
+    "than_last_year": "que o ano passado",
+    "envelopes": {
+      "no_funds": "Sem fundos",
+      "available": "Disponível: {{amount}}"
     },
-    "no_funds": "Sem fundos",
-    "available": "Disponível: {{amount}}",
-    "common": {
-        "save": "Salvar",
-        "cancel": "Cancelar",
-        "delete": "Excluir",
-        "edit": "Editar",
-        "create": "Criar",
-        "update": "Atualizar",
-        "search": "Buscar...",
-        "loading": "Carregando...",
-        "expenses": "Gastos",
-        "no_data": "Sem dados",
-        "transfer": "Transferir",
-        "add": "Adicionar",
-        "back": "Voltar",
-        "reallocate": "Realocar",
-        "delete_all": "Excluir tudo"
+    "upcoming_payments": {
+      "title": "Avisos",
+      "envelope": "Envelope",
+      "empty": "Nenhum pagamento pendente próximo ao vencimento.",
+      "all_loaded": "Todos os pagamentos pendentes foram carregados"
     },
-    "errors": {
-        "unexpected": "Ocorreu um erro inesperado",
-        "unauthorized": "Acesso não autorizado",
-        "forbidden": "Acesso proibido",
-        "not_found": "Recurso não encontrado",
-        "conflict": "Conflito",
-        "too_many_requests": "Muitas requisições",
-        "payment_required": "Pagamento necessário",
-        "validation": "Erro de validação",
-        "transactions": {
-            "exceeds_budget": "O valor da transação ultrapassa o saldo disponível do envelope"
-        }
-    },
-    "nav": {
-        "budget": "Orçamento",
-        "envelopes": "Envelopes",
-        "incomes": "Minha Renda",
-        "settings": "Configurações"
-    },
-    "account": {
-        "notification": "Notificação",
-        "theme": "Tema",
-        "language": "Idioma",
-        "profile": "Perfil",
-        "settings": "Configurações da Conta",
-        "logout": "Sair",
-        "logging_out": "Saindo..."
-    },
-    "home": {
-        "no_envelopes_title": "Você não possui envelopes criados",
-        "no_envelopes_not_processed": "Você ainda não processou nenhum mês.",
-        "no_envelopes_month_not_processed": "Você ainda não processou o mês",
-        "process_button": "Processar {{month}} / {{year}}",
-        "income_description": "Renda do mês {{month}}/{{year}}"
-    },
-    "overview": {
-        "budget": "Orçamento",
-        "envelopes_title": "Envelopes",
-        "than_last_year": "que o ano passado",
-        "envelopes": {
-            "no_funds": "Sem fundos",
-            "available": "Disponível: {{amount}}"
-        },
-        "upcoming_payments": {
-            "title": "Próximos Pagamentos",
-            "envelope": "Envelope",
-            "empty": "Nenhum pagamento pendente próximo ao vencimento.",
-            "all_loaded": "Todos os pagamentos pendentes foram carregados"
-        },
-        "delete_month": {
-            "button": "Deletar mês",
-            "confirm_title": "Deletar mês processado",
-            "confirm_message": "Tem certeza que deseja deletar todos os lançamentos do mês {{month}}/{{year}}? Esta ação não pode ser desfeita.",
-            "confirm": "Confirmar",
-            "cancel": "Cancelar"
-        }
-    },
-    "envelope": {
-        "transaction": {
-            "description": "Descrição",
-            "amount": "Valor",
-            "date": "Data do Pagamento",
-            "payment_method_label": "Método de Pagamento",
-            "tabs": {
-                "transaction": "Transação",
-                "transfer": "Transferência"
-            },
-            "placeholder": {
-                "description": "Ex: Aluguel",
-                "amount": "0,00"
-            },
-            "payment_method": {
-                "CreditCard": "Cartão de Crédito",
-                "DebitCard": "Cartão de Débito",
-                "Cash": "Dinheiro",
-                "BankTransfer": "Transferência Bancária",
-                "Pix": "Pix",
-                "Ticket": "Boleto",
-                "Reallocation": "Realocação"
-            },
-            "status": {
-                "paid": "Pago",
-                "pending": "Pendente",
-                "completed": "Pago",
-                "overdue": "Atrasado",
-                "cancelled": "Cancelado"
-            },
-            "type": {
-                "debit": "Saída",
-                "credit": "Entrada"
-            }
-        },
-        "transfer": {
-            "title": "Transferir Saldo",
-            "from": "De",
-            "to": "Para",
-            "target": "Para Envelope",
-            "amount_label": "Valor da transferência",
-            "select_envelope": "Selecione o envelope",
-            "select_envelope_placeholder": "Selecione o envelope"
-        },
-        "validation": {
-            "description_required": "Descrição é obrigatória",
-            "amount_required": "Valor é obrigatório",
-            "amount_numeric": "Valor deve ser numérico",
-            "amount_positive": "O valor deve ser maior que zero",
-            "insufficient_funds": "Saldo insuficiente",
-            "select_target": "Selecione um envelope de destino",
-            "enter_amount": "Informe o valor"
-        }
-    },
+    "delete_month": {
+      "button": "Deletar mês",
+      "confirm_title": "Deletar mês processado",
+      "confirm_message": "Tem certeza que deseja deletar todos os lançamentos do mês {{month}}/{{year}}? Esta ação não pode ser desfeita.",
+      "confirm": "Confirmar",
+      "cancel": "Cancelar"
+    }
+  },
+  "envelope": {
     "transaction": {
-        "status": {
-            "paid": "Pago",
-            "pending": "Pendente",
-            "completed": "Pago"
-        },
-        "type": {
-            "debit": "Entrada",
-            "credit": "Saída"
-        },
-        "empty": "Nenhuma transação cadastrada!",
-        "all_loaded": "Todas as transações foram carregadas",
-        "headers": {
-            "description": "Descrição",
-            "type": "Tipo",
-            "amount": "Valor",
-            "payment_method": "Método de Pagamento",
-            "date": "Data",
-            "status": "Status"
-        }
-    },
-    "income": {
-        "title": "Renda",
-        "split": "Dividir entre envelopes",
-        "yes": "Sim",
-        "no": "Não",
-        "validation": {
-            "description_required": "Descrição é obrigatória",
-            "amount_required": "Valor é obrigatório",
-            "amount_numeric": "Valor deve ser numérico"
-        },
-        "table": {
-            "headers": {
-                "description": "Descrição",
-                "amount": "Valor",
-                "date": "Data",
-                "envelope": "Envelope"
-            },
-            "empty": "Nenhuma renda cadastrada!",
-            "all": "Todos",
-            "one": "Um",
-            "all_loaded": "Todas as rendas foram carregadas",
-            "total": "Total processado"
-        }
-    },
-    "user": {
-        "title": "Usuários",
-        "new": "Novo usuário",
-        "search": "Buscar usuário...",
-        "table": {
-            "headers": {
-                "name": "Nome",
-                "company": "Empresa",
-                "role": "Função",
-                "verified": "Verificado",
-                "status": "Status"
-            },
-            "selected": "{{count}} selecionado(s)",
-            "no_data": "Não encontrado",
-            "no_results": "Nenhum resultado encontrado para",
-            "typo_suggestion": "Tente verificar erros de digitação ou usar palavras completas."
-        }
-    },
-    "settings": {
-        "credit_card": {
-            "title": "Cartão de Crédito",
-            "name": "Nome",
-            "flag": "Bandeira",
-            "validation": {
-                "name_required": "Nome é obrigatório",
-                "flag_required": "Bandeira é obrigatória"
-            },
-            "table": {
-                "headers": {
-                    "name": "Nome",
-                    "flag": "Bandeira"
-                },
-                "no_data": "Nenhum cartão de crédito cadastrado!",
-                "all_loaded": "Todos os cartões foram carregados"
-            }
-        },
-        "debt": {
-            "title": "Dívida",
-            "description": "Descrição",
-            "amount": "Valor da parcela",
-            "installments_paid": "Parcelas pagas",
-            "installments_total": "Total de parcelas",
-            "payment_day": "Dia do pagamento",
-            "validation": {
-                "description_required": "Descrição é obrigatória",
-                "amount_required": "Valor é obrigatório",
-                "amount_numeric": "Valor deve ser numérico",
-                "installments_total_required": "Valor é obrigatório",
-                "installments_total_numeric": "Valor deve ser numérico",
-                "installments_paid_required": "Valor é obrigatório",
-                "installments_paid_numeric": "Valor deve ser numérico",
-                "payment_day_required": "Dia do pagamento é obrigatório",
-                "payment_day_range": "O dia do pagamento deve estar entre 1 e 31"
-            },
-            "table": {
-                "headers": {
-                    "description": "Descrição",
-                    "amount": "Valor",
-                    "installments_paid": "Total pago",
-                    "installments_total": "Total parcelas",
-                    "payment_day": "Dia do pagamento"
-                },
-                "no_data": "Nenhuma dívida cadastrada!",
-                "all_loaded": "Todas as dívidas foram carregadas"
-            }
-        },
-        "envelope": {
-            "title": "Envelope",
-            "name": "Nome",
-            "color": "Cor",
-            "percentage": "Porcentagem: {{count}}%",
-            "salary_value": "de {{value}}",
-            "value_input": "Valor",
-            "allocation_remaining": "Faltam {{count}}% para alocação",
-            "allocation_exceeded": "Passou {{count}}% do máximo",
-            "save": "Salvar",
-            "validation": {
-                "name_required": "Nome é obrigatório"
-            }
-        },
-        "fixed_expense": {
-            "title": "Contas Fixas",
-            "envelope": "Envelope",
-            "description": "Descrição",
-            "amount": "Valor",
-            "payment_day": "Dia do Pagamento",
-            "validation": {
-                "description_required": "Descrição é obrigatória",
-                "amount_required": "Valor é obrigatório",
-                "amount_numeric": "Valor deve ser numérico",
-                "payment_day_required": "Dia do pagamento é obrigatório",
-                "payment_day_range": "O dia do pagamento deve estar entre 1 e 31"
-            },
-            "table": {
-                "headers": {
-                    "envelope": "Envelope",
-                    "description": "Descrição",
-                    "amount": "Valor",
-                    "payment_day": "Dia do Pagamento"
-                },
-                "no_data": "Nenhuma conta fixa cadastrada!",
-                "all_loaded": "Todas as contas fixas foram carregadas"
-            }
-        },
-        "goals": {
-            "title": "Nova Meta",
-            "description": "Qual sua meta",
-            "amount_total": "De quanto precisa",
-            "amount_current": "Quanto você já tem",
-            "deadline": "Em quanto tempo",
-            "save": "Salvar",
-            "validation": {
-                "description_required": "Descrição é obrigatória",
-                "amount_required": "Valor é obrigatório",
-                "amount_numeric": "Valor deve ser numérico",
-                "amount_total_numeric": "Valor total deve ser numérico",
-                "deadline_required": "Para quando é obrigatório",
-                "deadline_numeric": "Para quando deve ser numérico"
-            },
-            "table": {
-                "headers": {
-                    "description": "Descrição",
-                    "amount": "Valor",
-                    "percentage": "Porcentagem",
-                    "deadline": "Prazo"
-                },
-                "no_data": "Nenhuma meta cadastrada!",
-                "all_loaded": "Todas as metas foram carregadas"
-            },
-            "recommendation": {
-                "title": "Recomendação",
-                "unfeasible": "Essa meta não é viável com sua renda atual que é {{income}}.",
-                "monthly_save": "Você deve guardar {{amount}} por mês",
-                "envelope_percentage": "Isso representa {{percentage}}% do seu envelope",
-                "ideal_income": "Sua renda deve ser de {{amount}}"
-            },
-            "time": {
-                "month": "Mês",
-                "months": "Meses",
-                "year": "Ano",
-                "years": "Anos"
-            }
-        },
-        "income": {
-            "title": "Salário",
-            "description": "Descrição",
-            "amount": "Salário",
-            "payment_day": "Dia do Pagamento",
-            "validation": {
-                "description_required": "Descrição é obrigatória",
-                "amount_required": "Valor é obrigatório",
-                "amount_numeric": "Valor deve ser numérico",
-                "payment_day_required": "Dia do pagamento é obrigatório",
-                "payment_day_range": "O dia do pagamento deve estar entre 1 e 31"
-            },
-            "table": {
-                "headers": {
-                    "description": "Descrição",
-                    "amount": "Salário",
-                    "payment_day": "Dia do Pagamento"
-                },
-                "no_data": "Nenhum salário cadastrado!",
-                "all_loaded": "Todos os salários foram carregados"
-            }
-        },
-        "tabs": {
-            "income": "Meu Salário",
-            "envelopes": "Meus Limites",
-            "goals": "Minhas Metas",
-            "fixed_expenses": "Minhas Contas Fixas",
-            "debts": "Minhas Dívidas",
-            "credit_cards": "Meus Cartões"
-        }
-    },
-    "table_toolbar": {
-        "all": "Todos",
+      "description": "Descrição",
+      "amount": "Valor",
+      "date": "Data do Pagamento",
+      "payment_method_label": "Método de Pagamento",
+      "tabs": {
+        "transaction": "Transação",
+        "transfer": "Transferência"
+      },
+      "placeholder": {
+        "description": "Ex: Aluguel",
+        "amount": "0,00"
+      },
+      "payment_method": {
+        "CreditCard": "Cartão de Crédito",
+        "DebitCard": "Cartão de Débito",
+        "Cash": "Dinheiro",
+        "BankTransfer": "Transferência Bancária",
+        "Pix": "Pix",
+        "Ticket": "Boleto",
+        "Reallocation": "Realocação"
+      },
+      "status": {
+        "paid": "Pago",
+        "pending": "Pendente",
+        "completed": "Pago",
+        "overdue": "Atrasado",
+        "cancelled": "Cancelado"
+      },
+      "type": {
         "debit": "Saída",
         "credit": "Entrada"
+      }
     },
     "transfer": {
-        "sent_to": "Enviado p/ {{name}}",
-        "received_from": "Recebido de {{name}}"
+      "title": "Transferir Saldo",
+      "from": "De",
+      "to": "Para",
+      "target": "Para Envelope",
+      "amount_label": "Valor da transferência",
+      "select_envelope": "Selecione o envelope",
+      "select_envelope_placeholder": "Selecione o envelope"
     },
-    "deposit": {
-        "salary": "Alocação de salário {{name}}"
+    "validation": {
+      "description_required": "Descrição é obrigatória",
+      "amount_required": "Valor é obrigatório",
+      "amount_numeric": "Valor deve ser numérico",
+      "amount_positive": "O valor deve ser maior que zero",
+      "insufficient_funds": "Saldo insuficiente",
+      "select_target": "Selecione um envelope de destino",
+      "enter_amount": "Informe o valor"
+    }
+  },
+  "transaction": {
+    "status": {
+      "paid": "Pago",
+      "pending": "Pendente",
+      "completed": "Pago",
+      "overdue": "Atrasado",
+      "cancelled": "Cancelado"
     },
-    "auth": {
-        "sign_in": "Entrar",
-        "sign_in_title": "Entrar na sua conta",
-        "sign_up": "Cadastrar",
-        "sign_up_title": "Criar sua conta",
-        "email": "E-mail",
-        "password": "Senha",
-        "confirm_password": "Confirmar Senha",
-        "confirm_email": "Confirmar E-mail",
+    "type": {
+      "debit": "Entrada",
+      "credit": "Saída"
+    },
+    "empty": "Nenhuma transação cadastrada!",
+    "all_loaded": "Todas as transações foram carregadas",
+    "headers": {
+      "description": "Descrição",
+      "type": "Tipo",
+      "amount": "Valor",
+      "payment_method": "Método de Pagamento",
+      "date": "Data",
+      "status": "Status"
+    }
+  },
+  "income": {
+    "title": "Renda",
+    "split": "Dividir entre envelopes",
+    "yes": "Sim",
+    "no": "Não",
+    "validation": {
+      "description_required": "Descrição é obrigatória",
+      "amount_required": "Valor é obrigatório",
+      "amount_numeric": "Valor deve ser numérico"
+    },
+    "table": {
+      "headers": {
+        "description": "Descrição",
+        "amount": "Valor",
+        "date": "Data",
+        "envelope": "Envelope"
+      },
+      "empty": "Nenhuma renda cadastrada!",
+      "all": "Todos",
+      "one": "Um",
+      "all_loaded": "Todas as rendas foram carregadas",
+      "total": "Total processado"
+    }
+  },
+  "user": {
+    "title": "Usuários",
+    "new": "Novo usuário",
+    "search": "Buscar usuário...",
+    "table": {
+      "headers": {
         "name": "Nome",
-        "forgot_password": "Esqueceu a senha?",
-        "no_account": "Não tem uma conta?",
-        "has_account": "Já tem uma conta?",
-        "get_started": "Comece agora",
-        "login_error": "Login ou senha incorretos",
-        "validation": {
-            "name_required": "O nome é obrigatório",
-            "email_required": "O e-mail é obrigatório",
-            "email_invalid": "Digite um e-mail válido",
-            "emails_mismatch": "Os e-mails não coincidem",
-            "password_required": "A senha é obrigatória",
-            "password_min_length": "A senha deve ter pelo menos 8 caracteres",
-            "passwords_mismatch": "As senhas não coincidem"
+        "company": "Empresa",
+        "role": "Função",
+        "verified": "Verificado",
+        "status": "Status"
+      },
+      "selected": "{{count}} selecionado(s)",
+      "no_data": "Não encontrado",
+      "no_results": "Nenhum resultado encontrado para",
+      "typo_suggestion": "Tente verificar erros de digitação ou usar palavras completas."
+    }
+  },
+  "settings": {
+    "credit_card": {
+      "title": "Cartão de Crédito",
+      "name": "Nome",
+      "flag": "Bandeira",
+      "validation": {
+        "name_required": "Nome é obrigatório",
+        "flag_required": "Bandeira é obrigatória"
+      },
+      "table": {
+        "headers": {
+          "name": "Nome",
+          "flag": "Bandeira"
         },
-        "errors": {
-            "email_already_exists": "Este e-mail já está cadastrado",
-            "invalid_or_expired_token": "O link de verificação é inválido ou expirou.",
-            "email_not_verified": "Seu e-mail ainda não foi confirmado. Um novo link de verificação foi enviado para o seu e-mail."
-        },
-        "verify_email": {
-            "verifying": "Verificando seu e-mail...",
-            "success_title": "E-mail verificado!",
-            "success_message": "Sua conta foi ativada com sucesso. Faça login para continuar.",
-            "error_title": "Link inválido ou expirado",
-            "go_to_login": "Ir para o login",
-            "pending_title": "Verifique seu e-mail",
-            "pending_message": "Um link de verificação foi enviado para o seu e-mail. Acesse o link para ativar sua conta."
-        },
-        "registration_success_title": "Cadastro realizado!",
-        "registration_success_message": "Sua conta foi criada com sucesso.",
-        "registration_success_email": "Um e-mail de confirmação foi enviado para {{email}}. Acesse o link para ativar sua conta."
+        "no_data": "Nenhum cartão de crédito cadastrado!",
+        "all_loaded": "Todos os cartões foram carregados"
+      }
     },
-    "complete_registration": {
-        "title": "Completar cadastro",
-        "subtitle": "Conte-nos um pouco mais para personalizarmos sua experiência. Tudo aqui pode ser editado depois!",
-        "steps": {
-            "income": "Sua Renda",
-            "debts": "Suas Dívidas",
-            "envelopes": "Seus Limites",
-            "goals": "Suas Metas",
-            "fixed_expenses": "Suas Contas Fixas",
-            "credit_cards": "Seus Cartões"
+    "debt": {
+      "title": "Dívida",
+      "description": "Descrição",
+      "amount": "Valor da parcela",
+      "installments_paid": "Parcelas pagas",
+      "installments_total": "Total de parcelas",
+      "payment_day": "Dia do pagamento",
+      "validation": {
+        "description_required": "Descrição é obrigatória",
+        "amount_required": "Valor é obrigatório",
+        "amount_numeric": "Valor deve ser numérico",
+        "installments_total_required": "Valor é obrigatório",
+        "installments_total_numeric": "Valor deve ser numérico",
+        "installments_paid_required": "Valor é obrigatório",
+        "installments_paid_numeric": "Valor deve ser numérico",
+        "payment_day_required": "Dia do pagamento é obrigatório",
+        "payment_day_range": "O dia do pagamento deve estar entre 1 e 31"
+      },
+      "table": {
+        "headers": {
+          "description": "Descrição",
+          "amount": "Valor",
+          "installments_paid": "Total pago",
+          "installments_total": "Total parcelas",
+          "payment_day": "Dia do pagamento"
         },
-        "back": "Voltar",
-        "continue": "Continuar",
-        "finish": "Finalizar",
-        "allocation_error": "A alocação dos envelopes deve ser exatamente 100% para finalizar o cadastro.",
-        "finish_tooltip": "Para finalizar, configure seus Meus Limites (envelopes) para que a alocação seja exatamente 100%."
+        "no_data": "Nenhuma dívida cadastrada!",
+        "all_loaded": "Todas as dívidas foram carregadas"
+      }
+    },
+    "envelope": {
+      "title": "Envelope",
+      "name": "Nome",
+      "color": "Cor",
+      "percentage": "Porcentagem: {{count}}%",
+      "salary_value": "de {{value}}",
+      "value_input": "Valor",
+      "allocation_remaining": "Faltam {{count}}% para alocação",
+      "allocation_exceeded": "Passou {{count}}% do máximo",
+      "save": "Salvar",
+      "validation": {
+        "name_required": "Nome é obrigatório"
+      }
+    },
+    "fixed_expense": {
+      "title": "Contas Fixas",
+      "envelope": "Envelope",
+      "description": "Descrição",
+      "amount": "Valor",
+      "payment_day": "Dia do Pagamento",
+      "validation": {
+        "description_required": "Descrição é obrigatória",
+        "amount_required": "Valor é obrigatório",
+        "amount_numeric": "Valor deve ser numérico",
+        "payment_day_required": "Dia do pagamento é obrigatório",
+        "payment_day_range": "O dia do pagamento deve estar entre 1 e 31"
+      },
+      "table": {
+        "headers": {
+          "envelope": "Envelope",
+          "description": "Descrição",
+          "amount": "Valor",
+          "payment_day": "Dia do Pagamento"
+        },
+        "no_data": "Nenhuma conta fixa cadastrada!",
+        "all_loaded": "Todas as contas fixas foram carregadas"
+      }
+    },
+    "goals": {
+      "title": "Nova Meta",
+      "description": "Qual sua meta",
+      "amount_total": "De quanto precisa",
+      "amount_current": "Quanto você já tem",
+      "deadline": "Em quanto tempo",
+      "save": "Salvar",
+      "validation": {
+        "description_required": "Descrição é obrigatória",
+        "amount_required": "Valor é obrigatório",
+        "amount_numeric": "Valor deve ser numérico",
+        "amount_total_numeric": "Valor total deve ser numérico",
+        "deadline_required": "Para quando é obrigatório",
+        "deadline_numeric": "Para quando deve ser numérico"
+      },
+      "table": {
+        "headers": {
+          "description": "Descrição",
+          "amount": "Valor",
+          "percentage": "Porcentagem",
+          "deadline": "Prazo"
+        },
+        "no_data": "Nenhuma meta cadastrada!",
+        "all_loaded": "Todas as metas foram carregadas"
+      },
+      "recommendation": {
+        "title": "Recomendação",
+        "unfeasible": "Essa meta não é viável com sua renda atual que é {{income}}.",
+        "monthly_save": "Você deve guardar {{amount}} por mês",
+        "envelope_percentage": "Isso representa {{percentage}}% do seu envelope",
+        "ideal_income": "Sua renda deve ser de {{amount}}"
+      },
+      "time": {
+        "month": "Mês",
+        "months": "Meses",
+        "year": "Ano",
+        "years": "Anos"
+      }
+    },
+    "income": {
+      "title": "Salário",
+      "description": "Descrição",
+      "amount": "Salário",
+      "payment_day": "Dia do Pagamento",
+      "validation": {
+        "description_required": "Descrição é obrigatória",
+        "amount_required": "Valor é obrigatório",
+        "amount_numeric": "Valor deve ser numérico",
+        "payment_day_required": "Dia do pagamento é obrigatório",
+        "payment_day_range": "O dia do pagamento deve estar entre 1 e 31"
+      },
+      "table": {
+        "headers": {
+          "description": "Descrição",
+          "amount": "Salário",
+          "payment_day": "Dia do Pagamento"
+        },
+        "no_data": "Nenhum salário cadastrado!",
+        "all_loaded": "Todos os salários foram carregados"
+      }
+    },
+    "tabs": {
+      "income": "Meu Salário",
+      "envelopes": "Meus Limites",
+      "goals": "Minhas Metas",
+      "fixed_expenses": "Minhas Contas Fixas",
+      "debts": "Minhas Dívidas",
+      "credit_cards": "Meus Cartões"
+    }
+  },
+  "debts_page": {
+    "title": "Dívidas",
+    "table": {
+      "headers": {
+        "description": "Descrição",
+        "installment_amount": "Valor Parcela",
+        "installments_paid": "Parcelas Pagas",
+        "installments_total": "Total Parcelas",
+        "next_payment_date": "Próximo Pagamento",
+        "status": "Status"
+      },
+      "empty": "Nenhuma dívida cadastrada!",
+      "total_debt": "Dívida Total"
+    },
+    "actions": {
+      "view_installments": "Ver Parcelas",
+      "view_evolution": "Ver Evolução"
+    },
+    "installments_modal": {
+      "title": "Parcelas",
+      "total": "Total",
+      "paid": "Pago",
+      "remaining": "Restante",
+      "installment": "Parcela",
+      "date": "Data",
+      "amount": "Valor",
+      "status": "Status",
+      "status_paid": "Paga",
+      "status_current": "Atual",
+      "status_future": "Futura"
+    },
+    "evolution_modal": {
+      "title": "Evolução da Dívida",
+      "balance": "Saldo Devedor",
+      "installment_label": "Parcela",
+      "paid_label": "Pago",
+      "remaining_label": "Restante"
+    },
+    "status": {
+      "pending": "Pendente",
+      "paid": "Paga",
+      "overdue": "Atrasada"
+    },
+    "summary": {
+      "total": "Total das Dívidas",
+      "paid": "Total Pago",
+      "remaining": "Total Restante"
+    }
+  },
+  "goals_page": {
+    "title": "Metas",
+    "table": {
+      "headers": {
+        "description": "Descrição",
+        "amount": "Guardado",
+        "amount_total": "Objetivo",
+        "percentage": "% Envelope",
+        "deadline": "Prazo"
+      },
+      "empty": "Nenhuma meta cadastrada!"
+    },
+    "actions": {
+      "view_evolution": "Ver Evolução"
+    },
+    "evolution_modal": {
+      "title": "Evolução da Meta",
+      "saved": "Guardado",
+      "target": "Objetivo",
+      "monthly_projection": "Projeção Mensal",
+      "current": "Atual"
+    },
+    "summary": {
+      "envelope_balance": "Saldo do Envelope",
+      "total_goals": "Total das Metas",
+      "remaining": "Faltam"
+    },
+    "deadline": {
+      "months": "{{count}} meses",
+      "years": "{{count}} anos"
+    }
+  },
+  "table_toolbar": {
+    "all": "Todos",
+    "debit": "Saída",
+    "credit": "Entrada"
+  },
+  "transfer": {
+    "sent_to": "Enviado p/ {{name}}",
+    "received_from": "Recebido de {{name}}"
+  },
+  "deposit": {
+    "salary": "Alocação de salário {{name}}"
+  },
+  "auth": {
+    "sign_in": "Entrar",
+    "sign_in_title": "Entrar na sua conta",
+    "sign_up": "Cadastrar",
+    "sign_up_title": "Criar sua conta",
+    "email": "E-mail",
+    "password": "Senha",
+    "confirm_password": "Confirmar Senha",
+    "confirm_email": "Confirmar E-mail",
+    "name": "Nome",
+    "forgot_password": "Esqueceu a senha?",
+    "no_account": "Não tem uma conta?",
+    "has_account": "Já tem uma conta?",
+    "get_started": "Comece agora",
+    "login_error": "Login ou senha incorretos",
+    "validation": {
+      "name_required": "O nome é obrigatório",
+      "email_required": "O e-mail é obrigatório",
+      "email_invalid": "Digite um e-mail válido",
+      "emails_mismatch": "Os e-mails não coincidem",
+      "password_required": "A senha é obrigatória",
+      "password_min_length": "A senha deve ter pelo menos 8 caracteres",
+      "passwords_mismatch": "As senhas não coincidem"
+    },
+    "errors": {
+      "email_already_exists": "Este e-mail já está cadastrado",
+      "invalid_or_expired_token": "O link de verificação é inválido ou expirou.",
+      "email_not_verified": "Seu e-mail ainda não foi confirmado. Um novo link de verificação foi enviado para o seu e-mail."
+    },
+    "verify_email": {
+      "verifying": "Verificando seu e-mail...",
+      "success_title": "E-mail verificado!",
+      "success_message": "Sua conta foi ativada com sucesso. Faça login para continuar.",
+      "error_title": "Link inválido ou expirado",
+      "go_to_login": "Ir para o login",
+      "pending_title": "Verifique seu e-mail",
+      "pending_message": "Um link de verificação foi enviado para o seu e-mail. Acesse o link para ativar sua conta."
+    },
+    "registration_success_title": "Cadastro realizado!",
+    "registration_success_message": "Sua conta foi criada com sucesso.",
+    "registration_success_email": "Um e-mail de confirmação foi enviado para {{email}}. Acesse o link para ativar sua conta."
+  },
+  "complete_registration": {
+    "title": "Completar cadastro",
+    "subtitle": "Conte-nos um pouco mais para personalizarmos sua experiência. Tudo aqui pode ser editado depois!",
+    "steps": {
+      "income": "Sua Renda",
+      "debts": "Suas Dívidas",
+      "envelopes": "Seus Limites",
+      "goals": "Suas Metas",
+      "fixed_expenses": "Suas Contas Fixas",
+      "credit_cards": "Seus Cartões"
+    },
+    "back": "Voltar",
+    "continue": "Continuar",
+    "finish": "Finalizar",
+    "allocation_error": "A alocação dos envelopes deve ser exatamente 100% para finalizar o cadastro.",
+    "finish_tooltip": "Para finalizar, configure seus Meus Limites (envelopes) para que a alocação seja exatamente 100%."
+  },
+  "notifications": {
+    "goals": {
+      "created": "Meta cadastrada com sucesso!",
+      "updated": "Meta editada com sucesso!",
+      "deleted": "Meta deletada com sucesso!",
+      "deleted_all": "Metas deletadas com sucesso!",
+      "error_delete_all": "Erro ao deletar metas"
+    },
+    "fixed_expenses": {
+      "created": "Conta fixa cadastrada com sucesso!",
+      "updated": "Conta fixa editada com sucesso!",
+      "deleted": "Conta fixa deletada com sucesso!",
+      "deleted_all": "Contas fixas deletadas com sucesso!",
+      "error_delete_all": "Erro ao deletar contas fixas"
+    },
+    "credit_cards": {
+      "created": "Cartão de crédito cadastrado com sucesso!",
+      "updated": "Cartão de crédito editado com sucesso!",
+      "deleted": "Cartão de crédito deletado com sucesso!",
+      "deleted_all": "Cartões de crédito deletados com sucesso!",
+      "error_delete_all": "Erro ao deletar cartões de crédito"
+    },
+    "transactions": {
+      "created": "Transação cadastrada com sucesso!",
+      "updated": "Transação editada com sucesso!",
+      "deleted": "Transação deletada com sucesso!",
+      "paid": "Pagamento realizado com sucesso!"
+    },
+    "processed_incomes": {
+      "created": "Envelopes processados com sucesso!",
+      "updated": "Renda editada com sucesso!",
+      "deleted": "Lançamento removido com sucesso!",
+      "deleted_all": "Lançamentos removidos com sucesso!",
+      "deleted_month": "Mês removido com sucesso!",
+      "error_delete_all": "Erro ao remover lançamentos",
+      "error_delete_month": "Erro ao remover o mês"
+    },
+    "envelopes": {
+      "updated": "Envelope editado com sucesso!",
+      "error_update": "Erro ao editar envelope",
+      "transfer_success": "Transferência realizada com sucesso!",
+      "error_transfer": "Erro ao realizar transferência"
+    },
+    "incomes": {
+      "created": "Salário cadastrado com sucesso!",
+      "updated": "Salário editado com sucesso!",
+      "deleted": "Salário deletado com sucesso!",
+      "deleted_all": "Salários deletados com sucesso!",
+      "error_delete_all": "Erro ao deletar salários"
+    },
+    "debts": {
+      "created": "Dívida cadastrada com sucesso!",
+      "updated": "Dívida editada com sucesso!",
+      "deleted": "Dívida deletada com sucesso!",
+      "deleted_all": "Dívidas deletadas com sucesso!",
+      "error_delete_all": "Erro ao deletar dívidas"
+    },
+    "registration": {
+      "error_complete": "Erro ao completar cadastro. Tente novamente."
+    }
+  },
+  "profile": {
+    "title": "Meu Perfil",
+    "personal_info": "Informações Pessoais",
+    "change_password": "Alterar Senha",
+    "preferences": "Preferências",
+    "layout": {
+      "title": "Aparência",
+      "theme": "Tema",
+      "light": "Claro",
+      "dark": "Escuro"
+    },
+    "language": {
+      "title": "Idioma",
+      "select": "Selecione o idioma"
+    },
+    "currency": {
+      "title": "Moeda",
+      "select": "Selecione a moeda"
+    },
+    "number_format": {
+      "title": "Formato de Número",
+      "dot_comma": "Ponto e vírgula",
+      "comma_dot": "Vírgula e ponto"
+    },
+    "date_format": {
+      "title": "Formato de Data",
+      "dd_mm_yyyy": "Dia / Mês / Ano",
+      "mm_dd_yyyy": "Mês / Dia / Ano"
     },
     "notifications": {
-        "goals": {
-            "created": "Meta cadastrada com sucesso!",
-            "updated": "Meta editada com sucesso!",
-            "deleted": "Meta deletada com sucesso!",
-            "deleted_all": "Metas deletadas com sucesso!",
-            "error_delete_all": "Erro ao deletar metas"
-        },
-        "fixed_expenses": {
-            "created": "Conta fixa cadastrada com sucesso!",
-            "updated": "Conta fixa editada com sucesso!",
-            "deleted": "Conta fixa deletada com sucesso!",
-            "deleted_all": "Contas fixas deletadas com sucesso!",
-            "error_delete_all": "Erro ao deletar contas fixas"
-        },
-        "credit_cards": {
-            "created": "Cartão de crédito cadastrado com sucesso!",
-            "updated": "Cartão de crédito editado com sucesso!",
-            "deleted": "Cartão de crédito deletado com sucesso!",
-            "deleted_all": "Cartões de crédito deletados com sucesso!",
-            "error_delete_all": "Erro ao deletar cartões de crédito"
-        },
-        "transactions": {
-            "created": "Transação cadastrada com sucesso!",
-            "updated": "Transação editada com sucesso!",
-            "deleted": "Transação deletada com sucesso!"
-        },
-        "processed_incomes": {
-            "created": "Envelopes processados com sucesso!",
-            "updated": "Renda editada com sucesso!",
-            "deleted": "Lançamento removido com sucesso!",
-            "deleted_all": "Lançamentos removidos com sucesso!",
-            "deleted_month": "Mês removido com sucesso!",
-            "error_delete_all": "Erro ao remover lançamentos",
-            "error_delete_month": "Erro ao remover o mês"
-        },
-        "envelopes": {
-            "updated": "Envelope editado com sucesso!",
-            "error_update": "Erro ao editar envelope",
-            "transfer_success": "Transferência realizada com sucesso!",
-            "error_transfer": "Erro ao realizar transferência"
-        },
-        "incomes": {
-            "created": "Salário cadastrado com sucesso!",
-            "updated": "Salário editado com sucesso!",
-            "deleted": "Salário deletado com sucesso!",
-            "deleted_all": "Salários deletados com sucesso!",
-            "error_delete_all": "Erro ao deletar salários"
-        },
-        "debts": {
-            "created": "Dívida cadastrada com sucesso!",
-            "updated": "Dívida editada com sucesso!",
-            "deleted": "Dívida deletada com sucesso!",
-            "deleted_all": "Dívidas deletadas com sucesso!",
-            "error_delete_all": "Erro ao deletar dívidas"
-        },
-        "registration": {
-            "error_complete": "Erro ao completar cadastro. Tente novamente."
-        }
+      "title": "Notificações",
+      "enable": "Ativar notificações",
+      "email": "Notificações por e-mail",
+      "push": "Notificações push"
     },
-    "profile": {
-        "title": "Meu Perfil",
-        "personal_info": "Informações Pessoais",
-        "change_password": "Alterar Senha",
-        "preferences": "Preferências",
-        "layout": {
-            "title": "Aparência",
-            "theme": "Tema",
-            "light": "Claro",
-            "dark": "Escuro"
-        },
-        "language": {
-            "title": "Idioma",
-            "select": "Selecione o idioma"
-        },
-        "currency": {
-            "title": "Moeda",
-            "select": "Selecione a moeda"
-        },
-        "number_format": {
-            "title": "Formato de Número",
-            "dot_comma": "Ponto e vírgula",
-            "comma_dot": "Vírgula e ponto"
-        },
-        "date_format": {
-            "title": "Formato de Data",
-            "dd_mm_yyyy": "Dia / Mês / Ano",
-            "mm_dd_yyyy": "Mês / Dia / Ano"
-        },
-        "notifications": {
-            "title": "Notificações",
-            "enable": "Ativar notificações",
-            "email": "Notificações por e-mail",
-            "push": "Notificações push"
-        }
+    "delete_account": {
+      "title": "Zona de Perigo",
+      "warning": "Ao excluir sua conta, todos os seus dados serão permanentemente removidos. Esta ação não pode ser desfeita.",
+      "button": "Excluir minha conta",
+      "error": "Erro ao excluir a conta. Tente novamente.",
+      "dialog": {
+        "title": "Excluir conta?",
+        "description": "Tem certeza que deseja excluir sua conta? Todos os seus dados (envelopes, renda, cartões, dívidas e metas) serão permanentemente apagados. Esta ação não pode ser desfeita.",
+        "confirm": "Sim, excluir minha conta"
+      }
     }
+  }
 }

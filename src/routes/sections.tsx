@@ -22,6 +22,8 @@ export const SettingsPage = lazy(() => import("src/pages/settings"));
 export const ProfilePage = lazy(() => import("src/pages/profile"));
 export const CompleteRegistration = lazy(() => import("src/pages/completeRegistration"));
 export const Registration = lazy(() => import("src/pages/registration"));
+export const GoalsPage = lazy(() => import("src/pages/goals"));
+export const DebtsPage = lazy(() => import("src/pages/debts"));
 export const ReallocationPage = lazy(() => import("src/pages/reallocation"));
 export const Page404 = lazy(() => import("src/pages/page-not-found"));
 export const VerifyEmailPage = lazy(() => import("src/pages/verify-email"));
@@ -64,6 +66,8 @@ export function Router() {
             { path: "envelopes", element: <EnvelopePage /> },
             { path: "transferencia", element: <ReallocationPage /> },
             { path: "renda", element: <IncomesPage /> },
+            { path: "metas", element: <GoalsPage /> },
+            { path: "dividas", element: <DebtsPage /> },
             { path: "configuracoes", element: <SettingsPage /> },
             { path: "perfil", element: <ProfilePage /> },
           ],

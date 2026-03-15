@@ -33,9 +33,9 @@ export function EnvelopeForm({ buttonLabel, buttonIcon, data, open, handleOpen, 
     const income = IncomeStore((state) => state.income);
 
     const usedByOthers = (allEnvelopes ?? [])
-        .filter(e => e.id !== data?.id && e.name !== 'debts')
+        .filter(e => e.id !== data?.id)
         .reduce((s, e) => s + e.percentage, 0);
-    const maxPercentage = Math.max(0, 100 - usedByOthers);
+    const maxPercentage = Math.max(0, parseFloat((100 - usedByOthers).toFixed(2)));
     const availablePercentage = maxPercentage;
 
     const computedValue = (percentage / 100) * income;
@@ -71,7 +71,7 @@ export function EnvelopeForm({ buttonLabel, buttonIcon, data, open, handleOpen, 
         setValueInput(rawValue);
         const parsed = parseFloat(rawValue);
         if (!Number.isNaN(parsed) && income > 0) {
-            const newPercentage = Math.min(maxPercentage, Math.max(0, Math.round((parsed / income) * 100)));
+            const newPercentage = Math.min(maxPercentage, Math.max(0, parseFloat(((parsed / income) * 100).toFixed(2))));
             setPercentage(newPercentage);
         }
     };
@@ -191,7 +191,7 @@ export function EnvelopeForm({ buttonLabel, buttonIcon, data, open, handleOpen, 
                             onChange={handleSliderChange}
                             min={0}
                             max={isDebts ? 100 : maxPercentage}
-                            step={1}
+                            step={0.01}
                             disabled={isDebts}
                             marks={[
                                 { value: 0, label: '0%' },

@@ -37,6 +37,12 @@ export function OverviewAnalyticsView({ envelopes }: OverviewAnalyticsViewProps)
   const { data: analyticsEnvelopesMonthOverview, isLoading: analyticsEnvelopesMonthOverviewIsLoading, error: analyticsEnvelopesMonthOverviewError } = useListAnalyticsEnvelopesMonthOverview(year, month);
   const { data: analyticsEnvelopesByYear, isLoading: analyticsEnvelopesByYearIsLoading, error: analyticsEnvelopesByYearError } = useListAnalyticsEnvelopesByYear(year);
   const { data: upcomingPendingTransactions, isLoading: upcomingPendingTransactionsIsLoading, error: upcomingPendingTransactionsError } = useGetUpcomingPendingPayments(table);
+
+  const goalsEnvelopeId = envelopes.find(e => e.name === 'goals')?.id;
+  const filteredTransactions = upcomingPendingTransactions && goalsEnvelopeId
+    ? { ...upcomingPendingTransactions, data: upcomingPendingTransactions.data.filter(t => t.envelopeId !== goalsEnvelopeId) }
+    : upcomingPendingTransactions;
+
   return (
     <DashboardContent sx={{ width: '99%', my: 1, mx: 'auto', p: 1 }}>
       <Grid2 container spacing={3}>
@@ -55,13 +61,13 @@ export function OverviewAnalyticsView({ envelopes }: OverviewAnalyticsViewProps)
           order={{ xs: 2, sm: 1 }}>
           <AnalyticsEnvelopesByYearGraph
             title={t('overview.budget')}
-            subheader={`(+43%) ${t('overview.than_last_year')}`}
+            subheader={undefined}
             chart={analyticsEnvelopesByYear}
           />
           <UpcomingPendingTransactionsDisplay
             title={t('overview.upcoming_payments.title')}
             envelopes={envelopes}
-            transactions={upcomingPendingTransactions}
+            transactions={filteredTransactions}
             table={table}
             />
         </Grid2>

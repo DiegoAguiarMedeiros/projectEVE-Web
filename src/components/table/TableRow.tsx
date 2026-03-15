@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from "react";
 
+import Box from "@mui/material/Box";
 import Popover from "@mui/material/Popover";
 import TableRow from "@mui/material/TableRow";
 import Checkbox from "@mui/material/Checkbox";
@@ -22,9 +23,11 @@ type IncomesTableRowProps = {
   form: React.ReactElement<FormExternalControlProps>;
   handleDelete: VoidFunction;
   rowKeys: string[] | React.ReactNode[];
+  extraMenuItems?: (closePopover: () => void) => React.ReactNode;
+  extraActions?: React.ReactNode;
 };
 
-export function CustomTableRow({ selected, onSelectRow, form, handleDelete, rowKeys }: IncomesTableRowProps) {
+export function CustomTableRow({ selected, onSelectRow, form, handleDelete, rowKeys, extraMenuItems, extraActions }: IncomesTableRowProps) {
   const { t } = useTranslation();
 
   const [openPopover, setOpenPopover] = useState<HTMLButtonElement | null>(null);
@@ -65,9 +68,12 @@ export function CustomTableRow({ selected, onSelectRow, form, handleDelete, rowK
 
 
         <TableCell align="right">
-          <IconButton onClick={handleOpenPopover}>
-            <Iconify icon="eva:more-vertical-fill" />
-          </IconButton>
+          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
+            {extraActions}
+            <IconButton onClick={handleOpenPopover}>
+              <Iconify icon="eva:more-vertical-fill" />
+            </IconButton>
+          </Box>
         </TableCell>
       </TableRow>
 
@@ -77,6 +83,7 @@ export function CustomTableRow({ selected, onSelectRow, form, handleDelete, rowK
         onClose={handleClosePopover}
         anchorOrigin={{ vertical: "top", horizontal: "left" }}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
+        slotProps={{ paper: { sx: { bgcolor: "background.neutral" } } }}
       >
         <MenuList
           disablePadding
@@ -94,6 +101,8 @@ export function CustomTableRow({ selected, onSelectRow, form, handleDelete, rowK
             },
           }}
         >
+          {extraMenuItems?.(handleClosePopover)}
+
           <MenuItem onClick={handleOpenForm}>
             <Iconify icon="solar:pen-bold" />
             {t('common.edit')}

@@ -9,3 +9,6 @@ export const listAnalyticsEnvelopesMonthOverview = (year: number, month: number)
 
 export const listAnalyticsEnvelopesByYear = (year: number) =>
   api.get<AnalyticsEnvelopesByYear>(`/graph/analytics-envelopes-by-year/${year}`);
+
+export const getGoalsCumulativeAmount = (year: number, month: number) =>
+  api.get<number>(`/graph/goals-cumulative/${year}/${month}`);

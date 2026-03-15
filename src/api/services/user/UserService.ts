@@ -8,3 +8,4 @@ export const updateUser = (id: string, data: Partial<User>) =>
 export const updateProfile = (data: { name: string }) => api.put("/users/profile", data);
 export const changePassword = (data: any) => api.put("/users/change-password", data);
 export const completeRegistration = () => api.post("/users/complete-registration");
+export const deleteAccount = () => api.delete("/users/me");

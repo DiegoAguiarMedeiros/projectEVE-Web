@@ -11,6 +11,7 @@ import { ProfileCurrencySettings } from "../profile-currency-settings";
 import { ProfileNotificationSettings } from "../profile-notification-settings";
 import { ProfileNumberFormatSettings } from "../profile-numberformat-settings";
 import { ProfileDateFormatSettings } from "../profile-dateformat-settings";
+import { ProfileDeleteAccount } from "../profile-delete-account";
 
 export function ProfileView() {
     return (
@@ -47,6 +48,10 @@ export function ProfileView() {
 
                     <Grid size={{ xs: 12, md: 6 }}>
                         <ProfileDateFormatSettings />
+                    </Grid>
+
+                    <Grid size={{ xs: 12 }}>
+                        <ProfileDeleteAccount />
                     </Grid>
                 </Grid>
             </Container>

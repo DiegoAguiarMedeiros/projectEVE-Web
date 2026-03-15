@@ -8,7 +8,8 @@ import {
 } from "@mui/material";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { UpcomingPendingTransactionItem } from "src/sections/overview/upcomingPendingTransactionItem";
-import { Transactions } from "src/types/Transactions";
+import { Transactions, PaymentMethod } from "src/types/Transactions";
+import { CreditCards } from "src/types/CreditCards";
 import { Envelopes } from "src/types/Envelopes";
 import { Pagination } from "src/types/Pagination";
 import { ITable } from "src/sections/shared/useTable";
@@ -20,13 +21,17 @@ type UpcomingPendingTransactionListProps = {
     envelopes: Envelopes[];
     table: ITable;
     title?: string;
+    onMarkAsPaid: (transaction: Transactions, paymentMethod: PaymentMethod, creditCardId?: string) => void;
+    creditCards: CreditCards[];
 };
 
 export function UpcomingPendingTransactionList({
     transactions,
     envelopes,
     table,
-    title
+    title,
+    onMarkAsPaid,
+    creditCards,
 }: UpcomingPendingTransactionListProps) {
     const { t } = useTranslation();
 
@@ -93,7 +98,7 @@ export function UpcomingPendingTransactionList({
     const isEmpty = allItems.length === 0 && transactions && transactions.data.length === 0;
 
     return (
-        <Card sx={{ mt: 1 }}>
+        <Card sx={{ mt: 3 }}>
             <CardHeader title={title} sx={{ mb: 1 }} />
             <Box sx={{ width: "100%", display: "flex", flexDirection: "column", flex: 1, minHeight: 0 }}>
                 <Box
@@ -140,6 +145,8 @@ export function UpcomingPendingTransactionList({
                                         key={row.id}
                                         transaction={row}
                                         envelopes={envelopes}
+                                        onMarkAsPaid={onMarkAsPaid}
+                                        creditCards={creditCards}
                                     />
                                 ))}
                             </Stack>

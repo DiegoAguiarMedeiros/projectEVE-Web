@@ -1,6 +1,6 @@
 import type { Theme, SxProps, Breakpoint } from "@mui/material/styles";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
@@ -30,6 +30,8 @@ import { useTotalIncomes } from "src/hooks/queries/incomes/useTotalIncomes";
 import { Month, ProcessedIncomesMonthResponse } from "src/types/ProcessedIncomes";
 import { CircularProgress, useMediaQuery } from "@mui/material";
 import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
+import { useHasDebts } from "src/hooks/queries/debts/useHasDebts";
+import { useHasGoals } from "src/hooks/queries/goals/useHasGoals";
 
 // ----------------------------------------------------------------------
 
@@ -59,7 +61,7 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
   const theme = useTheme();
   const { t } = useTranslation();
   const { setIncome } = IncomeStore();
-  const { setHasMonthProcessed, setNextMonthToProcess, setNextYearToProcess } = SelectedMonthYearStore();
+  const { month, year, setHasMonthProcessed, setNextMonthToProcess, setNextYearToProcess } = SelectedMonthYearStore();
   const [navOpen, setNavOpen] = useState(false);
   const {
     data: processedIncomesMonths,
@@ -68,6 +70,18 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
   } = useProcessedIncomesMonth();
 
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const { hasDebts } = useHasDebts();
+  const { hasGoals } = useHasGoals(year, month);
+
+  const filteredNavData = useMemo(
+    () => navData.filter((item) => {
+      if (item.path === "/dividas") return hasDebts;
+      if (item.path === "/metas") return hasGoals;
+      return true;
+    }),
+    [hasDebts, hasGoals]
+  );
+
   const {
     data: totalIncomes,
     isLoading: isLoadingTotal,
@@ -147,7 +161,7 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
                     [theme.breakpoints.up(layoutQuery)]: { display: "none" }
                   }}
                 />
-                <NavMobile data={navData} open={navOpen} onClose={() => setNavOpen(false)} />
+                <NavMobile data={filteredNavData} open={navOpen} onClose={() => setNavOpen(false)} />
               </>
             ),
             rightArea: (
@@ -176,7 +190,7 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
        *************************************** */
       sidebarSection={
         <NavDesktop
-          data={navData}
+          data={filteredNavData}
           layoutQuery={layoutQuery}
           sx={{
             boxShadow: theme.customShadows.z8,

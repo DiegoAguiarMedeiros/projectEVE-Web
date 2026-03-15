@@ -1,546 +1,652 @@
 {
-    "app_name": "Project EVE",
-    "welcome": "Bienvenido de nuevo",
-    "no_funds": "Sin fondos",
-    "available": "Disponible: {{amount}}",
-    "language": "Idioma",
+  "app_name": "Project EVE",
+  "welcome": "Bienvenido de nuevo",
+  "no_funds": "Sin fondos",
+  "available": "Disponible: {{amount}}",
+  "language": "Idioma",
+  "goals": "Metas",
+  "debts": "Deudas",
+  "housing": "Vivienda",
+  "groceries": "Mercado",
+  "health": "Salud",
+  "leisure": "Ocio",
+  "education": "Educación",
+  "transport": "Transporte",
+  "others": "Otros",
+  "incomes": "Ingresos",
+  "expenses": "Gastos",
+  "balance": "Balance",
+  "months": {
+    "january": "Enero",
+    "february": "Febrero",
+    "march": "Marzo",
+    "april": "Abril",
+    "may": "Mayo",
+    "june": "Junio",
+    "july": "Julio",
+    "august": "Agosto",
+    "september": "Septiembre",
+    "october": "Octubre",
+    "november": "Noviembre",
+    "december": "Diciembre"
+  },
+  "common": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "create": "Crear",
+    "update": "Actualizar",
+    "search": "Buscar...",
+    "loading": "Cargando...",
+    "expenses": "Gastos",
+    "no_data": "Sin datos",
+    "transfer": "Transferir",
+    "add": "Añadir",
+    "reallocate": "Reasignar",
+    "delete_all": "Eliminar todo",
+    "actions": "Acciones",
+    "pay": "Pagar"
+  },
+  "errors": {
+    "unexpected": "Ocurrió un error inesperado",
+    "unauthorized": "Acceso no autorizado",
+    "forbidden": "Acceso prohibido",
+    "not_found": "Recurso no encontrado",
+    "conflict": "Conflicto",
+    "too_many_requests": "Demasiadas solicitudes",
+    "payment_required": "Pago requerido",
+    "validation": "Error de validación",
+    "transactions": {
+      "exceeds_budget": "El monto de la transacción supera el saldo disponible del sobre"
+    },
+    "envelopes": {
+      "name_already_exists": "Ya existe un sobre con ese nombre",
+      "update_error": "Error al actualizar el sobre",
+      "not_found": "Sobre no encontrado",
+      "name_cannot_be_changed": "El nombre del sobre no puede modificarse",
+      "exceeds_percentage": "El porcentaje total de los sobres superaría el 100%"
+    }
+  },
+  "nav": {
+    "budget": "Presupuesto",
+    "envelopes": "Sobres",
+    "incomes": "Ingresos",
     "goals": "Metas",
     "debts": "Deudas",
-    "housing": "Vivienda",
-    "groceries": "Mercado",
-    "health": "Salud",
-    "leisure": "Ocio",
-    "education": "Educación",
-    "transport": "Transporte",
-    "others": "Otros",
-    "incomes": "Ingresos",
-    "expenses": "Gastos",
-    "balance": "Balance",
-    "months": {
-        "january": "Enero",
-        "february": "Febrero",
-        "march": "Marzo",
-        "april": "Abril",
-        "may": "Mayo",
-        "june": "Junio",
-        "july": "Julio",
-        "august": "Agosto",
-        "september": "Septiembre",
-        "october": "Octubre",
-        "november": "Noviembre",
-        "december": "Diciembre"
+    "settings": "Configuración"
+  },
+  "account": {
+    "notification": "Notificación",
+    "theme": "Tema",
+    "language": "Idioma",
+    "profile": "Perfil",
+    "settings": "Configuración de la Cuenta",
+    "logout": "Cerrar sesión",
+    "logging_out": "Cerrando sesión..."
+  },
+  "home": {
+    "no_envelopes_title": "No tienes sobres creados",
+    "no_envelopes_not_processed": "Aún no has procesado ningún mes.",
+    "no_envelopes_month_not_processed": "Aún no has procesado el mes",
+    "process_button": "Procesar {{month}} / {{year}}",
+    "income_description": "Ingreso del mes {{month}}/{{year}}"
+  },
+  "overview": {
+    "budget": "Presupuesto",
+    "envelopes_title": "Sobres",
+    "than_last_year": "que el año pasado",
+    "envelopes": {
+      "no_funds": "Sin fondos",
+      "available": "Disponible: {{amount}}"
     },
-    "common": {
-        "save": "Guardar",
-        "cancel": "Cancelar",
-        "delete": "Eliminar",
-        "edit": "Editar",
-        "create": "Crear",
-        "update": "Actualizar",
-        "search": "Buscar...",
-        "loading": "Cargando...",
-        "expenses": "Gastos",
-        "no_data": "Sin datos",
-        "transfer": "Transferir",
-        "add": "Añadir",
-        "reallocate": "Reasignar",
-        "delete_all": "Eliminar todo"
+    "upcoming_payments": {
+      "title": "Avisos",
+      "envelope": "Sobre",
+      "empty": "No hay pagos pendientes cerca del vencimiento.",
+      "all_loaded": "Todos los pagos pendientes cargados"
     },
-    "errors": {
-        "unexpected": "Ocurrió un error inesperado",
-        "unauthorized": "Acceso no autorizado",
-        "forbidden": "Acceso prohibido",
-        "not_found": "Recurso no encontrado",
-        "conflict": "Conflicto",
-        "too_many_requests": "Demasiadas solicitudes",
-        "payment_required": "Pago requerido",
-        "validation": "Error de validación",
-        "transactions": {
-            "exceeds_budget": "El monto de la transacción supera el saldo disponible del sobre"
-        }
-    },
-    "nav": {
-        "budget": "Presupuesto",
-        "envelopes": "Sobres",
-        "incomes": "Ingresos",
-        "settings": "Configuración"
-    },
-    "account": {
-        "notification": "Notificación",
-        "theme": "Tema",
-        "language": "Idioma",
-        "profile": "Perfil",
-        "settings": "Configuración de la Cuenta",
-        "logout": "Cerrar sesión",
-        "logging_out": "Cerrando sesión..."
-    },
-    "home": {
-        "no_envelopes_title": "No tienes sobres creados",
-        "no_envelopes_not_processed": "Aún no has procesado ningún mes.",
-        "no_envelopes_month_not_processed": "Aún no has procesado el mes",
-        "process_button": "Procesar {{month}} / {{year}}",
-        "income_description": "Ingreso del mes {{month}}/{{year}}"
-    },
-    "overview": {
-        "budget": "Presupuesto",
-        "envelopes_title": "Sobres",
-        "than_last_year": "que el año pasado",
-        "envelopes": {
-            "no_funds": "Sin fondos",
-            "available": "Disponible: {{amount}}"
-        },
-        "upcoming_payments": {
-            "title": "Próximos pagos",
-            "envelope": "Sobre",
-            "empty": "No hay pagos pendientes cerca del vencimiento.",
-            "all_loaded": "Todos los pagos pendientes cargados"
-        },
-        "delete_month": {
-            "button": "Eliminar mes",
-            "confirm_title": "Eliminar mes procesado",
-            "confirm_message": "¿Está seguro de que desea eliminar todos los registros del mes {{month}}/{{year}}? Esta acción no se puede deshacer.",
-            "confirm": "Confirmar",
-            "cancel": "Cancelar"
-        }
-    },
-    "envelope": {
-        "transaction": {
-            "description": "Descripción",
-            "amount": "Monto",
-            "date": "Fecha de Pago",
-            "payment_method_label": "Método de Pago",
-            "tabs": {
-                "transaction": "Transacción",
-                "transfer": "Transferencia"
-            },
-            "placeholder": {
-                "description": "Ej: Alquiler",
-                "amount": "0.00"
-            },
-            "payment_method": {
-                "CreditCard": "Tarjeta de Crédito",
-                "DebitCard": "Tarjeta de Débito",
-                "Cash": "Efectivo",
-                "BankTransfer": "Transferencia Bancaria",
-                "Pix": "Pix",
-                "Ticket": "Boleto",
-                "Reallocation": "Reasignación"
-            },
-            "status": {
-                "paid": "Pagado",
-                "pending": "Pendiente",
-                "completed": "Pagado",
-                "overdue": "Vencido",
-                "cancelled": "Cancelado"
-            },
-            "type": {
-                "debit": "Salida",
-                "credit": "Entrada"
-            }
-        },
-        "transfer": {
-            "title": "Transferir Saldo",
-            "from": "De",
-            "to": "Para",
-            "target": "Para Sobre",
-            "amount_label": "Monto de transferencia",
-            "select_envelope": "Seleccione el sobre",
-            "select_envelope_placeholder": "Seleccione el sobre"
-        },
-        "validation": {
-            "description_required": "Descripción es obligatoria",
-            "amount_required": "Monto es obligatorio",
-            "amount_numeric": "Monto debe ser numérico",
-            "amount_positive": "El monto debe ser mayor que cero",
-            "insufficient_funds": "Saldo insuficiente",
-            "select_target": "Seleccione un sobre de destino",
-            "enter_amount": "Ingrese el monto"
-        }
-    },
+    "delete_month": {
+      "button": "Eliminar mes",
+      "confirm_title": "Eliminar mes procesado",
+      "confirm_message": "¿Está seguro de que desea eliminar todos los registros del mes {{month}}/{{year}}? Esta acción no se puede deshacer.",
+      "confirm": "Confirmar",
+      "cancel": "Cancelar"
+    }
+  },
+  "envelope": {
     "transaction": {
-        "status": {
-            "paid": "Pagado",
-            "pending": "Pendiente",
-            "completed": "Pagado"
-        },
-        "type": {
-            "debit": "Entrada",
-            "credit": "Salida"
-        },
-        "empty": "¡No se encontraron transacciones!",
-        "all_loaded": "Todas las transacciones cargadas",
-        "headers": {
-            "description": "Descripción",
-            "type": "Tipo",
-            "amount": "Monto",
-            "payment_method": "Método de Pago",
-            "date": "Fecha",
-            "status": "Estado"
-        }
-    },
-    "income": {
-        "title": "Ingresos",
-        "split": "Dividir entre sobres",
-        "yes": "Sí",
-        "no": "No",
-        "validation": {
-            "description_required": "Descripción es obligatoria",
-            "amount_required": "Monto es obligatorio",
-            "amount_numeric": "Monto debe ser numérico"
-        },
-        "table": {
-            "headers": {
-                "description": "Descripción",
-                "amount": "Monto",
-                "date": "Fecha",
-                "envelope": "Sobre"
-            },
-            "empty": "¡No hay ingresos registrados!",
-            "all": "Todos",
-            "one": "Uno",
-            "all_loaded": "Todos los ingresos cargados",
-            "total": "Total procesado"
-        }
-    },
-    "user": {
-        "title": "Usuarios",
-        "new": "Nuevo usuario",
-        "search": "Buscar usuario...",
-        "table": {
-            "headers": {
-                "name": "Nombre",
-                "company": "Empresa",
-                "role": "Rol",
-                "verified": "Verificado",
-                "status": "Estado"
-            },
-            "selected": "{{count}} seleccionado(s)",
-            "no_data": "No encontrado",
-            "no_results": "No se encontraron resultados para",
-            "typo_suggestion": "Intente verificar errores tipográficos o usar palabras completas."
-        }
-    },
-    "settings": {
-        "credit_card": {
-            "title": "Tarjeta de Crédito",
-            "name": "Nombre",
-            "flag": "Marca",
-            "validation": {
-                "name_required": "Nombre es obligatorio",
-                "flag_required": "Marca es obligatoria"
-            },
-            "table": {
-                "headers": {
-                    "name": "Nombre",
-                    "flag": "Marca"
-                },
-                "no_data": "¡No hay tarjetas de crédito registradas!",
-                "all_loaded": "Todas las tarjetas cargadas"
-            }
-        },
-        "debt": {
-            "title": "Deuda",
-            "description": "Descripción",
-            "amount": "Valor de la cuota",
-            "installments_paid": "Cuotas pagadas",
-            "installments_total": "Total de cuotas",
-            "payment_day": "Día de pago",
-            "validation": {
-                "description_required": "Descripción es obligatoria",
-                "amount_required": "Valor es obligatorio",
-                "amount_numeric": "Valor debe ser numérico",
-                "installments_total_required": "Valor es obligatorio",
-                "installments_total_numeric": "Valor debe ser numérico",
-                "installments_paid_required": "Valor es obligatorio",
-                "installments_paid_numeric": "Valor debe ser numérico",
-                "payment_day_required": "Día de pago es obligatorio",
-                "payment_day_range": "El día de pago debe estar entre 1 y 31"
-            },
-            "table": {
-                "headers": {
-                    "description": "Descripción",
-                    "amount": "Valor",
-                    "installments_paid": "Total pagado",
-                    "installments_total": "Total cuotas",
-                    "payment_day": "Día de pago"
-                },
-                "no_data": "¡No hay deudas registradas!",
-                "all_loaded": "Todas las deudas cargadas"
-            }
-        },
-        "envelope": {
-            "title": "Sobre",
-            "name": "Nombre",
-            "color": "Color",
-            "percentage": "Porcentaje: {{count}}%",
-            "salary_value": "de {{value}}",
-            "value_input": "Valor",
-            "allocation_remaining": "Faltan {{count}}% para la asignación",
-            "allocation_exceeded": "Excedió {{count}}% del máximo",
-            "save": "Guardar",
-            "validation": {
-                "name_required": "Nombre es obligatorio"
-            }
-        },
-        "fixed_expense": {
-            "title": "Gastos Fijos",
-            "envelope": "Sobre",
-            "description": "Descripción",
-            "amount": "Valor",
-            "payment_day": "Día de Pago",
-            "validation": {
-                "description_required": "Descripción es obligatoria",
-                "amount_required": "Valor es obligatorio",
-                "amount_numeric": "Valor debe ser numérico",
-                "payment_day_required": "Día de pago es obligatorio",
-                "payment_day_range": "El día de pago debe estar entre 1 y 31"
-            },
-            "table": {
-                "headers": {
-                    "envelope": "Sobre",
-                    "description": "Descripción",
-                    "amount": "Valor",
-                    "payment_day": "Día de Pago"
-                },
-                "no_data": "¡No hay gastos fijos registrados!",
-                "all_loaded": "Todos los gastos fijos cargados"
-            }
-        },
-        "goals": {
-            "title": "Nueva Meta",
-            "description": "¿Cuál es tu meta?",
-            "amount_total": "¿Cuánto necesitas?",
-            "amount_current": "¿Cuánto ya tienes?",
-            "deadline": "¿En cuánto tiempo?",
-            "save": "Guardar",
-            "validation": {
-                "description_required": "Descripción es obligatoria",
-                "amount_required": "Valor es obligatorio",
-                "amount_numeric": "Valor debe ser numérico",
-                "amount_total_numeric": "Valor total debe ser numérico",
-                "deadline_required": "Plazo es obligatorio",
-                "deadline_numeric": "Plazo debe ser numérico"
-            },
-            "table": {
-                "headers": {
-                    "description": "Descripción",
-                    "amount": "Valor",
-                    "percentage": "Porcentaje",
-                    "deadline": "Plazo"
-                },
-                "no_data": "¡No hay metas registradas!",
-                "all_loaded": "Todas las metas cargadas"
-            },
-            "recommendation": {
-                "title": "Recomendación",
-                "unfeasible": "Esta meta no es viable con tu ingreso actual de {{income}}.",
-                "monthly_save": "Debes guardar {{amount}} por mes",
-                "envelope_percentage": "Esto representa el {{percentage}}% de tu sobre",
-                "ideal_income": "Tu ingreso debería ser de {{amount}}"
-            },
-            "time": {
-                "month": "Mes",
-                "months": "Meses",
-                "year": "Año",
-                "years": "Años"
-            }
-        },
-        "income": {
-            "title": "Ingresos",
-            "description": "Descripción",
-            "amount": "Salario",
-            "payment_day": "Día de Pago",
-            "validation": {
-                "description_required": "Descripción es obligatoria",
-                "amount_required": "Valor es obligatorio",
-                "amount_numeric": "Valor debe ser numérico",
-                "payment_day_required": "Día de pago es obligatorio",
-                "payment_day_range": "El día de pago debe estar entre 1 y 31"
-            },
-            "table": {
-                "headers": {
-                    "description": "Descripción",
-                    "amount": "Salario",
-                    "payment_day": "Día de Pago"
-                },
-                "no_data": "¡No hay ingresos registrados!",
-                "all_loaded": "Todos los ingresos cargados"
-            }
-        },
-        "tabs": {
-            "income": "Mis Ingresos",
-            "envelopes": "Mis Límites",
-            "goals": "Mis Metas",
-            "fixed_expenses": "Mis Gastos Fijos",
-            "debts": "Mis Deudas",
-            "credit_cards": "Mis Tarjetas"
-        }
-    },
-    "table_toolbar": {
-        "all": "Todos",
+      "description": "Descripción",
+      "amount": "Monto",
+      "date": "Fecha de Pago",
+      "payment_method_label": "Método de Pago",
+      "tabs": {
+        "transaction": "Transacción",
+        "transfer": "Transferencia"
+      },
+      "placeholder": {
+        "description": "Ej: Alquiler",
+        "amount": "0.00"
+      },
+      "payment_method": {
+        "CreditCard": "Tarjeta de Crédito",
+        "DebitCard": "Tarjeta de Débito",
+        "Cash": "Efectivo",
+        "BankTransfer": "Transferencia Bancaria",
+        "Pix": "Pix",
+        "Ticket": "Boleto",
+        "Reallocation": "Reasignación"
+      },
+      "status": {
+        "paid": "Pagado",
+        "pending": "Pendiente",
+        "completed": "Pagado",
+        "overdue": "Vencido",
+        "cancelled": "Cancelado"
+      },
+      "type": {
         "debit": "Salida",
         "credit": "Entrada"
+      }
     },
     "transfer": {
-        "sent_to": "Enviado a {{name}}",
-        "received_from": "Recibido de {{name}}"
+      "title": "Transferir Saldo",
+      "from": "De",
+      "to": "Para",
+      "target": "Para Sobre",
+      "amount_label": "Monto de transferencia",
+      "select_envelope": "Seleccione el sobre",
+      "select_envelope_placeholder": "Seleccione el sobre"
     },
-    "deposit": {
-        "salary": "Asignación de salario {{name}}"
+    "validation": {
+      "description_required": "Descripción es obligatoria",
+      "amount_required": "Monto es obligatorio",
+      "amount_numeric": "Monto debe ser numérico",
+      "amount_positive": "El monto debe ser mayor que cero",
+      "insufficient_funds": "Saldo insuficiente",
+      "select_target": "Seleccione un sobre de destino",
+      "enter_amount": "Ingrese el monto"
+    }
+  },
+  "transaction": {
+    "status": {
+      "paid": "Pagado",
+      "pending": "Pendiente",
+      "completed": "Pagado",
+      "overdue": "Vencido",
+      "cancelled": "Cancelado"
     },
-    "auth": {
-        "sign_in": "Iniciar sesión",
-        "sign_in_title": "Inicia sesión en tu cuenta",
-        "sign_up": "Registrarse",
-        "sign_up_title": "Crea tu cuenta",
-        "email": "Correo electrónico",
-        "password": "Contraseña",
-        "confirm_password": "Confirmar Contraseña",
-        "confirm_email": "Confirmar Correo electrónico",
+    "type": {
+      "debit": "Entrada",
+      "credit": "Salida"
+    },
+    "empty": "¡No se encontraron transacciones!",
+    "all_loaded": "Todas las transacciones cargadas",
+    "headers": {
+      "description": "Descripción",
+      "type": "Tipo",
+      "amount": "Monto",
+      "payment_method": "Método de Pago",
+      "date": "Fecha",
+      "status": "Estado"
+    }
+  },
+  "income": {
+    "title": "Ingresos",
+    "split": "Dividir entre sobres",
+    "yes": "Sí",
+    "no": "No",
+    "validation": {
+      "description_required": "Descripción es obligatoria",
+      "amount_required": "Monto es obligatorio",
+      "amount_numeric": "Monto debe ser numérico"
+    },
+    "table": {
+      "headers": {
+        "description": "Descripción",
+        "amount": "Monto",
+        "date": "Fecha",
+        "envelope": "Sobre"
+      },
+      "empty": "¡No hay ingresos registrados!",
+      "all": "Todos",
+      "one": "Uno",
+      "all_loaded": "Todos los ingresos cargados",
+      "total": "Total procesado"
+    }
+  },
+  "user": {
+    "title": "Usuarios",
+    "new": "Nuevo usuario",
+    "search": "Buscar usuario...",
+    "table": {
+      "headers": {
         "name": "Nombre",
-        "forgot_password": "¿Olvidaste tu contraseña?",
-        "no_account": "¿No tienes una cuenta?",
-        "has_account": "¿Ya tienes una cuenta?",
-        "get_started": "Comienza ahora",
-        "login_error": "Correo o contraseña incorrectos",
-        "validation": {
-            "name_required": "El nombre es obligatorio",
-            "email_required": "El correo es obligatorio",
-            "email_invalid": "Ingrese un correo válido",
-            "emails_mismatch": "Los correos no coinciden",
-            "password_required": "La contraseña es obligatoria",
-            "password_min_length": "La contraseña debe tener al menos 8 caracteres",
-            "passwords_mismatch": "Las contraseñas no coinciden"
+        "company": "Empresa",
+        "role": "Rol",
+        "verified": "Verificado",
+        "status": "Estado"
+      },
+      "selected": "{{count}} seleccionado(s)",
+      "no_data": "No encontrado",
+      "no_results": "No se encontraron resultados para",
+      "typo_suggestion": "Intente verificar errores tipográficos o usar palabras completas."
+    }
+  },
+  "settings": {
+    "credit_card": {
+      "title": "Tarjeta de Crédito",
+      "name": "Nombre",
+      "flag": "Marca",
+      "validation": {
+        "name_required": "Nombre es obligatorio",
+        "flag_required": "Marca es obligatoria"
+      },
+      "table": {
+        "headers": {
+          "name": "Nombre",
+          "flag": "Marca"
         },
-        "errors": {
-            "email_already_exists": "Este correo electrónico ya está registrado",
-            "invalid_or_expired_token": "El enlace de verificación es inválido o ha expirado.",
-            "email_not_verified": "Tu correo electrónico aún no ha sido confirmado. Se ha enviado un nuevo enlace de verificación a tu correo."
-        },
-        "verify_email": {
-            "verifying": "Verificando tu correo electrónico...",
-            "success_title": "¡Correo verificado!",
-            "success_message": "Tu cuenta ha sido activada con éxito. Inicia sesión para continuar.",
-            "error_title": "Enlace inválido o expirado",
-            "go_to_login": "Ir al inicio de sesión",
-            "pending_title": "Revisa tu correo",
-            "pending_message": "Se ha enviado un enlace de verificación a tu correo. Haz clic en el enlace para activar tu cuenta."
-        },
-        "registration_success_title": "¡Registro completado!",
-        "registration_success_message": "Tu cuenta ha sido creada con éxito.",
-        "registration_success_email": "Se ha enviado un correo de confirmación a {{email}}. Haz clic en el enlace para activar tu cuenta."
+        "no_data": "¡No hay tarjetas de crédito registradas!",
+        "all_loaded": "Todas las tarjetas cargadas"
+      }
     },
-    "complete_registration": {
-        "title": "Completar registro",
-        "subtitle": "Cuéntanos un poco más para personalizar tu experiencia. ¡Todo aquí se puede editar después!",
-        "steps": {
-            "income": "Tus Ingresos",
-            "debts": "Tus Deudas",
-            "envelopes": "Tus Límites",
-            "goals": "Tus Metas",
-            "fixed_expenses": "Tus Gastos Fijos",
-            "credit_cards": "Tus Tarjetas"
+    "debt": {
+      "title": "Deuda",
+      "description": "Descripción",
+      "amount": "Valor de la cuota",
+      "installments_paid": "Cuotas pagadas",
+      "installments_total": "Total de cuotas",
+      "payment_day": "Día de pago",
+      "validation": {
+        "description_required": "Descripción es obligatoria",
+        "amount_required": "Valor es obligatorio",
+        "amount_numeric": "Valor debe ser numérico",
+        "installments_total_required": "Valor es obligatorio",
+        "installments_total_numeric": "Valor debe ser numérico",
+        "installments_paid_required": "Valor es obligatorio",
+        "installments_paid_numeric": "Valor debe ser numérico",
+        "payment_day_required": "Día de pago es obligatorio",
+        "payment_day_range": "El día de pago debe estar entre 1 y 31"
+      },
+      "table": {
+        "headers": {
+          "description": "Descripción",
+          "amount": "Valor",
+          "installments_paid": "Total pagado",
+          "installments_total": "Total cuotas",
+          "payment_day": "Día de pago"
         },
-        "back": "Volver",
-        "continue": "Continuar",
-        "finish": "Finalizar",
-        "allocation_error": "La asignación de los sobres debe ser exactamente 100% para completar el registro.",
-        "finish_tooltip": "Para finalizar, configure sus Mis Límites (sobres) para que la asignación sea exactamente 100%."
+        "no_data": "¡No hay deudas registradas!",
+        "all_loaded": "Todas las deudas cargadas"
+      }
+    },
+    "envelope": {
+      "title": "Sobre",
+      "name": "Nombre",
+      "color": "Color",
+      "percentage": "Porcentaje: {{count}}%",
+      "salary_value": "de {{value}}",
+      "value_input": "Valor",
+      "allocation_remaining": "Faltan {{count}}% para la asignación",
+      "allocation_exceeded": "Excedió {{count}}% del máximo",
+      "save": "Guardar",
+      "validation": {
+        "name_required": "Nombre es obligatorio"
+      }
+    },
+    "fixed_expense": {
+      "title": "Gastos Fijos",
+      "envelope": "Sobre",
+      "description": "Descripción",
+      "amount": "Valor",
+      "payment_day": "Día de Pago",
+      "validation": {
+        "description_required": "Descripción es obligatoria",
+        "amount_required": "Valor es obligatorio",
+        "amount_numeric": "Valor debe ser numérico",
+        "payment_day_required": "Día de pago es obligatorio",
+        "payment_day_range": "El día de pago debe estar entre 1 y 31"
+      },
+      "table": {
+        "headers": {
+          "envelope": "Sobre",
+          "description": "Descripción",
+          "amount": "Valor",
+          "payment_day": "Día de Pago"
+        },
+        "no_data": "¡No hay gastos fijos registrados!",
+        "all_loaded": "Todos los gastos fijos cargados"
+      }
+    },
+    "goals": {
+      "title": "Nueva Meta",
+      "description": "¿Cuál es tu meta?",
+      "amount_total": "¿Cuánto necesitas?",
+      "amount_current": "¿Cuánto ya tienes?",
+      "deadline": "¿En cuánto tiempo?",
+      "save": "Guardar",
+      "validation": {
+        "description_required": "Descripción es obligatoria",
+        "amount_required": "Valor es obligatorio",
+        "amount_numeric": "Valor debe ser numérico",
+        "amount_total_numeric": "Valor total debe ser numérico",
+        "deadline_required": "Plazo es obligatorio",
+        "deadline_numeric": "Plazo debe ser numérico"
+      },
+      "table": {
+        "headers": {
+          "description": "Descripción",
+          "amount": "Valor",
+          "percentage": "Porcentaje",
+          "deadline": "Plazo"
+        },
+        "no_data": "¡No hay metas registradas!",
+        "all_loaded": "Todas las metas cargadas"
+      },
+      "recommendation": {
+        "title": "Recomendación",
+        "unfeasible": "Esta meta no es viable con tu ingreso actual de {{income}}.",
+        "monthly_save": "Debes guardar {{amount}} por mes",
+        "envelope_percentage": "Esto representa el {{percentage}}% de tu sobre",
+        "ideal_income": "Tu ingreso debería ser de {{amount}}"
+      },
+      "time": {
+        "month": "Mes",
+        "months": "Meses",
+        "year": "Año",
+        "years": "Años"
+      }
+    },
+    "income": {
+      "title": "Ingresos",
+      "description": "Descripción",
+      "amount": "Salario",
+      "payment_day": "Día de Pago",
+      "validation": {
+        "description_required": "Descripción es obligatoria",
+        "amount_required": "Valor es obligatorio",
+        "amount_numeric": "Valor debe ser numérico",
+        "payment_day_required": "Día de pago es obligatorio",
+        "payment_day_range": "El día de pago debe estar entre 1 y 31"
+      },
+      "table": {
+        "headers": {
+          "description": "Descripción",
+          "amount": "Salario",
+          "payment_day": "Día de Pago"
+        },
+        "no_data": "¡No hay ingresos registrados!",
+        "all_loaded": "Todos los ingresos cargados"
+      }
+    },
+    "tabs": {
+      "income": "Mis Ingresos",
+      "envelopes": "Mis Límites",
+      "goals": "Mis Metas",
+      "fixed_expenses": "Mis Gastos Fijos",
+      "debts": "Mis Deudas",
+      "credit_cards": "Mis Tarjetas"
+    }
+  },
+  "debts_page": {
+    "title": "Deudas",
+    "table": {
+      "headers": {
+        "description": "Descripción",
+        "installment_amount": "Valor Cuota",
+        "installments_paid": "Cuotas Pagadas",
+        "installments_total": "Total Cuotas",
+        "next_payment_date": "Próximo Pago",
+        "status": "Estado"
+      },
+      "empty": "¡No hay deudas registradas!",
+      "total_debt": "Deuda Total"
+    },
+    "actions": {
+      "view_installments": "Ver Cuotas",
+      "view_evolution": "Ver Evolución"
+    },
+    "installments_modal": {
+      "title": "Cuotas",
+      "total": "Total",
+      "paid": "Pagado",
+      "remaining": "Restante",
+      "installment": "Cuota",
+      "date": "Fecha",
+      "amount": "Valor",
+      "status": "Estado",
+      "status_paid": "Pagada",
+      "status_current": "Actual",
+      "status_future": "Futura"
+    },
+    "evolution_modal": {
+      "title": "Evolución de la Deuda",
+      "balance": "Saldo Pendiente",
+      "installment_label": "Cuota",
+      "paid_label": "Pagado",
+      "remaining_label": "Restante"
+    },
+    "status": {
+      "pending": "Pendiente",
+      "paid": "Pagada",
+      "overdue": "Vencida"
+    },
+    "summary": {
+      "total": "Total de Deudas",
+      "paid": "Total Pagado",
+      "remaining": "Total Restante"
+    }
+  },
+  "goals_page": {
+    "title": "Metas",
+    "table": {
+      "headers": {
+        "description": "Descripción",
+        "amount": "Ahorrado",
+        "amount_total": "Objetivo",
+        "percentage": "% Sobre",
+        "deadline": "Plazo"
+      },
+      "empty": "¡No hay metas registradas!"
+    },
+    "actions": {
+      "view_evolution": "Ver Evolución"
+    },
+    "evolution_modal": {
+      "title": "Evolución de la Meta",
+      "saved": "Ahorrado",
+      "target": "Objetivo",
+      "monthly_projection": "Proyección Mensual",
+      "current": "Actual"
+    },
+    "summary": {
+      "envelope_balance": "Saldo del Sobre",
+      "total_goals": "Total de Metas",
+      "remaining": "Faltan"
+    },
+    "deadline": {
+      "months": "{{count}} meses",
+      "years": "{{count}} años"
+    }
+  },
+  "table_toolbar": {
+    "all": "Todos",
+    "debit": "Salida",
+    "credit": "Entrada"
+  },
+  "transfer": {
+    "sent_to": "Enviado a {{name}}",
+    "received_from": "Recibido de {{name}}"
+  },
+  "deposit": {
+    "salary": "Asignación de salario {{name}}"
+  },
+  "auth": {
+    "sign_in": "Iniciar sesión",
+    "sign_in_title": "Inicia sesión en tu cuenta",
+    "sign_up": "Registrarse",
+    "sign_up_title": "Crea tu cuenta",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "confirm_password": "Confirmar Contraseña",
+    "confirm_email": "Confirmar Correo electrónico",
+    "name": "Nombre",
+    "forgot_password": "¿Olvidaste tu contraseña?",
+    "no_account": "¿No tienes una cuenta?",
+    "has_account": "¿Ya tienes una cuenta?",
+    "get_started": "Comienza ahora",
+    "login_error": "Correo o contraseña incorrectos",
+    "validation": {
+      "name_required": "El nombre es obligatorio",
+      "email_required": "El correo es obligatorio",
+      "email_invalid": "Ingrese un correo válido",
+      "emails_mismatch": "Los correos no coinciden",
+      "password_required": "La contraseña es obligatoria",
+      "password_min_length": "La contraseña debe tener al menos 8 caracteres",
+      "passwords_mismatch": "Las contraseñas no coinciden"
+    },
+    "errors": {
+      "email_already_exists": "Este correo electrónico ya está registrado",
+      "invalid_or_expired_token": "El enlace de verificación es inválido o ha expirado.",
+      "email_not_verified": "Tu correo electrónico aún no ha sido confirmado. Se ha enviado un nuevo enlace de verificación a tu correo."
+    },
+    "verify_email": {
+      "verifying": "Verificando tu correo electrónico...",
+      "success_title": "¡Correo verificado!",
+      "success_message": "Tu cuenta ha sido activada con éxito. Inicia sesión para continuar.",
+      "error_title": "Enlace inválido o expirado",
+      "go_to_login": "Ir al inicio de sesión",
+      "pending_title": "Revisa tu correo",
+      "pending_message": "Se ha enviado un enlace de verificación a tu correo. Haz clic en el enlace para activar tu cuenta."
+    },
+    "registration_success_title": "¡Registro completado!",
+    "registration_success_message": "Tu cuenta ha sido creada con éxito.",
+    "registration_success_email": "Se ha enviado un correo de confirmación a {{email}}. Haz clic en el enlace para activar tu cuenta."
+  },
+  "complete_registration": {
+    "title": "Completar registro",
+    "subtitle": "Cuéntanos un poco más para personalizar tu experiencia. ¡Todo aquí se puede editar después!",
+    "steps": {
+      "income": "Tus Ingresos",
+      "debts": "Tus Deudas",
+      "envelopes": "Tus Límites",
+      "goals": "Tus Metas",
+      "fixed_expenses": "Tus Gastos Fijos",
+      "credit_cards": "Tus Tarjetas"
+    },
+    "back": "Volver",
+    "continue": "Continuar",
+    "finish": "Finalizar",
+    "allocation_error": "La asignación de los sobres debe ser exactamente 100% para completar el registro.",
+    "finish_tooltip": "Para finalizar, configure sus Mis Límites (sobres) para que la asignación sea exactamente 100%."
+  },
+  "notifications": {
+    "goals": {
+      "created": "¡Meta registrada con éxito!",
+      "updated": "¡Meta editada con éxito!",
+      "deleted": "¡Meta eliminada con éxito!",
+      "deleted_all": "¡Metas eliminadas con éxito!",
+      "error_delete_all": "Error al eliminar metas"
+    },
+    "fixed_expenses": {
+      "created": "¡Gasto fijo registrado con éxito!",
+      "updated": "¡Gasto fijo editado con éxito!",
+      "deleted": "¡Gasto fijo eliminado con éxito!",
+      "deleted_all": "¡Gastos fijos eliminados con éxito!",
+      "error_delete_all": "Error al eliminar gastos fijos"
+    },
+    "credit_cards": {
+      "created": "¡Tarjeta de crédito registrada con éxito!",
+      "updated": "¡Tarjeta de crédito editada con éxito!",
+      "deleted": "¡Tarjeta de crédito eliminada con éxito!",
+      "deleted_all": "¡Tarjetas de crédito eliminadas con éxito!",
+      "error_delete_all": "Error al eliminar tarjetas de crédito"
+    },
+    "transactions": {
+      "created": "¡Transacción registrada con éxito!",
+      "updated": "¡Transacción editada con éxito!",
+      "deleted": "¡Transacción eliminada con éxito!",
+      "paid": "¡Pago realizado con éxito!"
+    },
+    "processed_incomes": {
+      "created": "¡Sobres procesados con éxito!",
+      "updated": "¡Ingreso editado con éxito!",
+      "deleted": "¡Ingreso eliminado con éxito!",
+      "deleted_all": "¡Ingresos eliminados con éxito!",
+      "deleted_month": "¡Mes eliminado con éxito!",
+      "error_delete_all": "Error al eliminar ingresos",
+      "error_delete_month": "Error al eliminar el mes"
+    },
+    "envelopes": {
+      "updated": "¡Sobre editado con éxito!",
+      "error_update": "Error al editar sobre",
+      "transfer_success": "¡Transferencia realizada con éxito!",
+      "error_transfer": "Error al realizar la transferencia"
+    },
+    "incomes": {
+      "created": "¡Salario registrado con éxito!",
+      "updated": "¡Salario editado con éxito!",
+      "deleted": "¡Salario eliminado con éxito!",
+      "deleted_all": "¡Salarios eliminados con éxito!",
+      "error_delete_all": "Error al eliminar salarios"
+    },
+    "debts": {
+      "created": "¡Deuda registrada con éxito!",
+      "updated": "¡Deuda editada con éxito!",
+      "deleted": "¡Deuda eliminada con éxito!",
+      "deleted_all": "¡Deudas eliminadas con éxito!",
+      "error_delete_all": "Error al eliminar deudas"
+    },
+    "registration": {
+      "error_complete": "Error al completar el registro. Inténtalo de nuevo."
+    }
+  },
+  "profile": {
+    "title": "Mi Perfil",
+    "personal_info": "Información Personal",
+    "change_password": "Cambiar Contraseña",
+    "preferences": "Preferencias",
+    "layout": {
+      "title": "Apariencia",
+      "theme": "Tema",
+      "light": "Claro",
+      "dark": "Oscuro"
+    },
+    "language": {
+      "title": "Idioma",
+      "select": "Seleccione el idioma"
+    },
+    "currency": {
+      "title": "Moneda",
+      "select": "Seleccione la moneda"
+    },
+    "number_format": {
+      "title": "Formato de Número",
+      "dot_comma": "Punto y coma",
+      "comma_dot": "Coma y punto"
+    },
+    "date_format": {
+      "title": "Formato de Fecha",
+      "dd_mm_yyyy": "Día / Mes / Año",
+      "mm_dd_yyyy": "Mes / Día / Año"
     },
     "notifications": {
-        "goals": {
-            "created": "¡Meta registrada con éxito!",
-            "updated": "¡Meta editada con éxito!",
-            "deleted": "¡Meta eliminada con éxito!",
-            "deleted_all": "¡Metas eliminadas con éxito!",
-            "error_delete_all": "Error al eliminar metas"
-        },
-        "fixed_expenses": {
-            "created": "¡Gasto fijo registrado con éxito!",
-            "updated": "¡Gasto fijo editado con éxito!",
-            "deleted": "¡Gasto fijo eliminado con éxito!",
-            "deleted_all": "¡Gastos fijos eliminados con éxito!",
-            "error_delete_all": "Error al eliminar gastos fijos"
-        },
-        "credit_cards": {
-            "created": "¡Tarjeta de crédito registrada con éxito!",
-            "updated": "¡Tarjeta de crédito editada con éxito!",
-            "deleted": "¡Tarjeta de crédito eliminada con éxito!",
-            "deleted_all": "¡Tarjetas de crédito eliminadas con éxito!",
-            "error_delete_all": "Error al eliminar tarjetas de crédito"
-        },
-        "transactions": {
-            "created": "¡Transacción registrada con éxito!",
-            "updated": "¡Transacción editada con éxito!",
-            "deleted": "¡Transacción eliminada con éxito!"
-        },
-        "processed_incomes": {
-            "created": "¡Sobres procesados con éxito!",
-            "updated": "¡Ingreso editado con éxito!",
-            "deleted": "¡Ingreso eliminado con éxito!",
-            "deleted_all": "¡Ingresos eliminados con éxito!",
-            "deleted_month": "¡Mes eliminado con éxito!",
-            "error_delete_all": "Error al eliminar ingresos",
-            "error_delete_month": "Error al eliminar el mes"
-        },
-        "envelopes": {
-            "updated": "¡Sobre editado con éxito!",
-            "error_update": "Error al editar sobre",
-            "transfer_success": "¡Transferencia realizada con éxito!",
-            "error_transfer": "Error al realizar la transferencia"
-        },
-        "incomes": {
-            "created": "¡Salario registrado con éxito!",
-            "updated": "¡Salario editado con éxito!",
-            "deleted": "¡Salario eliminado con éxito!",
-            "deleted_all": "¡Salarios eliminados con éxito!",
-            "error_delete_all": "Error al eliminar salarios"
-        },
-        "debts": {
-            "created": "¡Deuda registrada con éxito!",
-            "updated": "¡Deuda editada con éxito!",
-            "deleted": "¡Deuda eliminada con éxito!",
-            "deleted_all": "¡Deudas eliminadas con éxito!",
-            "error_delete_all": "Error al eliminar deudas"
-        },
-        "registration": {
-            "error_complete": "Error al completar el registro. Inténtalo de nuevo."
-        }
+      "title": "Notificaciones",
+      "enable": "Activar notificaciones",
+      "email": "Notificaciones por correo",
+      "push": "Notificaciones push"
     },
-    "profile": {
-        "title": "Mi Perfil",
-        "personal_info": "Información Personal",
-        "change_password": "Cambiar Contraseña",
-        "preferences": "Preferencias",
-        "layout": {
-            "title": "Apariencia",
-            "theme": "Tema",
-            "light": "Claro",
-            "dark": "Oscuro"
-        },
-        "language": {
-            "title": "Idioma",
-            "select": "Seleccione el idioma"
-        },
-        "currency": {
-            "title": "Moneda",
-            "select": "Seleccione la moneda"
-        },
-        "number_format": {
-            "title": "Formato de Número",
-            "dot_comma": "Punto y coma",
-            "comma_dot": "Coma y punto"
-        },
-        "date_format": {
-            "title": "Formato de Fecha",
-            "dd_mm_yyyy": "Día / Mes / Año",
-            "mm_dd_yyyy": "Mes / Día / Año"
-        },
-        "notifications": {
-            "title": "Notificaciones",
-            "enable": "Activar notificaciones",
-            "email": "Notificaciones por correo",
-            "push": "Notificaciones push"
-        }
+    "delete_account": {
+      "title": "Zona de Peligro",
+      "warning": "Al eliminar tu cuenta, todos tus datos serán eliminados permanentemente. Esta acción no se puede deshacer.",
+      "button": "Eliminar mi cuenta",
+      "error": "Error al eliminar la cuenta. Inténtalo de nuevo.",
+      "dialog": {
+        "title": "¿Eliminar cuenta?",
+        "description": "¿Estás seguro de que quieres eliminar tu cuenta? Todos tus datos (sobres, ingresos, tarjetas, deudas y metas) serán eliminados permanentemente. Esta acción no se puede deshacer.",
+        "confirm": "Sí, eliminar mi cuenta"
+      }
     }
+  }
 }

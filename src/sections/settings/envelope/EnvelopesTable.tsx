@@ -36,7 +36,7 @@ export function EnvelopesTable({ envelopes }: EnvelopesProps) {
     }
     useEffect(() => {
         if (envelopes) {
-            const totalAllocation = envelopes.reduce((acc, item) => acc + item.percentage, 0);
+            const totalAllocation = parseFloat(envelopes.reduce((acc, item) => acc + item.percentage, 0).toFixed(2));
             setEnvelopeAllocation(totalAllocation);
         }
     }, [envelopes]);
@@ -60,7 +60,7 @@ export function EnvelopesTable({ envelopes }: EnvelopesProps) {
         }}>
             <Box sx={{ display: "flex", alignItems: "center", p: isMobile ? 2 : 4, justifyContent: "flex-end", gap: 2 }}>
                 <EnvelopeForm data={envelopeActive} buttonLabel={t('common.add')} open={open} handleOpen={handleOpen} handleClose={handleClose} allEnvelopes={envelopes} />
-                <Badges text={envelopeAlocation <= 100 ? t('settings.envelope.allocation_remaining', { count: 100 - envelopeAlocation }) : t('settings.envelope.allocation_exceeded', { count: envelopeAlocation - 100 })} bgColor={envelopeAlocation <= 100 ? theme.palette.success.main : theme.palette.error.main} />
+                <Badges text={envelopeAlocation <= 100 ? t('settings.envelope.allocation_remaining', { count: parseFloat((100 - envelopeAlocation).toFixed(2)) }) : t('settings.envelope.allocation_exceeded', { count: parseFloat((envelopeAlocation - 100).toFixed(2)) })} bgColor={envelopeAlocation <= 100 ? theme.palette.success.main : theme.palette.error.main} />
             </Box>
             <Box sx={{
                 display: 'grid',

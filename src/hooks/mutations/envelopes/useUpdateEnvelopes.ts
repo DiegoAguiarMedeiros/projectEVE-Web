@@ -14,8 +14,8 @@ export function useUpdateEnvelopes() {
       queryClient.invalidateQueries({ queryKey: ["envelopes"] });
     },
     onError: (error: any) => {
-      const message = error?.response?.data?.message ?? t("notifications.envelopes.error_update");
-      enqueueSnackbar(message, { autoHideDuration: 4000, variant: "error", anchorOrigin: { horizontal: "right", vertical: "bottom" } });
+      const rawMessage = error?.response?.data?.message ?? "notifications.envelopes.error_update";
+      enqueueSnackbar(t(rawMessage), { autoHideDuration: 4000, variant: "error", anchorOrigin: { horizontal: "right", vertical: "bottom" } });
     },
   });
 }
