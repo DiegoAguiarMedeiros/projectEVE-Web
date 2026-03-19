@@ -20,10 +20,12 @@ import { useRouter } from "src/routes/hooks";
 import { Logo } from "src/components/logo";
 import { useRegister } from "src/hooks/mutations/auth/useRegister";
 import { useTranslation } from "react-i18next";
+import { usePaths } from "src/hooks/usePaths";
 
 export function RegistrationView() {
   const router = useRouter();
   const { t, i18n } = useTranslation();
+  const paths = usePaths();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -135,7 +137,7 @@ export function RegistrationView() {
 
   const handleSuccessOk = () => {
     setSuccessModalOpen(false);
-    router.push("/entrar");
+    router.push(paths.signIn);
   };
 
   return (
@@ -252,7 +254,7 @@ export function RegistrationView() {
 
         <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
           {t('auth.has_account')}
-          <Link variant="subtitle2" href="/entrar" sx={{ ml: 0.5 }}>
+          <Link variant="subtitle2" href={paths.signIn} sx={{ ml: 0.5 }}>
             {t('auth.sign_in')}
           </Link>
         </Typography>

@@ -5,18 +5,23 @@ import { useCallback } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
 import MenuList from "@mui/material/MenuList";
 import MenuItem, { menuItemClasses } from "@mui/material/MenuItem";
+import Tooltip from "@mui/material/Tooltip";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 import { useRouter, usePathname } from "src/routes/hooks";
 import { useTheme } from "@mui/material";
 import { useLogout } from "src/hooks/mutations/auth/useLogout";
 import { useTranslation } from "react-i18next";
+import { usePaths } from "src/hooks/usePaths";
 
 // ----------------------------------------------------------------------
 
 export type AccountPopoverMenuProps = IconButtonProps & {
   handleClosePopover?: VoidFunction
+  collapsed?: boolean;
   data?: {
     label: string;
     href: string;
@@ -27,18 +32,16 @@ export type AccountPopoverMenuProps = IconButtonProps & {
   }[];
 };
 
-export function AccountPopoverMenu({ data = [], handleClosePopover, sx, ...other }: AccountPopoverMenuProps) {
+export function AccountPopoverMenu({ data = [], handleClosePopover, collapsed, sx, ...other }: AccountPopoverMenuProps) {
   const router = useRouter();
   const theme = useTheme();
   const pathname = usePathname();
-
   const { t } = useTranslation();
+  const paths = usePaths();
 
   const { mutate: logout, isPending } = useLogout(() => {
-    router.push("/entrar");
+    router.push(paths.signIn);
   });
-
-
 
   const handleClickItem = useCallback(
     (path: string) => {
@@ -51,6 +54,19 @@ export function AccountPopoverMenu({ data = [], handleClosePopover, sx, ...other
   const handleLogout = useCallback(() => {
     logout();
   }, [logout]);
+
+  if (collapsed) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", pb: 2 }}>
+        <Tooltip title={t('account.logout')} placement="right">
+          <IconButton color="error" size="small" onClick={handleLogout} disabled={isPending}>
+            <LogoutIcon fontSize="small" />
+          </IconButton>
+        </Tooltip>
+      </Box>
+    );
+  }
+
   return (
     <Box sx={{ backgroundColor: data.length > 0 ? theme.palette.background.neutral : theme.palette.background.paper }}>
       <MenuList

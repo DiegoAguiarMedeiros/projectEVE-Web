@@ -19,6 +19,50 @@
 @import "./components/chart/styles.css";
 
 /** **************************************
+* Scrollbar nativo
+*************************************** */
+* {
+  scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+}
+
+:root[data-theme="light"] * {
+  scrollbar-color: rgba(0, 0, 0, 0.25) transparent;
+}
+
+:root[data-theme="light"] *::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+:root[data-theme="light"] *::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.45);
+}
+
+:root[data-theme="dark"] * {
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+
+:root[data-theme="dark"] *::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+:root[data-theme="dark"] *::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.45);
+}
+
+/** **************************************
 * Baseline
 *************************************** */
 html {

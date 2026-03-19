@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
     Box,
     Button,
@@ -37,7 +37,7 @@ export const MonthYearPickerButton: React.FC<MonthYearPickerButtonProps> = ({ da
         t('months.september'), t('months.october'), t('months.november'), t('months.december'),
     ];
 
-    const years = Object.keys(data).map(Number).sort((a, b) => a - b);
+    const processedYears = Object.keys(data).map(Number).sort((a, b) => a - b);
     const theme = useTheme();
 
     const { month, year, setMonth, setYear } = SelectedMonthYearStore();
@@ -47,27 +47,25 @@ export const MonthYearPickerButton: React.FC<MonthYearPickerButtonProps> = ({ da
     const [confirmOpen, setConfirmOpen] = useState(false);
     const deleteByMonthMutation = useDeleteProcessedIncomesByMonth();
 
-    const minYear = years[0] ? years[0] : year;
-    const maxYear = years[years.length - 1];
+    const currentYear = new Date().getFullYear();
+    const yearRangeStart = processedYears.length > 0 ? processedYears[0] : year;
+    const yearRangeEnd = processedYears.length > 0
+        ? Math.max(processedYears[processedYears.length - 1] + 1, currentYear)
+        : year;
+    const allYears = Array.from({ length: yearRangeEnd - yearRangeStart + 1 }, (_, i) => yearRangeStart + i);
 
-    const minMonth = years.length > 0 ? Math.min(...data[minYear]) : month;
-    const maxMonth = years.length > 0 ? Math.max(...data[maxYear]) : year;
+    const isMonthProcessed = useCallback((y: number, m: number): boolean => {
+        return (data[y] || []).includes(m as Month);
+    }, [data]);
 
-    const isNextButtonDisabled = useCallback((): boolean => {
-        if (maxMonth === 12 && selectedYear === maxYear && selectedMonth === maxMonth) return false;
-        if (maxMonth === 12 && selectedYear === maxYear + 1 && selectedMonth === 1) return true;
-        if (maxMonth < 12 && selectedYear === maxYear && selectedMonth === maxMonth + 1) return true;
-        if (selectedYear === maxYear && selectedMonth === maxMonth) return false;
-        return false;
-    }, [selectedMonth, selectedYear, maxMonth, maxYear]);
+    const isSelectedMonthProcessed = isMonthProcessed(selectedYear, selectedMonth);
 
-    if (years.length === 0) {
-        return (<Button variant="contained" color="primary" disabled>{months[month-1]}/{year}</Button>)
+    const isPrevDisabled = selectedYear === yearRangeStart && selectedMonth === 1;
+    const isNextDisabled = selectedYear === yearRangeEnd && selectedMonth === 12;
+
+    if (processedYears.length === 0) {
+        return (<Button variant="contained" color="primary" disabled>{months[month - 1]}/{year}</Button>)
     }
-
-
-    const getYearsAvailable = (): number[] => (Object.keys(data).map(Number))
-
 
     const handleClose = () => setAnchorEl(null);
 
@@ -76,63 +74,47 @@ export const MonthYearPickerButton: React.FC<MonthYearPickerButtonProps> = ({ da
     };
 
     const handleMonthSelect = (monthSelected: Month) => {
-        setMonth(monthSelected)
+        setMonth(monthSelected);
         setSelectedMonth(monthSelected);
         handleClose();
-
     };
 
     const handleYearChange = (event: any) => {
-        const newYear = Number(event.target.value)
-        if (newYear === maxYear) {
-            setMonth(maxMonth as Month)
-            setSelectedMonth(maxMonth as Month);
-        }
-        if (newYear === minYear) {
-            setMonth(minMonth as Month)
-            setSelectedMonth(minMonth as Month);
-        }
+        const newYear = Number(event.target.value);
         setYear(newYear);
         setSelectedYear(newYear);
     };
 
     const handlePrevMonth = () => {
         if (selectedMonth === 1) {
-            setMonth(12)
+            setMonth(12);
             setSelectedMonth(12);
-            setYear(year - 1);
-            setSelectedYear((prev) => prev - 1);
+            setYear(selectedYear - 1);
+            setSelectedYear(selectedYear - 1);
         } else {
-            setMonth(month - 1 as Month)
-            setSelectedMonth((prev) => prev - 1 as Month);
+            const newMonth = (selectedMonth - 1) as Month;
+            setMonth(newMonth);
+            setSelectedMonth(newMonth);
         }
-
     };
 
     const handleNextMonth = () => {
         if (selectedMonth === 12) {
-            setMonth(1)
+            setMonth(1);
             setSelectedMonth(1);
-            setYear(year + 1);
-            setSelectedYear((prev) => prev + 1);
+            setYear(selectedYear + 1);
+            setSelectedYear(selectedYear + 1);
         } else {
-            setMonth(month + 1 as Month)
-            setSelectedMonth((prev) => prev + 1 as Month);
+            const newMonth = (selectedMonth + 1) as Month;
+            setMonth(newMonth);
+            setSelectedMonth(newMonth);
         }
-
-    };
-    const getTextColor = (isAvailable: boolean, monthSelected: boolean): string => {
-        if (isAvailable) {
-            if (monthSelected) return "var(--layout-nav-item-active-color)"
-            return "var(--layout-nav-item-color)"
-        }
-        return "text.disabled"
     };
 
     return (
         <Box display="flex" alignItems="center" gap={1} >
             <Box display="flex" alignItems="center" gap={1}>
-                {!(selectedMonth === minMonth && selectedYear === minYear) ? (
+                {!isPrevDisabled ? (
                     <IconButton onClick={handlePrevMonth}>
                         <ArrowBack />
                     </IconButton>
@@ -144,7 +126,7 @@ export const MonthYearPickerButton: React.FC<MonthYearPickerButtonProps> = ({ da
                     {months[selectedMonth - 1]}/{selectedYear}
                 </Button>
 
-                {!isNextButtonDisabled() ? (
+                {!isNextDisabled ? (
                     <IconButton onClick={handleNextMonth}>
                         <ArrowForward />
                     </IconButton>
@@ -168,17 +150,17 @@ export const MonthYearPickerButton: React.FC<MonthYearPickerButtonProps> = ({ da
                 <Box display="flex" flexDirection="column" sx={{ backgroundColor: theme.palette.background.neutral, borderRadius: '8px' }}>
                     <Box display="flex" flexDirection="column" p={2} >
                         <FormControl fullWidth>
-                            <InputLabel id="year-select-label">Ano</InputLabel>
+                            <InputLabel id="year-select-label">{t('common.year')}</InputLabel>
                             <Select
                                 labelId="year-select-label"
                                 id="year-select"
-                                label="Ano"
+                                label={t('common.year')}
                                 value={selectedYear}
                                 onChange={handleYearChange}
                                 sx={{ mb: 2 }}
                                 size="small"
                             >
-                                {getYearsAvailable().map((y) => (
+                                {allYears.map((y) => (
                                     <SelectItem key={y} value={y}>
                                         {y}
                                     </SelectItem>
@@ -188,23 +170,34 @@ export const MonthYearPickerButton: React.FC<MonthYearPickerButtonProps> = ({ da
 
                         <Box display="grid" gridTemplateColumns="repeat(3, 1fr)" gap={1}>
                             {months.map((m, i) => {
-                                const availableMonths = data[selectedYear] || [];
-                                const isAvailable = availableMonths.includes(i + 1 as Month);
+                                const processed = isMonthProcessed(selectedYear, i + 1);
+                                const isSelected = i + 1 === selectedMonth;
                                 return (
                                     <MenuItem
                                         key={m}
-                                        selected={i + 1 === selectedMonth}
-                                        onClick={() => isAvailable && handleMonthSelect(i + 1 as Month)}
-                                        disabled={!isAvailable}
+                                        selected={isSelected}
+                                        onClick={() => handleMonthSelect(i + 1 as Month)}
                                         sx={{
-                                            border: '1px solid var(--layout-nav-item-hover-bg)',
+                                            border: processed
+                                                ? `1px solid var(--layout-nav-item-active-color)`
+                                                : '1px solid var(--layout-nav-item-hover-bg)',
                                             display: 'flex',
                                             justifyContent: 'center',
                                             alignItems: 'center',
                                             borderRadius: 0.75,
+                                            opacity: processed ? 1 : 0.55,
                                         }}
                                     >
-                                        <Typography variant="body2" color={getTextColor(isAvailable, i + 1 === selectedMonth)}>
+                                        <Typography
+                                            variant="body2"
+                                            color={
+                                                isSelected
+                                                    ? 'var(--layout-nav-item-active-color)'
+                                                    : processed
+                                                        ? 'var(--layout-nav-item-color)'
+                                                        : 'text.secondary'
+                                            }
+                                        >
                                             {m}
                                         </Typography>
                                     </MenuItem>
@@ -220,6 +213,7 @@ export const MonthYearPickerButton: React.FC<MonthYearPickerButtonProps> = ({ da
                             variant="outlined"
                             color="error"
                             size="small"
+                            disabled={!isSelectedMonthProcessed}
                             onClick={() => setConfirmOpen(true)}
                         >
                             {t('overview.delete_month.button')} {months[selectedMonth - 1]}/{selectedYear}

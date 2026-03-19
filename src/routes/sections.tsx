@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import { Outlet, Navigate, useRoutes } from "react-router-dom";
+import { Outlet, Navigate, useRoutes, useLocation } from "react-router-dom";
 
 import Box from "@mui/material/Box";
 import LinearProgress, { linearProgressClasses } from "@mui/material/LinearProgress";
@@ -10,6 +10,15 @@ import { SimpleLayout } from "src/layouts/simple";
 import { DashboardLayout } from "src/layouts/dashboard";
 import { NavlessLayout } from "src/layouts/navless";
 import { PrivateRoute } from "./PrivateRoute";
+import { LangRouteWrapper } from "./components";
+import { SUPPORTED_LANGS, ROUTE_SEGMENTS, SupportedLang, getLang } from "./paths";
+
+// Redirects unknown URLs to /:lang/notFound, inferring lang from the URL itself.
+function NotFoundRedirect() {
+  const { pathname } = useLocation();
+  const urlLang = getLang(pathname.split("/")[1] ?? "");
+  return <Navigate to={`/${urlLang}/${ROUTE_SEGMENTS[urlLang].notFound}`} replace />;
+}
 
 // ----------------------------------------------------------------------
 
@@ -43,76 +52,86 @@ const renderFallback = (
   </Box>
 );
 
-export function Router() {
-
-  return useRoutes([
-    {
-      element: (
-        <PrivateRoute>
-          <Suspense fallback={renderFallback}>
-            <Outlet />
-          </Suspense>
-        </PrivateRoute>
-      ),
-      children: [
-        {
-          element: (
-            <DashboardLayout>
+function buildLangRoutes(lang: SupportedLang) {
+  const s = ROUTE_SEGMENTS[lang];
+  return {
+    path: lang,
+    element: <LangRouteWrapper />,
+    children: [
+      // Protected routes
+      {
+        element: (
+          <PrivateRoute>
+            <Suspense fallback={renderFallback}>
               <Outlet />
-            </DashboardLayout>
-          ),
-          children: [
-            { element: <HomePage />, index: true },
-            { path: "envelopes", element: <EnvelopePage /> },
-            { path: "transferencia", element: <ReallocationPage /> },
-            { path: "renda", element: <IncomesPage /> },
-            { path: "metas", element: <GoalsPage /> },
-            { path: "dividas", element: <DebtsPage /> },
-            { path: "configuracoes", element: <SettingsPage /> },
-            { path: "perfil", element: <ProfilePage /> },
-          ],
-        },
-        {
-          path: "completar-cadastro",
-          element: (
-            <NavlessLayout>
-              <CompleteRegistration />
-            </NavlessLayout>
-          ),
-        },
-      ],
-    },
-    {
-      path: "entrar",
-      element: (
-        <AuthLayout>
-          <SignInPage />
-        </AuthLayout>
-      ),
-    },
-    {
-      path: "cadastro",
-      element: (
-        <SimpleLayout>
-          <Registration />
-        </SimpleLayout>
-      ),
-    },
-    {
-      path: "verificar-email",
-      element: (
-        <Suspense fallback={renderFallback}>
-          <VerifyEmailPage />
-        </Suspense>
-      ),
-    },
-    {
-      path: "404",
-      element: <Page404 />,
-    },
-    {
-      path: "*",
-      element: <Navigate to="/404" replace />,
-    },
+            </Suspense>
+          </PrivateRoute>
+        ),
+        children: [
+          {
+            element: (
+              <DashboardLayout>
+                <Outlet />
+              </DashboardLayout>
+            ),
+            children: [
+              { element: <HomePage />, index: true },
+              { path: s.envelopes, element: <EnvelopePage /> },
+              { path: s.reallocation, element: <ReallocationPage /> },
+              { path: s.incomes, element: <IncomesPage /> },
+              { path: s.goals, element: <GoalsPage /> },
+              { path: s.debts, element: <DebtsPage /> },
+              { path: s.settings, element: <SettingsPage /> },
+              { path: s.profile, element: <ProfilePage /> },
+            ],
+          },
+          {
+            path: s.completeRegistration,
+            element: (
+              <NavlessLayout>
+                <CompleteRegistration />
+              </NavlessLayout>
+            ),
+          },
+        ],
+      },
+      // Public routes
+      {
+        path: s.signIn,
+        element: (
+          <AuthLayout>
+            <SignInPage />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: s.registration,
+        element: (
+          <SimpleLayout>
+            <Registration />
+          </SimpleLayout>
+        ),
+      },
+      {
+        path: s.verifyEmail,
+        element: (
+          <Suspense fallback={renderFallback}>
+            <VerifyEmailPage />
+          </Suspense>
+        ),
+      },
+      // 404 within this lang
+      {
+        path: s.notFound,
+        element: <Page404 />,
+      },
+    ],
+  };
+}
+
+export function Router() {
+  return useRoutes([
+    ...SUPPORTED_LANGS.map(buildLangRoutes),
+    { path: "*", element: <NotFoundRedirect /> },
   ]);
 }

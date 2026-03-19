@@ -5,44 +5,41 @@ import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
 import SavingsIcon from "@mui/icons-material/Savings";
 import MoneyOffIcon from "@mui/icons-material/MoneyOff";
 
-import { SvgColor } from "src/components/svg-color";
+import { Paths } from "src/hooks/usePaths";
+
 // ----------------------------------------------------------------------
 
-import i18n from 'src/i18n';
-
-const icon = (name: string) => (
-  <SvgColor width="100%" height="100%" src={`/assets/icons/navbar/${name}.svg`} />
-);
-
-export const navData = [
-  {
-    title: "nav.budget",
-    path: "/",
-    icon: <DashboardIcon />,
-  },
-  {
-    title: "nav.envelopes",
-    path: "/envelopes",
-    icon: <EmailIcon />,
-  },
-  {
-    title: "nav.incomes",
-    path: "/renda",
-    icon: <AttachMoneyIcon />,
-  },
-  {
-    title: "nav.goals",
-    path: "/metas",
-    icon: <SavingsIcon />,
-  },
-  {
-    title: "nav.debts",
-    path: "/dividas",
-    icon: <MoneyOffIcon />,
-  },
-  {
-    title: "nav.settings",
-    path: "/configuracoes",
-    icon: <SettingsApplicationsIcon />,
-  },
-];
+export function getNavData(paths: Paths) {
+  return [
+    {
+      title: "nav.budget",
+      path: paths.home,
+      icon: <DashboardIcon />,
+    },
+    {
+      title: "nav.envelopes",
+      path: paths.envelopes,
+      icon: <EmailIcon />,
+    },
+    {
+      title: "nav.incomes",
+      path: paths.incomes,
+      icon: <AttachMoneyIcon />,
+    },
+    {
+      title: "nav.goals",
+      path: paths.goals,
+      icon: <SavingsIcon />,
+    },
+    {
+      title: "nav.debts",
+      path: paths.debts,
+      icon: <MoneyOffIcon />,
+    },
+    {
+      title: "nav.settings",
+      path: paths.settings,
+      icon: <SettingsApplicationsIcon />,
+    },
+  ];
+}

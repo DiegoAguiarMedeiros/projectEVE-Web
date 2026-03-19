@@ -23,7 +23,7 @@ type EnvelopeViewProps = {
 }
 export function EnvelopeView({ envelopes, currentIndex, handleSlideClick, envelopeActived, transactions, table, activeBorderColor, typeFilter, onTypeFilterChange }: EnvelopeViewProps) {
   return (
-<DashboardContent  sx={{width: '99%', my: 1, mx: 'auto', p: 1 }}>
+<DashboardContent sx={{ width: '99%', my: 1, mx: 'auto', p: 1 }}>
         <SwiperEnvelop
           currentIndex={currentIndex}
           handleSlideClick={handleSlideClick}

@@ -4,4 +4,6 @@ export type GetAllParams = {
   orderBy?: string;
   order?: "asc" | "desc";
   type?: string;
+  year?: number;
+  month?: number;
 };

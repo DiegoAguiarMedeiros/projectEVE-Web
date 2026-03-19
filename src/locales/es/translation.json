@@ -74,7 +74,9 @@
     "incomes": "Ingresos",
     "goals": "Metas",
     "debts": "Deudas",
-    "settings": "Configuración"
+    "settings": "Configuración",
+    "collapse": "Contraer menú",
+    "expand": "Expandir menú"
   },
   "account": {
     "notification": "Notificación",
@@ -648,5 +650,10 @@
         "confirm": "Sí, eliminar mi cuenta"
       }
     }
+  },
+  "not_found_page": {
+    "title": "Página no encontrada",
+    "description": "Lo sentimos, no encontramos la página que buscas. Quizás escribiste mal la dirección.",
+    "go_home": "Ir al inicio"
   }
 }

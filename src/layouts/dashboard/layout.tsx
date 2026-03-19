@@ -17,7 +17,8 @@ import { useTranslation } from "react-i18next";
 import { Main } from "src/layouts/dashboard/main";
 import { layoutClasses } from "src/layouts/classes";
 import { NavMobile, NavDesktop } from "src/layouts/dashboard/nav";
-import { navData } from "src/layouts/config-nav-dashboard";
+import { getNavData } from "src/layouts/config-nav-dashboard";
+import { usePaths } from "src/hooks/usePaths";
 import { MenuButton } from "src/layouts/components/menu-button";
 import { LayoutSection } from "src/layouts/core/layout-section";
 import { HeaderSection } from "src/layouts/core/header-section";
@@ -28,8 +29,7 @@ import { IncomeStore } from "src/store/useIncomeStore";
 import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 import { useTotalIncomes } from "src/hooks/queries/incomes/useTotalIncomes";
 import { Month, ProcessedIncomesMonthResponse } from "src/types/ProcessedIncomes";
-import { CircularProgress, useMediaQuery } from "@mui/material";
-import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
+import { useMediaQuery } from "@mui/material";
 import { useHasDebts } from "src/hooks/queries/debts/useHasDebts";
 import { useHasGoals } from "src/hooks/queries/goals/useHasGoals";
 
@@ -60,9 +60,11 @@ const getLastProcessed = (processed: ProcessedIncomesMonthResponse): { lastProce
 export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) {
   const theme = useTheme();
   const { t } = useTranslation();
+  const paths = usePaths();
   const { setIncome } = IncomeStore();
   const { month, year, setHasMonthProcessed, setNextMonthToProcess, setNextYearToProcess } = SelectedMonthYearStore();
   const [navOpen, setNavOpen] = useState(false);
+  const [navCollapsed, setNavCollapsed] = useState(false);
   const {
     data: processedIncomesMonths,
     isLoading: isLoadingMonths,
@@ -74,12 +76,12 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
   const { hasGoals } = useHasGoals(year, month);
 
   const filteredNavData = useMemo(
-    () => navData.filter((item) => {
-      if (item.path === "/dividas") return hasDebts;
-      if (item.path === "/metas") return hasGoals;
+    () => getNavData(paths).filter((item) => {
+      if (item.path === paths.debts) return hasDebts;
+      if (item.path === paths.goals) return hasGoals;
       return true;
     }),
-    [hasDebts, hasGoals]
+    [hasDebts, hasGoals, paths]
   );
 
   const {
@@ -98,7 +100,13 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
     if (processedIncomesMonths !== undefined) {
 
       const hasInfo = Object.keys(processedIncomesMonths).length > 0;
-      setHasMonthProcessed(hasInfo)
+
+      // Check if the currently selected month/year is actually in the processed list.
+      // A later month being processed does NOT mean the selected month is also processed.
+      const isSelectedMonthProcessed =
+        hasInfo && (processedIncomesMonths[year]?.includes(month as Month) ?? false);
+
+      setHasMonthProcessed(isSelectedMonthProcessed);
 
       if (hasInfo) {
         const { lastProcessedYear, lastProcessedMonth } = getLastProcessed(processedIncomesMonths);
@@ -116,16 +124,8 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
         setNextYearToProcess(currentDate.getFullYear());
       }
     }
-  }, [setHasMonthProcessed, setNextMonthToProcess, setNextYearToProcess, processedIncomesMonths])
+  }, [setHasMonthProcessed, setNextMonthToProcess, setNextYearToProcess, processedIncomesMonths, month, year])
 
-
-  if (isLoadingMonths || isLoadingTotal) {
-    return (
-      <Box sx={{ width: '100%', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <SkeletonLoading count={1} height={100} width={100} variant="circular" />
-      </Box>
-    );
-  }
 
   if (errorMonths || errorTotal || !processedIncomesMonths || !totalIncomes) {
     return (
@@ -174,7 +174,7 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
                   data={[
                     {
                       label: t('account.profile'),
-                      href: "/perfil",
+                      href: paths.profile,
                       icon: <Iconify width={22} icon="solar:shield-keyhole-bold-duotone" />,
                       isLink: true
                     }
@@ -192,6 +192,8 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
         <NavDesktop
           data={filteredNavData}
           layoutQuery={layoutQuery}
+          collapsed={navCollapsed}
+          onToggleCollapse={() => setNavCollapsed(prev => !prev)}
           sx={{
             boxShadow: theme.customShadows.z8,
           }}
@@ -205,7 +207,7 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
        * Style
        *************************************** */
       cssVars={{
-        "--layout-nav-vertical-width": "300px",
+        "--layout-nav-vertical-width": navCollapsed ? "72px" : "300px",
         "--layout-dashboard-content-pt": theme.spacing(1),
         "--layout-dashboard-content-pb": theme.spacing(8),
         "--layout-dashboard-content-px": theme.spacing(5),

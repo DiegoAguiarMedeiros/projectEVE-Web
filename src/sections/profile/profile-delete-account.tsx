@@ -21,15 +21,17 @@ import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useDeleteAccount } from "src/hooks/mutations/user/useDeleteAccount";
+import { usePaths } from "src/hooks/usePaths";
 
 export function ProfileDeleteAccount() {
     const { t } = useTranslation();
     const { enqueueSnackbar } = useSnackbar();
     const navigate = useNavigate();
+    const paths = usePaths();
     const [open, setOpen] = useState(false);
 
     const { mutate: deleteAccount, isPending } = useDeleteAccount(() => {
-        navigate("/entrar");
+        navigate(paths.signIn);
     });
 
     const handleConfirm = () => {

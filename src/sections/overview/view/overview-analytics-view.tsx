@@ -36,7 +36,7 @@ export function OverviewAnalyticsView({ envelopes }: OverviewAnalyticsViewProps)
   const { data: analyticsCurrentEnvelopes, isLoading: analyticsCurrentEnvelopesIsLoading, error: analyticsCurrentEnvelopesError } = useListAnalyticsCurrentEnvelopes(year, month);
   const { data: analyticsEnvelopesMonthOverview, isLoading: analyticsEnvelopesMonthOverviewIsLoading, error: analyticsEnvelopesMonthOverviewError } = useListAnalyticsEnvelopesMonthOverview(year, month);
   const { data: analyticsEnvelopesByYear, isLoading: analyticsEnvelopesByYearIsLoading, error: analyticsEnvelopesByYearError } = useListAnalyticsEnvelopesByYear(year);
-  const { data: upcomingPendingTransactions, isLoading: upcomingPendingTransactionsIsLoading, error: upcomingPendingTransactionsError } = useGetUpcomingPendingPayments(table);
+  const { data: upcomingPendingTransactions, isLoading: upcomingPendingTransactionsIsLoading, error: upcomingPendingTransactionsError } = useGetUpcomingPendingPayments(table, year, month);
 
   const goalsEnvelopeId = envelopes.find(e => e.name === 'goals')?.id;
   const filteredTransactions = upcomingPendingTransactions && goalsEnvelopeId

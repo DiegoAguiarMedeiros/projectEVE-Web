@@ -22,6 +22,7 @@ import { ITable } from "src/sections/shared/useTable";
 import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
 import { Envelopes } from "src/types/Envelopes";
 import { useTranslation } from "react-i18next";
+import { usePaths } from "src/hooks/usePaths";
 import { useNavigate } from "react-router-dom";
 import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 import { Iconify } from "src/components/iconify";
@@ -47,6 +48,7 @@ export function TransactionList({
 }: TransactionListProps) {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const paths = usePaths();
     const { month, year } = SelectedMonthYearStore();
 
     const deleteTransactionMutation = useDeleteTransactions();
@@ -195,7 +197,6 @@ export function TransactionList({
                 sx={{
                     flex: 1,
                     minHeight: 0,
-                    maxHeight: "calc(100vh - 350px)",
                     overflow: isEmpty ? "hidden" : "scroll",
                     WebkitOverflowScrolling: "touch",
                     borderRadius: 2,
@@ -278,7 +279,7 @@ export function TransactionList({
                         icon={<Iconify icon="solar:transfer-vertical-bold-duotone" />}
                         tooltipTitle={t('common.reallocate')}
                         tooltipOpen
-                        onClick={() => navigate("/transferencia")}
+                        onClick={() => navigate(paths.reallocation)}
                         sx={{
                             '& .MuiSpeedDialAction-staticTooltipLabel': {
                                 bgcolor: 'background.neutral',

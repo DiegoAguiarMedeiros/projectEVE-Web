@@ -18,6 +18,7 @@ import { useDeleteTransactions } from "src/hooks/mutations/transactions/useDelet
 import { useDeleteAllTransactions } from "src/hooks/mutations/transactions/useDeleteAllTransactions";
 import { useUpdateStatusTransactions } from "src/hooks/mutations/transactions/useUpdateStatusTransactions";
 import { useTranslation } from "react-i18next";
+import { usePaths } from "src/hooks/usePaths";
 import { fCurrency } from "src/utils/format-number";
 
 type TransactionTableProps = {
@@ -32,6 +33,7 @@ type TransactionTableProps = {
 export function TransactionTable({ envelopeId, transactions, table, activeBorderColor, allEnvelopes, typeFilter, onTypeFilterChange }: TransactionTableProps) {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const paths = usePaths();
 
     const {
         month,
@@ -117,6 +119,8 @@ export function TransactionTable({ envelopeId, transactions, table, activeBorder
             margin: "0 auto",
             display: "flex",
             flexDirection: "column",
+            flex: 1,
+            minHeight: 0,
             boxShadow: `0 0 0 4px ${activeBorderColor}, 0 12px 24px rgba(0,0,0,0.2)`,
         }}>
             <TableToolbar
@@ -127,7 +131,7 @@ export function TransactionTable({ envelopeId, transactions, table, activeBorder
                             variant="outlined"
                             color="primary"
                             startIcon={<Iconify icon="solar:transfer-vertical-bold-duotone" />}
-                            onClick={() => navigate(`/transferencia`)}
+                            onClick={() => navigate(paths.reallocation)}
                         >
                             {t('common.reallocate')}
                         </Button>
@@ -139,41 +143,40 @@ export function TransactionTable({ envelopeId, transactions, table, activeBorder
                 onDeleteSelected={DeleteAllTransactions}
             />
 
-            <TableContainer sx={{ overflow: "unset", flex: '1 0 0' }}>
-                <Table sx={{ minWidth: 800 }}>
-                    {transactions && transactions.data.length > 0 ? <CustomTableHead
-                        order={table.order}
-                        orderBy={table.orderBy}
-                        rowCount={transactions.data.length}
-                        numSelected={table.selected.length}
-                        onSort={table.onSort}
-                        onSelectAllRows={(checked) =>
-                            table.onSelectAllRows(
-                                checked,
-                                transactions.data.map(transaction => transaction.id!)
-                            )
-                        }
-                        headLabel={[
-                            { id: "description", label: t('transaction.headers.description') },
-                            { id: "type", label: t('transaction.headers.type') },
-                            { id: "amount", label: t('transaction.headers.amount') },
-                            { id: "paymentMethod", label: t('transaction.headers.payment_method') },
-                            { id: "date", label: t('transaction.headers.date') },
-                            { id: "status", label: t('transaction.headers.status') },
-                            { id: "" },
-                        ]}
-                        activeBorderColor={activeBorderColor}
-                    /> : <></>}
-
-                    <TableBody>
-                        {transactions && transactions.data.length < 1
-                            ?
-                            <TableNoData message={t('transaction.empty')} />
-                            :
-                            transactions && transactions.data.map(transaction => (TransactionRow(transaction, DeleteTransaction)))
-                        }
-                    </TableBody>
-                </Table>
+            <TableContainer sx={{ overflow: "auto", flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }}>
+                {transactions && transactions.data.length < 1
+                    ? <Box sx={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <TableNoData message={t('transaction.empty')} inTable={false} />
+                    </Box>
+                    : <Table sx={{ minWidth: 800 }}>
+                        <CustomTableHead
+                            order={table.order}
+                            orderBy={table.orderBy}
+                            rowCount={transactions?.data.length ?? 0}
+                            numSelected={table.selected.length}
+                            onSort={table.onSort}
+                            onSelectAllRows={(checked) =>
+                                table.onSelectAllRows(
+                                    checked,
+                                    transactions?.data.map(transaction => transaction.id!) ?? []
+                                )
+                            }
+                            headLabel={[
+                                { id: "description", label: t('transaction.headers.description') },
+                                { id: "type", label: t('transaction.headers.type') },
+                                { id: "amount", label: t('transaction.headers.amount') },
+                                { id: "paymentMethod", label: t('transaction.headers.payment_method') },
+                                { id: "date", label: t('transaction.headers.date') },
+                                { id: "status", label: t('transaction.headers.status') },
+                                { id: "" },
+                            ]}
+                            activeBorderColor={activeBorderColor}
+                        />
+                        <TableBody>
+                            {transactions?.data.map(transaction => (TransactionRow(transaction, DeleteTransaction)))}
+                        </TableBody>
+                    </Table>
+                }
             </TableContainer>
             {transactions && transactions.data.length > 0 ? <TablePagination
                 component="div"

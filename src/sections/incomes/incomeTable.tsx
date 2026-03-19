@@ -85,14 +85,14 @@ export function IncomeTable({ processedIncomes, totalProcessedIncomes, table, en
     }
 
     return (
-        <Card sx={{ width: "100%" }}>
+        <Card sx={{ width: "100%", display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
             <TableToolbar
                 numSelected={table.selected.length}
                 form={<IncomeForm envelopes={envelopes} buttonLabel={t('common.add')} />}
                 onDeleteSelected={DeleteSelectedIncomes}
             />
 
-            <TableContainer sx={{ overflow: "unset" }}>
+            <TableContainer sx={{ overflow: "auto", flex: 1, minHeight: 0 }}>
                 <Table sx={{ minWidth: 800 }}>
                     {processedIncomes && processedIncomes.data.length > 0 ? <CustomTableHead
                         order={table.order}

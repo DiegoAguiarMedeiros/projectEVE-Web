@@ -74,7 +74,9 @@
     "incomes": "Incomes",
     "goals": "Goals",
     "debts": "Debts",
-    "settings": "Settings"
+    "settings": "Settings",
+    "collapse": "Collapse menu",
+    "expand": "Expand menu"
   },
   "account": {
     "notification": "Notification",
@@ -646,5 +648,10 @@
         "confirm": "Yes, delete my account"
       }
     }
+  },
+  "not_found_page": {
+    "title": "Page not found",
+    "description": "Sorry, we could not find the page you are looking for. Perhaps you mistyped the URL?",
+    "go_home": "Go to home"
   }
 }

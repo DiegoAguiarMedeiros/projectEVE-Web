@@ -1,5 +1,3 @@
-import type { TableRowProps } from "@mui/material/TableRow";
-
 import Box from "@mui/material/Box";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
@@ -8,20 +6,26 @@ import Typography from "@mui/material/Typography";
 // ----------------------------------------------------------------------
 
 type TableNoDataProps = {
-    message:string
+    message: string;
+    inTable?: boolean;
 }
 
-export function TableNoData({message}:TableNoDataProps) {
-  return (
-    <TableRow>
-      <TableCell align="center" colSpan={7}>
-        <Box sx={{ py: 15, textAlign: "center" }}>
-          <Typography variant="h6" sx={{ mb: 1 }}>
-            {message}
-          </Typography>
-
-        </Box>
-      </TableCell>
-    </TableRow>
+export function TableNoData({ message, inTable = true }: TableNoDataProps) {
+  const content = (
+    <Box sx={{ py: 4, textAlign: "center" }}>
+      <Typography variant="h6">{message}</Typography>
+    </Box>
   );
+
+  if (inTable) {
+    return (
+      <TableRow>
+        <TableCell align="center" colSpan={7}>
+          {content}
+        </TableCell>
+      </TableRow>
+    );
+  }
+
+  return content;
 }

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Grid2, Paper, Stack, Typography } from "@mui/material";
+import { alpha } from "@mui/material/styles";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { GoalsForm } from "src/sections/settings/goals/form";
 import { GoalPageItem } from "src/sections/goals/goalPageItem";
@@ -11,6 +12,9 @@ import { Envelopes } from "src/types/Envelopes";
 import { Pagination } from "src/types/Pagination";
 import { ITable } from "src/sections/shared/useTable";
 import { useTranslation } from "react-i18next";
+import { useCurrency } from "src/hooks/useCurrency";
+import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
+import { useGoalsCumulativeAmount } from "src/hooks/queries/goals/useGoalsCumulativeAmount";
 
 type GoalPageListProps = {
     goals: Pagination<Goals> | undefined;
@@ -20,6 +24,9 @@ type GoalPageListProps = {
 
 export function GoalPageList({ goals, table, goalsEnvelope }: GoalPageListProps) {
     const { t } = useTranslation();
+    const { symbol } = useCurrency();
+    const { month, year } = SelectedMonthYearStore();
+    const { data: cumulativeTotal = 0 } = useGoalsCumulativeAmount(year, month);
     const [addFormOpen, setAddFormOpen] = useState(false);
     const [allItems, setAllItems] = useState<Goals[]>([]);
     const [hasMore, setHasMore] = useState(true);
@@ -84,8 +91,33 @@ export function GoalPageList({ goals, table, goalsEnvelope }: GoalPageListProps)
 
     const isEmpty = allItems.length === 0 && goals && goals.data.length === 0;
 
+    const totalAmountTotal = allItems.reduce((sum, g) => sum + Number(g.amountTotal), 0);
+    const totalSaved = allItems.reduce((sum, g) => sum + cumulativeTotal * (Number(g.percentage) / 100), 0);
+    const remaining = totalAmountTotal - totalSaved;
+
     return (
         <Box sx={{ width: "100%", display: "flex", flexDirection: "column", flex: 1, minHeight: 0 }}>
+            <Grid2 container spacing={1.5} sx={{ mb: 1.5 }}>
+                <Grid2 size={{ xs: 12 }}>
+                    <Paper sx={{ p: 1.5, textAlign: "center", bgcolor: "background.neutral", borderRadius: 2 }}>
+                        <Typography variant="caption" color="text.secondary">{t("goals_page.summary.envelope_balance")}</Typography>
+                        <Typography variant="subtitle1" fontWeight={700}>{symbol} {cumulativeTotal.toFixed(2)}</Typography>
+                    </Paper>
+                </Grid2>
+                <Grid2 size={{ xs: 6 }}>
+                    <Paper sx={{ p: 1.5, textAlign: "center", bgcolor: (theme) => alpha(theme.palette.info.main, 0.12), borderRadius: 2 }}>
+                        <Typography variant="caption" color="text.secondary">{t("goals_page.summary.total_goals")}</Typography>
+                        <Typography variant="subtitle1" fontWeight={700} color="info.main">{symbol} {totalAmountTotal.toFixed(2)}</Typography>
+                    </Paper>
+                </Grid2>
+                <Grid2 size={{ xs: 6 }}>
+                    <Paper sx={{ p: 1.5, textAlign: "center", bgcolor: (theme) => alpha(theme.palette.warning.main, 0.12), borderRadius: 2 }}>
+                        <Typography variant="caption" color="text.secondary">{t("goals_page.summary.remaining")}</Typography>
+                        <Typography variant="subtitle1" fontWeight={700} color="warning.main">{symbol} {remaining.toFixed(2)}</Typography>
+                    </Paper>
+                </Grid2>
+            </Grid2>
+
             <Box
                 id="goalPageScrollableDiv"
                 sx={{

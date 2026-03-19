@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useRouter } from "src/routes/hooks";
 import { useCompleteRegistration } from "src/hooks/mutations/user/useCompleteRegistration";
+import { usePaths } from "src/hooks/usePaths";
 
 import Box from "@mui/material/Box";
 import Step from "@mui/material/Step";
@@ -44,13 +45,14 @@ export function CompleteRegistrationView() {
   const router = useRouter();
   const table = useTable();
   const { t } = useTranslation();
+  const paths = usePaths();
   const [activeStep, setActiveStep] = React.useState(0);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const steps = STEP_KEYS.map((key) => t(key));
 
   const { mutate: completeRegistration, isPending } = useCompleteRegistration(() => {
-    router.push("/");
+    router.push(paths.home);
   });
 
   const { setIncome } = IncomeStore();

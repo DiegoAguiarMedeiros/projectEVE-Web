@@ -43,13 +43,14 @@ export function LayoutSection({
     <>
       {inputGlobalStyles}
 
-      <Box id="root__layout" className={layoutClasses.root} sx={sx}>
+      <Box id="root__layout" className={layoutClasses.root} sx={{ height: '100vh', overflow: 'hidden', ...sx }}>
         {sidebarSection}
         <Box
           display="flex"
           flex="1 1 auto"
           flexDirection="column"
           className={layoutClasses.hasSidebar}
+          sx={{ minHeight: 0 }}
         >
           {headerSection}
           {children}

@@ -124,7 +124,6 @@ export function IncomeList({
                 sx={{
                     flex: 1,
                     minHeight: 0,
-                    maxHeight: "calc(100vh - 350px)",
                     overflow: isEmpty ? "hidden" : "scroll",
                     WebkitOverflowScrolling: "touch",
                     borderRadius: 2,

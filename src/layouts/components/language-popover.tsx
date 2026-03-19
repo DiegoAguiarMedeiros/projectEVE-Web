@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   Popover,
   List,
@@ -9,6 +10,13 @@ import {
   Box,
   IconButton,
 } from "@mui/material";
+import {
+  SUPPORTED_LANGS,
+  SupportedLang,
+  getLang,
+  getPath,
+  getRouteKeyFromSegment,
+} from "src/routes/paths";
 
 export type LanguagePopoverProps = {
   showComponent?: boolean;
@@ -21,6 +29,8 @@ export type LanguagePopoverProps = {
 
 export function LanguagePopover({ showComponent = true, data = [] }: LanguagePopoverProps) {
   const { i18n } = useTranslation();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const currentLang = data.find((lang) => lang.value === i18n.language) || data[0];
 
@@ -42,7 +52,28 @@ export function LanguagePopover({ showComponent = true, data = [] }: LanguagePop
   };
 
   const handleChangeLang = (nextLang: string) => {
-    i18n.changeLanguage(nextLang);
+    if (!SUPPORTED_LANGS.includes(nextLang as SupportedLang)) {
+      i18n.changeLanguage(nextLang);
+      handleClose();
+      return;
+    }
+
+    const newLang = nextLang as SupportedLang;
+    const currentLangCode = getLang(i18n.language);
+
+    // Parse current path: /:lang/:segment
+    const parts = location.pathname.replace(/^\//, "").split("/");
+    const segment = parts[1] ?? "";
+    const routeKey = getRouteKeyFromSegment(currentLangCode, segment);
+
+    const newPath = routeKey ? getPath(newLang, routeKey) : `/${newLang}`;
+
+    // Preserve any query string / hash
+    const search = location.search ?? "";
+    const hash = location.hash ?? "";
+
+    i18n.changeLanguage(newLang);
+    navigate(`${newPath}${search}${hash}`, { replace: true });
     handleClose();
   };
 

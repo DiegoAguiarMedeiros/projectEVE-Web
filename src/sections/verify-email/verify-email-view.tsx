@@ -4,12 +4,14 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
 import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { usePaths } from "src/hooks/usePaths";
 import type { AxiosError } from "axios";
 import { Logo } from "src/components/logo";
 import { useVerifyEmail } from "src/hooks/queries/auth/useVerifyEmail";
 
 export function VerifyEmailView() {
   const { t } = useTranslation();
+  const paths = usePaths();
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
   const isPending = searchParams.get("pending") === "true";
@@ -50,7 +52,7 @@ export function VerifyEmailView() {
           <Typography variant="body1" color="text.secondary" textAlign="center">
             {t("auth.verify_email.success_message")}
           </Typography>
-          <Button variant="contained" size="large" href="/entrar">
+          <Button variant="contained" size="large" href={paths.signIn}>
             {t("auth.verify_email.go_to_login")}
           </Button>
         </>
@@ -65,7 +67,7 @@ export function VerifyEmailView() {
           <Typography variant="body1" color="text.secondary" textAlign="center">
             {t(errorKey)}
           </Typography>
-          <Button variant="outlined" size="large" href="/entrar">
+          <Button variant="outlined" size="large" href={paths.signIn}>
             {t("auth.verify_email.go_to_login")}
           </Button>
         </>
@@ -80,7 +82,7 @@ export function VerifyEmailView() {
           <Typography variant="body1" color="text.secondary" textAlign="center">
             {t("auth.verify_email.pending_message")}
           </Typography>
-          <Button variant="outlined" size="large" href="/entrar">
+          <Button variant="outlined" size="large" href={paths.signIn}>
             {t("auth.verify_email.go_to_login")}
           </Button>
         </>
@@ -95,7 +97,7 @@ export function VerifyEmailView() {
           <Typography variant="body1" color="text.secondary" textAlign="center">
             {t("auth.errors.invalid_or_expired_token")}
           </Typography>
-          <Button variant="outlined" size="large" href="/entrar">
+          <Button variant="outlined" size="large" href={paths.signIn}>
             {t("auth.verify_email.go_to_login")}
           </Button>
         </>

@@ -12,6 +12,7 @@ import { Pagination } from "src/types/Pagination";
 import { ITable } from "src/sections/shared/useTable";
 import { updateTransactions } from "src/api/services/transactions/TransactionsService";
 import { useAllCreditCards } from "src/hooks/queries/credit-cards/useAllCreditCards";
+import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 
 type UpcomingPendingTransactionsDisplayProps = {
     title?: string;
@@ -32,6 +33,7 @@ export function UpcomingPendingTransactionsDisplay({
     const { enqueueSnackbar } = useSnackbar();
     const queryClient = useQueryClient();
     const isMobile = useMediaQuery((theme) => theme.breakpoints.down("md"));
+    const { month, year } = SelectedMonthYearStore();
     const { data: creditCardsData } = useAllCreditCards();
     const creditCards = creditCardsData?.data ?? [];
 
@@ -46,6 +48,8 @@ export function UpcomingPendingTransactionsDisplay({
             queryClient.invalidateQueries({ queryKey: ["transactions"] });
             queryClient.invalidateQueries({ queryKey: ["envelopes"] });
             queryClient.invalidateQueries({ queryKey: ["upcoming-pending"] });
+            queryClient.invalidateQueries({ queryKey: ["graph-analytics-current-envelopes", year, month] });
+            queryClient.invalidateQueries({ queryKey: ["graph-analytics-envelopes-month-overview", year, month] });
         },
     });
 

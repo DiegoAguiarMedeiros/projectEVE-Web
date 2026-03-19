@@ -47,23 +47,20 @@ export default function SwiperEnvelop({
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("md"));
   const swiperRef = useRef<SwiperType | null>(null);
 
-  // Move carousel to the correct slide when currentIndex changes (e.g. loaded from storage)
+  // On mobile, move carousel to the correct slide when currentIndex changes (e.g. loaded from storage)
   useEffect(() => {
-    if (swiperRef.current && swiperRef.current.activeIndex !== currentIndex) {
+    if (isMobile && swiperRef.current && swiperRef.current.activeIndex !== currentIndex) {
       swiperRef.current.slideTo(currentIndex, 0);
     }
-  }, [currentIndex]);
+  }, [currentIndex, isMobile]);
 
   return (
     <Box sx={{
       width: '100%',
-      ...(isMobile && {
-        display: 'flex',
-        flexDirection: 'column',
-        flex: 1,
-        minHeight: 0,
-        overflow: 'hidden',
-      }),
+      display: 'flex',
+      flexDirection: 'column',
+      flex: 1,
+      minHeight: 0,
     }}>
       <Box sx={{ overflowX: "hidden", width: '100%', flexShrink: 0, pb: isMobile ? 0 : '20px' }}>
         <Swiper

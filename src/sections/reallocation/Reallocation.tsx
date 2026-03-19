@@ -9,6 +9,7 @@ import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 import { RealEnvelopesCard } from "src/components/realEnvelopeCard";
 import { Envelopes } from "src/types/Envelopes";
 import { useCurrency } from "src/hooks/useCurrency";
+import { usePaths } from "src/hooks/usePaths";
 
 type ReallocationProps = {
     envelopes: Envelopes[];
@@ -17,6 +18,7 @@ type ReallocationProps = {
 
 export function Reallocation({ envelopes, envelopeSelected }: ReallocationProps) {
     const { t } = useTranslation();
+    const paths = usePaths();
     const { symbol } = useCurrency();
     const navigate = useNavigate();
 
@@ -84,7 +86,7 @@ export function Reallocation({ envelopes, envelopeSelected }: ReallocationProps)
             },
             {
                 onSuccess: () => {
-                    navigate("/envelopes");
+                    navigate(paths.envelopes);
                 },
             }
         );
@@ -273,7 +275,7 @@ export function Reallocation({ envelopes, envelopeSelected }: ReallocationProps)
                                 size="large"
                                 color="inherit"
                                 variant="outlined"
-                                onClick={() => navigate("/envelopes")}
+                                onClick={() => navigate(paths.envelopes)}
                             >
                                 {t("common.back")}
                             </Button>

@@ -19,6 +19,8 @@ export function Main({ children, sx, ...other }: BoxProps) {
         display: "flex",
         flex: "1 1 auto",
         flexDirection: "column",
+        minHeight: 0,
+        overflow: "hidden",
         ...sx,
       }}
       {...other}
@@ -52,6 +54,8 @@ export function DashboardContent({
         display: "flex",
         flex: "1 1 auto",
         flexDirection: "column",
+        minHeight: 0,
+        overflowY: "auto",
         ...sx,
       }}
       {...other}

@@ -22,10 +22,10 @@ export function NoEnvelopeView({ title, description }: NoEnvelopeViewProps) {
   const { t } = useTranslation();
 
   const { income } = IncomeStore();
-  const { nextMonthToProcess, nextYearToProcess } = SelectedMonthYearStore();
+  const { month, year } = SelectedMonthYearStore();
   const processAllMutation = useProcessAllIncomes();
 
-  const monthKey = new Date(nextYearToProcess, nextMonthToProcess - 1).toLocaleString('en', { month: 'long' }).toLowerCase();
+  const monthKey = new Date(year, month - 1).toLocaleString('en', { month: 'long' }).toLowerCase();
   const monthName = t(`months.${monthKey}`);
   const [incomeModalOpen, setIncomeModalOpen] = useState(false);
 
@@ -37,8 +37,8 @@ export function NoEnvelopeView({ title, description }: NoEnvelopeViewProps) {
     }
 
     await processAllMutation.mutateAsync({
-      month: nextMonthToProcess,
-      year: nextYearToProcess,
+      month,
+      year,
     });
   }
 
@@ -53,7 +53,7 @@ export function NoEnvelopeView({ title, description }: NoEnvelopeViewProps) {
       </Typography>
 
       <Button variant="contained" color="primary" onClick={handleClickProcess}>
-        {t('home.process_button', { month: monthName, year: nextYearToProcess })}
+        {t('home.process_button', { month: monthName, year })}
       </Button>
 
       <IncomeForm
@@ -61,8 +61,8 @@ export function NoEnvelopeView({ title, description }: NoEnvelopeViewProps) {
         envelopes={[]}
         externalOpen={incomeModalOpen}
         onExternalClose={() => setIncomeModalOpen(false)}
-        fixedMonth={nextMonthToProcess}
-        fixedYear={nextYearToProcess}
+        fixedMonth={month}
+        fixedYear={year}
       />
     </Container>
   );

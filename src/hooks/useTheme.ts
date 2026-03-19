@@ -10,9 +10,10 @@ const useTheme = () => {
     return saved ?? "light";
   });
 
-  // Salva no storage sempre que mudar
+  // Salva no storage e sincroniza o atributo data-theme no <html>
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, mode);
+    document.documentElement.setAttribute('data-theme', mode);
   }, [mode]);
 
   // Alterna entre light e dark

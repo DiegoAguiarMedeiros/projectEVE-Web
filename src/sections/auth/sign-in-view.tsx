@@ -14,11 +14,13 @@ import { Iconify } from "src/components/iconify";
 import { useLogin } from "src/hooks/mutations/auth/useLogin";
 import { Button } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import { usePaths } from "src/hooks/usePaths";
 // ----------------------------------------------------------------------
 
 export function SignInView() {
   const router = useRouter();
   const { t, i18n } = useTranslation();
+  const paths = usePaths();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -26,7 +28,7 @@ export function SignInView() {
   const [password, setPassword] = useState("");
 
   const { mutate: login, isPending, error } = useLogin(() => {
-    router.push("/");
+    router.push(paths.home);
   });
 
   const handleSubmit = useCallback(() => {
@@ -47,7 +49,7 @@ export function SignInView() {
 
   useEffect(() => {
     if (isEmailNotVerified) {
-      router.push('/verificar-email?pending=true');
+      router.push(`${paths.verifyEmail}?pending=true`);
     }
   }, [isEmailNotVerified, router]);
 
@@ -114,7 +116,7 @@ export function SignInView() {
         <Typography variant="h5">{t('auth.sign_in_title')}</Typography>
         <Typography variant="body2" color="text.secondary">
           {t('auth.no_account')}
-          <Link variant="subtitle2" href="/cadastro" sx={{ ml: 0.5 }}>
+          <Link variant="subtitle2" href={paths.registration} sx={{ ml: 0.5 }}>
             {t('auth.get_started')}
           </Link>
         </Typography>

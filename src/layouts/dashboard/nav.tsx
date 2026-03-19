@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
-import { Paper, MenuList } from "@mui/material";
+import { IconButton, Paper, MenuList, Tooltip } from "@mui/material";
 import ListItemButton from "@mui/material/ListItemButton";
 import Drawer, { drawerClasses } from "@mui/material/Drawer";
 
@@ -16,10 +16,11 @@ import { varAlpha } from "src/theme/styles";
 
 import { Logo } from "src/components/logo";
 import { Scrollbar } from "src/components/scrollbar";
+import { Iconify } from "src/components/iconify";
 
-import { AccountPopoverMenu } from "src/layouts/components/account-popover-menu";
 import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 import { Month } from "src/types/ProcessedIncomes";
+import { usePaths } from "src/hooks/usePaths";
 import LockIcon from '@mui/icons-material/Lock';
 
 // ----------------------------------------------------------------------
@@ -36,6 +37,8 @@ export type NavContentProps = {
     topArea?: React.ReactNode;
     bottomArea?: React.ReactNode;
   };
+  collapsed?: boolean;
+  onToggleCollapse?: () => void;
   sx?: SxProps<Theme>;
 };
 
@@ -44,6 +47,8 @@ export function NavDesktop({
   data,
   slots,
   layoutQuery,
+  collapsed,
+  onToggleCollapse,
 }: NavContentProps & { layoutQuery: Breakpoint }) {
   const theme = useTheme();
 
@@ -51,7 +56,7 @@ export function NavDesktop({
     <Box
       sx={{
         pt: 2.5,
-        px: 2.5,
+        px: collapsed ? 1 : 2.5,
         top: 0,
         left: 0,
         height: 1,
@@ -60,15 +65,17 @@ export function NavDesktop({
         flexDirection: "column",
         bgcolor: theme.palette.background.paper,
         zIndex: "var(--layout-nav-zIndex)",
-        width: "var(--layout-nav-vertical-width)",
+        width: collapsed ? "72px" : "var(--layout-nav-vertical-width)",
         borderRight: `1px solid var(--layout-nav-border-color, ${varAlpha(theme.palette.grey["500Channel"], 0.12)})`,
+        transition: "width 0.2s ease, padding 0.2s ease",
+        overflow: "hidden",
         [theme.breakpoints.up(layoutQuery)]: {
           display: "flex",
         },
         ...sx,
       }}
     >
-      <NavContent data={data} slots={slots} />
+      <NavContent data={data} slots={slots} collapsed={collapsed} onToggleCollapse={onToggleCollapse} />
     </Box>
   );
 }
@@ -113,7 +120,7 @@ export function NavMobile({
 
 // ----------------------------------------------------------------------
 
-export function NavContent({ data, slots, sx }: NavContentProps) {
+export function NavContent({ data, slots, sx, collapsed, onToggleCollapse }: NavContentProps) {
   const { month, year, hasMonthProcessed, nextMonthToProcess, nextYearToProcess } = SelectedMonthYearStore();
   const currentMonth = (new Date().getMonth() + 1) as Month;
 
@@ -131,38 +138,43 @@ export function NavContent({ data, slots, sx }: NavContentProps) {
   const pathname = usePathname();
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const { t } = useTranslation();
+  const paths = usePaths();
   return (
     <>
-      <Logo />
+      <Box sx={{ display: "flex", alignItems: "center", justifyContent: collapsed ? "center" : "flex-start", mb: 1 }}>
+        <Logo isSingle={collapsed} href={paths.home} />
+      </Box>
 
       {slots?.topArea}
 
       <Scrollbar fillContent>
         <Paper
-          sx={{ width: 320, maxWidth: "100%", backgroundColor: (theme) => theme.palette.background.paper }}
+          sx={{ width: collapsed ? "100%" : 320, maxWidth: "100%", backgroundColor: (theme) => theme.palette.background.paper }}
         >
           <MenuList>
             {data.map((item, index) => {
               const isActived = item.path === pathname;
+              const isBlocked = item.title === 'nav.envelopes' && isBlockEnvelopeItemMenu();
 
-              return (
+              const button = (
                 <ListItemButton
                   key={`ListItemButton${index}`}
                   disableGutters
-                  disabled={(item.title === 'nav.envelopes' && isBlockEnvelopeItemMenu())}
+                  disabled={isBlocked}
                   component={RouterLink}
                   href={item.path}
                   onMouseEnter={() => setHoveredItem(item.path)}
                   sx={{
-                    pl: 2,
+                    pl: collapsed ? 0 : 2,
                     py: 1,
-                    gap: 2,
-                    pr: 1.5,
+                    gap: collapsed ? 0 : 2,
+                    pr: collapsed ? 0 : 1.5,
                     borderRadius: 0.75,
                     typography: "body2",
                     fontWeight: "fontWeightMedium",
                     color: "var(--layout-nav-item-color)",
                     minHeight: "var(--layout-nav-item-height)",
+                    justifyContent: collapsed ? "center" : "flex-start",
                     ...(isActived && {
                       fontWeight: "fontWeightSemiBold",
                       bgcolor: "var(--layout-nav-item-active-bg)",
@@ -171,7 +183,7 @@ export function NavContent({ data, slots, sx }: NavContentProps) {
                         bgcolor: "var(--layout-nav-item-hover-bg)",
                       },
                     }),
-                    ...((item.title === 'nav.envelopes' && isBlockEnvelopeItemMenu()) && {
+                    ...(isBlocked && {
                       fontWeight: "fontWeightSemiBold",
                       bgcolor: "var(--layout-nav-item-block-bg)",
                       color: "var(--layout-nav-item-block-color)",
@@ -181,26 +193,40 @@ export function NavContent({ data, slots, sx }: NavContentProps) {
                     }),
                   }}
                 >
-                  <Box component="span" sx={{ width: 24, height: 24 }}>
+                  <Box component="span" sx={{ width: 24, height: 24, flexShrink: 0 }}>
                     {item.icon}
                   </Box>
-                  <Box component="span" flexGrow={1}>
-                    {t(item.title)}
-                  </Box>
-
-                  {(item.title === 'nav.envelopes' && isBlockEnvelopeItemMenu()) && <LockIcon sx={{ color: theme => theme.palette.error.main }} />}
-
-                  {item.info && item.info}
+                  {!collapsed && (
+                    <>
+                      <Box component="span" flexGrow={1}>
+                        {t(item.title)}
+                      </Box>
+                      {isBlocked && <LockIcon sx={{ color: theme => theme.palette.error.main }} />}
+                      {item.info && item.info}
+                    </>
+                  )}
                 </ListItemButton>
               );
+
+              return collapsed ? (
+                <Tooltip key={`tooltip${index}`} title={t(item.title)} placement="right">
+                  {button}
+                </Tooltip>
+              ) : button;
             })}
           </MenuList>
         </Paper>
       </Scrollbar>
 
-      {slots?.bottomArea}
+      <Box sx={{ display: "flex", justifyContent: "center", py: 1 }}>
+        <Tooltip title={collapsed ? t('nav.expand') : t('nav.collapse')} placement="right">
+          <IconButton size="small" onClick={onToggleCollapse}>
+            <Iconify icon={collapsed ? "eva:chevron-right-fill" : "eva:chevron-left-fill"} />
+          </IconButton>
+        </Tooltip>
+      </Box>
 
-      <AccountPopoverMenu data={[]} />
+      {slots?.bottomArea}
     </>
   );
 }
