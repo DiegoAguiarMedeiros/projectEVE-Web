@@ -3,7 +3,7 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
 import SavingsIcon from "@mui/icons-material/Savings";
-import MoneyOffIcon from "@mui/icons-material/MoneyOff";
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 
 import { Paths } from "src/hooks/usePaths";
 
@@ -34,7 +34,7 @@ export function getNavData(paths: Paths) {
     {
       title: "nav.debts",
       path: paths.debts,
-      icon: <MoneyOffIcon />,
+      icon: <RemoveCircleIcon />,
     },
     {
       title: "nav.settings",

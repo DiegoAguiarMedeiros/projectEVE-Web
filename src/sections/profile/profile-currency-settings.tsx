@@ -8,7 +8,7 @@ export function ProfileCurrencySettings() {
     const { code, setCurrency, currencies } = useCurrency();
 
     return (
-        <Card>
+        <Card sx={{ border: `1px solid var(--layout-nav-border-color)` }}>
             <CardHeader title={t('profile.currency.title')} />
             <Divider />
             <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>

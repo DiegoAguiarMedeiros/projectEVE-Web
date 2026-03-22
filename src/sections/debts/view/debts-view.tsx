@@ -13,7 +13,7 @@ type DebtsViewProps = {
 
 export function DebtsView({ debts, envelopes, table }: DebtsViewProps) {
     return (
-        <DashboardContent sx={{ width: "99%", my: 1, mx: "auto", p: 1 }}>
+        <DashboardContent>
             <DebtsPageDisplay debts={debts} envelopes={envelopes} table={table} />
         </DashboardContent>
     );

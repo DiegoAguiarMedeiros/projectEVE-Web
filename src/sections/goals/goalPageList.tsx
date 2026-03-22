@@ -97,21 +97,21 @@ export function GoalPageList({ goals, table, goalsEnvelope }: GoalPageListProps)
 
     return (
         <Box sx={{ width: "100%", display: "flex", flexDirection: "column", flex: 1, minHeight: 0 }}>
-            <Grid2 container spacing={1.5} sx={{ mb: 1.5 }}>
+            <Grid2 container spacing={1.5} sx={{ pt: 1.5, px: 1, mb: 1.5 }}>
                 <Grid2 size={{ xs: 12 }}>
-                    <Paper sx={{ p: 1.5, textAlign: "center", bgcolor: "background.neutral", borderRadius: 2 }}>
+                    <Paper sx={{ p: 1.5, textAlign: "center", bgcolor: "background.neutral", borderRadius: 2, border: `1px solid var(--layout-nav-border-color)` }}>
                         <Typography variant="caption" color="text.secondary">{t("goals_page.summary.envelope_balance")}</Typography>
                         <Typography variant="subtitle1" fontWeight={700}>{symbol} {cumulativeTotal.toFixed(2)}</Typography>
                     </Paper>
                 </Grid2>
                 <Grid2 size={{ xs: 6 }}>
-                    <Paper sx={{ p: 1.5, textAlign: "center", bgcolor: (theme) => alpha(theme.palette.info.main, 0.12), borderRadius: 2 }}>
+                    <Paper sx={{ p: 1.5, textAlign: "center", bgcolor: (theme) => alpha(theme.palette.info.main, 0.12), borderRadius: 2, border: `1px solid var(--layout-nav-border-color)` }}>
                         <Typography variant="caption" color="text.secondary">{t("goals_page.summary.total_goals")}</Typography>
                         <Typography variant="subtitle1" fontWeight={700} color="info.main">{symbol} {totalAmountTotal.toFixed(2)}</Typography>
                     </Paper>
                 </Grid2>
                 <Grid2 size={{ xs: 6 }}>
-                    <Paper sx={{ p: 1.5, textAlign: "center", bgcolor: (theme) => alpha(theme.palette.warning.main, 0.12), borderRadius: 2 }}>
+                    <Paper sx={{ p: 1.5, textAlign: "center", bgcolor: (theme) => alpha(theme.palette.warning.main, 0.12), borderRadius: 2, border: `1px solid var(--layout-nav-border-color)` }}>
                         <Typography variant="caption" color="text.secondary">{t("goals_page.summary.remaining")}</Typography>
                         <Typography variant="subtitle1" fontWeight={700} color="warning.main">{symbol} {remaining.toFixed(2)}</Typography>
                     </Paper>
@@ -127,7 +127,7 @@ export function GoalPageList({ goals, table, goalsEnvelope }: GoalPageListProps)
                     overflow: isEmpty ? "hidden" : "scroll",
                     WebkitOverflowScrolling: "touch",
                     borderRadius: 2,
-                    border: (theme) => `1px solid ${theme.palette.divider}`,
+                    border: `1px solid var(--layout-nav-border-color)`,
                     scrollbarWidth: "none",
                     "&::-webkit-scrollbar": { display: "none" },
                 }}

@@ -36,8 +36,10 @@ export const RealEnvelopesCard: React.FC<RealEnvelopesCardProps> = ({ envelope, 
                 justifyContent: 'center',
                 alignItems: 'center',
                 borderRadius: '8px',
-                transform: activeCard ? 'scale(1.02)' : 'none',
-                transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                transform: activeCard ? 'scale(1.06)' : 'scale(0.96)',
+                opacity: activeCard ? 1 : 0.7,
+                boxShadow: 'none',
+                transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease, opacity 0.3s ease',
                 px: fullWidth ? 1 : 0,
             }}
         >

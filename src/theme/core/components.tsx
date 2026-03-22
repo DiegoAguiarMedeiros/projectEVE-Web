@@ -47,7 +47,7 @@ const MuiCard: Components<Theme>["MuiCard"] = {
     root: ({ theme }) => ({
       zIndex: 0,
       position: "relative",
-      boxShadow: theme.customShadows.card,
+      boxShadow: "none",
       borderRadius: theme.shape.borderRadius * 2,
       transition,
     }),
@@ -61,7 +61,8 @@ const MuiCardHeader: Components<Theme>["MuiCardHeader"] = {
   },
   styleOverrides: {
     root: ({ theme }) => ({
-      padding: theme.spacing(3, 3, 0),
+      padding: theme.spacing(3, 3, 3),
+      textAlign: "center",
       transition,
     }),
   },

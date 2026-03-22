@@ -62,7 +62,7 @@ export default function SwiperEnvelop({
       flex: 1,
       minHeight: 0,
     }}>
-      <Box sx={{ overflowX: "hidden", width: '100%', flexShrink: 0, pb: isMobile ? 0 : '20px' }}>
+      <Box sx={{ overflowX: "hidden", width: '100%', flexShrink: 0, pt: 1, px: 1, mb: 2 }}>
         <Swiper
           style={{
             width: '100%',
@@ -70,16 +70,17 @@ export default function SwiperEnvelop({
             padding: '15px 10px',
             marginLeft: 'auto'
           }}
-          spaceBetween={4}
-          slidesPerView={1.2}
+          spaceBetween={8}
+          slidesPerView={1.3}
           centeredSlides
+          centeredSlidesBounds
           breakpoints={{
-            440: { slidesPerView: 1.4, centeredSlides: true, spaceBetween: 4 },
-            520: { slidesPerView: 1.6, centeredSlides: true, spaceBetween: 6 },
-            600: { slidesPerView: 2.2, centeredSlides: false, spaceBetween: 10 },
-            900: { slidesPerView: 3.2, centeredSlides: false, spaceBetween: 10 },
-            1200: { slidesPerView: 4.2, centeredSlides: false, spaceBetween: 10 },
-            1600: { slidesPerView: 5.2, centeredSlides: false, spaceBetween: 10 },
+            440: { slidesPerView: 1.5, centeredSlides: true, centeredSlidesBounds: true, spaceBetween: 8 },
+            520: { slidesPerView: 1.8, centeredSlides: true, centeredSlidesBounds: true, spaceBetween: 8 },
+            600: { slidesPerView: 2.5, centeredSlides: true, centeredSlidesBounds: true, spaceBetween: 8 },
+            900: { slidesPerView: 3.5, centeredSlides: true, centeredSlidesBounds: true, spaceBetween: 8 },
+            1200: { slidesPerView: 4.5, centeredSlides: true, centeredSlidesBounds: true, spaceBetween: 8 },
+            1600: { slidesPerView: 5.5, centeredSlides: true, centeredSlidesBounds: true, spaceBetween: 8 },
           }}
           modules={[FreeMode, Navigation, Thumbs]}
           initialSlide={currentIndex}

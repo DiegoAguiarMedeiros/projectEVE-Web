@@ -58,7 +58,7 @@ export function AnalyticsEnvelopesByYearGraph({ title, subheader, chart, ...othe
   if (!chart) return <SkeletonLoading count={1} height={200} />
 
   return (
-    <Card {...other}>
+    <Card sx={{ border: `1px solid var(--layout-nav-border-color)` }} {...other}>
       <CardHeader title={title} subheader={subheader} />
 
       <Chart

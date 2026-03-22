@@ -13,7 +13,7 @@ export function ProfileNumberFormatSettings() {
     const { style, setStyle } = useNumberFormat();
 
     return (
-        <Card>
+        <Card sx={{ border: `1px solid var(--layout-nav-border-color)` }}>
             <CardHeader title={t("profile.number_format.title")} />
             <Divider />
             <CardContent sx={{ p: 0, "&:last-child": { pb: 0 } }}>

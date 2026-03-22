@@ -72,14 +72,14 @@ export function GoalsTable({ goals, envelope }: GoalsTableProps) {
     }
 
     return (
-        <Card sx={{ width: "100%", borderTopRightRadius: 0, borderTopLeftRadius: 0 }}>
+        <Card sx={{ width: "100%", borderRadius: 0, flex: 1, minHeight: 0, display: "flex", flexDirection: "column", border: `1px solid var(--layout-nav-border-color)` }}>
             <TableToolbar
                 numSelected={table.selected.length}
                 form={<GoalsForm envelope={envelope} buttonLabel={t('common.add')} />}
                 onDeleteSelected={DeleteSelectedGoals}
             />
 
-            <TableContainer sx={{ overflow: "unset" }}>
+            <TableContainer sx={{ overflow: "auto", flex: 1, minHeight: 0 }}>
                 <Table sx={{ minWidth: 800 }}>
                     {goals && goals.data.length > 0 ? <CustomTableHead
                         order={table.order}
@@ -126,6 +126,7 @@ export function GoalsTable({ goals, envelope }: GoalsTableProps) {
                 onPageChange={table.onChangePage}
                 rowsPerPageOptions={[5, 10, 25]}
                 onRowsPerPageChange={table.onChangeRowsPerPage}
+                sx={{ borderTop: (theme) => `1px solid ${theme.palette.divider}` }}
             /> : <></>}
         </Card>
     )

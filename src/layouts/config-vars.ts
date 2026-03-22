@@ -7,7 +7,7 @@ import { varAlpha } from "src/theme/styles";
 export const baseVars = (theme: Theme) => ({
   // nav
   "--layout-nav-bg": theme.palette.background.paper,
-  "--layout-nav-border-color": varAlpha(theme.palette.grey["500Channel"], 0.08),
+  "--layout-nav-border-color": varAlpha(theme.palette.grey["500Channel"], theme.palette.mode === 'dark' ? 0.12 : 0.24),
   "--layout-nav-zIndex": 1101,
   "--layout-nav-mobile-width": "320px",
   // nav item

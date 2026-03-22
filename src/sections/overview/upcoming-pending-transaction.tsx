@@ -105,7 +105,7 @@ export function UpcomingPendingTransactionsTable({ title, subheader, envelopes, 
 
   if (!transactions || transactions.data.length === 0) {
     return (
-      <Card sx={{ mt: 3 }} {...other}>
+      <Card sx={{ mt: 1, border: `1px solid var(--layout-nav-border-color)` }} {...other}>
         <CardHeader title={title} subheader={subheader} />
         <Box sx={{ p: 3, textAlign: "center" }}>
           <Typography variant="body2" color="text.secondary">
@@ -117,14 +117,14 @@ export function UpcomingPendingTransactionsTable({ title, subheader, envelopes, 
   }
 
   return (
-    <Card sx={{ mt: 3 }} {...other}>
+    <Card sx={{ mt: 1, border: `1px solid var(--layout-nav-border-color)` }} {...other}>
       <CardHeader title={title} subheader={subheader} sx={{ mb: 1 }} />
 
       <Scrollbar sx={{ minHeight: 200 }}>
-        <TableContainer sx={{ minWidth: 720, px: 2, pb: 2 }}>
+        <TableContainer sx={{ minWidth: 720 }}>
           <Table size="small">
             <TableHead>
-              <TableRow>
+              <TableRow sx={{ "& th": { backgroundColor: "var(--layout-nav-item-active-bg)" } }}>
                 <TableCell>{t("transaction.headers.description")}</TableCell>
                 <TableCell>{t("transaction.headers.amount")}</TableCell>
                 <TableCell>{t("overview.upcoming_payments.envelope")}</TableCell>
@@ -184,6 +184,7 @@ export function UpcomingPendingTransactionsTable({ title, subheader, envelopes, 
         onPageChange={table.onChangePage}
         rowsPerPageOptions={[5, 10, 25]}
         onRowsPerPageChange={table.onChangeRowsPerPage}
+        sx={{ borderTop: (theme) => `1px solid ${theme.palette.divider}` }}
       />
 
       <Popover

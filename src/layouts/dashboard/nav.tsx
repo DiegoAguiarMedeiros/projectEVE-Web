@@ -1,15 +1,15 @@
 import type { Theme, SxProps, Breakpoint } from "@mui/material/styles";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
-import { IconButton, Paper, MenuList, Tooltip } from "@mui/material";
+import { Button, Divider, IconButton, Paper, MenuList, Tooltip } from "@mui/material";
 import ListItemButton from "@mui/material/ListItemButton";
 import Drawer, { drawerClasses } from "@mui/material/Drawer";
 
-import { usePathname } from "src/routes/hooks";
+import { usePathname, useRouter } from "src/routes/hooks";
 import { RouterLink } from "src/routes/components";
 
 import { varAlpha } from "src/theme/styles";
@@ -22,6 +22,7 @@ import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 import { Month } from "src/types/ProcessedIncomes";
 import { usePaths } from "src/hooks/usePaths";
 import LockIcon from '@mui/icons-material/Lock';
+import { useLogout } from "src/hooks/mutations/auth/useLogout";
 
 // ----------------------------------------------------------------------
 
@@ -123,6 +124,10 @@ export function NavMobile({
 export function NavContent({ data, slots, sx, collapsed, onToggleCollapse }: NavContentProps) {
   const { month, year, hasMonthProcessed, nextMonthToProcess, nextYearToProcess } = SelectedMonthYearStore();
   const currentMonth = (new Date().getMonth() + 1) as Month;
+  const router = useRouter();
+  const paths = usePaths();
+  const { mutate: logout, isPending } = useLogout(() => { router.push(paths.signIn); });
+  const handleLogout = useCallback(() => { logout(); }, [logout]);
 
   const isBlockEnvelopeItemMenu = (): boolean => {
     if (!hasMonthProcessed) {
@@ -138,7 +143,6 @@ export function NavContent({ data, slots, sx, collapsed, onToggleCollapse }: Nav
   const pathname = usePathname();
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const { t } = useTranslation();
-  const paths = usePaths();
   return (
     <>
       <Box sx={{ display: "flex", alignItems: "center", justifyContent: collapsed ? "center" : "flex-start", mb: 1 }}>
@@ -149,7 +153,8 @@ export function NavContent({ data, slots, sx, collapsed, onToggleCollapse }: Nav
 
       <Scrollbar fillContent>
         <Paper
-          sx={{ width: collapsed ? "100%" : 320, maxWidth: "100%", backgroundColor: (theme) => theme.palette.background.paper }}
+          elevation={0}
+          sx={{ width: collapsed ? "100%" : 320, maxWidth: "100%", backgroundColor: (theme) => theme.palette.background.paper, boxShadow: "none" }}
         >
           <MenuList>
             {data.map((item, index) => {
@@ -218,12 +223,48 @@ export function NavContent({ data, slots, sx, collapsed, onToggleCollapse }: Nav
         </Paper>
       </Scrollbar>
 
-      <Box sx={{ display: "flex", justifyContent: "center", py: 1 }}>
-        <Tooltip title={collapsed ? t('nav.expand') : t('nav.collapse')} placement="right">
-          <IconButton size="small" onClick={onToggleCollapse}>
-            <Iconify icon={collapsed ? "eva:chevron-right-fill" : "eva:chevron-left-fill"} />
-          </IconButton>
-        </Tooltip>
+      <Box sx={{ width: "100%", pb: 0 }}>
+        <Divider sx={{ borderStyle: "dashed", mb: 1 }} />
+        {onToggleCollapse ? (
+          <Tooltip title={collapsed ? t('nav.expand') : ''} placement="right">
+            <ListItemButton
+              disableGutters
+              onClick={onToggleCollapse}
+              sx={{
+                pl: collapsed ? 0 : 2,
+                py: 1,
+                gap: collapsed ? 0 : 2,
+                pr: collapsed ? 0 : 1.5,
+                borderRadius: 0.75,
+                typography: "body2",
+                fontWeight: "fontWeightMedium",
+                color: "var(--layout-nav-item-color)",
+                minHeight: "var(--layout-nav-item-height)",
+                justifyContent: collapsed ? "center" : "flex-start",
+              }}
+            >
+              <Box component="span" sx={{ width: 24, height: 24, flexShrink: 0 }}>
+                <Iconify icon={collapsed ? "eva:chevron-right-fill" : "eva:chevron-left-fill"} />
+              </Box>
+              {!collapsed && (
+                <Box component="span" flexGrow={1}>
+                  {t('nav.collapse')}
+                </Box>
+              )}
+            </ListItemButton>
+          </Tooltip>
+        ) : (
+          <Button
+            fullWidth
+            color="error"
+            size="medium"
+            variant="text"
+            onClick={handleLogout}
+            disabled={isPending}
+          >
+            {isPending ? t('account.logging_out') : t('account.logout')}
+          </Button>
+        )}
       </Box>
 
       {slots?.bottomArea}

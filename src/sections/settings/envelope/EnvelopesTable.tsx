@@ -46,6 +46,9 @@ export function EnvelopesTable({ envelopes }: EnvelopesProps) {
     return (
         <Box sx={{
             width: "100%",
+            flex: 1,
+            minHeight: 0,
+            overflow: "auto",
             ...(isMobile
                 ? {
                     borderRadius: 2,
@@ -54,8 +57,9 @@ export function EnvelopesTable({ envelopes }: EnvelopesProps) {
                 : {
                     borderTopRightRadius: 0,
                     borderTopLeftRadius: 0,
+                    borderBottomRightRadius: theme.shape.borderRadius * 2,
+                    borderBottomLeftRadius: theme.shape.borderRadius * 2,
                     backgroundColor: theme.palette.background.paper,
-                    boxShadow: '0 0 2px 0 rgba(145 158 171 / 0.2), 0 12px 24px -4px rgba(145 158 171 / 0.12)',
                 }),
         }}>
             <Box sx={{ display: "flex", alignItems: "center", p: isMobile ? 2 : 4, justifyContent: "flex-end", gap: 2 }}>

@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import {
+    Box,
     Card,
     Grid2,
     IconButton,
@@ -131,36 +132,36 @@ export function DebtPageTable({ debts, envelopes, table }: DebtPageTableProps) {
     const totalRemaining = totalDebt - totalPaid;
 
     return (
-        <>
-            <Grid2 container spacing={2} sx={{ mb: 2 }}>
+        <Box sx={{ display: "flex", flexDirection: "column", flex: 1, minHeight: 0 }}>
+            <Grid2 container spacing={2} sx={{ pt: 2, px: 1, mb: 2 }}>
                 <Grid2 size={{ xs: 12, sm: 4 }}>
-                    <Paper sx={{ p: 2, textAlign: "center", bgcolor: "background.neutral", borderRadius: 2 }}>
+                    <Paper sx={{ p: 2, textAlign: "center", bgcolor: "background.neutral", borderRadius: 2, border: `1px solid var(--layout-nav-border-color)` }}>
                         <Typography variant="body2" color="text.secondary">{t("debts_page.summary.total")}</Typography>
                         <Typography variant="h6">{symbol} {totalDebt.toFixed(2)}</Typography>
                     </Paper>
                 </Grid2>
                 <Grid2 size={{ xs: 6, sm: 4 }}>
-                    <Paper sx={{ p: 2, textAlign: "center", bgcolor: (theme) => alpha(theme.palette.success.main, 0.12), borderRadius: 2 }}>
+                    <Paper sx={{ p: 2, textAlign: "center", bgcolor: (theme) => alpha(theme.palette.success.main, 0.12), borderRadius: 2, border: `1px solid var(--layout-nav-border-color)` }}>
                         <Typography variant="body2" color="text.secondary">{t("debts_page.summary.paid")}</Typography>
                         <Typography variant="h6" color="success.main">{symbol} {totalPaid.toFixed(2)}</Typography>
                     </Paper>
                 </Grid2>
                 <Grid2 size={{ xs: 6, sm: 4 }}>
-                    <Paper sx={{ p: 2, textAlign: "center", bgcolor: (theme) => alpha(theme.palette.error.main, 0.12), borderRadius: 2 }}>
+                    <Paper sx={{ p: 2, textAlign: "center", bgcolor: (theme) => alpha(theme.palette.error.main, 0.12), borderRadius: 2, border: `1px solid var(--layout-nav-border-color)` }}>
                         <Typography variant="body2" color="text.secondary">{t("debts_page.summary.remaining")}</Typography>
                         <Typography variant="h6" color="error.main">{symbol} {totalRemaining.toFixed(2)}</Typography>
                     </Paper>
                 </Grid2>
             </Grid2>
 
-            <Card sx={{ width: "100%" }}>
+            <Card sx={{ width: "100%", flex: 1, minHeight: 0, display: "flex", flexDirection: "column", boxShadow: "none", border: `1px solid var(--layout-nav-border-color)`, borderRadius: 0 }}>
                 <TableToolbar
                     numSelected={table.selected.length}
                     form={<DebtForm envelopes={envelopes} buttonLabel={t("common.add")} />}
                     onDeleteSelected={handleDeleteSelected}
                 />
 
-                <TableContainer sx={{ overflow: "unset" }}>
+                <TableContainer sx={{ overflow: "auto", flex: 1, minHeight: 0 }}>
                     <Table sx={{ minWidth: 800 }}>
                         {debts && debts.data.length > 0 ? (
                             <CustomTableHead
@@ -211,6 +212,7 @@ export function DebtPageTable({ debts, envelopes, table }: DebtPageTableProps) {
                         onPageChange={table.onChangePage}
                         rowsPerPageOptions={[5, 10, 25]}
                         onRowsPerPageChange={table.onChangeRowsPerPage}
+                        sx={{ borderTop: (theme) => `1px solid ${theme.palette.divider}` }}
                     />
                 ) : null}
             </Card>
@@ -229,6 +231,6 @@ export function DebtPageTable({ debts, envelopes, table }: DebtPageTableProps) {
                     onClose={() => setEvolutionDebt(null)}
                 />
             )}
-        </>
+        </Box>
     );
 }

@@ -6,6 +6,8 @@ import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
 import { useTheme } from "@mui/material/styles";
 
+import { varAlpha } from "src/theme/styles";
+
 import { _langs, _notifications } from "src/_mock";
 
 import { Iconify } from "src/components/iconify";
@@ -63,15 +65,15 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
   const paths = usePaths();
   const { setIncome } = IncomeStore();
   const { month, year, setHasMonthProcessed, setNextMonthToProcess, setNextYearToProcess } = SelectedMonthYearStore();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const isSmallDesktop = useMediaQuery(theme.breakpoints.down("xl"));
   const [navOpen, setNavOpen] = useState(false);
-  const [navCollapsed, setNavCollapsed] = useState(false);
+  const [navCollapsed, setNavCollapsed] = useState(isSmallDesktop);
   const {
     data: processedIncomesMonths,
     isLoading: isLoadingMonths,
     error: errorMonths,
   } = useProcessedIncomesMonth();
-
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const { hasDebts } = useHasDebts();
   const { hasGoals } = useHasGoals(year, month);
 
@@ -149,7 +151,10 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
 
             },
           }}
-          sx={header?.sx}
+          sx={{
+            borderBottom: `1px solid var(--layout-nav-border-color, ${varAlpha(theme.palette.grey["500Channel"], 0.12)})`,
+            ...header?.sx,
+          }}
           slots={{
             centerArea: <MonthYearPickerButton data={processedIncomesMonths} />,
             leftArea: (
@@ -195,7 +200,7 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
           collapsed={navCollapsed}
           onToggleCollapse={() => setNavCollapsed(prev => !prev)}
           sx={{
-            boxShadow: theme.customShadows.z8,
+            boxShadow: "none",
           }}
         />
       }

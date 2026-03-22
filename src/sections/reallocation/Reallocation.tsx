@@ -118,7 +118,7 @@ export function Reallocation({ envelopes, envelopeSelected }: ReallocationProps)
     };
 
     return (
-        <DashboardContent  sx={{width: '99%', my: 1, mx: 'auto', p: 1 }}>
+        <DashboardContent>
 
             <Box sx={{
                 flexGrow: 1,

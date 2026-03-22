@@ -39,13 +39,12 @@ function CustomTabPanel(props: TabPanelProps) {
   return (
     <Box
       role="tabpanel"
-      hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
-
+      sx={{ display: value === index ? 'flex' : 'none', flexDirection: 'column', flex: 1, minHeight: 0 }}
       {...other}
     >
-      {value === index && <Box sx={{ width: '100%' }}>{children}</Box>}
+      <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>{children}</Box>
     </Box>
   );
 }
@@ -86,8 +85,8 @@ export function SettingsView({ incomes, envelopes, goals, fixedExpenses, debts, 
   ];
 
   return (
-    <DashboardContent  sx={{width: '99%', my: 1, mx: 'auto', p: 1 }}>
-      <Box sx={{ width: "100%" }}>
+    <DashboardContent>
+      <Box sx={{ width: "100%", display: "flex", flexDirection: "column", flex: 1, minHeight: 0 }}>
         {isMobile ? (
           <ChipTabs
             tabs={tabs}
@@ -95,9 +94,9 @@ export function SettingsView({ incomes, envelopes, goals, fixedExpenses, debts, 
             onChange={setValue}
           />
         ) : (
-          <Box sx={{ borderBottom: 1, borderColor: "divider", borderTopRightRadius: '16px', borderTopLeftRadius: '16px', backgroundColor: theme.palette.background.paper, boxShadow: '0 0 2px 0 rgba(145 158 171 / 0.2), 0 12px 24px -4px rgba(145 158 171 / 0.12)' }}>
+          <Box sx={{ borderBottom: 1, borderColor: "divider", backgroundColor: theme.palette.background.paper }}>
             <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-              <Tab label={t('settings.tabs.income')} {...a11yProps(0)} sx={value === 0 ? { backgroundColor: "var(--layout-nav-item-active-bg)", borderTopLeftRadius: '16px' } : null} />
+              <Tab label={t('settings.tabs.income')} {...a11yProps(0)} sx={value === 0 ? { backgroundColor: "var(--layout-nav-item-active-bg)" } : null} />
               <Tab label={t('settings.tabs.envelopes')} {...a11yProps(1)} sx={value === 1 ? { backgroundColor: "var(--layout-nav-item-active-bg)" } : null} />
               <Tab label={t('settings.tabs.goals')} {...a11yProps(2)} sx={value === 2 ? { backgroundColor: "var(--layout-nav-item-active-bg)" } : null} />
               <Tab label={t('settings.tabs.fixed_expenses')} {...a11yProps(3)} sx={value === 3 ? { backgroundColor: "var(--layout-nav-item-active-bg)" } : null} />

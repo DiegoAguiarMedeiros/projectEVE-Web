@@ -21,7 +21,7 @@ export function IncomesView({
   table
 }: IncomesViewProps) {
   return (
-    <DashboardContent sx={{ width: '99%', my: 1, mx: 'auto', p: 1 }}>
+    <DashboardContent>
       <IncomesDisplay
         envelopes={envelopes}
         processedIncomes={processedIncomes}

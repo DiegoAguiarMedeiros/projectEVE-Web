@@ -98,7 +98,7 @@ export function UpcomingPendingTransactionList({
     const isEmpty = allItems.length === 0 && transactions && transactions.data.length === 0;
 
     return (
-        <Card sx={{ mt: 3 }}>
+        <Card sx={{ mt: 1, border: `1px solid var(--layout-nav-border-color)` }}>
             <CardHeader title={title} sx={{ mb: 1 }} />
             <Box sx={{ width: "100%", display: "flex", flexDirection: "column", flex: 1, minHeight: 0 }}>
                 <Box

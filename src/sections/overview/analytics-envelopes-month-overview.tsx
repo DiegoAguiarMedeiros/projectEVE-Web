@@ -45,6 +45,7 @@ export function AnalyticsEnvelopesMonthOverviewCards({
                 p: 3,
                 position: "relative",
                 backgroundColor: theme.palette.background.paper,
+                border: `1px solid var(--layout-nav-border-color)`,
                 ...sx,
               }}
               {...other}

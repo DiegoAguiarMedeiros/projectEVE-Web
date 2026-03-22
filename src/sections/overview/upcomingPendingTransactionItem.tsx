@@ -92,8 +92,8 @@ export function UpcomingPendingTransactionItem({
         <Card
             sx={{
                 borderRadius: 2,
-                boxShadow: 1,
-                border: (theme) => `1px solid ${theme.palette.divider}`,
+                boxShadow: "none",
+                border: `1px solid var(--layout-nav-border-color)`,
                 "&:active": (theme) => ({
                     bgcolor: alpha(theme.palette.primary.main, 0.04),
                 }),

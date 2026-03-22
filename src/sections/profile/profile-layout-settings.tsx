@@ -10,7 +10,7 @@ export function ProfileLayoutSettings() {
     const isDark = mode === "dark";
 
     return (
-        <Card>
+        <Card sx={{ border: `1px solid var(--layout-nav-border-color)` }}>
             <CardHeader title={t('profile.layout.title')} />
             <Divider />
             <CardContent>

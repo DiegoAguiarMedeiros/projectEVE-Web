@@ -43,7 +43,7 @@ export function UserView() {
   const notFound = !dataFiltered.length && !!filterName;
 
   return (
-    <DashboardContent  sx={{width: '99%', my: 1, mx: 'auto', p: 1 }}>
+    <DashboardContent>
       <Box display="flex" alignItems="center" mb={5}>
         <Typography variant="h4" flexGrow={1}>
           {t('user.title')}
@@ -125,6 +125,7 @@ export function UserView() {
           onPageChange={table.onChangePage}
           rowsPerPageOptions={[5, 10, 25]}
           onRowsPerPageChange={table.onChangeRowsPerPage}
+          sx={{ borderTop: (theme) => `1px solid ${theme.palette.divider}` }}
         />
       </Card>
     </DashboardContent>

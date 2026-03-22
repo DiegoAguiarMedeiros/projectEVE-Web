@@ -15,7 +15,6 @@ import { TransactionForm } from "src/sections/envelope/form";
 import { TransactionItem } from "src/sections/envelope/transactionItem";
 import { Transactions, TransactionsUpdateStatus } from "src/types/Transactions";
 import { useDeleteTransactions } from "src/hooks/mutations/transactions/useDeleteTransactions";
-import { useDeleteAllTransactions } from "src/hooks/mutations/transactions/useDeleteAllTransactions";
 import { useUpdateStatusTransactions } from "src/hooks/mutations/transactions/useUpdateStatusTransactions";
 import { Pagination } from "src/types/Pagination";
 import { ITable } from "src/sections/shared/useTable";
@@ -24,7 +23,6 @@ import { Envelopes } from "src/types/Envelopes";
 import { useTranslation } from "react-i18next";
 import { usePaths } from "src/hooks/usePaths";
 import { useNavigate } from "react-router-dom";
-import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 import { Iconify } from "src/components/iconify";
 
 type TransactionListProps = {
@@ -32,7 +30,6 @@ type TransactionListProps = {
     transactions: Pagination<Transactions> | undefined;
     table: ITable;
     allEnvelopes?: Envelopes[];
-    activeBorderColor?: string;
     typeFilter?: string;
     onTypeFilterChange?: (type: string) => void;
 };
@@ -42,17 +39,14 @@ export function TransactionList({
     transactions,
     table,
     allEnvelopes,
-    activeBorderColor,
     typeFilter = "both",
     onTypeFilterChange,
 }: TransactionListProps) {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const paths = usePaths();
-    const { month, year } = SelectedMonthYearStore();
 
     const deleteTransactionMutation = useDeleteTransactions();
-    const deleteAllTransactionsMutation = useDeleteAllTransactions();
     const updateStatusTransactionMutation = useUpdateStatusTransactions();
 
     const [addFormOpen, setAddFormOpen] = useState(false);
@@ -74,7 +68,7 @@ export function TransactionList({
         [updateStatusTransactionMutation]
     );
 
-    // Reset when envelope changes
+    // Reset when envelope or type filter changes
     useEffect(() => {
         setAllItems([]);
         setHasMore(true);
@@ -91,7 +85,7 @@ export function TransactionList({
             setIsResetting(false);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [envelopeId]);
+    }, [envelopeId, typeFilter]);
 
     // Process incoming transactions data
     useEffect(() => {
@@ -190,7 +184,6 @@ export function TransactionList({
                 </Box>
             )}
 
-            {/* Bordered container - always visible with envelope color */}
             <Box
                 ref={containerRef}
                 id="scrollableDiv"
@@ -200,12 +193,10 @@ export function TransactionList({
                     overflow: isEmpty ? "hidden" : "scroll",
                     WebkitOverflowScrolling: "touch",
                     borderRadius: 2,
-                    border: (theme) => activeBorderColor
-                        ? `2px solid ${activeBorderColor}`
-                        : `1px solid ${theme.palette.divider}`,
-                    scrollbarWidth: "none", // Firefox
+                    border: `1px solid var(--layout-nav-border-color)`,
+                    scrollbarWidth: "none",
                     "&::-webkit-scrollbar": {
-                        display: "none", // Chrome, Edge, Safari
+                        display: "none",
                     },
                 }}
             >
@@ -291,25 +282,6 @@ export function TransactionList({
                                 bgcolor: 'background.neutral',
                                 color: 'text.primary',
                                 '&:hover': { bgcolor: 'action.hover' },
-                            },
-                        }}
-                    />
-                    <SpeedDialAction
-                        icon={<Iconify icon="solar:trash-bin-trash-bold" />}
-                        tooltipTitle={t('common.delete_all')}
-                        tooltipOpen
-                        onClick={() => deleteAllTransactionsMutation.mutate({ envelopeId, year, month })}
-                        sx={{
-                            '& .MuiSpeedDialAction-staticTooltipLabel': {
-                                bgcolor: 'background.neutral',
-                                color: 'text.primary',
-                            },
-                        }}
-                        FabProps={{
-                            sx: {
-                                bgcolor: 'error.main',
-                                color: 'common.white',
-                                '&:hover': { bgcolor: 'error.dark' },
                             },
                         }}
                     />

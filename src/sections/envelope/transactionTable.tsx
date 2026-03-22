@@ -115,13 +115,14 @@ export function TransactionTable({ envelopeId, transactions, table, activeBorder
 
     return (
         <Card sx={{
-            width: "95%",
-            margin: "0 auto",
+            width: "100%",
             display: "flex",
             flexDirection: "column",
             flex: 1,
             minHeight: 0,
-            boxShadow: `0 0 0 4px ${activeBorderColor}, 0 12px 24px rgba(0,0,0,0.2)`,
+            boxShadow: "none",
+            borderRadius: 0,
+            border: `1px solid var(--layout-nav-border-color)`,
         }}>
             <TableToolbar
                 numSelected={table.selected.length}
@@ -186,6 +187,7 @@ export function TransactionTable({ envelopeId, transactions, table, activeBorder
                 onPageChange={table.onChangePage}
                 rowsPerPageOptions={[5, 10, 25]}
                 onRowsPerPageChange={table.onChangeRowsPerPage}
+                sx={{ borderTop: (theme) => `1px solid ${theme.palette.divider}` }}
             /> : <></>}
         </Card>
     )

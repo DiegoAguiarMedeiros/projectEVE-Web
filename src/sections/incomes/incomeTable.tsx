@@ -85,7 +85,7 @@ export function IncomeTable({ processedIncomes, totalProcessedIncomes, table, en
     }
 
     return (
-        <Card sx={{ width: "100%", display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
+        <Card sx={{ width: "100%", display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, boxShadow: "none", border: `1px solid var(--layout-nav-border-color)`, borderRadius: 0 }}>
             <TableToolbar
                 numSelected={table.selected.length}
                 form={<IncomeForm envelopes={envelopes} buttonLabel={t('common.add')} />}
@@ -125,25 +125,30 @@ export function IncomeTable({ processedIncomes, totalProcessedIncomes, table, en
                     </TableBody>
                 </Table>
             </TableContainer>
-            {processedIncomes && processedIncomes.data.length > 0 ? <TablePagination
-                component="div"
-                page={table.page}
-                count={processedIncomes.totalItems}
-                rowsPerPage={table.rowsPerPage}
-                onPageChange={table.onChangePage}
-                rowsPerPageOptions={[5, 10, 25]}
-                onRowsPerPageChange={table.onChangeRowsPerPage}
-            /> : <></>}
-            {totalProcessedIncomes !== undefined && (
-                <Box sx={{ px: 3, py: 1.5, display: "flex", justifyContent: "flex-end", borderTop: (theme) => `1px solid ${theme.palette.divider}` }}>
-                    <Typography variant="subtitle2" color="text.secondary">
-                        {t('income.table.total')}:&nbsp;
-                    </Typography>
-                    <Typography variant="subtitle2" fontWeight="bold">
-                        {fCurrency(totalProcessedIncomes)}
-                    </Typography>
+            {processedIncomes && processedIncomes.data.length > 0 ? (
+                <Box sx={{ display: 'flex', alignItems: 'center', borderTop: (theme) => `1px solid ${theme.palette.divider}` }}>
+                    {totalProcessedIncomes !== undefined && (
+                        <Box sx={{ px: 3, display: 'flex', flexShrink: 0 }}>
+                            <Typography variant="subtitle2" color="text.secondary">
+                                {t('income.table.total')}:&nbsp;
+                            </Typography>
+                            <Typography variant="subtitle2" fontWeight="bold">
+                                {fCurrency(totalProcessedIncomes)}
+                            </Typography>
+                        </Box>
+                    )}
+                    <TablePagination
+                        component="div"
+                        page={table.page}
+                        count={processedIncomes.totalItems}
+                        rowsPerPage={table.rowsPerPage}
+                        onPageChange={table.onChangePage}
+                        rowsPerPageOptions={[5, 10, 25]}
+                        onRowsPerPageChange={table.onChangeRowsPerPage}
+                        sx={{ flex: 1 }}
+                    />
                 </Box>
-            )}
+            ) : <></>}
         </Card>
     )
 }

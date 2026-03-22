@@ -3,11 +3,12 @@ import * as React from "react";
 import { useCallback, useState } from "react";
 import Box from "@mui/material/Box";
 import { TextField, Card, CardHeader, CardContent, Divider, Stack, InputAdornment, IconButton, Button } from "@mui/material";
+import type { CardProps } from "@mui/material/Card";
 import { useSnackbar } from "notistack";
 import { Iconify } from "src/components/iconify";
 import { useChangePassword } from "src/hooks/mutations/user/useChangePassword";
 
-export function ProfilePasswordForm() {
+export function ProfilePasswordForm({ sx }: Pick<CardProps, 'sx'>) {
     const { enqueueSnackbar } = useSnackbar();
 
     const [currentPassword, setCurrentPassword] = useState("");
@@ -73,10 +74,10 @@ export function ProfilePasswordForm() {
     }, [changePassword, currentPassword, newPassword, validateNewPassword, validateConfirmNewPassword, enqueueSnackbar]);
 
     return (
-        <Card>
+        <Card sx={{ border: `1px solid var(--layout-nav-border-color)`, display: 'flex', flexDirection: 'column', ...sx }}>
             <CardHeader title="Alterar Senha" />
             <Divider />
-            <CardContent>
+            <CardContent sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
                 <Stack spacing={3} sx={{ mt: 3 }}>
                     <TextField
                         fullWidth
@@ -144,17 +145,20 @@ export function ProfilePasswordForm() {
                         }}
                     />
 
-                    <Stack direction="row" justifyContent="flex-end">
-                        <Button
-                            size="large"
-                            type="submit"
-                            variant="contained"
-                            loading={isPending}
-                            onClick={handleSubmit}
-                        >
-                            Salvar Nova Senha
-                        </Button>
-                    </Stack>
+                </Stack>
+
+                <Box sx={{ flexGrow: 1 }} />
+
+                <Stack direction="row" justifyContent="flex-end" sx={{ mt: 3 }}>
+                    <Button
+                        size="large"
+                        type="submit"
+                        variant="contained"
+                        loading={isPending}
+                        onClick={handleSubmit}
+                    >
+                        Salvar Nova Senha
+                    </Button>
                 </Stack>
             </CardContent>
         </Card>

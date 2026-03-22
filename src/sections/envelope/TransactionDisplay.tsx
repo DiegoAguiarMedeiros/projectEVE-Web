@@ -35,7 +35,6 @@ export function TransactionDisplay({
         envelopeId={envelopeId}
         table={table}
         allEnvelopes={allEnvelopes}
-        activeBorderColor={activeBorderColor}
         typeFilter={typeFilter}
         onTypeFilterChange={onTypeFilterChange}
       />

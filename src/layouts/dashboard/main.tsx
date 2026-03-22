@@ -21,6 +21,7 @@ export function Main({ children, sx, ...other }: BoxProps) {
         flexDirection: "column",
         minHeight: 0,
         overflow: "hidden",
+        bgcolor: "background.paper",
         ...sx,
       }}
       {...other}

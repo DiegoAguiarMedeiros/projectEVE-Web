@@ -101,21 +101,21 @@ export function DebtPageList({ debts, table, envelopes }: DebtPageListProps) {
 
     return (
         <Box sx={{ width: "100%", display: "flex", flexDirection: "column", flex: 1, minHeight: 0 }}>
-            <Grid2 container spacing={1.5} sx={{ mb: 1.5 }}>
+            <Grid2 container spacing={1.5} sx={{ pt: 1.5, px: 1, mb: 1.5 }}>
                 <Grid2 size={{ xs: 12 }}>
-                    <Paper sx={{ p: 1.5, textAlign: "center", bgcolor: "background.neutral", borderRadius: 2 }}>
+                    <Paper sx={{ p: 1.5, textAlign: "center", bgcolor: "background.neutral", borderRadius: 2, border: `1px solid var(--layout-nav-border-color)` }}>
                         <Typography variant="caption" color="text.secondary">{t("debts_page.summary.total")}</Typography>
                         <Typography variant="subtitle1" fontWeight={700}>{symbol} {totalDebt.toFixed(2)}</Typography>
                     </Paper>
                 </Grid2>
                 <Grid2 size={{ xs: 6 }}>
-                    <Paper sx={{ p: 1.5, textAlign: "center", bgcolor: (theme) => alpha(theme.palette.success.main, 0.12), borderRadius: 2 }}>
+                    <Paper sx={{ p: 1.5, textAlign: "center", bgcolor: (theme) => alpha(theme.palette.success.main, 0.12), borderRadius: 2, border: `1px solid var(--layout-nav-border-color)` }}>
                         <Typography variant="caption" color="text.secondary">{t("debts_page.summary.paid")}</Typography>
                         <Typography variant="subtitle1" fontWeight={700} color="success.main">{symbol} {totalPaid.toFixed(2)}</Typography>
                     </Paper>
                 </Grid2>
                 <Grid2 size={{ xs: 6 }}>
-                    <Paper sx={{ p: 1.5, textAlign: "center", bgcolor: (theme) => alpha(theme.palette.error.main, 0.12), borderRadius: 2 }}>
+                    <Paper sx={{ p: 1.5, textAlign: "center", bgcolor: (theme) => alpha(theme.palette.error.main, 0.12), borderRadius: 2, border: `1px solid var(--layout-nav-border-color)` }}>
                         <Typography variant="caption" color="text.secondary">{t("debts_page.summary.remaining")}</Typography>
                         <Typography variant="subtitle1" fontWeight={700} color="error.main">{symbol} {totalRemaining.toFixed(2)}</Typography>
                     </Paper>
@@ -131,7 +131,7 @@ export function DebtPageList({ debts, table, envelopes }: DebtPageListProps) {
                     overflow: isEmpty ? "hidden" : "scroll",
                     WebkitOverflowScrolling: "touch",
                     borderRadius: 2,
-                    border: (theme) => `1px solid ${theme.palette.divider}`,
+                    border: `1px solid var(--layout-nav-border-color)`,
                     scrollbarWidth: "none",
                     "&::-webkit-scrollbar": { display: "none" },
                 }}

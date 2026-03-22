@@ -44,8 +44,8 @@ export function OverviewAnalyticsView({ envelopes }: OverviewAnalyticsViewProps)
     : upcomingPendingTransactions;
 
   return (
-    <DashboardContent sx={{ width: '99%', my: 1, mx: 'auto', p: 1 }}>
-      <Grid2 container spacing={3}>
+    <DashboardContent sx={{ p: 1 }}>
+      <Grid2 container spacing={1}>
         <Box
           display="flex"
           alignItems="center"
@@ -69,7 +69,7 @@ export function OverviewAnalyticsView({ envelopes }: OverviewAnalyticsViewProps)
             envelopes={envelopes}
             transactions={filteredTransactions}
             table={table}
-            />
+          />
         </Grid2>
         <Grid2 size={{ xs: 12, sm: 6, md: 4 }}
           order={{ xs: 1, sm: 2 }}>

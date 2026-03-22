@@ -13,7 +13,7 @@ type GoalsViewProps = {
 
 export function GoalsView({ goals, goalsEnvelope, table }: GoalsViewProps) {
     return (
-        <DashboardContent sx={{ width: "99%", my: 1, mx: "auto", p: 1 }}>
+        <DashboardContent>
             <GoalsPageDisplay goals={goals} goalsEnvelope={goalsEnvelope} table={table} />
         </DashboardContent>
     );

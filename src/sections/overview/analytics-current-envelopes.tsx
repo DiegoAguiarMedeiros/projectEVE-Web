@@ -45,7 +45,7 @@ export function AnalyticsCurrentEnvelopesGraph({ title, subheader, analyticsCurr
   }
 
   return (
-    <Card {...other}>
+    <Card sx={{ border: `1px solid var(--layout-nav-border-color)` }} {...other}>
       <CardHeader title={title} subheader={subheader} />
 
       <Chart
