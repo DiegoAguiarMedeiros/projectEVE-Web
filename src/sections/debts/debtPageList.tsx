@@ -1,8 +1,9 @@
 import { useCallback, useState } from "react";
-import { Box, Grid2, Paper, Typography } from "@mui/material";
+import { Grid2, Paper, Typography } from "@mui/material";
 import { alpha } from "@mui/material/styles";
 import { DebtForm } from "src/sections/settings/debt/form";
 import { DebtPageItem } from "src/sections/debts/debtPageItem";
+import { ItemList } from "src/components/itemList/ItemList";
 import { useDeleteDebts } from "src/hooks/mutations/debts/useDeleteDebts";
 import AddButton from "src/components/addButton/addButton";
 import { Debts } from "src/types/Debts";
@@ -76,16 +77,18 @@ export function DebtPageList({ debts, table, envelopes }: DebtPageListProps) {
                 </Grid2>
             }
             renderList={(items) => (
-                <Box sx={{ px: 1.5, py: 1 }}>
-                    {items.map((row, index) => (
+                <ItemList
+                    items={items}
+                    keyExtractor={(row) => row.id}
+                    renderItem={(row, hideDivider) => (
                         <DebtPageItem
-                            key={row.id}
                             debt={row}
                             envelopes={envelopes}
                             onDelete={handleDelete}
+                            hideDivider={hideDivider}
                         />
-                    ))}
-                </Box>
+                    )}
+                />
             )}
             footer={
                 <>

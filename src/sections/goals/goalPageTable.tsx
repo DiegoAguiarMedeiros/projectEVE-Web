@@ -32,7 +32,7 @@ import { Envelopes } from "src/types/Envelopes";
 import { Pagination } from "src/types/Pagination";
 import { ITable } from "src/sections/shared/useTable";
 import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
-import { useGoalsCumulativeAmount } from "src/hooks/queries/goals/useGoalsCumulativeAmount";
+import { useEffectiveGoalsCumulative } from "src/hooks/queries/goals/useEffectiveGoalsCumulative";
 
 type GoalPageTableProps = {
     goals: Pagination<Goals> | undefined;
@@ -44,7 +44,7 @@ export function GoalPageTable({ goals, goalsEnvelope, table }: GoalPageTableProp
     const { t } = useTranslation();
     const { symbol } = useCurrency();
     const { month, year } = SelectedMonthYearStore();
-    const { data: cumulativeTotal = 0 } = useGoalsCumulativeAmount(year, month);
+    const cumulativeTotal = useEffectiveGoalsCumulative(year, month);
 
     const [evolutionGoal, setEvolutionGoal] = useState<Goals | null>(null);
 

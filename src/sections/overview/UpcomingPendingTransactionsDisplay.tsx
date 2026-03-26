@@ -3,6 +3,7 @@ import { useMediaQuery } from "@mui/material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "notistack";
 import { useTranslation } from "react-i18next";
+import { useDeleteTransactions } from "src/hooks/mutations/transactions/useDeleteTransactions";
 
 import { UpcomingPendingTransactionsTable } from "src/sections/overview/upcoming-pending-transaction";
 import { UpcomingPendingTransactionList } from "src/sections/overview/upcomingPendingTransactionList";
@@ -37,6 +38,13 @@ export function UpcomingPendingTransactionsDisplay({
     const { data: creditCardsData } = useAllCreditCards();
     const creditCards = creditCardsData?.data ?? [];
 
+    const deleteTransactionMutation = useDeleteTransactions();
+
+    const handleDelete = useCallback(
+        (id: string) => deleteTransactionMutation.mutate(id),
+        [deleteTransactionMutation]
+    );
+
     const markAsPaidMutation = useMutation({
         mutationFn: updateTransactions,
         onSuccess: () => {
@@ -70,6 +78,7 @@ export function UpcomingPendingTransactionsDisplay({
                 envelopes={envelopes}
                 table={table}
                 onMarkAsPaid={handleMarkAsPaid}
+                onDelete={handleDelete}
                 creditCards={creditCards}
             />
         );

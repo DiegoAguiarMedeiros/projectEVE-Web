@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { Avatar, Box, Chip, Divider, IconButton, Typography } from "@mui/material";
-import { ArrowDownward, Delete } from "@mui/icons-material";
+import { Chip, Typography } from "@mui/material";
+import { ArrowDownward, Delete, Edit } from "@mui/icons-material";
 import { useDateFormat } from "src/hooks/useDateFormat";
 import { IncomeForm } from "src/sections/incomes/form";
 import { ProcessedIncomes } from "src/types/ProcessedIncomes";
 import { Envelopes } from "src/types/Envelopes";
 import { useTranslation } from "react-i18next";
 import { fCurrency } from "src/utils/format-number";
+import { ItemRow } from "src/components/itemList/ItemList";
 
 type IncomeItemProps = {
     income: ProcessedIncomes;
@@ -23,62 +24,48 @@ export function IncomeItem({ income, envelopes, onDelete, hideDivider }: IncomeI
 
     return (
         <>
-            <Box
-                display="flex"
-                alignItems="center"
-                gap={1.5}
-                py={1.25}
-                px={0.5}
-                onClick={() => setEditOpen(true)}
-                sx={{ cursor: "pointer" }}
-            >
-                <Avatar
-                    sx={{
-                        width: 36,
-                        height: 36,
-                        borderRadius: 1.5,
+            <ItemRow
+                hideDivider={hideDivider}
+                config={{
+                    avatar: {
                         bgcolor: "success.lighter",
-                        flexShrink: 0,
-                    }}
-                >
-                    <ArrowDownward sx={{ color: "success.main", fontSize: 16 }} />
-                </Avatar>
-
-                <Box flex={1} minWidth={0}>
-                    <Typography variant="subtitle2" fontWeight={600} noWrap>
-                        {description}
-                    </Typography>
-                    <Box display="flex" alignItems="center" gap={0.75} mt={0.25}>
-                        <Typography variant="caption" color="text.secondary">
-                            {formatDate(`${year}-${month}-${day}`)}
+                        icon: <ArrowDownward sx={{ color: "success.main", fontSize: 16 }} />,
+                    },
+                    title: description,
+                    subtitle: (
+                        <>
+                            <Typography variant="caption" color="text.secondary">
+                                {formatDate(`${year}-${month}-${day}`)}
+                            </Typography>
+                            <Chip
+                                label={isSplitted ? t('income.table.all') : t('income.table.one')}
+                                size="small"
+                                color="info"
+                                variant="outlined"
+                                sx={{ height: 18, fontSize: "0.65rem" }}
+                            />
+                        </>
+                    ),
+                    amount: (
+                        <Typography variant="subtitle2" fontWeight={700} color="success.main">
+                            + {fCurrency(totalIncomeProcessed)}
                         </Typography>
-                        <Chip
-                            label={isSplitted ? t('income.table.all') : t('income.table.one')}
-                            size="small"
-                            color="info"
-                            variant="outlined"
-                            sx={{ height: 18, fontSize: "0.65rem" }}
-                        />
-                    </Box>
-                </Box>
-
-                <Box sx={{ flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 0.25 }}>
-                    <Typography variant="subtitle2" fontWeight={700} color="success.main">
-                        + {fCurrency(totalIncomeProcessed)}
-                    </Typography>
-                    <IconButton
-                        size="small"
-                        color="error"
-                        onClick={(e) => { e.stopPropagation(); onDelete(id); }}
-                        sx={{ p: 0.25 }}
-                    >
-                        <Delete sx={{ fontSize: 14 }} />
-                    </IconButton>
-                </Box>
-            </Box>
-
-            {!hideDivider && <Divider />}
-
+                    ),
+                    menuActions: [
+                        {
+                            label: t("common.edit"),
+                            icon: <Edit fontSize="small" />,
+                            onClick: () => setEditOpen(true),
+                        },
+                        {
+                            label: t("common.delete"),
+                            icon: <Delete fontSize="small" />,
+                            onClick: () => onDelete(id),
+                            color: "error",
+                        },
+                    ],
+                }}
+            />
             <IncomeForm
                 data={income}
                 buttonLabel={t('common.edit')}

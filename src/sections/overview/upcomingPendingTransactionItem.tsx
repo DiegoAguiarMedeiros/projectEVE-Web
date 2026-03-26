@@ -1,10 +1,7 @@
 import { useState } from "react";
 import {
-    Avatar,
-    Box,
     Button,
     Chip,
-    Divider,
     ListItemIcon,
     ListItemText,
     MenuItem,
@@ -12,7 +9,7 @@ import {
     Popover,
     Typography,
 } from "@mui/material";
-import { ArrowUpward } from "@mui/icons-material";
+import { ArrowUpward, Delete, Edit } from "@mui/icons-material";
 import { Transactions, PaymentMethod, allPaymentMethod } from "src/types/Transactions";
 import { CreditCards } from "src/types/CreditCards";
 import { Envelopes } from "src/types/Envelopes";
@@ -21,6 +18,8 @@ import dayjs from "dayjs";
 import { fNumberToCurrency } from "src/utils/format-number";
 import { fDate } from "src/utils/format-time";
 import { Iconify } from "src/components/iconify";
+import { ItemRow } from "src/components/itemList/ItemList";
+import { TransactionForm } from "src/sections/envelope/form";
 
 const PAYMENT_METHOD_ICONS: Record<PaymentMethod, string> = {
     "envelope.transaction.payment_method.CreditCard": "solar:card-bold",
@@ -36,6 +35,7 @@ type UpcomingPendingTransactionItemProps = {
     transaction: Transactions;
     envelopes: Envelopes[];
     onMarkAsPaid: (transaction: Transactions, paymentMethod: PaymentMethod, creditCardId?: string) => void;
+    onDelete: (id: string) => void;
     creditCards: CreditCards[];
     hideDivider?: boolean;
 };
@@ -44,6 +44,7 @@ export function UpcomingPendingTransactionItem({
     transaction,
     envelopes,
     onMarkAsPaid,
+    onDelete,
     creditCards,
     hideDivider,
 }: UpcomingPendingTransactionItemProps) {
@@ -53,11 +54,11 @@ export function UpcomingPendingTransactionItem({
 
     const isOverdue = status === "transaction.status.pending" && !!date && dayjs(date).isBefore(dayjs(), 'day');
     const displayStatus = isOverdue ? "transaction.status.overdue" : status;
-
     const chipColor = status === "transaction.status.completed" ? "success"
         : isOverdue ? "error"
         : "warning";
 
+    const [editOpen, setEditOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
     const [creditCardAnchorEl, setCreditCardAnchorEl] = useState<HTMLElement | null>(null);
 
@@ -84,60 +85,71 @@ export function UpcomingPendingTransactionItem({
 
     return (
         <>
-            <Box display="flex" alignItems="center" gap={1.5} py={1.25} px={0.5}>
-                <Avatar
-                    sx={{
-                        width: 36,
-                        height: 36,
-                        borderRadius: 1.5,
+            <ItemRow
+                hideDivider={hideDivider}
+                config={{
+                    avatar: {
                         bgcolor: "error.lighter",
-                        flexShrink: 0,
-                    }}
-                >
-                    <ArrowUpward sx={{ color: "error.main", fontSize: 16 }} />
-                </Avatar>
-
-                <Box flex={1} minWidth={0}>
-                    <Typography variant="subtitle2" fontWeight={600} noWrap>
-                        {isTranslatable ? t(description) : description}
-                    </Typography>
-                    <Box display="flex" alignItems="center" gap={0.75} mt={0.25}>
-                        <Typography variant="caption" color="text.secondary">
-                            {t(envelopeName)}
+                        icon: <ArrowUpward sx={{ color: "error.main", fontSize: 16 }} />,
+                    },
+                    title: isTranslatable ? t(description) : description,
+                    subtitle: (
+                        <>
+                            <Typography variant="caption" color="text.secondary">
+                                {t(envelopeName)}
+                            </Typography>
+                            <Typography variant="caption" color="text.secondary">&bull;</Typography>
+                            <Typography variant="caption" color="text.secondary">
+                                {fDate(date)}
+                            </Typography>
+                            <Chip
+                                label={t(displayStatus)}
+                                size="small"
+                                color={chipColor}
+                                variant="outlined"
+                                sx={{ height: 18, fontSize: "0.65rem" }}
+                            />
+                        </>
+                    ),
+                    amount: (
+                        <Typography variant="subtitle2" fontWeight={700} color="error.main">
+                            {fNumberToCurrency(amount)}
                         </Typography>
-                        <Typography variant="caption" color="text.secondary">&bull;</Typography>
-                        <Typography variant="caption" color="text.secondary">
-                            {fDate(date)}
-                        </Typography>
-                        <Chip
-                            label={t(displayStatus)}
-                            size="small"
-                            color={chipColor}
-                            variant="outlined"
-                            sx={{ height: 18, fontSize: "0.65rem" }}
-                        />
-                    </Box>
-                </Box>
-
-                <Box sx={{ flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 0.5 }}>
-                    <Typography variant="subtitle2" fontWeight={700} color="error.main">
-                        {fNumberToCurrency(amount)}
-                    </Typography>
-                    {status !== "transaction.status.completed" && (
+                    ),
+                    actions: status !== "transaction.status.completed" ? (
                         <Button
                             size="small"
                             variant="contained"
                             color="success"
-                            onClick={(e) => setAnchorEl(e.currentTarget)}
+                            onClick={(e) => { e.stopPropagation(); setAnchorEl(e.currentTarget); }}
                             sx={{ minWidth: 0, px: 1, py: 0.25, fontSize: "0.7rem" }}
                         >
                             {t("common.pay")}
                         </Button>
-                    )}
-                </Box>
-            </Box>
+                    ) : undefined,
+                    menuActions: [
+                        {
+                            label: t("common.edit"),
+                            icon: <Edit fontSize="small" />,
+                            onClick: () => setEditOpen(true),
+                        },
+                        {
+                            label: t("common.delete"),
+                            icon: <Delete fontSize="small" />,
+                            onClick: () => onDelete(transaction.id),
+                            color: "error",
+                        },
+                    ],
+                }}
+            />
 
-            {!hideDivider && <Divider />}
+            <TransactionForm
+                data={transaction}
+                buttonLabel=""
+                envelopeId={envelopeId}
+                externalOpen={editOpen}
+                onExternalClose={() => setEditOpen(false)}
+            />
 
             <Popover
                 open={Boolean(anchorEl)}

@@ -46,7 +46,9 @@
     "reallocate": "Reallocate",
     "delete_all": "Delete all",
     "actions": "Actions",
-    "pay": "Pay"
+    "pay": "Pay",
+    "today": "Today",
+    "yesterday": "Yesterday"
   },
   "errors": {
     "unexpected": "An unexpected error occurred",

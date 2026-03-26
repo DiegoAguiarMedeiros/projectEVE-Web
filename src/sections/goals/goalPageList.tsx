@@ -1,8 +1,9 @@
 import { useCallback, useState } from "react";
-import { Box, Grid2, Paper, Typography } from "@mui/material";
+import { Grid2, Paper, Typography } from "@mui/material";
 import { alpha } from "@mui/material/styles";
 import { GoalsForm } from "src/sections/settings/goals/form";
 import { GoalPageItem } from "src/sections/goals/goalPageItem";
+import { ItemList } from "src/components/itemList/ItemList";
 import { useDeleteGoals } from "src/hooks/mutations/goals/useDeleteGoals";
 import AddButton from "src/components/addButton/addButton";
 import { Goals } from "src/types/Goals";
@@ -12,7 +13,7 @@ import { ITable } from "src/sections/shared/useTable";
 import { useTranslation } from "react-i18next";
 import { useCurrency } from "src/hooks/useCurrency";
 import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
-import { useGoalsCumulativeAmount } from "src/hooks/queries/goals/useGoalsCumulativeAmount";
+import { useEffectiveGoalsCumulative } from "src/hooks/queries/goals/useEffectiveGoalsCumulative";
 import { InfiniteList } from "src/components/infiniteList/InfiniteList";
 
 type GoalPageListProps = {
@@ -25,7 +26,7 @@ export function GoalPageList({ goals, table, goalsEnvelope }: GoalPageListProps)
     const { t } = useTranslation();
     const { symbol } = useCurrency();
     const { month, year } = SelectedMonthYearStore();
-    const { data: cumulativeTotal = 0 } = useGoalsCumulativeAmount(year, month);
+    const cumulativeTotal = useEffectiveGoalsCumulative(year, month);
     const [addFormOpen, setAddFormOpen] = useState(false);
     const [allItems, setAllItems] = useState<Goals[]>([]);
 
@@ -72,16 +73,18 @@ export function GoalPageList({ goals, table, goalsEnvelope }: GoalPageListProps)
                 </Grid2>
             }
             renderList={(items) => (
-                <Box sx={{ px: 1.5, py: 1 }}>
-                    {items.map((row, index) => (
+                <ItemList
+                    items={items}
+                    keyExtractor={(row) => row.id}
+                    renderItem={(row, hideDivider) => (
                         <GoalPageItem
-                            key={row.id}
                             goal={row}
                             goalsEnvelope={goalsEnvelope}
                             onDelete={handleDelete}
+                            hideDivider={hideDivider}
                         />
-                    ))}
-                </Box>
+                    )}
+                />
             )}
             footer={
                 <>

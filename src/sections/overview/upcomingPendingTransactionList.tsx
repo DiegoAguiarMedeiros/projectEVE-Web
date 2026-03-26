@@ -14,6 +14,7 @@ type UpcomingPendingTransactionListProps = {
     table: ITable;
     title?: string;
     onMarkAsPaid: (transaction: Transactions, paymentMethod: PaymentMethod, creditCardId?: string) => void;
+    onDelete: (id: string) => void;
     creditCards: CreditCards[];
 };
 
@@ -23,6 +24,7 @@ export function UpcomingPendingTransactionList({
     table,
     title,
     onMarkAsPaid,
+    onDelete,
     creditCards,
 }: UpcomingPendingTransactionListProps) {
     const { t } = useTranslation();
@@ -42,6 +44,7 @@ export function UpcomingPendingTransactionList({
                         items={items}
                         envelopes={envelopes}
                         onMarkAsPaid={onMarkAsPaid}
+                        onDelete={onDelete}
                         creditCards={creditCards}
                     />
                 )}

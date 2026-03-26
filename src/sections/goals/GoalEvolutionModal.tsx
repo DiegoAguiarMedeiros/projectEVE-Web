@@ -7,7 +7,7 @@ import { Envelopes } from "src/types/Envelopes";
 import { useCurrency } from "src/hooks/useCurrency";
 import { Chart, useChart } from "src/components/chart";
 import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
-import { useGoalsCumulativeAmount } from "src/hooks/queries/goals/useGoalsCumulativeAmount";
+import { useEffectiveGoalsCumulative } from "src/hooks/queries/goals/useEffectiveGoalsCumulative";
 
 type GoalEvolutionModalProps = {
     goal: Goals;
@@ -21,7 +21,7 @@ export function GoalEvolutionModal({ goal, goalsEnvelope, open, onClose }: GoalE
     const { symbol } = useCurrency();
     const theme = useTheme();
     const { month: selectedMonth, year: selectedYear } = SelectedMonthYearStore();
-    const { data: cumulativeTotal = 0 } = useGoalsCumulativeAmount(selectedYear, selectedMonth);
+    const cumulativeTotal = useEffectiveGoalsCumulative(selectedYear, selectedMonth);
 
     if (!open) return null;
 

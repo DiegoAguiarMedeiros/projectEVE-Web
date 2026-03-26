@@ -46,7 +46,9 @@
     "reallocate": "Reasignar",
     "delete_all": "Eliminar todo",
     "actions": "Acciones",
-    "pay": "Pagar"
+    "pay": "Pagar",
+    "today": "Hoy",
+    "yesterday": "Ayer"
   },
   "errors": {
     "unexpected": "Ocurrió un error inesperado",
