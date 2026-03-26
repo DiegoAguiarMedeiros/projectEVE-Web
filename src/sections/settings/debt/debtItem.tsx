@@ -1,14 +1,6 @@
 import { useState } from "react";
-import {
-    Card,
-    CardContent,
-    Typography,
-    IconButton,
-    Box,
-    Chip,
-} from "@mui/material";
-import { Delete } from "@mui/icons-material";
-import { alpha } from "@mui/material/styles";
+import { Avatar, Box, Chip, Divider, IconButton, Typography } from "@mui/material";
+import { AccountBalance, Delete } from "@mui/icons-material";
 import { DebtForm } from "src/sections/settings/debt/form";
 import { Debts } from "src/types/Debts";
 import { Envelopes } from "src/types/Envelopes";
@@ -19,13 +11,10 @@ type DebtItemProps = {
     debt: Debts;
     envelopes: Envelopes[];
     onDelete: (id: string) => void;
+    hideDivider?: boolean;
 };
 
-export function DebtItem({
-    debt,
-    envelopes,
-    onDelete,
-}: DebtItemProps) {
+export function DebtItem({ debt, envelopes, onDelete, hideDivider }: DebtItemProps) {
     const { t } = useTranslation();
     const { symbol } = useCurrency();
     const { id, description, amount, paymentDay, installmentsPaid, installmentsTotal } = debt;
@@ -33,67 +22,61 @@ export function DebtItem({
 
     return (
         <>
-            <Card
+            <Box
+                display="flex"
+                alignItems="center"
+                gap={1.5}
+                py={1.25}
+                px={0.5}
                 onClick={() => setEditOpen(true)}
-                sx={{
-                    borderRadius: 2,
-                    boxShadow: 1,
-                    cursor: "pointer",
-                    border: (theme) => `1px solid ${theme.palette.divider}`,
-                    "&:active": (theme) => ({
-                        bgcolor: alpha(theme.palette.primary.main, 0.04),
-                    }),
-                }}
+                sx={{ cursor: "pointer" }}
             >
-                <CardContent sx={{ p: 1.5, "&:last-child": { pb: 1.5 } }}>
-                    {/* Row 1: Description + Amount */}
-                    <Box display="flex" justifyContent="space-between" alignItems="flex-start" gap={1}>
-                        <Typography
-                            variant="subtitle2"
-                            fontWeight={600}
-                            sx={{
-                                flex: 1,
-                                overflow: "hidden",
-                                textOverflow: "ellipsis",
-                                whiteSpace: "nowrap",
-                            }}
-                        >
-                            {description}
-                        </Typography>
-                        <Typography
-                            variant="subtitle2"
-                            fontWeight={700}
-                            color="error.main"
-                            sx={{ flexShrink: 0 }}
-                        >
-                            {symbol} {amount}
-                        </Typography>
-                    </Box>
+                <Avatar
+                    sx={{
+                        width: 36,
+                        height: 36,
+                        borderRadius: 1.5,
+                        bgcolor: "error.lighter",
+                        flexShrink: 0,
+                    }}
+                >
+                    <AccountBalance sx={{ color: "error.main", fontSize: 16 }} />
+                </Avatar>
 
-                    {/* Row 2: Installments + Payment Day + Delete */}
-                    <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ mt: 0.5 }}>
-                        <Box display="flex" alignItems="center" gap={0.5}>
-                            <Chip
-                                label={`${installmentsPaid}/${installmentsTotal}`}
-                                size="small"
-                                color="warning"
-                                variant="outlined"
-                                sx={{ height: 20, fontSize: "0.675rem" }}
-                            />
-                            <Typography variant="caption" color="text.secondary">
-                                &bull; {t('settings.debt.table.headers.payment_day')}: {paymentDay}
-                            </Typography>
-                        </Box>
-                        <IconButton
+                <Box flex={1} minWidth={0}>
+                    <Typography variant="subtitle2" fontWeight={600} noWrap>
+                        {description}
+                    </Typography>
+                    <Box display="flex" alignItems="center" gap={0.75} mt={0.25}>
+                        <Chip
+                            label={`${installmentsPaid}/${installmentsTotal}`}
                             size="small"
-                            color="error"
-                            onClick={(e) => { e.stopPropagation(); onDelete(id); }}
-                        >
-                            <Delete fontSize="small" />
-                        </IconButton>
+                            color="warning"
+                            variant="outlined"
+                            sx={{ height: 18, fontSize: "0.65rem" }}
+                        />
+                        <Typography variant="caption" color="text.secondary">
+                            {t('settings.debt.table.headers.payment_day')}: {paymentDay}
+                        </Typography>
                     </Box>
-                </CardContent>
-            </Card>
+                </Box>
+
+                <Box sx={{ flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 0.25 }}>
+                    <Typography variant="subtitle2" fontWeight={700} color="error.main">
+                        {symbol} {amount}
+                    </Typography>
+                    <IconButton
+                        size="small"
+                        color="error"
+                        onClick={(e) => { e.stopPropagation(); onDelete(id); }}
+                        sx={{ p: 0.25 }}
+                    >
+                        <Delete sx={{ fontSize: 14 }} />
+                    </IconButton>
+                </Box>
+            </Box>
+
+            {!hideDivider && <Divider />}
 
             <DebtForm
                 data={debt}

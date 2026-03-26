@@ -11,5 +11,8 @@ export function useProcessedIncomes(year: number, month: number, table: ITable) 
       orderBy: table.orderBy ?? "createdAt",
       order: table.order ?? "desc",
     }).then(res => res.data),
+    staleTime: 5000,
+    gcTime: 60000,
+    placeholderData: (previousData) => previousData,
   });
 }

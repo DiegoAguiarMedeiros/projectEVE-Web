@@ -36,7 +36,7 @@ export function ChipTabs({ tabs, activeIndex, onChange }: ChipTabsProps) {
           display: "flex",
           flexWrap: "nowrap",
           gap: 1,
-          pb: 1.5,
+          py: 1.5,
           px: 1,
           overflowX: "auto",
           WebkitOverflowScrolling: "touch",

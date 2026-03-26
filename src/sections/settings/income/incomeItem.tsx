@@ -1,13 +1,6 @@
 import { useState } from "react";
-import {
-    Card,
-    CardContent,
-    Typography,
-    IconButton,
-    Box,
-} from "@mui/material";
-import { Delete } from "@mui/icons-material";
-import { alpha } from "@mui/material/styles";
+import { Avatar, Box, Divider, IconButton, Typography } from "@mui/material";
+import { ArrowDownward, Delete } from "@mui/icons-material";
 import { FormIncomes } from "src/sections/settings/income/form";
 import { Incomes } from "src/types/Incomes";
 import { useTranslation } from "react-i18next";
@@ -16,12 +9,10 @@ import { useCurrency } from "src/hooks/useCurrency";
 type IncomeItemProps = {
     income: Incomes;
     onDelete: (id: string) => void;
+    hideDivider?: boolean;
 };
 
-export function IncomeItem({
-    income,
-    onDelete,
-}: IncomeItemProps) {
+export function IncomeItem({ income, onDelete, hideDivider }: IncomeItemProps) {
     const { t } = useTranslation();
     const { symbol } = useCurrency();
     const { id, description, amount, paymentDay } = income;
@@ -29,58 +20,52 @@ export function IncomeItem({
 
     return (
         <>
-            <Card
+            <Box
+                display="flex"
+                alignItems="center"
+                gap={1.5}
+                py={1.25}
+                px={0.5}
                 onClick={() => setEditOpen(true)}
-                sx={{
-                    borderRadius: 2,
-                    boxShadow: 1,
-                    cursor: "pointer",
-                    border: (theme) => `1px solid ${theme.palette.divider}`,
-                    "&:active": (theme) => ({
-                        bgcolor: alpha(theme.palette.primary.main, 0.04),
-                    }),
-                }}
+                sx={{ cursor: "pointer" }}
             >
-                <CardContent sx={{ p: 1.5, "&:last-child": { pb: 1.5 } }}>
-                    {/* Row 1: Description + Amount */}
-                    <Box display="flex" justifyContent="space-between" alignItems="flex-start" gap={1}>
-                        <Typography
-                            variant="subtitle2"
-                            fontWeight={600}
-                            sx={{
-                                flex: 1,
-                                overflow: "hidden",
-                                textOverflow: "ellipsis",
-                                whiteSpace: "nowrap",
-                            }}
-                        >
-                            {description}
-                        </Typography>
-                        <Typography
-                            variant="subtitle2"
-                            fontWeight={700}
-                            color="success.main"
-                            sx={{ flexShrink: 0 }}
-                        >
-                            {symbol} {amount}
-                        </Typography>
-                    </Box>
+                <Avatar
+                    sx={{
+                        width: 36,
+                        height: 36,
+                        borderRadius: 1.5,
+                        bgcolor: "success.lighter",
+                        flexShrink: 0,
+                    }}
+                >
+                    <ArrowDownward sx={{ color: "success.main", fontSize: 16 }} />
+                </Avatar>
 
-                    {/* Row 2: Payment Day + Delete */}
-                    <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ mt: 0.5 }}>
-                        <Typography variant="caption" color="text.secondary">
-                            {t('settings.income.table.headers.payment_day')}: {paymentDay}
-                        </Typography>
-                        <IconButton
-                            size="small"
-                            color="error"
-                            onClick={(e) => { e.stopPropagation(); onDelete(id); }}
-                        >
-                            <Delete fontSize="small" />
-                        </IconButton>
-                    </Box>
-                </CardContent>
-            </Card>
+                <Box flex={1} minWidth={0}>
+                    <Typography variant="subtitle2" fontWeight={600} noWrap>
+                        {description}
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                        {t('settings.income.table.headers.payment_day')}: {paymentDay}
+                    </Typography>
+                </Box>
+
+                <Box sx={{ flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 0.25 }}>
+                    <Typography variant="subtitle2" fontWeight={700} color="success.main">
+                        {symbol} {amount}
+                    </Typography>
+                    <IconButton
+                        size="small"
+                        color="error"
+                        onClick={(e) => { e.stopPropagation(); onDelete(id); }}
+                        sx={{ p: 0.25 }}
+                    >
+                        <Delete sx={{ fontSize: 14 }} />
+                    </IconButton>
+                </Box>
+            </Box>
+
+            {!hideDivider && <Divider />}
 
             <FormIncomes
                 data={income}

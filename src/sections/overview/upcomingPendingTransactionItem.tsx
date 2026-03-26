@@ -1,18 +1,18 @@
 import { useState } from "react";
 import {
-    Card,
-    CardContent,
-    Typography,
+    Avatar,
     Box,
-    Chip,
     Button,
-    MenuItem,
-    MenuList,
+    Chip,
+    Divider,
     ListItemIcon,
     ListItemText,
+    MenuItem,
+    MenuList,
     Popover,
+    Typography,
 } from "@mui/material";
-import { alpha } from "@mui/material/styles";
+import { ArrowUpward } from "@mui/icons-material";
 import { Transactions, PaymentMethod, allPaymentMethod } from "src/types/Transactions";
 import { CreditCards } from "src/types/CreditCards";
 import { Envelopes } from "src/types/Envelopes";
@@ -37,6 +37,7 @@ type UpcomingPendingTransactionItemProps = {
     envelopes: Envelopes[];
     onMarkAsPaid: (transaction: Transactions, paymentMethod: PaymentMethod, creditCardId?: string) => void;
     creditCards: CreditCards[];
+    hideDivider?: boolean;
 };
 
 export function UpcomingPendingTransactionItem({
@@ -44,6 +45,7 @@ export function UpcomingPendingTransactionItem({
     envelopes,
     onMarkAsPaid,
     creditCards,
+    hideDivider,
 }: UpcomingPendingTransactionItemProps) {
     const { t } = useTranslation();
     const { description, amount, date, status, isTranslatable, envelopeId } = transaction;
@@ -51,6 +53,10 @@ export function UpcomingPendingTransactionItem({
 
     const isOverdue = status === "transaction.status.pending" && !!date && dayjs(date).isBefore(dayjs(), 'day');
     const displayStatus = isOverdue ? "transaction.status.overdue" : status;
+
+    const chipColor = status === "transaction.status.completed" ? "success"
+        : isOverdue ? "error"
+        : "warning";
 
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
     const [creditCardAnchorEl, setCreditCardAnchorEl] = useState<HTMLElement | null>(null);
@@ -60,10 +66,6 @@ export function UpcomingPendingTransactionItem({
         if (m === "envelope.transaction.payment_method.CreditCard" && creditCards.length === 0) return false;
         return true;
     });
-
-    const handleOpenPopover = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
 
     const handleClosePopover = () => {
         setAnchorEl(null);
@@ -75,91 +77,67 @@ export function UpcomingPendingTransactionItem({
         handleClosePopover();
     };
 
-    const handleCreditCardHover = (event: React.MouseEvent<HTMLElement>) => {
-        setCreditCardAnchorEl(event.currentTarget);
-    };
-
-    const handleCreditCardClose = () => {
-        setCreditCardAnchorEl(null);
-    };
-
     const handleSelectCreditCard = (creditCard: CreditCards) => {
         onMarkAsPaid(transaction, "envelope.transaction.payment_method.CreditCard", creditCard.id);
         handleClosePopover();
     };
 
     return (
-        <Card
-            sx={{
-                borderRadius: 2,
-                boxShadow: "none",
-                border: `1px solid var(--layout-nav-border-color)`,
-                "&:active": (theme) => ({
-                    bgcolor: alpha(theme.palette.primary.main, 0.04),
-                }),
-            }}
-        >
-            <CardContent sx={{ p: 1.5, "&:last-child": { pb: 1.5 } }}>
-                {/* Row 1: Description + Amount */}
-                <Box display="flex" justifyContent="space-between" alignItems="flex-start" gap={1}>
-                    <Typography
-                        variant="subtitle2"
-                        fontWeight={600}
-                        sx={{
-                            flex: 1,
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
-                        }}
-                    >
+        <>
+            <Box display="flex" alignItems="center" gap={1.5} py={1.25} px={0.5}>
+                <Avatar
+                    sx={{
+                        width: 36,
+                        height: 36,
+                        borderRadius: 1.5,
+                        bgcolor: "error.lighter",
+                        flexShrink: 0,
+                    }}
+                >
+                    <ArrowUpward sx={{ color: "error.main", fontSize: 16 }} />
+                </Avatar>
+
+                <Box flex={1} minWidth={0}>
+                    <Typography variant="subtitle2" fontWeight={600} noWrap>
                         {isTranslatable ? t(description) : description}
                     </Typography>
-                    <Typography
-                        variant="subtitle2"
-                        fontWeight={700}
-                        color="error.main"
-                        sx={{ flexShrink: 0 }}
-                    >
+                    <Box display="flex" alignItems="center" gap={0.75} mt={0.25}>
+                        <Typography variant="caption" color="text.secondary">
+                            {t(envelopeName)}
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary">&bull;</Typography>
+                        <Typography variant="caption" color="text.secondary">
+                            {fDate(date)}
+                        </Typography>
+                        <Chip
+                            label={t(displayStatus)}
+                            size="small"
+                            color={chipColor}
+                            variant="outlined"
+                            sx={{ height: 18, fontSize: "0.65rem" }}
+                        />
+                    </Box>
+                </Box>
+
+                <Box sx={{ flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 0.5 }}>
+                    <Typography variant="subtitle2" fontWeight={700} color="error.main">
                         {fNumberToCurrency(amount)}
                     </Typography>
-                </Box>
-
-                {/* Row 2: Envelope + Date */}
-                <Box display="flex" alignItems="center" gap={0.5} sx={{ mt: 0.5 }}>
-                    <Typography variant="caption" color="text.secondary">
-                        {t(envelopeName)}
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary">
-                        &bull; {fDate(date)}
-                    </Typography>
-                </Box>
-
-                {/* Row 3: Status + Action */}
-                <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ mt: 1 }}>
-                    <Chip
-                        label={t(displayStatus)}
-                        size="small"
-                        color={
-                            status === "transaction.status.completed" ? "success"
-                                : isOverdue ? "error"
-                                    : "warning"
-                        }
-                        variant="outlined"
-                        sx={{ height: 22, fontSize: "0.7rem" }}
-                    />
                     {status !== "transaction.status.completed" && (
                         <Button
                             size="small"
                             variant="contained"
                             color="success"
-                            onClick={handleOpenPopover}
+                            onClick={(e) => setAnchorEl(e.currentTarget)}
                             sx={{ minWidth: 0, px: 1, py: 0.25, fontSize: "0.7rem" }}
                         >
                             {t("common.pay")}
                         </Button>
                     )}
                 </Box>
-            </CardContent>
+            </Box>
+
+            {!hideDivider && <Divider />}
 
             <Popover
                 open={Boolean(anchorEl)}
@@ -175,8 +153,8 @@ export function UpcomingPendingTransactionItem({
                             return (
                                 <MenuItem
                                     key={method}
-                                    onMouseEnter={handleCreditCardHover}
-                                    onMouseLeave={handleCreditCardClose}
+                                    onMouseEnter={(e) => setCreditCardAnchorEl(e.currentTarget)}
+                                    onMouseLeave={() => setCreditCardAnchorEl(null)}
                                     sx={{ position: "relative" }}
                                 >
                                     <ListItemIcon>
@@ -188,11 +166,11 @@ export function UpcomingPendingTransactionItem({
                                     <Popover
                                         open={Boolean(creditCardAnchorEl)}
                                         anchorEl={creditCardAnchorEl}
-                                        onClose={handleCreditCardClose}
+                                        onClose={() => setCreditCardAnchorEl(null)}
                                         anchorOrigin={{ vertical: "top", horizontal: "right" }}
                                         transformOrigin={{ vertical: "top", horizontal: "left" }}
                                         sx={{ pointerEvents: "none" }}
-                                        slotProps={{ paper: { sx: { pointerEvents: "auto", bgcolor: "background.neutral" }, onMouseLeave: handleCreditCardClose } }}
+                                        slotProps={{ paper: { sx: { pointerEvents: "auto", bgcolor: "background.neutral" }, onMouseLeave: () => setCreditCardAnchorEl(null) } }}
                                     >
                                         <MenuList sx={{ p: 0.5 }}>
                                             {creditCards.map((card) => (
@@ -217,6 +195,6 @@ export function UpcomingPendingTransactionItem({
                     })}
                 </MenuList>
             </Popover>
-        </Card>
+        </>
     );
 }

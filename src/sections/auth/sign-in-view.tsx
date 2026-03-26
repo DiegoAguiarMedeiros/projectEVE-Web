@@ -107,6 +107,13 @@ export function SignInView() {
       >
         {t('auth.sign_in')}
       </Button>
+
+      <Typography variant="body2" color="text.secondary" sx={{ my: 3, textAlign: 'center', alignSelf: 'center' }}>
+        {t('auth.no_account')}
+        <Link variant="subtitle2" href={paths.registration} sx={{ ml: 0.5 }}>
+          {t('auth.get_started')}
+        </Link>
+      </Typography>
     </Box>
   );
 
@@ -114,12 +121,6 @@ export function SignInView() {
     <>
       <Box gap={1.5} display="flex" flexDirection="column" alignItems="center" sx={{ mb: 5 }}>
         <Typography variant="h5">{t('auth.sign_in_title')}</Typography>
-        <Typography variant="body2" color="text.secondary">
-          {t('auth.no_account')}
-          <Link variant="subtitle2" href={paths.registration} sx={{ ml: 0.5 }}>
-            {t('auth.get_started')}
-          </Link>
-        </Typography>
       </Box>
 
       {renderForm}

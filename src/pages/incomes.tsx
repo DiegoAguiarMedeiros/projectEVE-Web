@@ -19,7 +19,7 @@ export default function Page() {
   const { data: processedIncomes, isLoading: processedIncomesIsLoading, error: processedIncomesError } = useProcessedIncomes(year, month, table);
   const { data: totalProcessedIncomes } = useTotalProcessedIncomes(year, month);
 
-  if (envelopesIsLoading && processedIncomesIsLoading) {
+  if (envelopesIsLoading || processedIncomesIsLoading) {
     return (
       <>
         <title> {`Configurações - ${CONFIG.appName}`}</title>

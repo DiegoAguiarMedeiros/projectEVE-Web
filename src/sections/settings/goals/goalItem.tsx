@@ -1,14 +1,6 @@
 import { useState } from "react";
-import {
-    Card,
-    CardContent,
-    Typography,
-    IconButton,
-    Box,
-    Chip,
-} from "@mui/material";
-import { Delete } from "@mui/icons-material";
-import { alpha } from "@mui/material/styles";
+import { Avatar, Box, Chip, Divider, IconButton, Typography } from "@mui/material";
+import { Delete, Savings } from "@mui/icons-material";
 import { useDateFormat } from "src/hooks/useDateFormat";
 import { GoalsForm } from "src/sections/settings/goals/form";
 import { Goals } from "src/types/Goals";
@@ -20,13 +12,10 @@ type GoalItemProps = {
     goal: Goals;
     envelope: Envelopes;
     onDelete: (id: string) => void;
+    hideDivider?: boolean;
 };
 
-export function GoalItem({
-    goal,
-    envelope,
-    onDelete,
-}: GoalItemProps) {
+export function GoalItem({ goal, envelope, onDelete, hideDivider }: GoalItemProps) {
     const { t } = useTranslation();
     const { symbol } = useCurrency();
     const { formatDate } = useDateFormat();
@@ -35,67 +24,61 @@ export function GoalItem({
 
     return (
         <>
-            <Card
+            <Box
+                display="flex"
+                alignItems="center"
+                gap={1.5}
+                py={1.25}
+                px={0.5}
                 onClick={() => setEditOpen(true)}
-                sx={{
-                    borderRadius: 2,
-                    boxShadow: 1,
-                    cursor: "pointer",
-                    border: (theme) => `1px solid ${theme.palette.divider}`,
-                    "&:active": (theme) => ({
-                        bgcolor: alpha(theme.palette.primary.main, 0.04),
-                    }),
-                }}
+                sx={{ cursor: "pointer" }}
             >
-                <CardContent sx={{ p: 1.5, "&:last-child": { pb: 1.5 } }}>
-                    {/* Row 1: Description + Amount */}
-                    <Box display="flex" justifyContent="space-between" alignItems="flex-start" gap={1}>
-                        <Typography
-                            variant="subtitle2"
-                            fontWeight={600}
-                            sx={{
-                                flex: 1,
-                                overflow: "hidden",
-                                textOverflow: "ellipsis",
-                                whiteSpace: "nowrap",
-                            }}
-                        >
-                            {description}
-                        </Typography>
-                        <Typography
-                            variant="subtitle2"
-                            fontWeight={700}
-                            color="primary.main"
-                            sx={{ flexShrink: 0 }}
-                        >
-                            {symbol} {amountTotal}
-                        </Typography>
-                    </Box>
+                <Avatar
+                    sx={{
+                        width: 36,
+                        height: 36,
+                        borderRadius: 1.5,
+                        bgcolor: "primary.lighter",
+                        flexShrink: 0,
+                    }}
+                >
+                    <Savings sx={{ color: "primary.main", fontSize: 16 }} />
+                </Avatar>
 
-                    {/* Row 2: Percentage + Deadline + Delete */}
-                    <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ mt: 0.5 }}>
-                        <Box display="flex" alignItems="center" gap={0.5}>
-                            <Chip
-                                label={`${percentage} %`}
-                                size="small"
-                                color="info"
-                                variant="outlined"
-                                sx={{ height: 20, fontSize: "0.675rem" }}
-                            />
-                            <Typography variant="caption" color="text.secondary">
-                                &bull; {formatDate(deadline)}
-                            </Typography>
-                        </Box>
-                        <IconButton
+                <Box flex={1} minWidth={0}>
+                    <Typography variant="subtitle2" fontWeight={600} noWrap>
+                        {description}
+                    </Typography>
+                    <Box display="flex" alignItems="center" gap={0.75} mt={0.25}>
+                        <Chip
+                            label={`${percentage} %`}
                             size="small"
-                            color="error"
-                            onClick={(e) => { e.stopPropagation(); onDelete(id); }}
-                        >
-                            <Delete fontSize="small" />
-                        </IconButton>
+                            color="info"
+                            variant="outlined"
+                            sx={{ height: 18, fontSize: "0.65rem" }}
+                        />
+                        <Typography variant="caption" color="text.secondary">
+                            {formatDate(deadline)}
+                        </Typography>
                     </Box>
-                </CardContent>
-            </Card>
+                </Box>
+
+                <Box sx={{ flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 0.25 }}>
+                    <Typography variant="subtitle2" fontWeight={700} color="primary.main">
+                        {symbol} {amountTotal}
+                    </Typography>
+                    <IconButton
+                        size="small"
+                        color="error"
+                        onClick={(e) => { e.stopPropagation(); onDelete(id); }}
+                        sx={{ p: 0.25 }}
+                    >
+                        <Delete sx={{ fontSize: 14 }} />
+                    </IconButton>
+                </Box>
+            </Box>
+
+            {!hideDivider && <Divider />}
 
             <GoalsForm
                 data={goal}

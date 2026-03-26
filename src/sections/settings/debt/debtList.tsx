@@ -1,23 +1,15 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import {
-    Typography,
-    Stack,
-    Box,
-    Fab,
-    Portal,
-} from "@mui/material";
-import { Add } from "@mui/icons-material";
-import InfiniteScroll from "react-infinite-scroll-component";
+import { useCallback, useState } from "react";
+import { Box } from "@mui/material";
 import { DebtForm } from "src/sections/settings/debt/form";
 import { DebtItem } from "src/sections/settings/debt/debtItem";
 import { Debts } from "src/types/Debts";
 import { Pagination } from "src/types/Pagination";
 import { ITable } from "src/sections/shared/useTable";
-import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
 import { Envelopes } from "src/types/Envelopes";
 import { useTranslation } from "react-i18next";
 import { useDeleteDebts } from "src/hooks/mutations/debts/useDeleteDebts";
 import AddButton from "src/components/addButton/addButton";
+import { InfiniteList } from "src/components/infiniteList/InfiniteList";
 
 type DebtListProps = {
     debts: Pagination<Debts> | undefined;
@@ -25,147 +17,46 @@ type DebtListProps = {
     envelopes: Envelopes[];
 };
 
-export function DebtList({
-    debts,
-    table,
-    envelopes,
-}: DebtListProps) {
+export function DebtList({ debts, table, envelopes }: DebtListProps) {
     const { t } = useTranslation();
-
     const [addFormOpen, setAddFormOpen] = useState(false);
 
-    const [allItems, setAllItems] = useState<Debts[]>([]);
-    const [hasMore, setHasMore] = useState(true);
-    const [isResetting, setIsResetting] = useState(false);
-
-    const containerRef = useRef<HTMLDivElement | null>(null);
-    const lastProcessedPage = useRef<number>(-1);
-
     const deleteDebtMutation = useDeleteDebts();
-
     const DeleteDebt = useCallback(
         (id: string) => deleteDebtMutation.mutate(id),
         [deleteDebtMutation]
     );
 
-    // Process incoming data
-    useEffect(() => {
-        if (!debts) return;
-
-        const page = table.page;
-
-        if (isResetting) {
-            if (page !== 0) return;
-            setIsResetting(false);
-        }
-
-        const pageItems = debts.data || [];
-        const totalPages = debts.totalPages ?? 1;
-
-        if (page === 0) {
-            setAllItems(pageItems);
-            lastProcessedPage.current = 0;
-        } else if (page > lastProcessedPage.current) {
-            setAllItems(prev => {
-                const existingIds = new Set(prev.map(item => item.id));
-                const newItems = pageItems.filter(item => !existingIds.has(item.id));
-                return [...prev, ...newItems];
-            });
-            lastProcessedPage.current = page;
-        } else {
-            setAllItems(prev => {
-                const rowsPerPage = table.rowsPerPage ?? 10;
-                const keepCount = page * rowsPerPage;
-                const kept = prev.slice(0, keepCount);
-                const existingIds = new Set(kept.map(item => item.id));
-                const newItems = pageItems.filter(item => !existingIds.has(item.id));
-                return [...kept, ...newItems];
-            });
-        }
-
-        setHasMore(page + 1 < totalPages);
-    }, [debts, table.page, table.rowsPerPage, isResetting]);
-
-    const fetchMore = useCallback(() => {
-        if (hasMore) {
-            table.onChangePage(null, table.page + 1);
-        }
-    }, [hasMore, table]);
-
-    // Loading state
-    if (isResetting || (!debts && allItems.length === 0)) {
-        return (
-            <Box sx={{ p: 2, width: "100%" }}>
-                <SkeletonLoading count={3} height={100} spacing={2} />
-            </Box>
-        );
-    }
-
-    const isEmpty = allItems.length === 0 && debts && debts.data.length === 0;
-
     return (
-        <Box sx={{ width: "100%", display: "flex", flexDirection: "column", flex: 1, minHeight: 0 }}>
-            <Box
-                ref={containerRef}
-                id="debtScrollableDiv"
-                sx={{
-                    flex: 1,
-                    minHeight: 0,
-                    maxHeight: "calc(100vh - 350px)",
-                    overflow: isEmpty ? "hidden" : "scroll",
-                    WebkitOverflowScrolling: "touch",
-                    borderRadius: 2,
-                    border: (theme) => `1px solid ${theme.palette.divider}`,
-                    scrollbarWidth: "none",
-                    "&::-webkit-scrollbar": {
-                        display: "none",
-                    },
-                }}
-            >
-                {isEmpty ? (
-                    <Typography align="center" color="text.secondary" sx={{ py: 4 }}>
-                        {t('settings.debt.table.no_data')}
-                    </Typography>
-                ) : (
-                    <InfiniteScroll
-                        dataLength={allItems.length}
-                        next={fetchMore}
-                        hasMore={hasMore}
-                        loader={
-                            <Box sx={{ p: 2 }}>
-                                <SkeletonLoading count={1} height={80} />
-                            </Box>
-                        }
-                        endMessage={
-                            <Typography align="center" variant="body2" color="text.secondary" sx={{ py: 2 }}>
-                                {t('settings.debt.table.all_loaded')}
-                            </Typography>
-                        }
-                        scrollableTarget="debtScrollableDiv"
-                        scrollThreshold={0.85}
-                    >
-                        <Stack spacing={1.5} sx={{ p: 1.5 }}>
-                            {allItems.map((row) => (
-                                <DebtItem
-                                    key={row.id}
-                                    debt={row}
-                                    envelopes={envelopes}
-                                    onDelete={DeleteDebt}
-                                />
-                            ))}
-                        </Stack>
-                    </InfiniteScroll>
-                )}
-            </Box>
-
-            <AddButton onClick={() => setAddFormOpen(true)} />
-
-            <DebtForm
-                buttonLabel=""
-                envelopes={envelopes}
-                externalOpen={addFormOpen}
-                onExternalClose={() => setAddFormOpen(false)}
-            />
-        </Box>
+        <InfiniteList
+            pagination={debts}
+            table={table}
+            scrollId="debtScrollableDiv"
+            emptyText={t('settings.debt.table.no_data')}
+            allLoadedText={t('settings.debt.table.all_loaded')}
+            renderList={(items) => (
+                <Box sx={{ px: 1.5, py: 1 }}>
+                    {items.map((row, index) => (
+                        <DebtItem
+                            key={row.id}
+                            debt={row}
+                            envelopes={envelopes}
+                            onDelete={DeleteDebt}
+                        />
+                    ))}
+                </Box>
+            )}
+            footer={
+                <>
+                    <AddButton onClick={() => setAddFormOpen(true)} />
+                    <DebtForm
+                        buttonLabel=""
+                        envelopes={envelopes}
+                        externalOpen={addFormOpen}
+                        onExternalClose={() => setAddFormOpen(false)}
+                    />
+                </>
+            }
+        />
     );
 }

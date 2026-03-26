@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { DashboardContent } from "src/layouts/dashboard";
 import { IncomesDisplay } from "src/sections/incomes/IncomesDisplay";
 import { ITable } from "src/sections/shared/useTable";
