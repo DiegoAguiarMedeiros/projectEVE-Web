@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { Card, TableContainer, Table, TableBody, TablePagination, TableRow, TableCell } from "@mui/material";
 import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
 import { useTable } from "src/sections/shared/useTable";
@@ -22,11 +22,6 @@ type CreditCardsTableProps = {
 export function CreditCardsTable({ creditCards }: CreditCardsTableProps) {
     const { t } = useTranslation();
     const table = useTable();
-
-    useEffect(() => {
-        console.info("table.page", table.page)
-        console.info("table.rowsPerPage", table.rowsPerPage)
-    }, [table.page, table.rowsPerPage])
 
     const deleteCreditCardsMutation = useDeleteCreditCards();
     const deleteAllCreditCardsMutation = useDeleteAllCreditCards();

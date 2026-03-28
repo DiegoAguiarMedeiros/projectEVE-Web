@@ -41,12 +41,6 @@ export function InfiniteList<T extends { id: string }>({
     const [hasMore, setHasMore] = useState(table.page + 1 < (pagination?.totalPages ?? 1));
     const [isResetting, setIsResetting] = useState(false);
 
-    console.log("InfiniteList table", table)
-    console.log("InfiniteList pagination", pagination)
-    console.log("InfiniteList table.page + 1", table.page + 1)
-    console.log("InfiniteList pagination?.totalPages ?? 1", pagination?.totalPages ?? 1)
-    console.log("InfiniteList hasMore", hasMore)
-
     const containerRef = useRef<HTMLDivElement | null>(null);
     const lastProcessedPage = useRef<number>(-1);
 
@@ -127,10 +121,6 @@ export function InfiniteList<T extends { id: string }>({
     }
 
     const isEmpty = allItems.length === 0 && pagination && pagination.data.length === 0;
-    console.log("InfiniteList resetKey", resetKey)
-    console.log("InfiniteList allItems.length", allItems.length)
-    console.log("InfiniteList hasMore", hasMore)
-    console.log("InfiniteList scrollId", scrollId)
     return (
         <Box sx={{ width: "100%", display: "flex", flexDirection: "column", flex: 1, minHeight: 0 }}>
             {header}

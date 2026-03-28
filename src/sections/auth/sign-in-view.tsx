@@ -72,10 +72,6 @@ export function SignInView() {
         helperText={error && !isEmailNotVerified ? t(errorKey ?? 'auth.login_error') : ""}
       />
 
-      <Link variant="body2" color="inherit" sx={{ mb: 1.5 }}>
-        {t('auth.forgot_password')}
-      </Link>
-
       <TextField
         fullWidth
         name="password"
@@ -96,6 +92,10 @@ export function SignInView() {
         }}
         sx={{ mb: 3 }}
       />
+
+      <Link variant="body2" color="inherit" sx={{ mb: 1.5 }}>
+        {t('auth.forgot_password')}
+      </Link>
 
       <Button
         fullWidth

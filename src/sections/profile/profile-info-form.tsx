@@ -80,6 +80,7 @@ export function ProfileInfoForm({ sx }: Pick<CardProps, 'sx'>) {
                         variant="contained"
                         loading={isPending}
                         onClick={handleSubmit}
+                        sx={{ width: { xs: '100%', sm: 'auto' } }}
                     >
                         Salvar Alterações
                     </Button>

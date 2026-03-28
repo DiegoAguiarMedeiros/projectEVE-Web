@@ -130,7 +130,7 @@ export function CreditCardForm({ buttonLabel, buttonIcon, data, externalOpen, on
                 </Button>
             }
 
-            okButton={<Button type="submit" variant="outlined" color="primary" onClick={handleSubmit} disabled={isPending} >{t('common.add')}</Button>
+            okButton={<Button type="submit" variant="contained" color="primary" onClick={handleSubmit} disabled={isPending} loading={isPending}>{data ? t('common.save') : t('common.add')}</Button>
             }>
             <Box
                 gap={1.5}
@@ -167,7 +167,7 @@ export function CreditCardForm({ buttonLabel, buttonIcon, data, externalOpen, on
                         onChange={handleSelectChange}
                     >
                         {allFlags.map((f) => (
-                            <MenuItem value={f}>{f}</MenuItem>
+                            <MenuItem key={f} value={f}>{f}</MenuItem>
                         ))}
                     </Select>
                 </FormControl>

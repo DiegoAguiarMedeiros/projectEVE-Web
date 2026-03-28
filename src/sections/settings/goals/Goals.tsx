@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { Card, TableContainer, Table, TableBody, TablePagination, TableRow, TableCell } from "@mui/material";
 import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
 import { useDateFormat } from "src/hooks/useDateFormat";
@@ -27,11 +27,6 @@ export function GoalsTable({ goals, envelope }: GoalsTableProps) {
     const { symbol } = useCurrency();
     const { formatDate } = useDateFormat();
     const table = useTable();
-
-    useEffect(() => {
-        console.info("table.page", table.page)
-        console.info("table.rowsPerPage", table.rowsPerPage)
-    }, [table.page, table.rowsPerPage])
 
     const deleteGoalsMutation = useDeleteGoals();
     const deleteAllGoalsMutation = useDeleteAllGoals();

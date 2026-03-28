@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { Card, TableContainer, Table, TableBody, TablePagination, TableRow, TableCell } from "@mui/material";
 import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
 import { useTable } from "src/sections/shared/useTable";
@@ -27,11 +27,6 @@ export function DebtTable({ debts, envelopes }: DebtsTableProps) {
     const { t } = useTranslation();
     const { symbol } = useCurrency();
     const table = useTable();
-
-    useEffect(() => {
-        console.info("table.page", table.page)
-        console.info("table.rowsPerPage", table.rowsPerPage)
-    }, [table.page, table.rowsPerPage])
 
     const deleteDebtMutation = useDeleteDebts();
     const deleteAllDebtsMutation = useDeleteAllDebts();

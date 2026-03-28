@@ -185,7 +185,7 @@ export function IncomeForm({ buttonLabel, buttonIcon, data, envelopes, externalO
                 </Button>
             }
 
-            okButton={<Button type="submit" variant="outlined" color="primary" onClick={handleSubmit} disabled={isPending} >{t('common.add')}</Button>
+            okButton={<Button type="submit" variant="contained" color="primary" onClick={handleSubmit} disabled={isPending} loading={isPending}>{data ? t('common.save') : t('common.add')}</Button>
             }>
             <Box
                 gap={1.5}

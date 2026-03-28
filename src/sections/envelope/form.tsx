@@ -197,7 +197,7 @@ export function TransactionForm({ buttonLabel, buttonIcon, data, envelopeId, all
                     disabled={isPending}
                     loading={isPending}
                 >
-                    {t('common.add')}
+                    {data ? t('common.save') : t('common.add')}
                 </Button>
             }>
             <Box

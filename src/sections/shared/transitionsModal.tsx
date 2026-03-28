@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -31,6 +32,12 @@ type TransitionsModalProps = {
 
 export default function TransitionsModal({ openButton, okButton, children, open, handleOpen, handleClose, width }: React.PropsWithChildren<TransitionsModalProps>) {
 
+  useEffect(() => {
+    if (open && document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+  }, [open]);
+
   return (
     <>
       {openButton}
@@ -58,7 +65,7 @@ export default function TransitionsModal({ openButton, okButton, children, open,
               gap={2}
               sx={{ width: "100%", mt: 3 }}
             >
-              <Button variant="text" color="inherit" onClick={handleClose}>Fechar</Button>
+              <Button variant="outlined" color="inherit" onClick={handleClose}>Fechar</Button>
 
               {okButton}
             </Box>

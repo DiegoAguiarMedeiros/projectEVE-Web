@@ -30,7 +30,6 @@ export function EnvelopesTable({ envelopes }: EnvelopesProps) {
 
 
     const handleActiveEnvelope = (envelope: Envelopes) => {
-        console.log("envelope", envelope)
         setEnvelopeActive(envelope);
         handleOpen()
     }

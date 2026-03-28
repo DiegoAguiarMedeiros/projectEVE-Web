@@ -33,8 +33,6 @@ export default function Page() {
       </>
     );
   }
-  console.log(`Configurações - ${CONFIG.appName} envelopes`, envelopes);
-
   return (
     <>
       <title> {`Configurações - ${CONFIG.appName}`}</title>
