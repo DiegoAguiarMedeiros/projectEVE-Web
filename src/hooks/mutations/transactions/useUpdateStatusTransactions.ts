@@ -13,6 +13,7 @@ export function useUpdateStatusTransactions() {
       enqueueSnackbar(t("notifications.transactions.updated"), { autoHideDuration: 3000, variant: "success", anchorOrigin: { horizontal: "right", vertical: "bottom" } });
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
       queryClient.invalidateQueries({ queryKey: ["envelopes"] });
+      queryClient.invalidateQueries({ queryKey: ["envelopes", "with-amount"] });
       queryClient.invalidateQueries({ queryKey: ["upcoming-pending"] });
       queryClient.invalidateQueries({ queryKey: ["debts"] });
     },
