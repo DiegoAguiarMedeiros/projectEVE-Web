@@ -34,6 +34,7 @@ export function DebtsDisplay({
         <DebtTable
             debts={debts}
             envelopes={envelopes}
+            table={table}
         />
     );
 }

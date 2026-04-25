@@ -3,6 +3,7 @@ export interface AnalyticsCurrentEnvelopes {
   colors: string[];
   values: number[];
   subValues: number[];
+  pureValues: number[];
 }
 
 export interface AnalyticsEnvelopesByYear {

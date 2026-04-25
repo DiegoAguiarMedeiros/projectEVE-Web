@@ -34,6 +34,7 @@ export function GoalsDisplay({
         <GoalsTable
             goals={goals}
             envelope={envelope}
+            table={table}
         />
     );
 }

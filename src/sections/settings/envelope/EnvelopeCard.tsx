@@ -92,7 +92,7 @@ export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({ envelope, handleActi
                         textAlign: 'center'
                     }}
                 >
-                    {envelope.percentage}%
+                    {parseFloat(envelope.percentage.toFixed(2))}%
                 </Typography>
             </Box>
         </Box>

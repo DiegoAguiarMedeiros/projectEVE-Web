@@ -67,7 +67,9 @@
       "update_error": "Error updating envelope",
       "not_found": "Envelope not found",
       "name_cannot_be_changed": "The envelope name cannot be changed",
-      "exceeds_percentage": "The total envelope percentage would exceed 100%"
+      "exceeds_percentage": "The total envelope percentage would exceed 100%",
+      "not_distributed": "Envelopes must be 100% distributed before proceeding",
+      "below_minimum_percentage": "The percentage is below the minimum required to cover the fixed expenses of this envelope"
     }
   },
   "nav": {
@@ -511,8 +513,21 @@
     "errors": {
       "email_already_exists": "This email is already registered",
       "invalid_or_expired_token": "The verification link is invalid or has expired.",
-      "email_not_verified": "Your email has not been confirmed yet. A new verification link has been sent to your email."
+      "email_not_verified": "Your email has not been confirmed yet. A new verification link has been sent to your email.",
+      "reset_token_invalid_or_expired": "The password reset link is invalid or has expired."
     },
+    "forgot_password_title": "Forgot your password?",
+    "forgot_password_subtitle": "Enter your email and we'll send you a link to reset your password.",
+    "forgot_password_success_title": "Email sent!",
+    "forgot_password_success_message": "If that email is registered, you'll receive a password reset link shortly.",
+    "send_reset_link": "Send reset link",
+    "reset_password_title": "Reset password",
+    "reset_password_subtitle": "Create a new password for your account.",
+    "new_password": "New password",
+    "confirm_new_password": "Confirm new password",
+    "reset_password_button": "Reset password",
+    "reset_password_success_title": "Password reset!",
+    "reset_password_success_message": "Your password has been changed successfully.",
     "verify_email": {
       "verifying": "Verifying your email...",
       "success_title": "Email verified!",
@@ -541,6 +556,7 @@
     "continue": "Continue",
     "finish": "Finish",
     "allocation_error": "Envelope allocation must be exactly 100% to complete registration.",
+    "allocation_warning": "To finish, your Limits (envelopes) allocation must be exactly 100%.",
     "finish_tooltip": "To finish, configure your My Limits (envelopes) so that the allocation is exactly 100%."
   },
   "notifications": {

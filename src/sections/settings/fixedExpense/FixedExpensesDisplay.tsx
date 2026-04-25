@@ -34,6 +34,7 @@ export function FixedExpensesDisplay({
         <FixedExpenseTable
             fixedExpenses={fixedExpenses}
             envelopes={envelopes}
+            table={table}
         />
     );
 }

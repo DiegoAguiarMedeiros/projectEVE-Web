@@ -61,8 +61,11 @@ export function IncomeTable({ processedIncomes, totalProcessedIncomes, table, en
         const handleDeleteIncome = () => {
             deleteIncome(id)
         }
-        const { description, totalIncomeProcessed, day: incomeDay, month: incomeMonth, year: incomeYear, isSplitted, } = row;
+        const { description, totalIncomeProcessed, day: incomeDay, month: incomeMonth, year: incomeYear, isSplitted, envelopeId } = row;
 
+        const envelopeLabel = isSplitted
+            ? t('income.table.all')
+            : (envelopes.find(e => e.id === envelopeId)?.name ? t(envelopes.find(e => e.id === envelopeId)!.name) : t('income.table.one'));
 
         // const handleClick = (incomesId: string, newStatus: IncomesStatus) => {
         //     // UpdateStatusIncome({
@@ -74,7 +77,7 @@ export function IncomeTable({ processedIncomes, totalProcessedIncomes, table, en
             key={id}
             selected={table.selected.includes(id)}
             onSelectRow={() => table.onSelectRow(id)}
-            rowKeys={[description, fCurrency(totalIncomeProcessed), formatDate(`${incomeYear}-${incomeMonth}-${incomeDay}`), isSplitted ? t('income.table.all') : t('income.table.one')]}
+            rowKeys={[description, fCurrency(totalIncomeProcessed), formatDate(`${incomeYear}-${incomeMonth}-${incomeDay}`), envelopeLabel]}
             form={<IncomeForm envelopes={envelopes}
                 data={row}
                 buttonIcon={<Iconify icon="solar:pen-bold" />}

@@ -38,7 +38,7 @@ export function IncomeForm({ buttonLabel, buttonIcon, data, envelopes, externalO
     useEffect(() => {
         if (externalOpen) setOpen(true);
     }, [externalOpen]);
-    const [envelope, setEnvelope] = useState(data ? data.envelope : "");
+    const [envelopeId, setEnvelopeId] = useState(data ? data.envelopeId ?? "" : "");
     const [description, setDescription] = useState(data ? data.description : "");
     const [isSplitted, setIsSplitted] = useState(data ? data.isSplitted : "");
     const [totalIncomeProcessed, setTotalIncomeProcessed] = useState(data ? data.totalIncomeProcessed : "");
@@ -80,21 +80,21 @@ export function IncomeForm({ buttonLabel, buttonIcon, data, envelopes, externalO
                     id: data.id,
                     description: processedIncomes.description,
                     totalIncomeProcessed: processedIncomes.totalIncomeProcessed,
-                    envelope: isSplitted ? processedIncomes.envelope : undefined,
+                    envelopeId: !isSplitted ? processedIncomes.envelopeId : undefined,
                     day: processedIncomes.day,
                     month: processedIncomes.month,
                     year: processedIncomes.year,
-                    isSplitted: processedIncomes.isSplitted,
+                    isSplitted: !!isSplitted,
                 });
             } else {
                 await createMutation.mutateAsync({
                     description: processedIncomes.description,
                     totalIncomeProcessed: processedIncomes.totalIncomeProcessed,
-                    envelope: isSplitted ? processedIncomes.envelope : undefined,
+                    envelopeId: !isSplitted ? processedIncomes.envelopeId : undefined,
                     day: processedIncomes.day,
                     month: processedIncomes.month,
                     year: processedIncomes.year,
-                    isSplitted: processedIncomes.isSplitted,
+                    isSplitted: !!isSplitted,
                 });
             }
 
@@ -113,10 +113,11 @@ export function IncomeForm({ buttonLabel, buttonIcon, data, envelopes, externalO
                 submitAction({
                     description,
                     totalIncomeProcessed,
+                    envelopeId,
                     day,
                     month: isDayOnly ? String(fixedMonth) : month,
                     year: isDayOnly ? String(fixedYear) : year,
-                    isSplitted: true
+                    isSplitted: !!isSplitted
                 });
             });
         }
@@ -161,7 +162,7 @@ export function IncomeForm({ buttonLabel, buttonIcon, data, envelopes, externalO
     }, [totalIncomeProcessed, t]);
 
     const handleSelectChange = (event: SelectChangeEvent<string>) => {
-        setEnvelope(event.target.value);
+        setEnvelopeId(event.target.value);
     };
 
 
@@ -255,7 +256,7 @@ export function IncomeForm({ buttonLabel, buttonIcon, data, envelopes, externalO
                         <FormControl fullWidth sx={{ border: '1px solid', borderColor: (theme) => theme.palette.divider, borderRadius: '8px', p: 2, mb: 3 }}>
                             <FormLabel>{t('income.split')}</FormLabel>
                             <Box sx={{ display: 'flex', width: '100%', gap: '8px', mt: 3 }}>
-                                <Button fullWidth variant={!isSplitted ? "outlined" : "contained"} color="primary" onClick={() => setIsSplitted(true)} >{t('income.yes')}</Button>
+                                <Button fullWidth variant={!isSplitted ? "outlined" : "contained"} color="primary" onClick={() => { setIsSplitted(true); setEnvelopeId(""); }} >{t('income.yes')}</Button>
                                 <Button fullWidth variant={isSplitted ? "outlined" : "contained"} color="primary" onClick={() => setIsSplitted(false)} >{t('income.no')}</Button>
                             </Box>
                         </FormControl>
@@ -267,11 +268,11 @@ export function IncomeForm({ buttonLabel, buttonIcon, data, envelopes, externalO
                                 label={t('income.table.headers.envelope')}
                                 sx={{ width: "100%", mb: 3 }}
                                 name="envelope"
-                                value={envelope}
+                                value={envelopeId}
                                 onChange={handleSelectChange}
                             >
                                 {envelopes.map((f, index) => (
-                                    <MenuItem key={index} value={f.id}>{f.name}</MenuItem>
+                                    <MenuItem key={index} value={f.id}>{t(f.name)}</MenuItem>
                                 ))}
                             </Select>
                         </FormControl>}

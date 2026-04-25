@@ -44,8 +44,10 @@ export function DebtInstallmentsModal({ debt, open, onClose }: DebtInstallmentsM
     const remainingValue = totalValue - paidValue;
 
     const getStatus = (index: number) => {
-        if (index < effectivePaid) return "paid";
-        if (index === effectivePaid) return "current";
+        if (effectivePaid >= totalInstallments) return "paid";
+        if (effectivePaid === 0) return "future";
+        if (index < effectivePaid - 1) return "paid";
+        if (index === effectivePaid - 1) return "current";
         return "future";
     };
 

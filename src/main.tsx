@@ -6,7 +6,7 @@ import { SnackbarProvider } from "notistack";
 
 import App from "src/app";
 import "./i18n";
-import { SUPPORTED_LANGS, SupportedLang } from "src/routes/paths";
+import { SUPPORTED_LANGS, SupportedLang, DEFAULT_LANG } from "src/routes/paths";
 
 // ----------------------------------------------------------------------
 
@@ -34,8 +34,9 @@ function detectInitialLang(): SupportedLang {
 
 // Redirect bare "/" to "/:lang" before React mounts, so useRoutes always
 // sees a language-prefixed URL and never falls through to the catch-all.
-if (window.location.pathname === "/") {
-  window.history.replaceState(null, "", `/${detectInitialLang()}`);
+const initialLang = detectInitialLang();
+if (window.location.pathname === "/" && initialLang !== DEFAULT_LANG) {
+  window.history.replaceState(null, "", `/${initialLang}`);
 }
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);

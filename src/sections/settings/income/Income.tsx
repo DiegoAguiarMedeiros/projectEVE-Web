@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { Card, TableContainer, Table, TableBody, TablePagination, TableRow, TableCell, Box } from "@mui/material";
-import { useTable } from "src/sections/shared/useTable";
+import { ITable } from "src/sections/shared/useTable";
 import { TableNoData } from "src/components/table/TableNoData";
 import { CustomTableRow } from "src/components/table/TableRow";
 import { Iconify } from "src/components/iconify";
@@ -18,12 +18,12 @@ import { useCurrency } from "src/hooks/useCurrency";
 
 type IncomeTableProps = {
     incomes: Pagination<Incomes> | undefined
+    table: ITable
 }
 
-export function IncomeTable({ incomes }: IncomeTableProps) {
+export function IncomeTable({ incomes, table }: IncomeTableProps) {
     const { t } = useTranslation();
     const { symbol } = useCurrency();
-    const table = useTable();
 
     const deleteIncomesMutation = useDeleteIncomes();
     const deleteAllIncomesMutation = useDeleteAllIncomes();

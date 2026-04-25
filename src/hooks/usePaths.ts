@@ -20,6 +20,8 @@ export function usePaths(): Paths {
     signIn: getPath(lang, 'signIn'),
     registration: getPath(lang, 'registration'),
     verifyEmail: getPath(lang, 'verifyEmail'),
+    forgotPassword: getPath(lang, 'forgotPassword'),
+    resetPassword: getPath(lang, 'resetPassword'),
     notFound: getPath(lang, 'notFound'),
   };
 }

@@ -67,7 +67,9 @@
       "update_error": "Error al actualizar el sobre",
       "not_found": "Sobre no encontrado",
       "name_cannot_be_changed": "El nombre del sobre no puede modificarse",
-      "exceeds_percentage": "El porcentaje total de los sobres superaría el 100%"
+      "exceeds_percentage": "El porcentaje total de los sobres superaría el 100%",
+      "not_distributed": "Los sobres deben estar distribuidos al 100% antes de continuar",
+      "below_minimum_percentage": "El porcentaje es menor que el mínimo requerido para cubrir los gastos fijos de este sobre"
     }
   },
   "nav": {
@@ -513,8 +515,21 @@
     "errors": {
       "email_already_exists": "Este correo electrónico ya está registrado",
       "invalid_or_expired_token": "El enlace de verificación es inválido o ha expirado.",
-      "email_not_verified": "Tu correo electrónico aún no ha sido confirmado. Se ha enviado un nuevo enlace de verificación a tu correo."
+      "email_not_verified": "Tu correo electrónico aún no ha sido confirmado. Se ha enviado un nuevo enlace de verificación a tu correo.",
+      "reset_token_invalid_or_expired": "El enlace de restablecimiento de contraseña es inválido o ha expirado."
     },
+    "forgot_password_title": "¿Olvidaste tu contraseña?",
+    "forgot_password_subtitle": "Ingresa tu correo y te enviaremos un enlace para restablecer tu contraseña.",
+    "forgot_password_success_title": "¡Correo enviado!",
+    "forgot_password_success_message": "Si ese correo está registrado, recibirás un enlace de restablecimiento en breve.",
+    "send_reset_link": "Enviar enlace de restablecimiento",
+    "reset_password_title": "Restablecer contraseña",
+    "reset_password_subtitle": "Crea una nueva contraseña para tu cuenta.",
+    "new_password": "Nueva contraseña",
+    "confirm_new_password": "Confirmar nueva contraseña",
+    "reset_password_button": "Restablecer contraseña",
+    "reset_password_success_title": "¡Contraseña restablecida!",
+    "reset_password_success_message": "Tu contraseña ha sido cambiada con éxito.",
     "verify_email": {
       "verifying": "Verificando tu correo electrónico...",
       "success_title": "¡Correo verificado!",
@@ -543,6 +558,7 @@
     "continue": "Continuar",
     "finish": "Finalizar",
     "allocation_error": "La asignación de los sobres debe ser exactamente 100% para completar el registro.",
+    "allocation_warning": "Para finalizar, la asignación de sus Límites (sobres) debe ser exactamente 100%.",
     "finish_tooltip": "Para finalizar, configure sus Mis Límites (sobres) para que la asignación sea exactamente 100%."
   },
   "notifications": {

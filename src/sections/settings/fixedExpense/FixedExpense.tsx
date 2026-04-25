@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { Card, TableContainer, Table, TableBody, TablePagination, TableRow, TableCell } from "@mui/material";
 import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
-import { useTable } from "src/sections/shared/useTable";
+import { ITable } from "src/sections/shared/useTable";
 import { TableNoData } from "src/components/table/TableNoData";
 import { CustomTableRow } from "src/components/table/TableRow";
 import { Iconify } from "src/components/iconify";
@@ -20,10 +20,10 @@ import { fCurrency } from "src/utils/format-number";
 type FixedExpenseTableProps = {
     envelopes: Envelopes[];
     fixedExpenses: Pagination<FixedExpenses> | undefined
+    table: ITable
 }
-export function FixedExpenseTable({ envelopes, fixedExpenses }: FixedExpenseTableProps) {
+export function FixedExpenseTable({ envelopes, fixedExpenses, table }: FixedExpenseTableProps) {
     const { t } = useTranslation();
-    const table = useTable();
 
 
     const deleteFixedExpenseMutation = useDeleteFixedExpenses();

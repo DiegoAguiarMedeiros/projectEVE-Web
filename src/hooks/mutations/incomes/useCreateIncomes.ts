@@ -22,5 +22,13 @@ export function useCreateIncomes() {
         queryClient.invalidateQueries({ queryKey: ["envelopes"] });
       }, 1000);
     },
+    onError: (error: any) => {
+      const key = error?.response?.data?.message ?? "errors.unexpected";
+      enqueueSnackbar(t(key), {
+        autoHideDuration: 4000,
+        variant: "error",
+        anchorOrigin: { horizontal: "right", vertical: "bottom" },
+      });
+    },
   });
 }

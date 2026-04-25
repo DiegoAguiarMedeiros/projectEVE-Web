@@ -40,7 +40,7 @@ export function AnalyticsConversionRates({ title, subheader, chart, ...other }: 
       shared: true,
       intersect: false,
       y: {
-        formatter: (value: number) => fNumber(value),
+        formatter: (value: number) => fNumber(value, { minimumFractionDigits: 2 }),
         title: { formatter: (seriesName: string) => `${seriesName}: ` },
       },
     },

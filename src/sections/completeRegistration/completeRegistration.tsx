@@ -10,7 +10,7 @@ import Stepper from "@mui/material/Stepper";
 import StepLabel from "@mui/material/StepLabel";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { Alert, Tooltip, useMediaQuery } from "@mui/material";
+import { Alert, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { ChipTabs } from "src/components/chip-tabs";
 
@@ -34,11 +34,11 @@ import { IncomeStore } from "src/store/useIncomeStore";
 
 const STEP_KEYS = [
   "complete_registration.steps.income",
-  "complete_registration.steps.debts",
-  "complete_registration.steps.envelopes",
-  "complete_registration.steps.goals",
   "complete_registration.steps.fixed_expenses",
+  "complete_registration.steps.debts",
   "complete_registration.steps.credit_cards",
+  "complete_registration.steps.goals",
+  "complete_registration.steps.envelopes",
 ];
 
 export function CompleteRegistrationView() {
@@ -71,21 +71,16 @@ export function CompleteRegistrationView() {
   const { data: debts } = useListDebts(table);
   const { data: creditCards } = useListCreditCards(table);
 
-  const [allocationError, setAllocationError] = React.useState(false);
-
   const envelopeAllocation = React.useMemo(() => {
     if (!envelopes) return 0;
     return envelopes.reduce((acc, item) => acc + item.percentage, 0);
   }, [envelopes]);
 
   const canFinish = envelopeAllocation === 100;
+  const isLastStep = activeStep === steps.length - 1;
 
   const handleFinish = () => {
-    if (!canFinish) {
-      setAllocationError(true);
-      return;
-    }
-    setAllocationError(false);
+    if (!canFinish) return;
     completeRegistration();
   };
 
@@ -105,15 +100,15 @@ export function CompleteRegistrationView() {
         case 0:
           return <IncomesDisplay incomes={incomes} table={table} />;
         case 1:
-          return <DebtsDisplay debts={debts} envelopes={envelopes || []} table={table} />;
-        case 2:
-          return <EnvelopesTable envelopes={envelopes || []} />;
-        case 3:
-          return <GoalsDisplay goals={goals} envelope={(envelopes || []).filter(e => e.name === 'goals')[0]} table={table} />;
-        case 4:
           return <FixedExpensesDisplay fixedExpenses={fixedExpenses} envelopes={envelopes || []} table={table} />;
-        case 5:
+        case 2:
+          return <DebtsDisplay debts={debts} envelopes={envelopes || []} table={table} />;
+        case 3:
           return <CreditCardsDisplay creditCards={creditCards} table={table} />;
+        case 4:
+          return <GoalsDisplay goals={goals} envelope={(envelopes || []).filter(e => e.name === 'goals')[0]} table={table} />;
+        case 5:
+          return <EnvelopesTable envelopes={envelopes || []} />;
         default:
           return null;
       }
@@ -121,31 +116,51 @@ export function CompleteRegistrationView() {
 
     switch (activeStep) {
       case 0:
-        return <IncomeTable incomes={incomes} />;
+        return <IncomeTable incomes={incomes} table={table} />;
       case 1:
-        return <DebtTable debts={debts} envelopes={envelopes || []} />;
+        return <FixedExpenseTable fixedExpenses={fixedExpenses} envelopes={envelopes || []} table={table} />;
       case 2:
-        return <EnvelopesTable envelopes={envelopes || []} />;
+        return <DebtTable debts={debts} envelopes={envelopes || []} table={table} />;
       case 3:
-        return <GoalsTable goals={goals} envelope={(envelopes || []).filter(e => e.name === 'goals')[0]} />;
+        return <CreditCardsTable creditCards={creditCards} table={table} />;
       case 4:
-        return <FixedExpenseTable fixedExpenses={fixedExpenses} envelopes={envelopes || []} />;
+        return <GoalsTable goals={goals} envelope={(envelopes || []).filter(e => e.name === 'goals')[0]} table={table} />;
       case 5:
-        return <CreditCardsTable creditCards={creditCards} />;
+        return <EnvelopesTable envelopes={envelopes || []} />;
       default:
         return null;
     }
   };
 
   return (
-    <Container sx={{ py: isMobile ? 2 : 5, px: isMobile ? 1 : 3 }}>
-      <Box display="flex" flexDirection="column" alignItems="center" sx={{ width: "100%", minWidth: 0 }}>
-        <Typography variant="h4" sx={{ mb: 1 }}>
+    <Container
+      sx={{
+        flex: 1,
+        minHeight: 0,
+        display: "flex",
+        flexDirection: "column",
+        py: isMobile ? 1 : 2,
+        px: isMobile ? 1 : 3,
+      }}
+    >
+      {/* Header fixo */}
+      <Box sx={{ flexShrink: 0, width: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <Typography variant="h4" sx={{ mb: 0.5 }}>
           {t('complete_registration.title')}
         </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 4 }}>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5 }}>
           {t('complete_registration.subtitle')}
         </Typography>
+
+        {!canFinish && (
+          <Alert
+            severity="warning"
+            variant="filled"
+            sx={{ mb: 2, width: "100%", fontSize: "0.95rem", fontWeight: 600 }}
+          >
+            {t('complete_registration.allocation_warning')}
+          </Alert>
+        )}
 
         {isMobile ? (
           <Box sx={{ width: "100%", mb: 2 }}>
@@ -156,7 +171,7 @@ export function CompleteRegistrationView() {
             />
           </Box>
         ) : (
-          <Stepper activeStep={activeStep} sx={{ width: "100%", mb: 5 }}>
+          <Stepper activeStep={activeStep} sx={{ width: "100%", mb: 3 }}>
             {steps.map((label) => (
               <Step key={label}>
                 <StepLabel>{label}</StepLabel>
@@ -164,49 +179,40 @@ export function CompleteRegistrationView() {
             ))}
           </Stepper>
         )}
+      </Box>
 
-        <Box sx={{ width: "100%", minHeight: 400 }}>
-          {renderContent()}
+      {/* Conteúdo com scroll interno */}
+      <Box sx={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column", width: "100%" }}>
+        {renderContent()}
+      </Box>
 
-          {allocationError && (
-            <Alert severity="error" sx={{ mt: 2, width: "100%" }} onClose={() => setAllocationError(false)}>
-              {t('complete_registration.allocation_error')}
-            </Alert>
-          )}
+      {/* Botões sempre visíveis */}
+      <Box sx={{ flexShrink: 0, display: "flex", justifyContent: "space-between", pt: 2, width: "100%" }}>
+        <Button
+          disabled={activeStep === 0 || isPending}
+          onClick={handleBack}
+          variant="outlined"
+          color="inherit"
+        >
+          {t('complete_registration.back')}
+        </Button>
 
-          <Box sx={{ display: "flex", justifyContent: "space-between", mt: 4 }}>
-            <Button
-              disabled={activeStep === 0 || isPending}
-              onClick={handleBack}
-              variant="outlined"
-              color="inherit"
-            >
-              {t('complete_registration.back')}
+        <Box sx={{ display: "flex", gap: 1 }}>
+          {!isLastStep && (
+            <Button variant="outlined" onClick={handleNext} disabled={isPending}>
+              {t('complete_registration.continue')}
             </Button>
-
-            <Box sx={{ display: "flex", gap: 1 }}>
-              {activeStep < steps.length - 1 && (
-                <Button variant="outlined" onClick={handleNext} disabled={isPending}>
-                  {t('complete_registration.continue')}
-                </Button>
-              )}
-              <Tooltip
-                title={!canFinish ? t('complete_registration.finish_tooltip') : ''}
-                arrow
-              >
-                <span>
-                  <Button
-                    variant="contained"
-                    onClick={handleFinish}
-                    disabled={!canFinish || isPending}
-                    loading={isPending}
-                  >
-                    {t('complete_registration.finish')}
-                  </Button>
-                </span>
-              </Tooltip>
-            </Box>
-          </Box>
+          )}
+          {isLastStep && (
+            <Button
+              variant="contained"
+              onClick={handleFinish}
+              disabled={!canFinish || isPending}
+              loading={isPending}
+            >
+              {t('complete_registration.finish')}
+            </Button>
+          )}
         </Box>
       </Box>
     </Container>

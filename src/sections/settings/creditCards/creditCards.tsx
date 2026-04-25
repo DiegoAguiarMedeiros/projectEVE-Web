@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { Card, TableContainer, Table, TableBody, TablePagination, TableRow, TableCell } from "@mui/material";
 import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
-import { useTable } from "src/sections/shared/useTable";
+import { ITable } from "src/sections/shared/useTable";
 import { TableNoData } from "src/components/table/TableNoData";
 import { CustomTableRow } from "src/components/table/TableRow";
 import { Iconify } from "src/components/iconify";
@@ -17,11 +17,11 @@ import { useTranslation } from "react-i18next";
 
 type CreditCardsTableProps = {
     creditCards: Pagination<CreditCards> | undefined
+    table: ITable
 }
 
-export function CreditCardsTable({ creditCards }: CreditCardsTableProps) {
+export function CreditCardsTable({ creditCards, table }: CreditCardsTableProps) {
     const { t } = useTranslation();
-    const table = useTable();
 
     const deleteCreditCardsMutation = useDeleteCreditCards();
     const deleteAllCreditCardsMutation = useDeleteAllCreditCards();

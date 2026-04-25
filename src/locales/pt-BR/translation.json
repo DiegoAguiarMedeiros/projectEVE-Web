@@ -68,7 +68,9 @@
       "update_error": "Erro ao atualizar o envelope",
       "not_found": "Envelope não encontrado",
       "name_cannot_be_changed": "O nome do envelope não pode ser alterado",
-      "exceeds_percentage": "A soma dos percentuais dos envelopes ultrapassaria 100%"
+      "exceeds_percentage": "A soma dos percentuais dos envelopes ultrapassaria 100%",
+      "not_distributed": "Os envelopes precisam estar 100% distribuídos antes de prosseguir",
+      "below_minimum_percentage": "A porcentagem é menor que o mínimo necessário para cobrir as contas fixas deste envelope"
     }
   },
   "nav": {
@@ -514,8 +516,21 @@
     "errors": {
       "email_already_exists": "Este e-mail já está cadastrado",
       "invalid_or_expired_token": "O link de verificação é inválido ou expirou.",
-      "email_not_verified": "Seu e-mail ainda não foi confirmado. Um novo link de verificação foi enviado para o seu e-mail."
+      "email_not_verified": "Seu e-mail ainda não foi confirmado. Um novo link de verificação foi enviado para o seu e-mail.",
+      "reset_token_invalid_or_expired": "O link de redefinição de senha é inválido ou expirou."
     },
+    "forgot_password_title": "Esqueceu a senha?",
+    "forgot_password_subtitle": "Digite seu e-mail e enviaremos um link para redefinir sua senha.",
+    "forgot_password_success_title": "E-mail enviado!",
+    "forgot_password_success_message": "Se esse e-mail estiver cadastrado, você receberá um link de redefinição de senha em breve.",
+    "send_reset_link": "Enviar link de redefinição",
+    "reset_password_title": "Redefinir senha",
+    "reset_password_subtitle": "Crie uma nova senha para sua conta.",
+    "new_password": "Nova senha",
+    "confirm_new_password": "Confirmar nova senha",
+    "reset_password_button": "Redefinir senha",
+    "reset_password_success_title": "Senha redefinida!",
+    "reset_password_success_message": "Sua senha foi alterada com sucesso.",
     "verify_email": {
       "verifying": "Verificando seu e-mail...",
       "success_title": "E-mail verificado!",
@@ -544,6 +559,7 @@
     "continue": "Continuar",
     "finish": "Finalizar",
     "allocation_error": "A alocação dos envelopes deve ser exatamente 100% para finalizar o cadastro.",
+    "allocation_warning": "Para finalizar, a alocação dos seus Limites (envelopes) precisa ser exatamente 100%.",
     "finish_tooltip": "Para finalizar, configure seus Meus Limites (envelopes) para que a alocação seja exatamente 100%."
   },
   "notifications": {

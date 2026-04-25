@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { Card, TableContainer, Table, TableBody, TablePagination, TableRow, TableCell } from "@mui/material";
 import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
-import { useTable } from "src/sections/shared/useTable";
+import { ITable } from "src/sections/shared/useTable";
 import { TableNoData } from "src/components/table/TableNoData";
 import { CustomTableRow } from "src/components/table/TableRow";
 import { Iconify } from "src/components/iconify";
@@ -21,12 +21,12 @@ import { useCurrency } from "src/hooks/useCurrency";
 type DebtsTableProps = {
     debts: Pagination<Debts> | undefined
     envelopes: Envelopes[]
+    table: ITable
 }
 
-export function DebtTable({ debts, envelopes }: DebtsTableProps) {
+export function DebtTable({ debts, envelopes, table }: DebtsTableProps) {
     const { t } = useTranslation();
     const { symbol } = useCurrency();
-    const table = useTable();
 
     const deleteDebtMutation = useDeleteDebts();
     const deleteAllDebtsMutation = useDeleteAllDebts();

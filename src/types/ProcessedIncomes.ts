@@ -9,7 +9,7 @@ export interface ProcessedIncomes {
   day: string,
   totalIncomeProcessed: string,
   isSplitted: boolean
-  envelope?: string
+  envelopeId?: string
 }
 
 export interface ProcessedIncomesPlayload extends Omit<ProcessedIncomes, "id"> { }
@@ -19,7 +19,7 @@ export interface ProcessedIncomesResponse {
   day: number,
   totalIncomeProcessed: number,
   isSplitted: boolean
-  envelope?: string
+  envelopeId?: string
 }
 
 export interface ProcessedIncomesTotal {

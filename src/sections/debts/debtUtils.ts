@@ -25,8 +25,8 @@ export function getEffectivePaidInstallments(
     // Past / current: show how many were paid up to and including the selected month
     const selectedIndex = realPaidInstallments + offsetFromNow;
     if (selectedIndex < 0) return 0; // before the first installment
-    const clampedIndex = Math.min(selectedIndex, totalInstallments - 1);
-    return Math.min(realPaidInstallments, clampedIndex + 1);
+    const clampedIndex = Math.min(selectedIndex, totalInstallments);
+    return Math.min(realPaidInstallments, clampedIndex);
 }
 
 /**

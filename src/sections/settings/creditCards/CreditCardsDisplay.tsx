@@ -29,6 +29,7 @@ export function CreditCardsDisplay({
     return (
         <CreditCardsTable
             creditCards={creditCards}
+            table={table}
         />
     );
 }

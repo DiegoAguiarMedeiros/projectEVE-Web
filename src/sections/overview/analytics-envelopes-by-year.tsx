@@ -45,12 +45,17 @@ export function AnalyticsEnvelopesByYearGraph({ title, subheader, chart, ...othe
     xaxis: {
       categories: chart?.categories.map((c) => t(c)),
     },
+    yaxis: {
+      labels: {
+        formatter: (value: number) => value.toFixed(2),
+      },
+    },
     legend: {
       show: true,
     },
     tooltip: {
       y: {
-        formatter: (value: number) => `${symbol} ${value}`,
+        formatter: (value: number) => `${symbol} ${value.toFixed(2)}`,
       },
     },
   });

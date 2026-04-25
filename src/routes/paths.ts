@@ -11,10 +11,14 @@ export type RouteKey =
   | 'signIn'
   | 'registration'
   | 'verifyEmail'
+  | 'forgotPassword'
+  | 'resetPassword'
   | 'notFound';
 
 export const SUPPORTED_LANGS = ['pt-BR', 'en', 'es'] as const;
 export type SupportedLang = typeof SUPPORTED_LANGS[number];
+export const DEFAULT_LANG: SupportedLang = 'pt-BR';
+export const NON_DEFAULT_LANGS = SUPPORTED_LANGS.filter(l => l !== DEFAULT_LANG) as SupportedLang[];
 
 // Path segments (without the /:lang prefix)
 export const ROUTE_SEGMENTS: Record<SupportedLang, Record<RouteKey, string>> = {
@@ -31,6 +35,8 @@ export const ROUTE_SEGMENTS: Record<SupportedLang, Record<RouteKey, string>> = {
     signIn: 'entrar',
     registration: 'cadastro',
     verifyEmail: 'verificar-email',
+    forgotPassword: 'esqueci-minha-senha',
+    resetPassword: 'redefinir-senha',
     notFound: 'nao-encontrado',
   },
   en: {
@@ -46,6 +52,8 @@ export const ROUTE_SEGMENTS: Record<SupportedLang, Record<RouteKey, string>> = {
     signIn: 'sign-in',
     registration: 'registration',
     verifyEmail: 'verify-email',
+    forgotPassword: 'forgot-password',
+    resetPassword: 'reset-password',
     notFound: 'not-found',
   },
   es: {
@@ -61,6 +69,8 @@ export const ROUTE_SEGMENTS: Record<SupportedLang, Record<RouteKey, string>> = {
     signIn: 'iniciar-sesion',
     registration: 'registro',
     verifyEmail: 'verificar-email',
+    forgotPassword: 'olvide-mi-contrasena',
+    resetPassword: 'restablecer-contrasena',
     notFound: 'no-encontrado',
   },
 };
@@ -71,6 +81,9 @@ export function getLang(lang: string): SupportedLang {
 
 export function getPath(lang: SupportedLang, key: RouteKey): string {
   const segment = ROUTE_SEGMENTS[lang][key];
+  if (lang === DEFAULT_LANG) {
+    return segment ? `/${segment}` : '/';
+  }
   return segment ? `/${lang}/${segment}` : `/${lang}`;
 }
 

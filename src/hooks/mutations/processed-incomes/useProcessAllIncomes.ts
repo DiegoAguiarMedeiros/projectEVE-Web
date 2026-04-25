@@ -18,5 +18,13 @@ export function useProcessAllIncomes() {
       queryClient.invalidateQueries({ queryKey: ["processed-incomes"] });
       queryClient.invalidateQueries({ queryKey: ["processed-incomes-month"] });
     },
+    onError: (error: any) => {
+      const key = error?.response?.data?.message ?? "errors.unexpected";
+      enqueueSnackbar(t(key), {
+        autoHideDuration: 4000,
+        variant: "error",
+        anchorOrigin: { horizontal: "right", vertical: "bottom" },
+      });
+    },
   });
 }

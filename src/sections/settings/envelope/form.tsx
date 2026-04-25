@@ -35,8 +35,8 @@ export function EnvelopeForm({ buttonLabel, buttonIcon, data, open, handleOpen, 
     const usedByOthers = (allEnvelopes ?? [])
         .filter(e => e.id !== data?.id)
         .reduce((s, e) => s + e.percentage, 0);
-    const maxPercentage = Math.max(0, parseFloat((100 - usedByOthers).toFixed(2)));
-    const availablePercentage = maxPercentage;
+    const maxPercentage = Math.max(0, 100 - usedByOthers);
+    const availablePercentage = parseFloat(maxPercentage.toFixed(2));
 
     const computedValue = (percentage / 100) * income;
 
@@ -71,7 +71,7 @@ export function EnvelopeForm({ buttonLabel, buttonIcon, data, open, handleOpen, 
         setValueInput(rawValue);
         const parsed = parseFloat(rawValue);
         if (!Number.isNaN(parsed) && income > 0) {
-            const newPercentage = Math.min(maxPercentage, Math.max(0, parseFloat(((parsed / income) * 100).toFixed(2))));
+            const newPercentage = Math.min(maxPercentage, Math.max(0, (parsed / income) * 100));
             setPercentage(newPercentage);
         }
     };
@@ -116,7 +116,7 @@ export function EnvelopeForm({ buttonLabel, buttonIcon, data, open, handleOpen, 
             open={open}
             handleClose={handleClose}
             handleOpen={handleOpen}
-            okButton={<Button type="submit" variant="outlined" color="primary" onClick={handleSubmit} disabled={isPending || (!isDebts && percentage + usedByOthers > 100)} startIcon={<SaveIcon sx={{ fontSize: 20 }} />}>{t('settings.envelope.save')}</Button>
+            okButton={<Button type="submit" variant="outlined" color="primary" onClick={handleSubmit} disabled={isPending || (!isDebts && parseFloat((percentage + usedByOthers).toFixed(2)) > 100)} startIcon={<SaveIcon sx={{ fontSize: 20 }} />}>{t('settings.envelope.save')}</Button>
             }>
 
 
@@ -159,7 +159,7 @@ export function EnvelopeForm({ buttonLabel, buttonIcon, data, open, handleOpen, 
 
                     <Box sx={{ flex: '1 0 0', display: 'flex', flexDirection: 'column', gap: 2 }}>
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <Typography variant="subtitle2">{t('settings.envelope.percentage', { count: percentage })}</Typography>
+                            <Typography variant="subtitle2">{t('settings.envelope.percentage', { count: parseFloat(percentage.toFixed(2)) })}</Typography>
                             {!isDebts && <Typography variant="caption" color="text.secondary">{availablePercentage}% disponível</Typography>}
                         </Box>
                         {income > 0 && !isDebts && (
@@ -201,10 +201,11 @@ export function EnvelopeForm({ buttonLabel, buttonIcon, data, open, handleOpen, 
                                     { value: 75, label: '75%' },
                                     { value: 100, label: '100%' }
                                 ] : [
-                                    { value: maxPercentage, label: `${maxPercentage}%` }
+                                    { value: maxPercentage, label: `${availablePercentage}%` }
                                 ])
                             ]}
                             valueLabelDisplay="auto"
+                            valueLabelFormat={(v) => `${parseFloat(v.toFixed(2))}%`}
                             sx={{
                                 '& .MuiSlider-thumb': {
                                     bgcolor: color,

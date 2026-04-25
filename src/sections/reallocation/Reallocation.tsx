@@ -1,4 +1,5 @@
-import { CardProps, Box, Button, Card, Stack, Typography, TextField, InputAdornment, IconButton } from "@mui/material";
+import { CardProps, Box, Button, Card, Stack, Typography, IconButton } from "@mui/material";
+import { CurrencyInput } from "src/components/CurrencyInput";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -8,7 +9,6 @@ import { DashboardContent } from "src/layouts/dashboard";
 import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 import { RealEnvelopesCard } from "src/components/realEnvelopeCard";
 import { Envelopes } from "src/types/Envelopes";
-import { useCurrency } from "src/hooks/useCurrency";
 import { usePaths } from "src/hooks/usePaths";
 
 type ReallocationProps = {
@@ -19,7 +19,6 @@ type ReallocationProps = {
 export function Reallocation({ envelopes, envelopeSelected }: ReallocationProps) {
     const { t } = useTranslation();
     const paths = usePaths();
-    const { symbol } = useCurrency();
     const navigate = useNavigate();
 
     const { month, year } = SelectedMonthYearStore();
@@ -34,7 +33,7 @@ export function Reallocation({ envelopes, envelopeSelected }: ReallocationProps)
     });
 
     const [destinationIndex, setDestinationIndex] = useState(0);
-    const [amount, setAmount] = useState<number | string>("");
+    const [amount, setAmount] = useState<string>("");
     const [error, setError] = useState<string | null>(null);
 
     const sourceEnvelope = envelopes[sourceIndex];
@@ -228,19 +227,17 @@ export function Reallocation({ envelopes, envelopeSelected }: ReallocationProps)
                             </Box>
                         </Box>
 
-                        <TextField
+                        <CurrencyInput
                             fullWidth
-                            type="number"
                             label={t("envelope.transfer.amount_label")}
-                            placeholder="0,00"
                             value={amount}
-                            onChange={(e) => {
-                                setAmount(e.target.value);
+                            onChange={(rawValue) => {
+                                setAmount(rawValue);
                                 setError(null);
                             }}
                             error={
                                 !!error ||
-                                (sourceEnvelope &&
+                                !!(sourceEnvelope &&
                                     Number(amount) > (sourceEnvelope.amount || 0))
                             }
                             helperText={
@@ -250,22 +247,6 @@ export function Reallocation({ envelopes, envelopeSelected }: ReallocationProps)
                                     ? t("envelope.validation.insufficient_funds")
                                     : "")
                             }
-                            slotProps={{
-                                input: {
-                                    inputMode: "numeric",
-                                    startAdornment: (
-                                        <InputAdornment position="start">{symbol}</InputAdornment>
-                                    ),
-                                    sx: {
-                                        textAlign: "right",
-                                        color:
-                                            sourceEnvelope &&
-                                                Number(amount) > (sourceEnvelope.amount || 0)
-                                                ? "error.main"
-                                                : "inherit",
-                                    },
-                                },
-                            }}
                             sx={{ maxWidth: 400 }}
                         />
 

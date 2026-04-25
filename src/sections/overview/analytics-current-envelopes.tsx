@@ -33,7 +33,7 @@ export function AnalyticsCurrentEnvelopesGraph({ title, subheader, analyticsCurr
     dataLabels: { enabled: true, dropShadow: { enabled: false } },
     tooltip: {
       y: {
-        formatter: (value: number) => fNumber(value),
+        formatter: (value: number) => fNumber(value, { minimumFractionDigits: 2 }),
         title: { formatter: (seriesName: string) => `${seriesName}` },
       },
     },
@@ -61,8 +61,8 @@ export function AnalyticsCurrentEnvelopesGraph({ title, subheader, analyticsCurr
 
       <ChartLegends
         labels={analyticsCurrentEnvelopes?.labels.map(label => t(label))}
-        sublabels={analyticsCurrentEnvelopes.values.map((value, index) => {
-          const amountToGo = value * (100 - analyticsCurrentEnvelopes.subValues[index]) / 100;
+        sublabels={analyticsCurrentEnvelopes.pureValues.map((pureValue, index) => {
+          const amountToGo = pureValue * (100 - analyticsCurrentEnvelopes.subValues[index]) / 100;
           if (amountToGo === 0) return t('overview.envelopes.no_funds');
           return t('overview.envelopes.available', { amount: fNumberToCurrency(amountToGo) });
         })}
