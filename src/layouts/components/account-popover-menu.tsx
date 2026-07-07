@@ -110,7 +110,7 @@ export function AccountPopoverMenu({ data = [], handleClosePopover, collapsed, s
 
       <Divider sx={{ borderStyle: "dashed" }} />
 
-      <Box sx={{ p: 1, backgroundColor: data.length > 0 ? theme.palette.background.neutral : theme.palette.background.paper }}>
+      <Box sx={{ p: 1, backgroundColor: data.length > 0 ? theme.palette.background.default : theme.palette.background.paper }}>
         <Button
           fullWidth
           color="error"

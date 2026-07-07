@@ -1,7 +1,9 @@
 import type { BoxProps } from "@mui/material/Box";
 
-import ApexChart from "react-apexcharts";
+import * as ApexChartsModule from "react-apexcharts";
 
+console.log(ApexChartsModule);
+console.log(ApexChartsModule.default);
 import Box from "@mui/material/Box";
 
 import { chartClasses } from "src/components/chart/classes";
@@ -9,7 +11,7 @@ import { chartClasses } from "src/components/chart/classes";
 import type { ChartProps } from "src/components/chart/types";
 
 // ----------------------------------------------------------------------
-
+const ApexChart = ApexChartsModule.default;
 export function Chart({
   sx,
   type,

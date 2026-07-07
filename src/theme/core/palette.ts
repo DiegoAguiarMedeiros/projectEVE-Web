@@ -4,7 +4,7 @@ import COLORS from "./colors.json";
 
 // ----------------------------------------------------------------------
 
-declare module "@mui/material/styles/createPalette" {
+declare module "@mui/material/styles" {
   interface CommonColors {
     whiteChannel: string;
     blackChannel: string;
@@ -12,7 +12,7 @@ declare module "@mui/material/styles/createPalette" {
 
   interface TypeText {
     disabledChannel: string;
-    primaryChannel: string;
+    primary: string;
   }
 
   interface TypeBackground {

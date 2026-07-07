@@ -1,10 +1,10 @@
 export interface Goals {
     id: string;
     description: string;
-    amount: string;
-    amountTotal: string;
-    percentage: string;
-    deadline: string;
+    amount: string | number;
+    amountTotal: string | number;
+    percentage: string | number;
+    deadline: number;
     monthYear: boolean
 }
 

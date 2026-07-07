@@ -9,7 +9,7 @@ import type { Swiper as SwiperType } from "swiper";
 
 import { useRef, useEffect } from "react";
 import {
-  Grid2,
+  Grid,
   Box,
   useMediaQuery,
 } from "@mui/material";
@@ -93,13 +93,13 @@ export default function SwiperEnvelop({
         >
           {envelopes.map((envelope, index) => (
             <SwiperSlide key={index}>
-              <Grid2 onClick={() => handleSlideClick(index)} sx={{ width: "100%", cursor: "pointer" }}>
+              <Grid onClick={() => handleSlideClick(index)} sx={{ width: "100%", cursor: "pointer" }}>
                 <RealEnvelopesCard
                   envelope={envelope}
                   activeCard={envelopeActived === envelope.id}
                   fullWidth={isMobile}
                 />
-              </Grid2>
+              </Grid>
             </SwiperSlide>
           ))}
         </Swiper>

@@ -3,7 +3,7 @@ import { alpha } from "@mui/material/styles";
 import {
     Box,
     Card,
-    Grid2,
+    Grid,
     IconButton,
     Paper,
     Table,
@@ -33,6 +33,7 @@ import { Pagination } from "src/types/Pagination";
 import { ITable } from "src/sections/shared/useTable";
 import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 import { useEffectiveGoalsCumulative } from "src/hooks/queries/goals/useEffectiveGoalsCumulative";
+import { formatGoalDeadline } from "src/utils/goalDeadline";
 
 type GoalPageTableProps = {
     goals: Pagination<Goals> | undefined;
@@ -63,15 +64,6 @@ export function GoalPageTable({ goals, goalsEnvelope, table }: GoalPageTableProp
         });
     }, [deleteAllGoalsMutation, table]);
 
-    const formatDeadline = (goal: Goals) => {
-        // deadline is stored as a DATE column: the numeric value is encoded as the month (e.g. 2001-02-01 → 2)
-        const raw = Number(goal.deadline);
-        const count = isNaN(raw) ? new Date(goal.deadline).getUTCMonth() + 1 : raw;
-        return goal.monthYear
-            ? t("goals_page.deadline.months", { count })
-            : t("goals_page.deadline.years", { count });
-    };
-
     const renderRow = (row: Goals) => {
         const { id, description, amountTotal, percentage } = row;
         const saved = cumulativeTotal * (Number(percentage) / 100);
@@ -86,7 +78,7 @@ export function GoalPageTable({ goals, goalsEnvelope, table }: GoalPageTableProp
                     `${symbol} ${saved.toFixed(2)}`,
                     `${symbol} ${amountTotal}`,
                     `${percentage}%`,
-                    formatDeadline(row),
+                    formatGoalDeadline(t, row.deadline, row.monthYear),
                 ]}
                 extraActions={
                     <Tooltip title={t("goals_page.actions.view_evolution")}>
@@ -118,26 +110,26 @@ export function GoalPageTable({ goals, goalsEnvelope, table }: GoalPageTableProp
 
     return (
         <Box sx={{ display: "flex", flexDirection: "column", flex: 1, minHeight: 0 }}>
-            <Grid2 container spacing={2} sx={{ pt: 2, px: 1, mb: 2 }}>
-                <Grid2 size={{ xs: 12, sm: 4 }}>
+            <Grid container spacing={2} sx={{ pt: 2, px: 1, mb: 2 }}>
+                <Grid size={{ xs: 12, sm: 4 }}>
                     <Paper sx={{ p: 2, textAlign: "center", bgcolor: "background.neutral", borderRadius: 2, border: `1px solid var(--layout-nav-border-color)` }}>
                         <Typography variant="body2" color="text.secondary">{t("goals_page.summary.envelope_balance")}</Typography>
                         <Typography variant="h6">{symbol} {cumulativeTotal.toFixed(2)}</Typography>
                     </Paper>
-                </Grid2>
-                <Grid2 size={{ xs: 6, sm: 4 }}>
+                </Grid>
+                <Grid size={{ xs: 6, sm: 4 }}>
                     <Paper sx={{ p: 2, textAlign: "center", bgcolor: (theme) => alpha(theme.palette.info.main, 0.12), borderRadius: 2, border: `1px solid var(--layout-nav-border-color)` }}>
                         <Typography variant="body2" color="text.secondary">{t("goals_page.summary.total_goals")}</Typography>
                         <Typography variant="h6" color="info.main">{symbol} {totalAmountTotal.toFixed(2)}</Typography>
                     </Paper>
-                </Grid2>
-                <Grid2 size={{ xs: 6, sm: 4 }}>
+                </Grid>
+                <Grid size={{ xs: 6, sm: 4 }}>
                     <Paper sx={{ p: 2, textAlign: "center", bgcolor: (theme) => alpha(theme.palette.warning.main, 0.12), borderRadius: 2, border: `1px solid var(--layout-nav-border-color)` }}>
                         <Typography variant="body2" color="text.secondary">{t("goals_page.summary.remaining")}</Typography>
                         <Typography variant="h6" color="warning.main">{symbol} {remaining.toFixed(2)}</Typography>
                     </Paper>
-                </Grid2>
-            </Grid2>
+                </Grid>
+            </Grid>
 
             <Card sx={{ width: "100%", flex: 1, minHeight: 0, display: "flex", flexDirection: "column", border: `1px solid var(--layout-nav-border-color)`, borderRadius: 0 }}>
                 <TableToolbar

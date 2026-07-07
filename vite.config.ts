@@ -34,7 +34,7 @@ export default defineConfig(({ mode }) => {
         },
       ],
     },
-    server: { port: PORT, host: HOST, allowedHosts: "all" },
+    server: { port: PORT, host: HOST, allowedHosts: true },
     optimizeDeps: { force: true },
     preview: {
       port: PORT,

@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 
 import Box from "@mui/material/Box";
-import Grid2 from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import Pagination from "@mui/material/Pagination";
 import Typography from "@mui/material/Typography";
 
@@ -130,9 +130,9 @@ export function ProductsView() {
         </Box>
       </Box>
 
-      <Grid2 container spacing={3}>
+      <Grid container spacing={3}>
         {_products.map((product) => (
-          <Grid2
+          <Grid
             key={product.id}
             sx={{
               gridColumn: {
@@ -143,9 +143,9 @@ export function ProductsView() {
             }}
           >
             <ProductItem product={product} />
-          </Grid2>
+          </Grid>
         ))}
-      </Grid2>
+      </Grid>
 
       <Pagination count={10} color="primary" sx={{ mt: 8, mx: "auto" }} />
     </DashboardContent>

@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Delete, Edit, Savings } from "@mui/icons-material";
 import { Chip, Typography } from "@mui/material";
-import { useDateFormat } from "src/hooks/useDateFormat";
 import { GoalsForm } from "src/sections/settings/goals/form";
 import { Goals } from "src/types/Goals";
 import { Envelopes } from "src/types/Envelopes";
 import { useTranslation } from "react-i18next";
 import { useCurrency } from "src/hooks/useCurrency";
 import { ItemRow } from "src/components/itemList/ItemList";
+import { formatGoalDeadline } from "src/utils/goalDeadline";
 
 type GoalItemProps = {
     goal: Goals;
@@ -19,8 +19,7 @@ type GoalItemProps = {
 export function GoalItem({ goal, envelope, onDelete, hideDivider }: GoalItemProps) {
     const { t } = useTranslation();
     const { symbol } = useCurrency();
-    const { formatDate } = useDateFormat();
-    const { id, description, amountTotal, percentage, deadline } = goal;
+    const { id, description, amountTotal, percentage, deadline, monthYear } = goal;
     const [editOpen, setEditOpen] = useState(false);
 
     return (
@@ -43,7 +42,7 @@ export function GoalItem({ goal, envelope, onDelete, hideDivider }: GoalItemProp
                                 sx={{ height: 18, fontSize: "0.65rem" }}
                             />
                             <Typography variant="caption" color="text.secondary">
-                                {formatDate(deadline)}
+                                {formatGoalDeadline(t, deadline, monthYear)}
                             </Typography>
                         </>
                     ),

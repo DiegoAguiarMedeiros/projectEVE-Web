@@ -48,7 +48,7 @@ const MuiCard: Components<Theme>["MuiCard"] = {
       zIndex: 0,
       position: "relative",
       boxShadow: "none",
-      borderRadius: theme.shape.borderRadius * 2,
+      borderRadius: Number(theme.shape.borderRadius) * 2,
       transition,
     }),
   },

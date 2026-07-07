@@ -1,7 +1,6 @@
 import { useCallback } from "react";
 import { Card, TableContainer, Table, TableBody, TablePagination, TableRow, TableCell } from "@mui/material";
 import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
-import { useDateFormat } from "src/hooks/useDateFormat";
 import { ITable } from "src/sections/shared/useTable";
 import { TableNoData } from "src/components/table/TableNoData";
 import { CustomTableRow } from "src/components/table/TableRow";
@@ -16,6 +15,7 @@ import { useDeleteAllGoals } from "src/hooks/mutations/goals/useDeleteAllGoals";
 import { Envelopes } from "src/types/Envelopes";
 import { useTranslation } from "react-i18next";
 import { useCurrency } from "src/hooks/useCurrency";
+import { formatGoalDeadline } from "src/utils/goalDeadline";
 
 
 type GoalsTableProps = {
@@ -26,7 +26,6 @@ type GoalsTableProps = {
 export function GoalsTable({ goals, envelope, table }: GoalsTableProps) {
     const { t } = useTranslation();
     const { symbol } = useCurrency();
-    const { formatDate } = useDateFormat();
 
     const deleteGoalsMutation = useDeleteGoals();
     const deleteAllGoalsMutation = useDeleteAllGoals();
@@ -49,13 +48,13 @@ export function GoalsTable({ goals, envelope, table }: GoalsTableProps) {
         const handleDeleteGoals = () => {
             deleteGoals(id)
         }
-        const { description, amountTotal, percentage, deadline } = row;
+        const { description, amountTotal, percentage, deadline, monthYear } = row;
 
         return (<CustomTableRow
             key={id}
             selected={table.selected.includes(id)}
             onSelectRow={() => table.onSelectRow(id)}
-            rowKeys={[description, `${symbol} ${amountTotal}`, `${percentage} %`, formatDate(deadline)]}
+            rowKeys={[description, `${symbol} ${amountTotal}`, `${percentage} %`, formatGoalDeadline(t, deadline, monthYear)]}
             form={<GoalsForm
                 envelope={envelope}
                 key={id}

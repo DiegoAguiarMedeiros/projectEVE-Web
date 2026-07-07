@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { Grid2, Paper, Typography } from "@mui/material";
+import { Grid, Paper, Typography } from "@mui/material";
 import { alpha } from "@mui/material/styles";
 import { GoalsForm } from "src/sections/settings/goals/form";
 import { GoalPageItem } from "src/sections/goals/goalPageItem";
@@ -51,26 +51,26 @@ export function GoalPageList({ goals, table, goalsEnvelope }: GoalPageListProps)
 
             onItemsChange={setAllItems}
             header={
-                <Grid2 container spacing={1.5} sx={{ pt: 1.5, px: 1, mb: 1.5 }}>
-                    <Grid2 size={{ xs: 12 }}>
+                <Grid container spacing={1.5} sx={{ pt: 1.5, px: 1, mb: 1.5 }}>
+                    <Grid size={{ xs: 12 }}>
                         <Paper sx={{ p: 1.5, textAlign: "center", bgcolor: "background.neutral", borderRadius: 2, border: `1px solid var(--layout-nav-border-color)` }}>
                             <Typography variant="caption" color="text.secondary">{t("goals_page.summary.envelope_balance")}</Typography>
                             <Typography variant="subtitle1" fontWeight={700}>{symbol} {cumulativeTotal.toFixed(2)}</Typography>
                         </Paper>
-                    </Grid2>
-                    <Grid2 size={{ xs: 6 }}>
+                    </Grid>
+                    <Grid size={{ xs: 6 }}>
                         <Paper sx={{ p: 1.5, textAlign: "center", bgcolor: (theme) => alpha(theme.palette.info.main, 0.12), borderRadius: 2, border: `1px solid var(--layout-nav-border-color)` }}>
                             <Typography variant="caption" color="text.secondary">{t("goals_page.summary.total_goals")}</Typography>
                             <Typography variant="subtitle1" fontWeight={700} color="info.main">{symbol} {totalAmountTotal.toFixed(2)}</Typography>
                         </Paper>
-                    </Grid2>
-                    <Grid2 size={{ xs: 6 }}>
+                    </Grid>
+                    <Grid size={{ xs: 6 }}>
                         <Paper sx={{ p: 1.5, textAlign: "center", bgcolor: (theme) => alpha(theme.palette.warning.main, 0.12), borderRadius: 2, border: `1px solid var(--layout-nav-border-color)` }}>
                             <Typography variant="caption" color="text.secondary">{t("goals_page.summary.remaining")}</Typography>
                             <Typography variant="subtitle1" fontWeight={700} color="warning.main">{symbol} {remaining.toFixed(2)}</Typography>
                         </Paper>
-                    </Grid2>
-                </Grid2>
+                    </Grid>
+                </Grid>
             }
             renderList={(items) => (
                 <ItemList

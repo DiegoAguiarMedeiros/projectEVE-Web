@@ -192,7 +192,7 @@ export function useChart(options?: ChartOptions): ChartOptions {
      * Tooltip
      *************************************** */
     tooltip: {
-      theme: "false",
+      theme: theme.palette.mode,
       fillSeriesColor: false,
       x: {
         show: true,

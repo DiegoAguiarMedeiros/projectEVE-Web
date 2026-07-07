@@ -1,5 +1,5 @@
 
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import { DashboardContent } from "src/layouts/dashboard";
 import { ProfileInfoForm } from "../profile-info-form";
 import { ProfilePasswordForm } from "../profile-password-form";

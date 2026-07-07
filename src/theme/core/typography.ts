@@ -1,4 +1,8 @@
-import type { TypographyOptions } from "@mui/material/styles/createTypography";
+import { createTheme } from "@mui/material/styles";
+
+type TypographyOptions = NonNullable<
+  Parameters<typeof createTheme>[0]
+>["typography"];
 
 import { setFont, pxToRem, responsiveFontSizes } from "src/theme/styles/utils";
 

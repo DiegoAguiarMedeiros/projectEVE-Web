@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Grid2, Paper, Stack, TextField, Typography, useTheme } from "@mui/material";
+import { Box, Button, Divider, Grid, Paper, Stack, TextField, Typography, useTheme } from "@mui/material";
 import { CurrencyInput } from "src/components/CurrencyInput";
 import { useCallback, useEffect, useState } from "react";
 import TransitionsModal from "src/sections/shared/transitionsModal";
@@ -26,7 +26,7 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope, externalOpe
 
     const { income } = IncomeStore()
 
-    const [monthYear, setMonthYear] = useState(false);
+    const [monthYear, setMonthYear] = useState(data?.monthYear ?? true);
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => {
@@ -40,10 +40,10 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope, externalOpe
     }, [externalOpen]);
 
     const [description, setDescription] = useState(data ? data.description : "");
-    const [amount, setAmount] = useState(data ? data.amount : "");
-    const [amountTotal, setAmountTotal] = useState(data ? data.amountTotal : "");
-    const [percentage, setPercentage] = useState(data ? data.percentage : "");
-    const [deadline, setDeadline] = useState(data ? data.deadline : "");
+    const [amount, setAmount] = useState(data ? String(data.amount) : "");
+    const [amountTotal, setAmountTotal] = useState(data ? String(data.amountTotal) : "");
+    const [percentage, setPercentage] = useState(data ? String(data.percentage) : "");
+    const [deadline, setDeadline] = useState(data ? String(data.deadline) : "");
 
     const [save, setSave] = useState(0);
     const [savePercentagem, setSavePercentagem] = useState(0);
@@ -60,6 +60,8 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope, externalOpe
         setAmount("")
         setAmountTotal("")
         setPercentage("")
+        setDeadline("")
+        setMonthYear(true)
         setErrorDescription(null)
         setErrorAmount(null)
         setErrorAmountTotal(null)
@@ -111,13 +113,20 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope, externalOpe
     };
 
     const handleSubmit = async () => {
-        if (validateDescription() && validateAmount()) {
+        const isValid = [
+            validateDescription(),
+            validateAmount(),
+            validateAmountTotal(),
+            validateDeadline(),
+        ].every(Boolean);
+
+        if (isValid) {
             await submitAction({
                 description,
                 amount,
                 amountTotal,
                 percentage: savePercentagem.toFixed(),
-                deadline,
+                deadline: Number(deadline),
                 monthYear
             });
         }
@@ -243,8 +252,8 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope, externalOpe
                     {t('settings.goals.title')}
                 </Typography>
 
-                <Grid2 container spacing={2} sx={{ width: "100%" }}>
-                    <Grid2 size={{ xs: 12 }}>
+                <Grid container spacing={2} sx={{ width: "100%" }}>
+                    <Grid size={{ xs: 12 }}>
                         <TextField
                             fullWidth
                             name="description"
@@ -255,8 +264,8 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope, externalOpe
                             error={!!errorDescription}
                             helperText={errorDescription ?? ""}
                         />
-                    </Grid2>
-                    <Grid2 size={{ xs: 12, sm: 6 }}>
+                    </Grid>
+                    <Grid size={{ xs: 12, sm: 6 }}>
                         <CurrencyInput
                             fullWidth
                             name="amountTotal"
@@ -267,8 +276,8 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope, externalOpe
                             error={!!errorAmountTotal}
                             helperText={errorAmountTotal ?? ""}
                         />
-                    </Grid2>
-                    <Grid2 size={{ xs: 12, sm: 6 }}>
+                    </Grid>
+                    <Grid size={{ xs: 12, sm: 6 }}>
                         <CurrencyInput
                             fullWidth
                             name="amount"
@@ -279,8 +288,8 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope, externalOpe
                             error={!!errorAmount}
                             helperText={errorAmount ?? ""}
                         />
-                    </Grid2>
-                    <Grid2 size={{ xs: 12 }}>
+                    </Grid>
+                    <Grid size={{ xs: 12 }}>
                         <TextField
                             fullWidth
                             type="number"
@@ -307,8 +316,8 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope, externalOpe
                                 },
                             }}
                         />
-                    </Grid2>
-                </Grid2>
+                    </Grid>
+                </Grid>
 
                 <Divider sx={{ width: "100%", my: 1 }} />
 
@@ -322,8 +331,8 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope, externalOpe
                     </Typography>
                 )}
 
-                <Grid2 container spacing={1.5} sx={{ width: "100%" }}>
-                    <Grid2 size={{ xs: 12, sm: 4 }}>
+                <Grid container spacing={1.5} sx={{ width: "100%" }}>
+                    <Grid size={{ xs: 12, sm: 4 }}>
                         <Paper
                             elevation={2}
                             sx={{
@@ -340,8 +349,8 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope, externalOpe
                         >
                             <Typography variant="body2">{t('settings.goals.recommendation.monthly_save', { amount: save.toFixed(2) })}</Typography>
                         </Paper>
-                    </Grid2>
-                    <Grid2 size={{ xs: 6, sm: 4 }}>
+                    </Grid>
+                    <Grid size={{ xs: 6, sm: 4 }}>
                         <Paper
                             elevation={2}
                             sx={{
@@ -357,8 +366,8 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope, externalOpe
                         >
                             <Typography variant="body2">{t('settings.goals.recommendation.envelope_percentage', { percentage: savePercentagem.toFixed(2) })}</Typography>
                         </Paper>
-                    </Grid2>
-                    <Grid2 size={{ xs: 6, sm: 4 }}>
+                    </Grid>
+                    <Grid size={{ xs: 6, sm: 4 }}>
                         <Paper
                             elevation={2}
                             sx={{
@@ -374,8 +383,8 @@ export function GoalsForm({ buttonLabel, buttonIcon, data, envelope, externalOpe
                         >
                             <Typography variant="body2">{t('settings.goals.recommendation.ideal_income', { amount: salaryIdeal.toFixed(2) })}</Typography>
                         </Paper>
-                    </Grid2>
-                </Grid2>
+                    </Grid>
+                </Grid>
             </Box>
         </TransitionsModal >
     );

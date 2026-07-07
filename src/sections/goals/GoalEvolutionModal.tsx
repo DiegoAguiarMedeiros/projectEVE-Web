@@ -8,6 +8,7 @@ import { useCurrency } from "src/hooks/useCurrency";
 import { Chart, useChart } from "src/components/chart";
 import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 import { useEffectiveGoalsCumulative } from "src/hooks/queries/goals/useEffectiveGoalsCumulative";
+import { getGoalDeadlineInMonths } from "src/utils/goalDeadline";
 
 type GoalEvolutionModalProps = {
     goal: Goals;
@@ -28,10 +29,7 @@ export function GoalEvolutionModal({ goal, goalsEnvelope, open, onClose }: GoalE
     // Saved toward this goal = cumulative goals total × goal's allocation percentage
     const amount = cumulativeTotal * (Number(goal.percentage) / 100);
     const amountTotal = Number(goal.amountTotal);
-    const deadlineRawNum = Number(goal.deadline);
-    const deadlineRaw = isNaN(deadlineRawNum) ? new Date(goal.deadline).getUTCMonth() + 1 : deadlineRawNum;
-    const isMonths = goal.monthYear;
-    const deadlineInMonths = isMonths ? deadlineRaw : deadlineRaw * 12;
+    const deadlineInMonths = getGoalDeadlineInMonths(goal.deadline, goal.monthYear);
 
     const mesesPassados = amountTotal > 0 ? Math.round((amount / amountTotal) * deadlineInMonths) : 0;
     const valorMensal = mesesPassados > 0 ? amount / mesesPassados : 0;

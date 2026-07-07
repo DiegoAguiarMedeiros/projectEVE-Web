@@ -9,7 +9,7 @@ import { fNumberToCurrency, fShortenNumber } from "src/utils/format-number";
 import { varAlpha, bgGradient } from "src/theme/styles";
 
 import { SvgColor } from "src/components/svg-color";
-import { Grid2, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { AnalyticsEnvelopesMonthOverview } from "src/types/Graph";
 import { iconsMap } from "src/components/icon/iconsMap";
 
@@ -30,13 +30,13 @@ export function AnalyticsEnvelopesMonthOverviewCards({
   const theme = useTheme();
 
   return (
-    <Grid2 container spacing={2} sx={{ width: "100%" }}>
+    <Grid container spacing={2} sx={{ width: "100%" }}>
       {analyticsEnvelopesMonthOverview && analyticsEnvelopesMonthOverview.map((envelope, index) => {
 
         const IconComponent = iconsMap[envelope.icon];
 
         return (
-          <Grid2
+          <Grid
             key={`envelope_${index}`}
             size={{ xs: 6, sm: 6, md: 3 }}
           >
@@ -100,9 +100,9 @@ export function AnalyticsEnvelopesMonthOverviewCards({
               />
             </Card>
 
-          </Grid2>
+          </Grid>
         )
       })}
-    </Grid2>
+    </Grid>
   );
 }

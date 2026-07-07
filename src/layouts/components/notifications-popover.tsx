@@ -93,7 +93,7 @@ export function NotificationsPopover({ data = [], sx, ...other }: NotificationsP
           },
         }}
       >
-        <Box display="flex" alignItems="center" sx={{ py: 2, pl: 2.5, pr: 1.5, backgroundColor:(theme) => theme.palette.background.neutral }}>
+        <Box display="flex" alignItems="center" sx={{ py: 2, pl: 2.5, pr: 1.5, backgroundColor:(theme) => theme.palette.background.default }}>
           <Box sx={{ flexGrow: 1 }}>
             <Typography variant="subtitle1">Notifications</Typography>
             <Typography variant="body2" sx={{ color: "text.secondary" }}>
@@ -112,7 +112,7 @@ export function NotificationsPopover({ data = [], sx, ...other }: NotificationsP
 
         <Divider sx={{ borderStyle: "dashed" }} />
 
-        <Scrollbar fillContent sx={{ minHeight: 240, maxHeight: { xs: 360, sm: "none" }, backgroundColor:(theme) => theme.palette.background.neutral }}>
+        <Scrollbar fillContent sx={{ minHeight: 240, maxHeight: { xs: 360, sm: "none" }, backgroundColor:(theme) => theme.palette.background.default }}>
           <List
             disablePadding
             subheader={
@@ -142,7 +142,7 @@ export function NotificationsPopover({ data = [], sx, ...other }: NotificationsP
 
         <Divider sx={{ borderStyle: "dashed" }} />
 
-        <Box sx={{ p: 1, backgroundColor:(theme) => theme.palette.background.neutral }}>
+        <Box sx={{ p: 1, backgroundColor:(theme) => theme.palette.background.default }}>
           <Button fullWidth disableRipple color="inherit">
             View all
           </Button>

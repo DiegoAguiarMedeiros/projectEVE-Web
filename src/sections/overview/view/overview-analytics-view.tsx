@@ -1,11 +1,8 @@
-import "swiper/css";
-// Importando o CSS padrão
-import "swiper/css/navigation";
+
 import { useRef, useCallback } from "react";
 
 import { Box } from "@mui/material";
-import Grid2 from "@mui/material/Grid2"; // Para navegação (se necessário)
-import "swiper/css/pagination"; // Para paginação (se necessário)
+import Grid from "@mui/material/Grid";
 import { DashboardContent } from "src/layouts/dashboard";
 
 
@@ -45,7 +42,7 @@ export function OverviewAnalyticsView({ envelopes }: OverviewAnalyticsViewProps)
 
   return (
     <DashboardContent sx={{ p: 1 }}>
-      <Grid2 container spacing={1}>
+      <Grid container spacing={1}>
         <Box
           display="flex"
           alignItems="center"
@@ -57,7 +54,7 @@ export function OverviewAnalyticsView({ envelopes }: OverviewAnalyticsViewProps)
           />
         </Box>
 
-        <Grid2 size={{ xs: 12, sm: 6, md: 8 }}
+        <Grid size={{ xs: 12, sm: 6, md: 8 }}
           order={{ xs: 2, sm: 1 }}>
           <AnalyticsEnvelopesByYearGraph
             title={t('overview.budget')}
@@ -70,16 +67,16 @@ export function OverviewAnalyticsView({ envelopes }: OverviewAnalyticsViewProps)
             transactions={filteredTransactions}
             table={table}
           />
-        </Grid2>
-        <Grid2 size={{ xs: 12, sm: 6, md: 4 }}
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, md: 4 }}
           order={{ xs: 1, sm: 2 }}>
           <AnalyticsCurrentEnvelopesGraph
             title={t('overview.envelopes_title')}
             analyticsCurrentEnvelopes={analyticsCurrentEnvelopes}
           />
-        </Grid2>
+        </Grid>
 
-        {/* <Grid2 sx={{
+        {/* <Grid sx={{
           gridColumn: {
             xs: "span 12",
             sm: "span 6",
@@ -97,9 +94,9 @@ export function OverviewAnalyticsView({ envelopes }: OverviewAnalyticsViewProps)
               ],
             }}
           />
-        </Grid2>
+        </Grid>
 
-        <Grid2 sx={{
+        <Grid sx={{
           gridColumn: {
             xs: "span 12",
             sm: "span 6",
@@ -117,9 +114,9 @@ export function OverviewAnalyticsView({ envelopes }: OverviewAnalyticsViewProps)
               ],
             }}
           />
-        </Grid2>
+        </Grid>
 
-        <Grid2 sx={{
+        <Grid sx={{
           gridColumn: {
             xs: "span 12",
             sm: "span 6",
@@ -127,11 +124,11 @@ export function OverviewAnalyticsView({ envelopes }: OverviewAnalyticsViewProps)
           },
         }}>
           <AnalyticsNews title="News" list={_posts.slice(0, 5)} />
-        </Grid2>
+        </Grid>
 
 
 
-        <Grid2 sx={{
+        <Grid sx={{
           gridColumn: {
             xs: "span 12",
             sm: "span 6",
@@ -147,9 +144,9 @@ export function OverviewAnalyticsView({ envelopes }: OverviewAnalyticsViewProps)
               { value: "twitter", label: "Twitter", total: 443232 },
             ]}
           />
-        </Grid2>
+        </Grid>
 
-        <Grid2 sx={{
+        <Grid sx={{
           gridColumn: {
             xs: "span 12",
             sm: "span 6",
@@ -157,8 +154,8 @@ export function OverviewAnalyticsView({ envelopes }: OverviewAnalyticsViewProps)
           },
         }}>
           <AnalyticsTasks title="Tasks" list={_tasks} />
-        </Grid2> */}
-      </Grid2>
+        </Grid> */}
+      </Grid>
     </DashboardContent >
   );
 }

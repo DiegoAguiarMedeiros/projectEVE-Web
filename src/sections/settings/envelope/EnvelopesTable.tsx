@@ -56,8 +56,8 @@ export function EnvelopesTable({ envelopes }: EnvelopesProps) {
                 : {
                     borderTopRightRadius: 0,
                     borderTopLeftRadius: 0,
-                    borderBottomRightRadius: theme.shape.borderRadius * 2,
-                    borderBottomLeftRadius: theme.shape.borderRadius * 2,
+                    borderBottomRightRadius: Number(theme.shape.borderRadius) * 2,
+                    borderBottomLeftRadius: Number(theme.shape.borderRadius) * 2,
                     backgroundColor: theme.palette.background.paper,
                 }),
         }}>

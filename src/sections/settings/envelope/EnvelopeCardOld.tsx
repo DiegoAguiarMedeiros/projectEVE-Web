@@ -6,7 +6,6 @@ import { useSnackbar } from "notistack";
 import Chips from "src/components/chip/chip";
 import { useUpdateEnvelopes } from "src/hooks/mutations/envelopes/useUpdateEnvelopes";
 import { Envelopes } from "src/types/Envelopes";
-import IconifyPicker from "@zunicornshift/mui-iconify-picker";
 import { IconPicker } from "src/components/IconPicker";
 import { iconsMap } from "src/components/icon/iconsMap";
 
