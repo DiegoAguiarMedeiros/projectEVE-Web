@@ -50,7 +50,7 @@ const renderFallback = (
       sx={{
         width: 1,
         maxWidth: 320,
-        bgcolor: (theme) => varAlpha(theme.palette.text.primary, 0.16),
+        bgcolor: (theme) => varAlpha(theme.palette.primary.mainChannel, 0.16),
         [`& .${linearProgressClasses.bar}`]: { bgcolor: "text.primary" },
       }}
     />
