@@ -34,6 +34,7 @@ import { Pagination } from "src/types/Pagination";
 import { ITable } from "src/sections/shared/useTable";
 import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 import { getEffectivePaidInstallments, getInstallmentDate } from "./debtUtils";
+import { labelDisplayedRows } from "src/components/labelDisplayedRows/LabelDisplayedRows";
 
 type DebtPageTableProps = {
     debts: Pagination<Debts> | undefined;
@@ -42,7 +43,7 @@ type DebtPageTableProps = {
 };
 
 export function DebtPageTable({ debts, envelopes, table }: DebtPageTableProps) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { symbol } = useCurrency();
     const { month: selectedMonth, year: selectedYear } = SelectedMonthYearStore();
 
@@ -205,6 +206,9 @@ export function DebtPageTable({ debts, envelopes, table }: DebtPageTableProps) {
 
                 {debts && debts.data.length > 0 ? (
                     <TablePagination
+
+                        labelRowsPerPage={t("pagination.rows_per_page")}
+                        labelDisplayedRows={labelDisplayedRows}
                         component="div"
                         page={table.page}
                         count={debts.totalItems}

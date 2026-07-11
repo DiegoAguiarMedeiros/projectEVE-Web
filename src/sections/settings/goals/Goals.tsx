@@ -16,6 +16,7 @@ import { Envelopes } from "src/types/Envelopes";
 import { useTranslation } from "react-i18next";
 import { useCurrency } from "src/hooks/useCurrency";
 import { formatGoalDeadline } from "src/utils/goalDeadline";
+import { labelDisplayedRows } from "src/components/labelDisplayedRows/LabelDisplayedRows";
 
 
 type GoalsTableProps = {
@@ -24,7 +25,7 @@ type GoalsTableProps = {
     table: ITable
 }
 export function GoalsTable({ goals, envelope, table }: GoalsTableProps) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { symbol } = useCurrency();
 
     const deleteGoalsMutation = useDeleteGoals();
@@ -113,6 +114,8 @@ export function GoalsTable({ goals, envelope, table }: GoalsTableProps) {
                 </Table>
             </TableContainer>
             {goals && goals.data.length > 0 ? <TablePagination
+                labelRowsPerPage={t("pagination.rows_per_page")}
+                        labelDisplayedRows={labelDisplayedRows}
                 component="div"
                 page={table.page}
                 count={goals.totalItems}

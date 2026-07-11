@@ -19,6 +19,7 @@ import { useDeleteAllProcessedIncomes } from "src/hooks/mutations/processed-inco
 import { Envelopes } from "src/types/Envelopes";
 import { useTranslation } from "react-i18next";
 import { fCurrency } from "src/utils/format-number";
+import { labelDisplayedRows } from "src/components/labelDisplayedRows/LabelDisplayedRows";
 
 
 type IncomeTableProps = {
@@ -28,7 +29,7 @@ type IncomeTableProps = {
     envelopes: Envelopes[]
 }
 export function IncomeTable({ processedIncomes, totalProcessedIncomes, table, envelopes }: IncomeTableProps) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { formatDate } = useDateFormat();
 
     const {
@@ -141,6 +142,8 @@ export function IncomeTable({ processedIncomes, totalProcessedIncomes, table, en
                         </Box>
                     )}
                     <TablePagination
+                        labelRowsPerPage={t("pagination.rows_per_page")}
+                        labelDisplayedRows={labelDisplayedRows}
                         component="div"
                         page={table.page}
                         count={processedIncomes.totalItems}

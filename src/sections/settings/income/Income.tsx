@@ -14,6 +14,7 @@ import { Pagination } from "src/types/Pagination";
 import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
 import { useTranslation } from "react-i18next";
 import { useCurrency } from "src/hooks/useCurrency";
+import { labelDisplayedRows } from "src/components/labelDisplayedRows/LabelDisplayedRows";
 
 
 type IncomeTableProps = {
@@ -22,7 +23,7 @@ type IncomeTableProps = {
 }
 
 export function IncomeTable({ incomes, table }: IncomeTableProps) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { symbol } = useCurrency();
 
     const deleteIncomesMutation = useDeleteIncomes();
@@ -105,6 +106,8 @@ export function IncomeTable({ incomes, table }: IncomeTableProps) {
                 </Table>
             </TableContainer>
             {incomes && incomes.data.length > 0 ? <TablePagination
+                labelRowsPerPage={t("pagination.rows_per_page")}
+                        labelDisplayedRows={labelDisplayedRows}
                 component="div"
                 page={table.page}
                 count={incomes.totalItems}

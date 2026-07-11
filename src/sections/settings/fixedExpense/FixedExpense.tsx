@@ -15,6 +15,7 @@ import { useDeleteFixedExpenses } from "src/hooks/mutations/fixed-expenses/useDe
 import { useDeleteAllFixedExpenses } from "src/hooks/mutations/fixed-expenses/useDeleteAllFixedExpenses";
 import { useTranslation } from "react-i18next";
 import { fCurrency } from "src/utils/format-number";
+import { labelDisplayedRows } from "src/components/labelDisplayedRows/LabelDisplayedRows";
 
 
 type FixedExpenseTableProps = {
@@ -23,7 +24,7 @@ type FixedExpenseTableProps = {
     table: ITable
 }
 export function FixedExpenseTable({ envelopes, fixedExpenses, table }: FixedExpenseTableProps) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
 
     const deleteFixedExpenseMutation = useDeleteFixedExpenses();
@@ -116,6 +117,8 @@ export function FixedExpenseTable({ envelopes, fixedExpenses, table }: FixedExpe
                 </Table>
             </TableContainer>
             {fixedExpenses && fixedExpenses.data.length > 0 ? <TablePagination
+                labelRowsPerPage={t("pagination.rows_per_page")}
+                        labelDisplayedRows={labelDisplayedRows}
                 component="div"
                 page={table.page}
                 count={fixedExpenses.totalItems}

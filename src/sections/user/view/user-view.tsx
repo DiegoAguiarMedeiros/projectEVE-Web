@@ -23,13 +23,13 @@ import { UserTableHead } from "src/sections/user/user-table-head";
 import { TableEmptyRows } from "src/sections/user/table-empty-rows";
 import { UserTableToolbar } from "src/sections/user/user-table-toolbar";
 import { emptyRows, applyFilter, getComparator } from "src/sections/user/utils";
-
+import { labelDisplayedRows } from "src/components/labelDisplayedRows/LabelDisplayedRows";
 import type { UserProps } from "src/sections/user/user-table-row";
 
 // ----------------------------------------------------------------------
 
 export function UserView() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const table = useTable();
 
   const [filterName, setFilterName] = useState("");
@@ -118,6 +118,8 @@ export function UserView() {
         </Scrollbar>
 
         <TablePagination
+          labelRowsPerPage={t("pagination.rows_per_page")}
+          labelDisplayedRows={labelDisplayedRows}
           component="div"
           page={table.page}
           count={_users.length}

@@ -33,6 +33,7 @@ import { Envelopes } from "src/types/Envelopes";
 import { Pagination } from "src/types/Pagination";
 import { ITable } from "src/sections/shared/useTable";
 import { Iconify } from "src/components/iconify";
+import { labelDisplayedRows } from "src/components/labelDisplayedRows/LabelDisplayedRows";
 
 // ----------------------------------------------------------------------
 
@@ -57,7 +58,7 @@ type Props = CardProps & {
 };
 
 export function UpcomingPendingTransactionsTable({ title, subheader, envelopes, transactions, table, onMarkAsPaid, creditCards, ...other }: Props) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { formatDate } = useDateFormat();
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -177,6 +178,8 @@ export function UpcomingPendingTransactionsTable({ title, subheader, envelopes, 
       </Scrollbar>
 
       <TablePagination
+        labelRowsPerPage={t("pagination.rows_per_page")}
+                        labelDisplayedRows={labelDisplayedRows}
         component="div"
         page={table.page}
         count={transactions.totalItems}

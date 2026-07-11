@@ -15,6 +15,7 @@ import { useDeleteAllDebts } from "src/hooks/mutations/debts/useDeleteAllDebts";
 import { Envelopes } from "src/types/Envelopes";
 import { useTranslation } from "react-i18next";
 import { useCurrency } from "src/hooks/useCurrency";
+import { labelDisplayedRows } from "src/components/labelDisplayedRows/LabelDisplayedRows";
 
 
 
@@ -25,7 +26,7 @@ type DebtsTableProps = {
 }
 
 export function DebtTable({ debts, envelopes, table }: DebtsTableProps) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { symbol } = useCurrency();
 
     const deleteDebtMutation = useDeleteDebts();
@@ -114,6 +115,8 @@ export function DebtTable({ debts, envelopes, table }: DebtsTableProps) {
                 </Table>
             </TableContainer>
             {debts && debts.data.length > 0 ? <TablePagination
+                labelRowsPerPage={t("pagination.rows_per_page")}
+                        labelDisplayedRows={labelDisplayedRows}
                 component="div"
                 page={table.page}
                 count={debts.totalItems}

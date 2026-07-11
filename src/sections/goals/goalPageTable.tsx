@@ -34,6 +34,7 @@ import { ITable } from "src/sections/shared/useTable";
 import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 import { useEffectiveGoalsCumulative } from "src/hooks/queries/goals/useEffectiveGoalsCumulative";
 import { formatGoalDeadline } from "src/utils/goalDeadline";
+import { labelDisplayedRows } from "src/components/labelDisplayedRows/LabelDisplayedRows";
 
 type GoalPageTableProps = {
     goals: Pagination<Goals> | undefined;
@@ -42,7 +43,7 @@ type GoalPageTableProps = {
 };
 
 export function GoalPageTable({ goals, goalsEnvelope, table }: GoalPageTableProps) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { symbol } = useCurrency();
     const { month, year } = SelectedMonthYearStore();
     const cumulativeTotal = useEffectiveGoalsCumulative(year, month);
@@ -182,6 +183,8 @@ export function GoalPageTable({ goals, goalsEnvelope, table }: GoalPageTableProp
 
                 {goals && goals.data.length > 0 ? (
                     <TablePagination
+                        labelRowsPerPage={t("pagination.rows_per_page")}
+                        labelDisplayedRows={labelDisplayedRows}
                         component="div"
                         page={table.page}
                         count={goals.totalItems}

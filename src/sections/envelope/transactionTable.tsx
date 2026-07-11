@@ -20,6 +20,7 @@ import { useUpdateStatusTransactions } from "src/hooks/mutations/transactions/us
 import { useTranslation } from "react-i18next";
 import { usePaths } from "src/hooks/usePaths";
 import { fCurrency } from "src/utils/format-number";
+import { labelDisplayedRows } from "src/components/labelDisplayedRows/LabelDisplayedRows";
 
 type TransactionTableProps = {
     envelopeId: string;
@@ -31,7 +32,7 @@ type TransactionTableProps = {
     onTypeFilterChange?: (type: string) => void;
 }
 export function TransactionTable({ envelopeId, transactions, table, activeBorderColor, allEnvelopes, typeFilter, onTypeFilterChange }: TransactionTableProps) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const navigate = useNavigate();
     const paths = usePaths();
 
@@ -180,6 +181,8 @@ export function TransactionTable({ envelopeId, transactions, table, activeBorder
                 }
             </TableContainer>
             {transactions && transactions.data.length > 0 ? <TablePagination
+                labelRowsPerPage={t("pagination.rows_per_page")}
+                        labelDisplayedRows={labelDisplayedRows}
                 component="div"
                 page={table.page}
                 count={transactions.totalItems}

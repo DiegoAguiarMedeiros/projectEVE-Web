@@ -16,6 +16,11 @@
   "incomes": "Incomes",
   "expenses": "Expenses",
   "balance": "Balance",
+  "pagination":{
+    "rows_per_page": "Items per page",
+    "of": "of",
+    "more_than": "more than"
+  },
   "months": {
     "january": "January",
     "february": "February",

@@ -13,6 +13,7 @@ import { CreditCards } from "src/types/CreditCards";
 import { useDeleteCreditCards } from "src/hooks/mutations/credit-cards/useDeleteCreditCards";
 import { useDeleteAllCreditCards } from "src/hooks/mutations/credit-cards/useDeleteAllCreditCards";
 import { useTranslation } from "react-i18next";
+import { labelDisplayedRows } from "src/components/labelDisplayedRows/LabelDisplayedRows";
 
 
 type CreditCardsTableProps = {
@@ -21,7 +22,7 @@ type CreditCardsTableProps = {
 }
 
 export function CreditCardsTable({ creditCards, table }: CreditCardsTableProps) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const deleteCreditCardsMutation = useDeleteCreditCards();
     const deleteAllCreditCardsMutation = useDeleteAllCreditCards();
@@ -104,6 +105,8 @@ export function CreditCardsTable({ creditCards, table }: CreditCardsTableProps) 
                 </Table>
             </TableContainer>
             {creditCards && creditCards.data.length > 0 ? <TablePagination
+                labelRowsPerPage={t("pagination.rows_per_page")}
+                        labelDisplayedRows={labelDisplayedRows}
                 component="div"
                 page={table.page}
                 count={creditCards.totalItems}

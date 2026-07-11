@@ -224,7 +224,7 @@ export function NavContent({ data, slots, sx, collapsed, onToggleCollapse }: Nav
       </Scrollbar>
 
       <Box sx={{ width: "100%", pb: 0 }}>
-        <Divider sx={{ borderStyle: "dashed", mb: 1 }} />
+        <Divider sx={{ borderStyle: "dashed" }} />
         {onToggleCollapse ? (
           <Tooltip title={collapsed ? t('nav.expand') : ''} placement="right">
             <ListItemButton
@@ -232,7 +232,7 @@ export function NavContent({ data, slots, sx, collapsed, onToggleCollapse }: Nav
               onClick={onToggleCollapse}
               sx={{
                 pl: collapsed ? 0 : 2,
-                py: 1,
+                py: 1.75,
                 gap: collapsed ? 0 : 2,
                 pr: collapsed ? 0 : 1.5,
                 borderRadius: 0.75,
@@ -244,12 +244,14 @@ export function NavContent({ data, slots, sx, collapsed, onToggleCollapse }: Nav
               }}
             >
               <Box component="span" sx={{ width: 24, height: 24, flexShrink: 0 }}>
-                <Iconify icon={collapsed ? "eva:chevron-right-fill" : "eva:chevron-left-fill"} />
+                <Iconify icon={collapsed ? "eva:chevron-right-fill" : "eva:chevron-left-fill"} sx={{ marginTop: '2px' }} />
               </Box>
               {!collapsed && (
-                <Box component="span" flexGrow={1}>
-                  {t('nav.collapse')}
-                </Box>
+                <>
+                  <Box component="span" flexGrow={1}>
+                    {t('nav.collapse')}
+                  </Box>
+                </>
               )}
             </ListItemButton>
           </Tooltip>
