@@ -24,7 +24,6 @@ export function useCompleteRegistration(onSuccess?: () => void) {
             }
         },
         onError: (error) => {
-            console.error("Erro ao completar cadastro:", error);
             enqueueSnackbar(t("notifications.registration.error_complete"), {
                 variant: "error",
             });

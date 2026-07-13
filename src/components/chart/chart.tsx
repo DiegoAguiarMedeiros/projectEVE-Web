@@ -2,8 +2,6 @@ import type { BoxProps } from "@mui/material/Box";
 
 import * as ApexChartsModule from "react-apexcharts";
 
-console.log(ApexChartsModule);
-console.log(ApexChartsModule.default);
 import Box from "@mui/material/Box";
 
 import { chartClasses } from "src/components/chart/classes";

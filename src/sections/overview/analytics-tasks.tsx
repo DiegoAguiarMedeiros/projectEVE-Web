@@ -81,22 +81,18 @@ function Item({ item, checked, onChange, sx, ...other }: ItemProps) {
 
   const handleMarkComplete = useCallback(() => {
     handleClosePopover();
-    console.info("MARK COMPLETE", item.id);
   }, [handleClosePopover, item.id]);
 
   const handleShare = useCallback(() => {
     handleClosePopover();
-    console.info("SHARE", item.id);
   }, [handleClosePopover, item.id]);
 
   const handleEdit = useCallback(() => {
     handleClosePopover();
-    console.info("EDIT", item.id);
   }, [handleClosePopover, item.id]);
 
   const handleDelete = useCallback(() => {
     handleClosePopover();
-    console.info("DELETE", item.id);
   }, [handleClosePopover, item.id]);
 
   return (
