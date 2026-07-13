@@ -1,8 +1,4 @@
 import "./style.css";
-import "swiper/css";
-import "swiper/css/thumbs";
-import "swiper/css/free-mode";
-import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
@@ -52,6 +48,7 @@ export default function SwiperEnvelop({
     if (isMobile && swiperRef.current && swiperRef.current.activeIndex !== currentIndex) {
       swiperRef.current.slideTo(currentIndex, 0);
     }
+    table.onResetPage();
   }, [currentIndex, isMobile]);
 
   return (
@@ -84,7 +81,10 @@ export default function SwiperEnvelop({
           }}
           modules={[FreeMode, Navigation, Thumbs]}
           initialSlide={currentIndex}
-          onSwiper={(swiper) => { swiperRef.current = swiper; }}
+          onSwiper={(swiper) => {
+            swiperRef.current = swiper;
+            
+          }}
           onSlideChange={(swiper) => {
             if (window.innerWidth < 900) {
               handleSlideClick(swiper.activeIndex);

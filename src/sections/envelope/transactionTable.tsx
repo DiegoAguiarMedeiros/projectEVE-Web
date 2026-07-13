@@ -32,7 +32,7 @@ type TransactionTableProps = {
     onTypeFilterChange?: (type: string) => void;
 }
 export function TransactionTable({ envelopeId, transactions, table, activeBorderColor, allEnvelopes, typeFilter, onTypeFilterChange }: TransactionTableProps) {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const paths = usePaths();
 

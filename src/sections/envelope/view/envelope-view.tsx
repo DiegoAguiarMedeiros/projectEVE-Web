@@ -21,18 +21,18 @@ type EnvelopeViewProps = {
 }
 export function EnvelopeView({ envelopes, currentIndex, handleSlideClick, envelopeActived, transactions, table, activeBorderColor, typeFilter, onTypeFilterChange }: EnvelopeViewProps) {
   return (
-<DashboardContent>
-        <SwiperEnvelop
-          currentIndex={currentIndex}
-          handleSlideClick={handleSlideClick}
-          envelopeActived={envelopeActived}
-          transactions={transactions}
-          envelopes={envelopes}
-          table={table}
-          activeBorderColor={activeBorderColor}
-          typeFilter={typeFilter}
-          onTypeFilterChange={onTypeFilterChange}
-        />
+    <DashboardContent>
+      <SwiperEnvelop
+        currentIndex={currentIndex}
+        handleSlideClick={handleSlideClick}
+        envelopeActived={envelopeActived}
+        transactions={transactions}
+        envelopes={envelopes}
+        table={table}
+        activeBorderColor={activeBorderColor}
+        typeFilter={typeFilter}
+        onTypeFilterChange={onTypeFilterChange}
+      />
     </DashboardContent>
   );
 }

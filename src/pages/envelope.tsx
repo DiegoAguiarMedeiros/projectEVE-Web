@@ -12,7 +12,6 @@ import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 // ----------------------------------------------------------------------
 
 export default function Page() {
-
   const queryClient = useQueryClient();
   const table = useTable();
   const [envelopeActived, setEnvelopeActive] = useState<string>("");
@@ -33,12 +32,15 @@ export default function Page() {
 
   const onMonthYearChange = useCallback((): void => {
     queryClient.invalidateQueries({ queryKey: ["transactions", envelopeActived] });
-    table.onResetPage()
   }, [table, queryClient, envelopeActived]);
-
+  
   useEffect(() => {
     onMonthYearChange()
-  }, [onMonthYearChange])
+  }, [onMonthYearChange]);
+  useEffect(() => {
+    console.log("month", month, "year", year);
+    table.onResetPage()
+  }, [ month, year]);
 
   useEffect(() => {
     if (envelopes && envelopes.length > 0) {
