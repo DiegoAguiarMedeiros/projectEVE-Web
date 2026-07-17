@@ -50,7 +50,7 @@ export function AnalyticsCurrentEnvelopesGraph({ title, subheader, analyticsCurr
 
       <Chart
         type="pie"
-        series={analyticsCurrentEnvelopes.values}
+        series={analyticsCurrentEnvelopes.pureValues}
         options={chartOptions}
         width={{ xs: 240, xl: 260 }}
         height={{ xs: 240, xl: 260 }}
