@@ -50,7 +50,7 @@ export function NavlessLayout({ sx, children, header }: NavlessLayoutProps) {
                         ),
                         rightArea: (
                             <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-                                <NotificationsPopover data={_notifications} />
+                                {/* <NotificationsPopover data={_notifications} /> */}
                                 <ThemeToggleButton />
                                 <LanguagePopover data={_langs} />
                                 <AccountPopover

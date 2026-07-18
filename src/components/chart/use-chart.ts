@@ -34,6 +34,31 @@ export function useChart(options?: ChartOptions): ChartOptions {
             columnWidth: "80%",
           },
         },
+        xaxis: {
+          labels: {
+            rotate: -45,
+            rotateAlways: true,
+            hideOverlappingLabels: false,
+            style: {
+              fontSize: '10px',
+            }
+          },
+        },
+        yaxis: {
+          title: {
+            text: "",
+          },
+          labels: {
+            rotate: -45,
+          },
+        },
+        grid: {
+          padding: {
+            left: 5,
+            right: 30,
+            bottom: 0,
+          },
+        },
       },
     },
     {

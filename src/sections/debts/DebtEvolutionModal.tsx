@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useTheme } from "@mui/material/styles";
 import { Debts } from "src/types/Debts";
 import { useCurrency } from "src/hooks/useCurrency";
+import { fShortenNumber } from "src/utils/format-number";
 import { Chart, useChart } from "src/components/chart";
 import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 import { getEffectivePaidInstallments } from "./debtUtils";
@@ -79,7 +80,7 @@ export function DebtEvolutionModal({ debt, open, onClose }: DebtEvolutionModalPr
         xaxis: { categories },
         yaxis: {
             title: { text: t("debts_page.evolution_modal.balance") },
-            labels: { formatter: (val: number) => `${symbol} ${format(val)}` },
+            labels: { formatter: (val: number) => `${symbol} ${fShortenNumber(val)}` },
         },
         stroke: { width: 2.5, curve: "smooth", colors: [theme.palette.success.main] },
         fill: {
@@ -162,14 +163,24 @@ export function DebtEvolutionModal({ debt, open, onClose }: DebtEvolutionModalPr
                 </IconButton>
             </Box>
 
-            <Box sx={{ flex: 1, minHeight: 0, p: 3 }}>
-                <Chart
-                    key={`${selectedMonth}-${selectedYear}`}
-                    type="area"
-                    series={series}
-                    options={chartOptions}
-                    height="100%"
-                />
+            <Box sx={{ 
+                flex: 1, 
+                minHeight: 0, 
+                pt: 3,
+                pr: 3,
+                pl: { xs: 0, sm: 3 },
+                pb: { xs: 10, sm: 3 },
+                overflowX: "auto"
+            }}>
+                <Box sx={{ minWidth: { xs: 700, sm: "100%" }, height: "100%" }}>
+                    <Chart
+                        key={`${selectedMonth}-${selectedYear}`}
+                        type="area"
+                        series={series}
+                        options={chartOptions}
+                        height="100%"
+                    />
+                </Box>
             </Box>
         </Box>
     );

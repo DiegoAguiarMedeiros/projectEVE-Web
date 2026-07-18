@@ -5,6 +5,7 @@
 
 import { getCurrencyConfig } from "./currency";
 import { getNumberFormatLocale } from "./numberFormat";
+import i18n from "src/i18n";
 
 export type InputNumberValue = string | number | null | undefined;
 
@@ -77,7 +78,7 @@ export function fShortenNumber(inputValue: InputNumberValue, options?: Options) 
   const number = processInput(inputValue);
   if (number === null) return "";
 
-  const fm = new Intl.NumberFormat(getNumberFormatLocale(), {
+  const fm = new Intl.NumberFormat(i18n.language || getNumberFormatLocale(), {
     notation: "compact",
     maximumFractionDigits: 2,
     ...options,

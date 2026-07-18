@@ -5,6 +5,7 @@ import { useTheme } from "@mui/material/styles";
 import { Goals } from "src/types/Goals";
 import { Envelopes } from "src/types/Envelopes";
 import { useCurrency } from "src/hooks/useCurrency";
+import { fShortenNumber } from "src/utils/format-number";
 import { Chart, useChart } from "src/components/chart";
 import { SelectedMonthYearStore } from "src/store/useSelectedMonthYearStore";
 import { useEffectiveGoalsCumulative } from "src/hooks/queries/goals/useEffectiveGoalsCumulative";
@@ -87,7 +88,7 @@ export function GoalEvolutionModal({ goal, goalsEnvelope, open, onClose }: GoalE
         xaxis: { categories },
         yaxis: {
             title: { text: t("goals_page.evolution_modal.saved") },
-            labels: { formatter: (val: number) => `${symbol} ${val.toFixed(0)}` },
+            labels: { formatter: (val: number) => `${symbol} ${fShortenNumber(val)}` },
         },
         stroke: { width: 2.5, curve: "smooth" },
         fill: { type: "gradient", gradient: { opacityFrom: 0.4, opacityTo: 0.1 } },
@@ -141,8 +142,18 @@ export function GoalEvolutionModal({ goal, goalsEnvelope, open, onClose }: GoalE
                 </IconButton>
             </Box>
 
-            <Box sx={{ flex: 1, minHeight: 0, p: 3 }}>
-                <Chart key={`${selectedMonth}-${selectedYear}`} type="area" series={series} options={chartOptions} height="100%" />
+            <Box sx={{ 
+                flex: 1, 
+                minHeight: 0, 
+                pt: 3,
+                pr: 3,
+                pl: { xs: 0, sm: 3 },
+                pb: { xs: 10, sm: 3 },
+                overflowX: "auto"
+            }}>
+                <Box sx={{ minWidth: { xs: 700, sm: "100%" }, height: "100%" }}>
+                    <Chart key={`${selectedMonth}-${selectedYear}`} type="area" series={series} options={chartOptions} height="100%" />
+                </Box>
             </Box>
         </Box>
     );

@@ -9,6 +9,7 @@ import { Chart, useChart } from "src/components/chart";
 import { AnalyticsEnvelopesByYear } from "src/types/Graph";
 
 import { useTranslation } from "react-i18next";
+import { fShortenNumber } from "src/utils/format-number";
 import { useCurrency } from "src/hooks/useCurrency";
 import SkeletonLoading from "src/components/skeleton/SkeletonLoading";
 
@@ -47,7 +48,7 @@ export function AnalyticsEnvelopesByYearGraph({ title, subheader, chart, ...othe
     },
     yaxis: {
       labels: {
-        formatter: (value: number) => value.toFixed(2),
+        formatter: (value: number) => fShortenNumber(value),
       },
     },
     legend: {
